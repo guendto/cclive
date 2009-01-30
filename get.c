@@ -202,7 +202,7 @@ cc_getfn (
                 if (cc.gi.continue_given)
                     break;
             }
-            snprintf(tmp,sizeof(tmp),dflt,id,host,suffix);
+            snprintf(tmp,sizeof(tmp),dflt,host,id,suffix);
             asprintf(&n,".%d",i);
             strcat(tmp,n);
             free(n);
