@@ -1,0 +1,127 @@
+/*
+ * cclive Copyright (C) 2009 Toni Gundogdu.
+ * This file is part of cclive.
+ *
+ * cclive is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * cclive is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+#include <stdlib.h>
+#include <memory.h>
+#include <curl/curl.h>
+
+#include "cclive.h"
+
+struct cclive_s cc;
+
+static void /* init curl handle which will be reused */
+init_curl (void) {
+    if ( !(cc.curl = curl_easy_init()) ) {
+        fprintf(stderr,"error: curl_easy_init returned null\n");
+        exit(EXIT_FAILURE);
+    }
+    curl_easy_setopt(cc.curl, CURLOPT_USERAGENT,       cc.gi.agent_arg);
+    curl_easy_setopt(cc.curl, CURLOPT_FOLLOWLOCATION,  1);
+    curl_easy_setopt(cc.curl, CURLOPT_AUTOREFERER,     1);
+    curl_easy_setopt(cc.curl, CURLOPT_NOBODY,          0);
+    curl_easy_setopt(cc.curl, CURLOPT_VERBOSE,         cc.gi.debug_given);
+    curl_easy_setopt(cc.curl, CURLOPT_ERRORBUFFER,     cc.curl_errmsg);
+    if (cc.gi.proxy_given)
+        curl_easy_setopt(cc.curl, CURLOPT_PROXY, cc.gi.proxy_arg);
+    if (cc.gi.limit_rate_given) {
+        curl_off_t r = (curl_off_t)cc.gi.limit_rate_arg*1024;
+        curl_easy_setopt(cc.curl, CURLOPT_MAX_RECV_SPEED_LARGE, r);
+    }
+}
+
+static void /* function to be called at exit */
+handle_exit (void) {
+    free(cc.curl_errmsg);
+    curl_easy_cleanup(cc.curl);
+    free(cc.pp);
+    cmdline_parser_free(&cc.gi);
+}
+
+static const char copyr_notice[] =
+"Copyright (C) 2009 Toni Gundogdu <legatvs@gmail.com>.\n\n"
+"This program is free software: you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation, either version 3 of the License, or\n"
+"(at your option) any later version.\n\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program.  If not, see <http://www.gnu.org/licenses/>.";
+
+int /* entry point */
+main (int argc, char *argv[]) {
+    memset(&cc,0,sizeof(struct cclive_s));
+    atexit(handle_exit);
+
+    if ( !(cc.curl_errmsg = malloc(CURL_ERROR_SIZE)) ) {
+        perror("malloc");
+        exit(EXIT_FAILURE);
+    }
+    cc.curl_errmsg[0] = '\0';
+
+    cc_parse_opts(argc,argv);
+
+    if (cc.gi.version_given) {
+        curl_version_info_data *c = curl_version_info(CURLVERSION_NOW);
+        cc_log("%s version %s with libcurl version %s  [%s].\n%s\n",
+            CMDLINE_PARSER_PACKAGE, CMDLINE_PARSER_VERSION,
+            c->version, OSNAME, copyr_notice);
+        exit(EXIT_SUCCESS);
+    }
+
+    init_curl();
+
+    if (cc.gi.supported_hosts_given) {
+        cc_list_hosts();
+        exit(EXIT_SUCCESS);
+    }
+
+    if (cc.gi.youtube_user_given) {
+        if (cc_login_youtube() != 0)
+            exit(EXIT_FAILURE);
+    }
+
+    if (!cc.gi.inputs_num) {
+        int l;
+        const int size = 1024;
+        char *ln = malloc(size);
+
+        if (!ln) {
+            perror("malloc");
+            exit(EXIT_FAILURE);
+        }
+
+        while (fgets(ln,size,stdin)) {
+            l = strlen(ln);
+            if (l < 8)
+                continue;
+            if (ln[l-1] == '\n')
+                ln[l-1] = '\0';
+            if (strlen(ln))
+                cc_handle_host(ln);
+        }
+        free(ln);
+    } else {
+        int i;
+        for (i=0; i<cc.gi.inputs_num; ++i) {
+            cc_handle_host(cc.gi.inputs[i]);
+        }
+    }
+    exit(EXIT_SUCCESS);
+}

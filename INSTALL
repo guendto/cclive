@@ -1,0 +1,33 @@
+
+            cclive installation
+
+Normally you can just do "make" followed by "make install", that will install
+the cclive program in your own ~/bin/ directory. If you want to do a global
+install, you can do (as root):
+
+ # make prefix=/usr install
+
+The manual page is installed by default, if you do not need it:
+
+ # make WITH_MAN=no install
+
+When you uninstall, be sure to use the same prefix. For example:
+
+ # make prefix=/usr uninstall
+
+You can clean the source directory with "make clean". Developers may also
+find the following make targets useful:
+
+ cmdline # generate cmdline.h and cmdline.c from cmdline.ggo (req. gengetopt)
+ man     # generate cclive.1 from cclive.pod (req. pod2man)
+
+
+            cclive prerequisites
+
+ - libcurl library (7.18.0+)
+
+
+            Examples
+
+ BSD    : gmake prefix=/usr/local mandir=/usr/local/man install
+ Linux  : make prefix=/usr install

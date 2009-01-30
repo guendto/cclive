@@ -1,0 +1,15 @@
+0.1.0
+
+ * publish to public repo
+ * create freshmeat page
+
+
+Ongoing
+
+ * improve and test portability
+   - cclive is developed on FreeBSD and a Debian based system, both i386
+   - please send test feedback to cclive@googlegroups.com
+
+ * add support for new hosts
+   - see host.c
+   - send patches to cclive@googlegroups.com

@@ -1,0 +1,163 @@
+=pod
+
+=head1 NAME
+
+cclive - video extraction utility
+
+=head1 SYNOPSIS
+
+cclive [options] [url...]
+
+=head1 DESCRIPTION
+
+cclive is a command line video extraction utility similar to clive
+but focuses on low requirements. Its features are few and essential.
+
+=head1 OPTIONS
+
+=over 4
+
+=item B<-h, --help>
+
+Print help and exit.
+
+=item B<-v, --version>
+
+Print version and exit.
+
+=item B<--supported-hosts>
+
+Print a list of supported hosts to stdout and exit.
+
+=item B<-q, --quiet>
+
+Turn off all output.
+
+=item B<--debug>
+
+Print libcurl debug messages to stderr.
+
+=item B<-n, --no-extract>
+
+Do not extract any videos.
+
+=item B<-c, --continue>
+
+Resume a partially downloaded video file. May not work with some of the HTTP
+servers. Be sure to read the L</FORMATS> section.
+
+=item B<-f, --download=>I<FORMAT>
+
+Extract I<format> instead of the default "flv". Possible values are "flv"
+(default), "mp4", "wmv", "3gpp", "xflv". Note that only certain hosts
+support certain formats. See the L</FORMATS> section for more on this.
+
+=item B<-O, --output-video=>I<FILE>
+
+Write extracted video to I<file>. Do I<not> use this when extracting multiple
+videos on one go. Causes B<cclive> to overwrite an already existing file.
+
+=item B<--emit-csv>
+
+Emit video details as CSV to stdout. Implies B<--no-extract>. Note that
+B<--quiet> has I<no> effect on the emitted CSV.
+
+=item B<--limit-rate=>I<AMOUNT>
+
+Limit download speed to I<amount> (KB/s).
+
+=item B<--agent=>I<STRING>
+
+Identify B<cclive> as I<string> to the HTTP servers.
+
+=item B<--proxy=>I<ADDRESS>
+
+Use I<address> for HTTP proxy. By default B<cclive> uses the value of the
+http_proxy environment variable if it is defined. Example: http://foo:1234.
+
+=item B<--no-proxy>
+
+Do not use proxy, even if http_proxy environment variable is defined.
+
+=item B<-u, --youtube-user=>I<USERNAME>
+
+Causes B<cclive> to log into Youtube as I<username>. This is done I<before>
+extraction, even if the batch does not contain any Youtube hosted links.
+
+=item B<-p, --youtube-pass=>I<PASSWORD>
+
+Use I<password> for Youtube login.  If undefined, B<cclive> prompts for it.
+
+=back
+
+=head1 EXAMPLES
+
+  % cclive "http://youtube.com/watch?v=3HD220e0bx4"
+  % cclive -n "http://youtube.com/watch?v=3HD220e0bx4"
+  % cclive -f mp4 "http://youtube.com/watch?v=3HD220e0bx4"
+  % cclive "http://youtube.com/watch?v=3HD220e0bx4" -cf mp4
+  % cclive -u username "http://youtube.com/watch?v=3HD220e0bx4" -f mp4
+
+=head1 FORMATS
+
+  youtube.com
+    * flv/mp4/3gpp/xflv
+    * Resuming flv with --continue does not work
+    * 3gpp and xflv formats may not always be available
+
+  video.google.com
+    * flv/mp4
+    * Resuming flv with --continue does not work
+    * mp4 format may not always be available
+    * mp4 != youtube-mp4
+
+  break.com
+    * flv/wmv
+
+  evisor.tv
+    * flv
+
+  sevenload.com
+    * flv
+
+  liveleak.com
+    * flv
+
+=head1 FILES
+
+=over 4
+
+=item B<$HOME/.ccliverc>, for example:
+
+ agent = Furball/1.0
+ proxy = http://foo:1234
+ limit-rate = 50 # KB/s
+ # NOTE: in theory any command-line option can be defined
+ # in the config file. Command-line option overrides config
+ # file definition.
+
+=back
+
+=head1 OTHER
+
+Send questions, patches and bug reports to:
+  cclive@googlegroups.com
+
+To subscribe, send an email to:
+  cclive-subscribe@googlegroups.com
+
+List archive:
+  http://groups.google.com/group/cclive
+
+You can obtain the development repository with:
+  % git clone git://repo.or.cz/cclive.git
+
+For release announcements, subscribe to the
+project at:
+  http://freshmeat.net/projects/cclive
+
+=head1 AUTHOR
+
+Toni Gundogdu <legatvs@gmail.com>
+
+=cut

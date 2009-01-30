@@ -1,0 +1,61 @@
+package "cclive"
+version "0.1.0"
+
+option "version"
+    v "print version and exit"
+    optional
+option "supported-hosts"
+    - "list supported hosts"
+    optional
+option "quiet"
+    q "turn off all output"
+    optional
+option "debug"
+    - "show curl debug messages"
+    optional
+option "no-extract"
+    n "do not extract video"
+    optional
+option "continue"
+    c "resume partially downloaded file"
+    optional
+option "download"
+    f "download format"
+    values="flv","mp4","wmv","3gpp","xflv"
+    default="flv"
+    typestr="FORMAT"
+    optional
+option "output-video"
+    O "write video to file"
+    string typestr="FILE"
+    no
+option "emit-csv"
+    - "emit video details as csv to stdout"
+    optional
+option "limit-rate"
+    - "limit download speed to amount kb per second"
+    int typestr="AMOUNT"
+    optional
+option "agent"
+    - "identify as string"
+    string typestr="STRING"
+    no
+    default="Mozilla/5.0"
+option "proxy"
+    - "use address for http proxy"
+    string typestr="ADDRESS"
+    no
+option "no-proxy"
+    - "do not use proxy, even if http_proxy environment\
+    variable is defined"
+    optional
+option "youtube-user"
+    u "login username for youtube"
+    string typestr="USERNAME"
+    optional
+#    dependon="youtube-pass"
+option "youtube-pass"
+    p "login password for youtube, prompt if undefined"
+    string typestr="PASSWORD"
+    optional
+    dependon="youtube-user"
