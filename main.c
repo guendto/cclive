@@ -75,7 +75,7 @@ main (int argc, char *argv[]) {
     }
     cc.curl_errmsg[0] = '\0';
 
-    cc_parse_opts(argc,argv);
+    parse_opts(argc,argv);
 
     if (cc.gi.version_given) {
         curl_version_info_data *c = curl_version_info(CURLVERSION_NOW);
@@ -88,12 +88,12 @@ main (int argc, char *argv[]) {
     init_curl();
 
     if (cc.gi.supported_hosts_given) {
-        cc_list_hosts();
+        list_hosts();
         exit(EXIT_SUCCESS);
     }
 
     if (cc.gi.youtube_user_given) {
-        if (cc_login_youtube() != 0)
+        if (login_youtube() != 0)
             exit(EXIT_FAILURE);
     }
 
@@ -114,13 +114,13 @@ main (int argc, char *argv[]) {
             if (ln[l-1] == '\n')
                 ln[l-1] = '\0';
             if (strlen(ln))
-                cc_handle_host(ln);
+                handle_host(ln);
         }
         free(ln);
     } else {
         int i;
         for (i=0; i<cc.gi.inputs_num; ++i) {
-            cc_handle_host(cc.gi.inputs[i]);
+            handle_host(cc.gi.inputs[i]);
         }
     }
     exit(EXIT_SUCCESS);

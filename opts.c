@@ -21,7 +21,7 @@
 #include "cclive.h"
 
 void /* parse cmdline opts and config (if exists) */
-cc_parse_opts (int argc, char **argv) {
+parse_opts (int argc, char **argv) {
     int noconf;
     char *env;
 
@@ -33,7 +33,7 @@ cc_parse_opts (int argc, char **argv) {
         char *c;
         asprintf(&c,"%s/.ccliverc",env);
 
-        if (cc_file_exists(c) != 0) {
+        if (file_exists(c) != 0) {
             int rc;
 
             cc.pp = cmdline_parser_params_create();

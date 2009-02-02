@@ -25,7 +25,7 @@
 #include "mem.h"
 
 int /* log into youtube */
-cc_login_youtube (void) {
+login_youtube (void) {
     struct cc_mem_s data;
     char *pass,*req;
     CURLcode rc;

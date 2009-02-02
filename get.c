@@ -23,8 +23,8 @@
 #include "cclive.h"
 #include "progress.h"
 
-long /* check remote file length */
-cc_getlen (char *xurl, double *len, char **ct) {
+static int /* check remote file length */
+query_filelen(char *xurl, double *len, char **ct) {
     CURLcode rc, httpcode;
     FILE *f;
     int ret;
@@ -75,7 +75,37 @@ cc_getlen (char *xurl, double *len, char **ct) {
     return(ret);
 }
 
-struct ccget_s { /* used to pass data between cc_get and write_cb */
+int /* prepare video file for extraction */
+prep_video (char *xurl, char *id, char *host) {
+    double len,initial;
+    char *fn,*ct;
+    int rc;
+
+    assert(xurl != 0);
+    assert(id   != 0);
+    assert(host != 0);
+
+    initial = 0;
+
+    rc = query_filelen(xurl, &len, &ct);
+    if (!rc) {
+        fn = create_fname(&initial, len, id, cc.gi.download_arg, host);
+        if (fn) {
+            rc = 0;
+            if (cc.gi.no_extract_given)
+                cc_log("%s  %.2fMB  [%s]\n",fn,ToMB(len),ct);
+            else if (cc.gi.emit_csv_given)
+                fprintf(stdout,"csv:\"%s\",\"%.0f\",\"%.0f\",\"%s\"\n",
+                    fn,len,initial,xurl);
+            else
+                rc = dl_file(xurl, fn, initial, len);
+            free(fn);
+        }
+    }
+    return(rc);
+}
+
+struct ccget_s { /* used to pass data between dl_file and write_cb */
     double initial;
     char *fn;
     FILE *f;
@@ -99,7 +129,7 @@ write_cb (void *data, size_t size, size_t nmemb, void *stream) {
 }
 
 int /* copy a remote file from url */
-cc_get (char *xurl, char *fn, double initial, double total) {
+dl_file (char *xurl, char *fn, double initial, double total) {
     struct ccprogress_s bp;
     struct ccget_s get;
     CURLcode rc;
@@ -165,7 +195,7 @@ cc_get (char *xurl, char *fn, double initial, double total) {
 }
 
 char * /* return video output filename */
-cc_getfn (
+create_fname(
     double *initial,
     double total,
     char *id,
@@ -191,7 +221,7 @@ cc_getfn (
 
         /* create a temporary output filename if needed by adding a suffix */
         for (i=1; i<INT_MAX; ++i) {
-            *initial = cc_file_exists(tmp);
+            *initial = file_exists(tmp);
             if (*initial == 0) {
                 break;
             } else if (*initial == total) {
@@ -210,7 +240,7 @@ cc_getfn (
         asprintf(&p,tmp);
     }
     else {
-        *initial = cc_file_exists(cc.gi.output_video_arg);
+        *initial = file_exists(cc.gi.output_video_arg);
         if (*initial == total) {
             cc_log("error: file is already fully retrieved; nothing to do\n");
             return(0);

@@ -48,8 +48,8 @@ ALL_LDFLAGS = $(LDFLAGS)
 ALL_LDFLAGS += $(CURL_LDFLAGS)
 
 PROG        = cclive
-SRCS        = main.c cmdline.c mem.c fetch.c log.c opts.c host.c get.c \
-                util.c extract.c progress.c login.c
+SRCS        = main.c cmdline.c mem.c log.c opts.c host.c get.c \
+                util.c progress.c login.c
 OBJS        = $(SRCS:%.c=%.o)
 
 .PHONY: all

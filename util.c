@@ -19,11 +19,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+#include <curl/curl.h>
 
+#include "mem.h"
 #include "cclive.h"
 
 char * /* extract substring */
-cc_strsub (const char *s, const char *from, const char *to) {
+strsub (const char *s, const char *from, const char *to) {
     char *pf,*pt,*p;
     size_t l;
     const char e[] = "error: '%s' not found\n";
@@ -51,7 +53,7 @@ cc_strsub (const char *s, const char *from, const char *to) {
 }
 
 char * /* replace substring */
-cc_strrepl (const char *s, const char *what, const char *with) {
+strrepl (const char *s, const char *what, const char *with) {
 /* http://members.dodo.com.au/~netocrat/c/source/replacebench.c
  * the optimized version. no copyright claimed. with minor changes. */
     int rl,wl,retlen,l;
@@ -93,7 +95,7 @@ cc_strrepl (const char *s, const char *what, const char *with) {
 }
 
 double /* check if file exists; zero or file length */
-cc_file_exists (char *path) {
+file_exists (char *path) {
     double len=0;
     FILE *f;
 
@@ -105,4 +107,39 @@ cc_file_exists (char *path) {
         fclose(f);
     }
     return(len);
+}
+
+int /* fetch data from url */
+fetch_link (char *url, struct cc_mem_s *page, int log) {
+    CURLcode rc;
+    int ret;
+
+    assert(url  != 0);
+    assert(page != 0);
+
+    ret         = 1;
+    page->p     = 0;
+    page->size  = 0;
+
+    if (log)
+        cc_log("fetch %s ...",url);
+
+    curl_easy_setopt(cc.curl, CURLOPT_URL,           url);
+    curl_easy_setopt(cc.curl, CURLOPT_ENCODING,      "");
+    curl_easy_setopt(cc.curl, CURLOPT_WRITEFUNCTION, cc_writemem_cb);
+    curl_easy_setopt(cc.curl, CURLOPT_WRITEDATA,     page);
+
+    if ( (rc = curl_easy_perform(cc.curl)) == CURLE_OK) {
+        CURLcode httpcode;
+        curl_easy_getinfo(cc.curl,CURLINFO_RESPONSE_CODE,&httpcode);
+        if (httpcode == 200) {
+            cc_log("done.\n");
+            ret = 0;
+        }
+        else
+            cc_log("\nerror: server returned http/%d\n",httpcode);
+    } else {
+        cc_log("\nerror: server returned %s\n",cc.curl_errmsg);
+    }
+    return(ret);
 }

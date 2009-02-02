@@ -4,7 +4,11 @@
  * Fixed file naming ("$id-($host).$suffix.$num" => "$host-($id).$suffix.$num")
 
  Developer-visible changes:
- * Removed unnecessary "extern" from header files
+ * Cleaned up .c and .h files
+   - Relocated some of the functions to reduce .h spam
+   - Removed obsoleted .c files
+   - Renamed much of the functions with "cc_" prefix
+   - Removed "extern" from .h files
  * Updated README with "cclive != clive" section
 
 
