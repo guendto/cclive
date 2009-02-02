@@ -43,10 +43,45 @@ init_curl (void) {
     }
 }
 
+static void
+run_subseq (void) {
+    llst_node_t curr = cc.subseq;
+    char *cmd=0;
+    if (!strcmp(cc.gi.subsequent_mode_arg,"linear")) {
+        while (curr != 0) {
+            cmd = strrepl(cc.gi.subsequent_arg,"%i",curr->str);
+            if (cmd)
+                system(cmd);
+            free(cmd);
+            curr = curr->next;
+        }
+    } else { /* batch */
+        /* FIXME : improve */
+        cmd = malloc(4096);
+        if (cmd) {
+            char *arg = strrepl(cc.gi.subsequent_arg,"%i"," ");
+            if (arg) {
+                cmd[0] = '\0';
+                strcat(cmd,arg);
+                while (curr != 0) {
+                    strcat(cmd,curr->str);
+                    strcat(cmd," ");
+                    curr = curr->next;
+                }
+                system(cmd);
+            }
+        }
+        else
+            perror("malloc");
+        free(cmd);
+    }
+}
+
 static void /* function to be called at exit */
 handle_exit (void) {
     cmdline_parser_free(&cc.gi);
     curl_easy_cleanup(cc.curl);
+    llst_free(&cc.subseq);
     free(cc.curl_errmsg);
     free(cc.pp);
 }
@@ -123,5 +158,9 @@ main (int argc, char *argv[]) {
             handle_host(cc.gi.inputs[i]);
         }
     }
+
+    if (cc.gi.subsequent_given)
+        run_subseq();
+
     exit(EXIT_SUCCESS);
 }

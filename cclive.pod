@@ -88,6 +88,26 @@ extraction, even if the batch does not contain any Youtube hosted links.
 
 Use I<password> for Youtube login.  If undefined, B<cclive> prompts for it.
 
+=item B<-r, --subsequent=>I<COMMAND>
+
+Run a I<command> subsequently after extracting video. B<cclive> expects
+"%i" specifier to be found in the I<command> for input file, e.g.:
+
+  % cclive -r "mplayer %i"
+
+=item B<-m, --subsequent-mode=>I<MODE>
+
+I<Mode> for running the subsequent command. Possible values are: "linear"
+(default) and "batch". The difference between these two modes is probably
+best explained with a few examples:
+
+  % cclive -r "mplayer %i" -m linear URL URL2
+  => mplayer VIDEO1
+  => mplayer VIDEO2
+
+  % cclive -r "mplayer %i" -m batch URL URL2
+  => mplayer VIDEO1 VIDEO2
+
 =back
 
 =head1 EXAMPLES

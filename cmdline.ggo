@@ -59,3 +59,14 @@ option "youtube-pass"
     string typestr="PASSWORD"
     optional
     dependon="youtube-user"
+option "subsequent"
+    r "run subsequent command with extracted video"
+    string typestr="COMMAND"
+    optional
+option "subsequent-mode"
+    m "mode for running subsequent command"
+    values="linear","batch"
+    default="linear"
+    typestr="MODE"
+    optional
+    dependon="subsequent"

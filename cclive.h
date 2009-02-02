@@ -2,9 +2,9 @@
 #define cclive_h
 
 #include "cmdline.h"
+#include "llst.h"
 
 #define ToMB(b) (b/0x100000)
-
 
 typedef struct cc_mem_s * cc_mem_t;
 
@@ -14,6 +14,7 @@ struct cclive_s {
     char *http_proxy_env;
     struct CURL *curl;
     char *curl_errmsg;
+    llst_node_t subseq;
 };
 extern struct cclive_s cc;
 

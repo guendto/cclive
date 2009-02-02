@@ -23,6 +23,17 @@
 #include "cclive.h"
 #include "progress.h"
 
+static void
+add_subseq (char *fname) {
+    assert(fname != 0);
+    if (cc.gi.subsequent_given) {
+        char *tmp;
+        asprintf(&tmp,"\"%s\"",fname);
+        llst_append(&cc.subseq,tmp);
+        free(tmp);
+    }
+}
+
 static int /* check remote file length */
 query_filelen(char *xurl, double *len, char **ct) {
     CURLcode rc, httpcode;
@@ -76,7 +87,7 @@ query_filelen(char *xurl, double *len, char **ct) {
 int /* prepare video file for extraction */
 prep_video (char *xurl, char *id, char *host) {
     double len=0,initial=0;
-    char *fn=0,*ct=0;
+    char *fname=0,*ct=0;
     int rc=1;
 
     assert(xurl != 0);
@@ -85,17 +96,20 @@ prep_video (char *xurl, char *id, char *host) {
 
     rc = query_filelen(xurl, &len, &ct);
     if (!rc) {
-        fn = create_fname(&initial, len, id, cc.gi.download_arg, host);
-        if (fn) {
+        fname = create_fname(&initial, len, id, cc.gi.download_arg, host);
+        if (fname) {
             rc = 0;
             if (cc.gi.no_extract_given)
-                cc_log("%s  %.2fMB  [%s]\n",fn,ToMB(len),ct);
+                cc_log("%s  %.2fMB  [%s]\n",fname,ToMB(len),ct);
             else if (cc.gi.emit_csv_given)
                 fprintf(stdout,"csv:\"%s\",\"%.0f\",\"%.0f\",\"%s\"\n",
-                    fn,len,initial,xurl);
-            else
-                rc = dl_file(xurl, fn, initial, len);
-            free(fn);
+                    fname,len,initial,xurl);
+            else {
+                rc = dl_file(xurl, fname, initial, len);
+                if (!rc)
+                    add_subseq(fname);
+            }
+            free(fname);
         }
     }
     return(rc);
@@ -217,6 +231,7 @@ create_fname(
             if (*initial == 0) {
                 break;
             } else if (*initial == total) {
+                add_subseq(tmp);
                 cc_log("error: file is already fully retrieved; "
                         "nothing to do\n");
                 return(0);
@@ -234,6 +249,7 @@ create_fname(
     else {
         *initial = file_exists(cc.gi.output_video_arg);
         if (*initial == total) {
+            add_subseq(cc.gi.output_video_arg);
             cc_log("error: file is already fully retrieved; nothing to do\n");
             return(0);
         }
