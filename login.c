@@ -27,16 +27,14 @@
 int /* log into youtube */
 login_youtube (void) {
     struct cc_mem_s data;
-    char *pass,*req;
+    char *pass=0,*req=0;
     CURLcode rc;
-    int ret;
+    int ret=1;
 
     memset(&data,0,sizeof(data));
-    req = pass = 0;
-    ret = 1;
 
     if (!cc.gi.youtube_pass_given) {
-        char *prompt,*p;
+        char *prompt=0,*p=0;
         asprintf(&prompt,"enter login password for %s:",
             cc.gi.youtube_user_arg);
         p = getpass(prompt);
