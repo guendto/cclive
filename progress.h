@@ -30,16 +30,16 @@ struct ccprogress_s {
 
 typedef struct ccprogress_s * ccprogress_t;
 
-extern void
+void
 cc_bar_init(ccprogress_t bp, double initial, double total);
 
-extern void
+void
 cc_bar_update(ccprogress_t bp, double total, double now);
 
-extern void
+void
 cc_bar_finish(ccprogress_t bp);
 
-extern int
+int
 cc_progress_cb(void *p, double total, double now,
     double utotal, double unow);
 

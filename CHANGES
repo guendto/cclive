@@ -4,6 +4,7 @@
  * Fixed file naming ("$id-($host).$suffix.$num" => "$host-($id).$suffix.$num")
 
  Developer-visible changes:
+ * Removed unnecessary "extern" from header files
  * Updated README with "cclive != clive" section
 
 

@@ -23,7 +23,7 @@ struct cc_mem_s {
     char *p;
 };
 
-extern size_t
+size_t
 cc_writemem_cb(void *p, size_t size, size_t nmemb, void *data);
 
 #endif
