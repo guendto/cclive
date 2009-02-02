@@ -27,9 +27,9 @@
 
 char * /* extract substring */
 strsub (const char *s, const char *from, const char *to) {
+    const char e[] = "error: '%s' not found\n";
     char *pf,*pt,*p;
     size_t l;
-    const char e[] = "error: '%s' not found\n";
 
     assert(s    != 0);
     assert(from != 0);
@@ -98,7 +98,7 @@ strrepl (const char *s, const char *what, const char *with) {
 double /* check if file exists; zero or file length */
 file_exists (char *path) {
     double len=0;
-    FILE *f;
+    FILE *f=0;
 
     assert(path != 0);
 
@@ -113,12 +113,11 @@ file_exists (char *path) {
 int /* fetch data from url */
 fetch_link (char *url, struct cc_mem_s *page, int log) {
     CURLcode rc;
-    int ret;
+    int ret=1;
 
     assert(url  != 0);
     assert(page != 0);
 
-    ret         = 1;
     page->p     = 0;
     page->size  = 0;
 
@@ -148,7 +147,7 @@ fetch_link (char *url, struct cc_mem_s *page, int log) {
 int /* general purpose log function; notice stderr */
 cc_log (const char *fmt, ...) {
     va_list args;
-    char *p = 0;
+    char *p=0;
 
     assert(fmt != 0);
 
