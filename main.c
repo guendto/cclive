@@ -44,37 +44,58 @@ init_curl (void) {
 }
 
 static void
-run_subseq (void) {
+run_subseq_linear (void) {
     llst_node_t curr = cc.subseq;
     char *cmd=0;
-    if (!strcmp(cc.gi.subsequent_mode_arg,"linear")) {
-        while (curr != 0) {
-            cmd = strrepl(cc.gi.subsequent_arg,"%i",curr->str);
-            if (cmd)
-                system(cmd);
-            free(cmd);
-            curr = curr->next;
-        }
-    } else { /* batch */
-        /* FIXME : improve */
-        cmd = malloc(4096);
-        if (cmd) {
-            char *arg = strrepl(cc.gi.subsequent_arg,"%i"," ");
-            if (arg) {
-                cmd[0] = '\0';
-                strcat(cmd,arg);
-                while (curr != 0) {
-                    strcat(cmd,curr->str);
-                    strcat(cmd," ");
-                    curr = curr->next;
-                }
-                system(cmd);
+    while (curr != 0) {
+        cmd = strrepl(cc.gi.subsequent_arg,"%i",curr->str);
+        if (cmd)
+            system(cmd);
+        free(cmd);
+        curr = curr->next;
+    }
+}
+
+static void
+run_subseq_batch (void) {
+    size_t rsize = strlen(cc.gi.subsequent_arg);
+    llst_node_t curr = cc.subseq;
+    char *cmd=0;
+
+    while (curr != 0) { /* calc. req. space */
+        rsize += strlen(curr->str)+1;
+        curr = curr->next;
+    }
+
+    cmd = malloc(rsize+2); /* +1 whitespace for trailing cmd, +1 for '\0' */
+    if (cmd) {
+        char *arg = strrepl(cc.gi.subsequent_arg,"%i"," ");
+        if (arg) {
+            cmd[0] = '\0';
+            strcat(cmd,arg);
+            free(arg);
+            strcat(cmd," ");
+
+            curr = cc.subseq;
+            while (curr != 0) {
+                strcat(cmd,curr->str);
+                strcat(cmd," ");
+                curr = curr->next;
             }
+            system(cmd);
         }
-        else
-            perror("malloc");
         free(cmd);
     }
+    else
+        perror("malloc");
+}
+
+static void /* run subsequent command */
+run_subseq (void) {
+    if (!strcmp(cc.gi.subsequent_mode_arg,"linear"))
+        run_subseq_linear();
+    else
+        run_subseq_batch();
 }
 
 static void /* function to be called at exit */
