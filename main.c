@@ -45,10 +45,10 @@ init_curl (void) {
 
 static void /* function to be called at exit */
 handle_exit (void) {
-    free(cc.curl_errmsg);
-    curl_easy_cleanup(cc.curl);
-    free(cc.pp);
     cmdline_parser_free(&cc.gi);
+    curl_easy_cleanup(cc.curl);
+    free(cc.curl_errmsg);
+    free(cc.pp);
 }
 
 static const char copyr_notice[] =
@@ -66,10 +66,10 @@ static const char copyr_notice[] =
 
 int /* entry point */
 main (int argc, char *argv[]) {
-    memset(&cc,0,sizeof(struct cclive_s));
+    memset(&cc,0,sizeof(cc));
     atexit(handle_exit);
 
-    if ( !(cc.curl_errmsg = malloc(CURL_ERROR_SIZE)) ) {
+    if ( !(cc.curl_errmsg=malloc(CURL_ERROR_SIZE)) ) {
         perror("malloc");
         exit(EXIT_FAILURE);
     }
@@ -98,9 +98,9 @@ main (int argc, char *argv[]) {
     }
 
     if (!cc.gi.inputs_num) {
-        int l;
-        const int size = 1024;
+        const size_t size = 1024;
         char *ln = malloc(size);
+        int l;
 
         if (!ln) {
             perror("malloc");
