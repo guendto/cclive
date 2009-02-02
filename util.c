@@ -17,6 +17,7 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdarg.h>
 #include <string.h>
 #include <assert.h>
 #include <curl/curl.h>
@@ -142,4 +143,25 @@ fetch_link (char *url, struct cc_mem_s *page, int log) {
         cc_log("\nerror: server returned %s\n",cc.curl_errmsg);
     }
     return(ret);
+}
+
+int /* general purpose log function; notice stderr */
+cc_log (const char *fmt, ...) {
+    va_list args;
+    char *p = 0;
+
+    assert(fmt != 0);
+
+    if (cc.gi.quiet_given)
+        return(0);
+    
+    va_start(args,fmt);
+    vasprintf(&p,fmt,args);
+    va_end(args);
+
+    if (p)
+        fprintf(stderr,"%s",p);
+    free(p);
+
+    return(0);
 }
