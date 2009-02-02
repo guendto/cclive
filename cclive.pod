@@ -90,22 +90,20 @@ Use I<password> for Youtube login.  If undefined, B<cclive> prompts for it.
 
 =item B<-r, --subsequent=>I<COMMAND>
 
-Run a I<command> subsequently after extracting video. B<cclive> expects
-"%i" specifier to be found in the I<command> for input file, e.g.:
-
-  % cclive -r "mplayer %i"
+Run a I<command> subsequently after extracting video. If "%i" specifier is
+found, B<cclive> replaces it with the name of the extracted video file.
 
 =item B<-m, --subsequent-mode=>I<MODE>
 
 I<Mode> for running the subsequent command. Possible values are: "linear"
-(default) and "batch". The difference between these two modes is probably
-best explained with a few examples:
+(default) and "batch". The only difference is how B<cclive> passes the
+names of the extracted video files to the command, e.g.:
 
   % cclive -r "mplayer %i" -m linear URL URL2
   => mplayer VIDEO1
   => mplayer VIDEO2
 
-  % cclive -r "mplayer %i" -m batch URL URL2
+  % cclive -r "mplayer" -m batch URL URL2
   => mplayer VIDEO1 VIDEO2
 
 =back
@@ -117,6 +115,7 @@ best explained with a few examples:
   % cclive -f mp4 "http://youtube.com/watch?v=3HD220e0bx4"
   % cclive "http://youtube.com/watch?v=3HD220e0bx4" -cf mp4
   % cclive -u username "http://youtube.com/watch?v=3HD220e0bx4" -f mp4
+  % cclive "http://youtube.com/watch?v=3HD220e0bx4" -r "mplayer %i"
 
 =head1 FORMATS
 
