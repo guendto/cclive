@@ -26,8 +26,8 @@
 static int /* check remote file length */
 query_filelen(char *xurl, double *len, char **ct) {
     CURLcode rc, httpcode;
-    FILE *f;
-    int ret;
+    FILE *f = tmpfile();
+    int ret=1;
 
     assert(xurl != 0);
     assert(len  != 0);
@@ -35,8 +35,6 @@ query_filelen(char *xurl, double *len, char **ct) {
 
     cc_log("verify video link ...");
 
-    f       = tmpfile();
-    ret     = 1;
     *len    = 0;
     *ct     = 0;
 
@@ -77,15 +75,13 @@ query_filelen(char *xurl, double *len, char **ct) {
 
 int /* prepare video file for extraction */
 prep_video (char *xurl, char *id, char *host) {
-    double len,initial;
-    char *fn,*ct;
-    int rc;
+    double len=0,initial=0;
+    char *fn=0,*ct=0;
+    int rc=1;
 
     assert(xurl != 0);
     assert(id   != 0);
     assert(host != 0);
-
-    initial = 0;
 
     rc = query_filelen(xurl, &len, &ct);
     if (!rc) {
@@ -105,23 +101,23 @@ prep_video (char *xurl, char *id, char *host) {
     return(rc);
 }
 
-struct ccget_s { /* used to pass data between dl_file and write_cb */
+struct getdata_s { /* used to pass data between dl_file and write_cb */
     double initial;
-    char *fn;
+    char *fname;
     FILE *f;
 };
 
 static int /* curl write callback function for file transfers */
 write_cb (void *data, size_t size, size_t nmemb, void *stream) {
-    struct ccget_s *get = (struct ccget_s *)stream;
+    struct getdata_s *get = (struct getdata_s *)stream;
 
     assert(data   != 0);
     assert(stream != 0);
 
     if (get && !get->f) {
         const char *mode = get->initial ? "ab" : "wb";
-        if ( !(get->f = fopen(get->fn,mode)) ) {
-            perror(get->fn);
+        if ( !(get->f = fopen(get->fname,mode)) ) {
+            perror(get->fname);
             return(-1);
         }
     }
@@ -129,16 +125,14 @@ write_cb (void *data, size_t size, size_t nmemb, void *stream) {
 }
 
 int /* copy a remote file from url */
-dl_file (char *xurl, char *fn, double initial, double total) {
-    struct ccprogress_s bp;
-    struct ccget_s get;
+dl_file (char *xurl, char *fname, double initial, double total) {
+    struct progressbar_s bp;
+    struct getdata_s get;
     CURLcode rc;
-    int ret;
+    int ret=0;
 
-    assert(xurl != 0);
-    assert(fn   != 0);
-
-    ret = 0;
+    assert(xurl  != 0);
+    assert(fname != 0);
 
     memset(&bp,0,sizeof(bp));
     memset(&get,0,sizeof(get));
@@ -151,17 +145,17 @@ dl_file (char *xurl, char *fn, double initial, double total) {
         initial = 0;
     }
 
-    cc_bar_init(&bp, initial, total);
-    bp.fn       = fn;
+    bar_init(&bp, initial, total);
+    bp.fname    = fname;
 
     get.initial = initial;
-    get.fn      = fn;
+    get.fname   = fname;
 
     curl_easy_setopt(cc.curl, CURLOPT_URL,              xurl);
     curl_easy_setopt(cc.curl, CURLOPT_WRITEFUNCTION,    write_cb);
     curl_easy_setopt(cc.curl, CURLOPT_WRITEDATA,        &get);
     curl_easy_setopt(cc.curl, CURLOPT_NOPROGRESS,       0);
-    curl_easy_setopt(cc.curl, CURLOPT_PROGRESSFUNCTION, &cc_progress_cb);
+    curl_easy_setopt(cc.curl, CURLOPT_PROGRESSFUNCTION, &progress_cb);
     curl_easy_setopt(cc.curl, CURLOPT_PROGRESSDATA,     &bp);
     curl_easy_setopt(cc.curl, CURLOPT_ENCODING,         "identity");
     curl_easy_setopt(cc.curl, CURLOPT_HEADER,           0);
@@ -184,7 +178,7 @@ dl_file (char *xurl, char *fn, double initial, double total) {
     }
 
     if (!ret)
-        cc_bar_finish(&bp);
+        bar_finish(&bp);
 
     curl_easy_setopt(cc.curl, CURLOPT_HEADER,       1);
     curl_easy_setopt(cc.curl, CURLOPT_NOPROGRESS,   1);
@@ -202,19 +196,17 @@ create_fname(
     char *suffix,
     char *host)
 {
-    char *p;
+    char *p=0;
 
     assert(initial  != 0);
     assert(id       != 0);
     assert(suffix   != 0);
     assert(host     != 0);
 
-    p = 0;
-
     if (!cc.gi.output_video_given) {
         const char dflt[] = "%s-(%s).%s";
         char tmp[PATH_MAX];
-        char *n;
+        char *n=0;
         int i;
 
         snprintf(tmp,sizeof(tmp),dflt,host,id,suffix);

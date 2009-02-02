@@ -59,7 +59,7 @@ get_units (double *rate, char **unit) {
 }
 
 void /* init progressbar */
-cc_bar_init (ccprogress_t bp, double initial, double total) {
+bar_init (progressbar_t bp, double initial, double total) {
     assert(bp != 0);
     if (initial > total)
         total = initial;
@@ -72,12 +72,12 @@ cc_bar_init (ccprogress_t bp, double initial, double total) {
 #define BP_DEFAULT_WIDTH    80
 
 void /* update progressbar */
-cc_bar_update (ccprogress_t bp, double total, double now) {
+bar_update (progressbar_t bp, double total, double now) {
     time_t tnow, elapsed;
     double size, rate;
+    char buffer[80];
+    char *p=(char*)&buffer;
     char tmp[30];
-    char b[80];
-    char *p = (char *)&b;
     int i;
 
     assert(bp != 0);
@@ -97,7 +97,7 @@ cc_bar_update (ccprogress_t bp, double total, double now) {
     bp->last_update = elapsed;
     size            = bp->initial + now;
 
-    snprintf(tmp,sizeof(tmp),"%s",bp->fn);
+    snprintf(tmp,sizeof(tmp),"%s",bp->fname);
     p += sprintf(p,tmp); /* max. +30 */
 
     if (bp->total > 0) {
@@ -116,14 +116,12 @@ cc_bar_update (ccprogress_t bp, double total, double now) {
     if (rate > 0) {
         char eta[12];
         char *unit = "";
-
         if (!bp->done) {
             int left = (int)((total-now)/rate);
             time2str(left,eta,sizeof(eta));
         } else {
             time2str(elapsed,eta,sizeof(eta));
         }
-
         get_units(&rate,&unit);
         snprintf(tmp,20,"  %4.2f%s  %6s",rate,unit,eta); /* max. +20 = 76 */
     } else {
@@ -131,16 +129,16 @@ cc_bar_update (ccprogress_t bp, double total, double now) {
     }
 
     /* pad to max. width and append rate+eta */
-    for (i=p-b; i<BP_DEFAULT_WIDTH-strlen(tmp); ++i)
+    for (i=p-buffer; i<BP_DEFAULT_WIDTH-strlen(tmp); ++i)
         *p++ = ' ';
     p += sprintf(p,tmp);
 
     bp->count = now;
-    cc_log("\r%s",b);
+    cc_log("\r%s",buffer);
 }
 
 void /* tidy up after file transfer */
-cc_bar_finish (ccprogress_t bp) {
+bar_finish (progressbar_t bp) {
     assert(bp != 0);
     if (bp->total > 0
         && bp->count + bp->initial > bp->total)
@@ -148,11 +146,11 @@ cc_bar_finish (ccprogress_t bp) {
         bp->total = bp->initial + bp->count;
     }
     bp->done = 1;
-    cc_bar_update(bp,-1,-1);
+    bar_update(bp,-1,-1);
 }
 
 int /* curl progress callback function */
-cc_progress_cb (
+progress_cb (
     void *p,
     double total,
     double now,
@@ -160,6 +158,6 @@ cc_progress_cb (
     double unow)
 {
     assert(p != 0);
-    cc_bar_update(p,total,now);
+    bar_update(p,total,now);
     return(0);
 }

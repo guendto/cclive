@@ -48,7 +48,7 @@ ALL_LDFLAGS = $(LDFLAGS)
 ALL_LDFLAGS += $(CURL_LDFLAGS)
 
 PROG        = cclive
-SRCS        = main.c cmdline.c mem.c log.c opts.c host.c get.c \
+SRCS        = main.c cmdline.c mem.c log.c opts.c host.c dl.c \
                 util.c progress.c login.c
 OBJS        = $(SRCS:%.c=%.o)
 

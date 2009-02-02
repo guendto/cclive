@@ -18,29 +18,28 @@
 #ifndef progress_h
 #define progress_h
 
-struct ccprogress_s {
+struct progressbar_s {
     time_t last_update;
     time_t started;
     double initial;
     double total;
     double count;
-    char *fn;
+    char *fname;
     int done;
 };
 
-typedef struct ccprogress_s * ccprogress_t;
+typedef struct progressbar_s * progressbar_t;
 
 void
-cc_bar_init(ccprogress_t bp, double initial, double total);
+bar_init(progressbar_t bp, double initial, double total);
 
 void
-cc_bar_update(ccprogress_t bp, double total, double now);
+bar_update(progressbar_t bp, double total, double now);
 
 void
-cc_bar_finish(ccprogress_t bp);
+bar_finish(progressbar_t bp);
 
 int
-cc_progress_cb(void *p, double total, double now,
-    double utotal, double unow);
+progress_cb(void *p, double total, double now, double utotal, double unow);
 
 #endif
