@@ -25,8 +25,8 @@
 
 static int /* page handler for youtube */
 handle_youtube (struct cc_mem_s *page) {
-    char *id,*t;
-    int rc;
+    char *id=0,*t=0;
+    int rc=1;
 
     const char id_begin[] = "\"video_id\": \"";
     const char id_end[]   = "\"";
@@ -37,9 +37,6 @@ handle_youtube (struct cc_mem_s *page) {
     assert(page         != 0);
     assert(page->p      != 0);
     assert(page->size   > 0);
-
-    id = t = 0;
-    rc = 1;
 
     id = strsub(page->p, id_begin, id_end);
     if (id)
@@ -70,8 +67,8 @@ handle_youtube (struct cc_mem_s *page) {
 
 static int /* page handler for break.com */
 handle_break (struct cc_mem_s *page) {
-    char *id,*fpath,*fname,*xurl;
-    int rc;
+    char *id=0,*fpath=0,*fname=0,*xurl=0;
+    int rc=1;
 
     const char id_begin[]   = "ContentID='";
     const char id_end[]     = "'";
@@ -85,9 +82,6 @@ handle_break (struct cc_mem_s *page) {
     assert(page         != 0);
     assert(page->p      != 0);
     assert(page->size   > 0);
-
-    id = fpath = fname = xurl = 0;
-    rc = 1;
 
     id = strsub(page->p, id_begin, id_end);
     if (id) {
@@ -114,8 +108,8 @@ handle_break (struct cc_mem_s *page) {
 
 static int /* page handler for google video */
 handle_gvideo (struct cc_mem_s *page) {
-    char *id,*xurl;
-    int rc;
+    char *id=0,*xurl=0;
+    int rc=1;
 
     const char id_begin[]   = "docid: '";
     const char id_end[]     = "'";
@@ -129,9 +123,6 @@ handle_gvideo (struct cc_mem_s *page) {
     assert(page         != 0);
     assert(page->p      != 0);
     assert(page->size   > 0);
-
-    id = xurl = 0;
-    rc = 1;
 
     id = strsub(page->p, id_begin, id_end);
     if (id) {
@@ -166,8 +157,8 @@ handle_gvideo (struct cc_mem_s *page) {
 
 static int /* page handler for evisor.tv */
 handle_evisor (struct cc_mem_s *page) {
-    char *id,*xurl;
-    int rc;
+    char *id=0,*xurl=0;
+    int rc=1;
 
     const char id_begin[]   = "unit_long";
     const char id_end[]     = "\"";
@@ -178,9 +169,6 @@ handle_evisor (struct cc_mem_s *page) {
     assert(page         != 0);
     assert(page->p      != 0);
     assert(page->size   > 0);
-
-    id = xurl = 0;
-    rc = 1;
 
     id = strsub(page->p, id_begin, id_end);
     if (id) {
@@ -201,8 +189,8 @@ handle_7load (struct cc_mem_s *page) {
  * 1) parse page html for config url
  * 2) parse config for video link
  */
-    char *id,*config,*xurl,*p;
-    int rc;
+    char *id=0,*config=0,*xurl=0,*p=0;
+    int rc=1;
 
     const char config_begin[]   = "configPath=";
     const char config_end[]     = "\"";
@@ -216,9 +204,6 @@ handle_7load (struct cc_mem_s *page) {
     assert(page         != 0);
     assert(page->p      != 0);
     assert(page->size   > 0);
-
-    id = config = xurl = p = 0;
-    rc = 1;
 
     config = strsub(page->p, config_begin, config_end);
     free(page->p);
@@ -257,8 +242,8 @@ handle_lleak (struct cc_mem_s *page) {
  * 2) fetch config and parse it for playlist url
  * 3) parse playlist for video link
  */
-    char *id,*config,*pl,*xurl,*p;
-    int rc;
+    char *id=0,*config=0,*pl=0,*xurl=0,*p=0;
+    int rc=1;
 
     const char id_begin[]       = "token=";
     const char id_end[]         = "&";
@@ -275,9 +260,6 @@ handle_lleak (struct cc_mem_s *page) {
     assert(page         != 0);
     assert(page->p      != 0);
     assert(page->size   > 0);
-
-    id = config = pl = xurl = p = 0;
-    rc = 1;
 
     id = strsub(page->p, id_begin, id_end);
     if (id)
@@ -328,11 +310,35 @@ handle_lleak (struct cc_mem_s *page) {
     return(rc);
 }
 
+static char * /* convert embed link to video page link */
+embed2video(char *url) {
+    struct lookup_s {
+        char *what;
+        char *with;
+    };
+    const struct lookup_s lookup[] = {
+        {"/v/",             "/watch?v="}, /* youtube */
+        {"googleplayer.swf","videoplay"}, /* gvideo */
+        {"/pl/",            "/videos/"},  /* 7load */
+        {"/e/",             "/view?i="},  /* lleak */
+    };
+    char *p=0;
+    int i,c=sizeof(lookup)/sizeof(lookup[0]);
+
+    for (i=0; i<c; ++i) {
+        if (strstr(url,lookup[i].what)) {
+            p = strrepl(url, lookup[i].what, lookup[i].with);
+            break;
+        }
+    }
+    return(p);
+}
+
 typedef int (*handlerfunc)(struct cc_mem_s *);
 
 struct host_s {
     char *lookup;
-    handlerfunc hf;
+    handlerfunc fp;
 };
 
 static const struct host_s hosts[] = {
@@ -346,53 +352,22 @@ static const struct host_s hosts[] = {
 
 void /* --supported-hosts */
 list_hosts (void) {
-    int i;
     const int c = sizeof(hosts)/sizeof(hosts[0]);
+    int i;
     for (i=0; i<c; ++i)
         cc_log("%s\n",hosts[i].lookup);
 }
 
-static char * /* convert embed link to video page link */
-embed2video(char *url) {
-    char *p;
-    int i,c;
-
-    struct lookup_s {
-        char *what;
-        char *with;
-    };
-
-    const struct lookup_s lookup[] = {
-        {"/v/",             "/watch?v="}, /* youtube */
-        {"googleplayer.swf","videoplay"}, /* gvideo */
-        {"/pl/",            "/videos/"},  /* 7load */
-        {"/e/",             "/view?i="},  /* lleak */
-    };
-
-    p = 0;
-    c = sizeof(lookup)/sizeof(lookup[0]);
-
-    for (i=0; i<c; ++i) {
-        if (strstr(url,lookup[i].what)) {
-            p = strrepl(url, lookup[i].what, lookup[i].with);
-            break;
-        }
-    }
-    return(p);
-}
-
-int /* continue to extract if domain is supported */
+int /* handle host */
 handle_host (char *url) {
     struct cc_mem_s page;
-    int i,c;
-    char *_url;
+    char *_url=0;
+    int i,c=sizeof(hosts)/sizeof(hosts[0]);
 
     assert(url != 0);
 
     if ((_url=embed2video(url)) != 0)
         url = _url;
-
-    c = sizeof(hosts)/sizeof(hosts[0]);
 
     for (i=0; i<c; ++i) {
         memset(&page,0,sizeof(page));
@@ -400,7 +375,7 @@ handle_host (char *url) {
             if (_url)
                 free(_url);
             if (!fetch_link(url,&page,1))
-                return((hosts[i].hf)(&page));
+                return((hosts[i].fp)(&page));
             else
                 return(1);
         }
