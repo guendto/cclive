@@ -16,21 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <stdlib.h>
-#include <assert.h>
 
 #include "cclive.h"
 
 void /* parse cmdline opts and config (if exists) */
 parse_opts (int argc, char **argv) {
-    int noconf;
-    char *env;
-
-    assert(argv != 0);
-
-    noconf = 1;
+    int noconf=1;
+    char *env=0;
 
     if ((env = getenv("HOME")) != 0) {
-        char *c;
+        char *c=0;
         asprintf(&c,"%s/.ccliverc",env);
 
         if (file_exists(c) != 0) {
