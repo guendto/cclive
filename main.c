@@ -63,7 +63,7 @@ run_subseq_all (void) {
     char *cmd=0;
 
     while (curr != 0) { /* calc. req. space */
-        rsize += strlen(curr->str)+1;
+        rsize += strlen(curr->str);
         curr = curr->next;
     }
 
