@@ -17,6 +17,7 @@
  */
 #include <stdlib.h>
 #include <memory.h>
+#include <limits.h>
 #include <curl/curl.h>
 
 #include "cclive.h"
@@ -44,65 +45,66 @@ init_curl (void) {
 }
 
 static void
-run_subseq_sep (void) {
-    llst_node_t curr = cc.subseq;
+exec_semi (void) {
+    llst_node_t curr = cc.fnames;
     char *cmd=0;
     while (curr != 0) {
-        cmd = strrepl(cc.gi.subsequent_arg,"%i",curr->str);
-        if (cmd)
+        cmd = strrepl(cc.gi.exec_arg,"%i",curr->str);
+        if (cmd) {
+            strrmch(cmd,';');
             system(cmd);
+        }
         free(cmd);
         curr = curr->next;
     }
 }
 
 static void
-run_subseq_all (void) {
-    size_t rsize = strlen(cc.gi.subsequent_arg);
-    llst_node_t curr = cc.subseq;
-    char *cmd=0;
-
-    while (curr != 0) { /* calc. req. space */
-        rsize += strlen(curr->str);
-        curr = curr->next;
-    }
-
-    cmd = malloc(rsize+2); /* +1 whitespace for trailing cmd, +1 for '\0' */
+exec_plus (void) {
+    char *cmd = malloc(_POSIX_ARG_MAX);
     if (cmd) {
-        char *arg = strrepl(cc.gi.subsequent_arg,"%i"," ");
-        if (arg) {
-            cmd[0] = '\0';
-            strcat(cmd,arg);
-            free(arg);
-            strcat(cmd," ");
+        char *arg=strrepl(cc.gi.exec_arg,"%i"," "); /* strip any %i */
+        llst_node_t curr=cc.fnames;
+        int exceeds=0;
 
-            curr = cc.subseq;
-            while (curr != 0) {
-                strcat(cmd,curr->str);
-                strcat(cmd," ");
-                curr = curr->next;
+        cmd[0] = '\0';
+        strlcat(cmd, arg, _POSIX_ARG_MAX);
+        strrmch(cmd,'+');
+        strlcat(cmd, " ", _POSIX_ARG_MAX);
+        free(arg);
+
+        while (curr != 0) {
+            if (strlcat(cmd, curr->str, _POSIX_ARG_MAX) >= _POSIX_ARG_MAX)
+                exceeds=1;
+            if (strlcat(cmd, " ", _POSIX_ARG_MAX) >= _POSIX_ARG_MAX)
+                exceeds=1;
+            if (exceeds) {
+                cc_log("warning: exceeded _POSIX_ARG_MAX (%d)\n",
+                    _POSIX_ARG_MAX);
+                break;
             }
-            system(cmd);
+            curr = curr->next;
         }
-        free(cmd);
+        system(cmd);
     }
     else
         perror("malloc");
+    free(cmd);
 }
 
-static void /* run subsequent command */
-run_subseq (void) {
-    if (!strcmp(cc.gi.subsequent_mode_arg,"sep"))
-        run_subseq_sep();
+static void /* execute subsequent command */
+exec_subseq (void) {
+    if (cc.exec_mode == ';')
+        exec_semi();
     else
-        run_subseq_all();
+        exec_plus();
 }
 
 static void /* function to be called at exit */
 handle_exit (void) {
     cmdline_parser_free(&cc.gi);
     curl_easy_cleanup(cc.curl);
-    llst_free(&cc.subseq);
+    llst_free(&cc.fnames);
     free(cc.curl_errmsg);
     free(cc.pp);
 }
@@ -148,6 +150,17 @@ main (int argc, char *argv[]) {
         exit(EXIT_SUCCESS);
     }
 
+    if (cc.gi.exec_given) {
+        int  l = strlen(cc.gi.exec_arg);
+        char c = cc.gi.exec_arg[l-1];
+        if (c != ';' && c != '+') {
+            cc_log("error: --exec expression must be terminated "
+                "by either ';' or '+'\n");
+            exit(EXIT_FAILURE);
+        }
+        cc.exec_mode = c;
+    }
+
     if (cc.gi.youtube_user_given) {
         if (login_youtube() != 0)
             exit(EXIT_FAILURE);
@@ -180,8 +193,8 @@ main (int argc, char *argv[]) {
         }
     }
 
-    if (cc.gi.subsequent_given)
-        run_subseq();
+    if (cc.gi.exec_given)
+        exec_subseq();
 
     exit(EXIT_SUCCESS);
 }

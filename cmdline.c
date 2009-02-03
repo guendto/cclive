@@ -44,8 +44,7 @@ const char *gengetopt_args_info_help[] = {
   "      --no-proxy               do not use proxy, even if http_proxy environment \n                                    variable is defined",
   "  -u, --youtube-user=USERNAME  login username for youtube",
   "  -p, --youtube-pass=PASSWORD  login password for youtube, prompt if undefined",
-  "  -r, --subsequent=COMMAND     run subsequent command with extracted video",
-  "  -m, --subsequent-mode=MODE   mode for running subsequent command  (possible \n                                 values=\"sep\", \"all\" default=`sep')",
+  "  -e, --exec=COMMAND           execute subsequent command with extracted video",
     0
 };
 
@@ -91,7 +90,6 @@ free_cmd_list(void)
 
 
 char *cmdline_parser_download_values[] = {"flv", "mp4", "wmv", "3gpp", "xflv", 0} ;	/* Possible values for download.  */
-char *cmdline_parser_subsequent_mode_values[] = {"sep", "all", 0} ;	/* Possible values for subsequent-mode.  */
 
 static char *
 gengetopt_strdup (const char *s);
@@ -115,8 +113,7 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->no_proxy_given = 0 ;
   args_info->youtube_user_given = 0 ;
   args_info->youtube_pass_given = 0 ;
-  args_info->subsequent_given = 0 ;
-  args_info->subsequent_mode_given = 0 ;
+  args_info->exec_given = 0 ;
 }
 
 static
@@ -135,10 +132,8 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->youtube_user_orig = NULL;
   args_info->youtube_pass_arg = NULL;
   args_info->youtube_pass_orig = NULL;
-  args_info->subsequent_arg = NULL;
-  args_info->subsequent_orig = NULL;
-  args_info->subsequent_mode_arg = gengetopt_strdup ("sep");
-  args_info->subsequent_mode_orig = NULL;
+  args_info->exec_arg = NULL;
+  args_info->exec_orig = NULL;
   
 }
 
@@ -163,8 +158,7 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->no_proxy_help = gengetopt_args_info_help[13] ;
   args_info->youtube_user_help = gengetopt_args_info_help[14] ;
   args_info->youtube_pass_help = gengetopt_args_info_help[15] ;
-  args_info->subsequent_help = gengetopt_args_info_help[16] ;
-  args_info->subsequent_mode_help = gengetopt_args_info_help[17] ;
+  args_info->exec_help = gengetopt_args_info_help[16] ;
   
 }
 
@@ -259,10 +253,8 @@ cmdline_parser_release (struct gengetopt_args_info *args_info)
   free_string_field (&(args_info->youtube_user_orig));
   free_string_field (&(args_info->youtube_pass_arg));
   free_string_field (&(args_info->youtube_pass_orig));
-  free_string_field (&(args_info->subsequent_arg));
-  free_string_field (&(args_info->subsequent_orig));
-  free_string_field (&(args_info->subsequent_mode_arg));
-  free_string_field (&(args_info->subsequent_mode_orig));
+  free_string_field (&(args_info->exec_arg));
+  free_string_field (&(args_info->exec_orig));
   
   
   for (i = 0; i < args_info->inputs_num; ++i)
@@ -371,10 +363,8 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "youtube-user", args_info->youtube_user_orig, 0);
   if (args_info->youtube_pass_given)
     write_into_file(outfile, "youtube-pass", args_info->youtube_pass_orig, 0);
-  if (args_info->subsequent_given)
-    write_into_file(outfile, "subsequent", args_info->subsequent_orig, 0);
-  if (args_info->subsequent_mode_given)
-    write_into_file(outfile, "subsequent-mode", args_info->subsequent_mode_orig, cmdline_parser_subsequent_mode_values);
+  if (args_info->exec_given)
+    write_into_file(outfile, "exec", args_info->exec_orig, 0);
   
 
   i = EXIT_SUCCESS;
@@ -495,11 +485,6 @@ cmdline_parser_required2 (struct gengetopt_args_info *args_info, const char *pro
   if (args_info->youtube_pass_given && ! args_info->youtube_user_given)
     {
       fprintf (stderr, "%s: '--youtube-pass' ('-p') option depends on option 'youtube-user'%s\n", prog_name, (additional_error ? additional_error : ""));
-      error = 1;
-    }
-  if (args_info->subsequent_mode_given && ! args_info->subsequent_given)
-    {
-      fprintf (stderr, "%s: '--subsequent-mode' ('-m') option depends on option 'subsequent'%s\n", prog_name, (additional_error ? additional_error : ""));
       error = 1;
     }
 
@@ -680,12 +665,11 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
         { "no-proxy",	0, NULL, 0 },
         { "youtube-user",	1, NULL, 'u' },
         { "youtube-pass",	1, NULL, 'p' },
-        { "subsequent",	1, NULL, 'r' },
-        { "subsequent-mode",	1, NULL, 'm' },
+        { "exec",	1, NULL, 'e' },
         { NULL,	0, NULL, 0 }
       };
 
-      c = getopt_long (argc, argv, "hvqncf:O:u:p:r:m:", long_options, &option_index);
+      c = getopt_long (argc, argv, "hvqncf:O:u:p:e:", long_options, &option_index);
 
       if (c == -1) break;	/* Exit from `while (1)' loop.  */
 
@@ -792,26 +776,14 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             goto failure;
         
           break;
-        case 'r':	/* run subsequent command with extracted video.  */
+        case 'e':	/* execute subsequent command with extracted video.  */
         
         
-          if (update_arg( (void *)&(args_info->subsequent_arg), 
-               &(args_info->subsequent_orig), &(args_info->subsequent_given),
-              &(local_args_info.subsequent_given), optarg, 0, 0, ARG_STRING,
+          if (update_arg( (void *)&(args_info->exec_arg), 
+               &(args_info->exec_orig), &(args_info->exec_given),
+              &(local_args_info.exec_given), optarg, 0, 0, ARG_STRING,
               check_ambiguity, override, 0, 0,
-              "subsequent", 'r',
-              additional_error))
-            goto failure;
-        
-          break;
-        case 'm':	/* mode for running subsequent command.  */
-        
-        
-          if (update_arg( (void *)&(args_info->subsequent_mode_arg), 
-               &(args_info->subsequent_mode_orig), &(args_info->subsequent_mode_given),
-              &(local_args_info.subsequent_mode_given), optarg, cmdline_parser_subsequent_mode_values, "sep", ARG_STRING,
-              check_ambiguity, override, 0, 0,
-              "subsequent-mode", 'm',
+              "exec", 'e',
               additional_error))
             goto failure;
         

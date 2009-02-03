@@ -196,26 +196,19 @@ extraction, even if the batch does not contain any Youtube hosted links.
 .IP "\fB\-p, \-\-youtube\-pass=\fR\fI\s-1PASSWORD\s0\fR" 4
 .IX Item "-p, --youtube-pass=PASSWORD"
 Use \fIpassword\fR for Youtube login.  If undefined, \fBcclive\fR prompts for it.
-.IP "\fB\-r, \-\-subsequent=\fR\fI\s-1COMMAND\s0\fR" 4
-.IX Item "-r, --subsequent=COMMAND"
-Run a \fIcommand\fR subsequently after extracting video. Any \*(L"%i\*(R" specifiers
-in the \fIcommand\fR are replaced with the extracted video file name.
-.IP "\fB\-m, \-\-subsequent\-mode=\fR\fI\s-1MODE\s0\fR" 4
-.IX Item "-m, --subsequent-mode=MODE"
-\&\fIMode\fR for running the subsequent \fIcommand\fR. Possible values are: \*(L"sep\*(R"
-(default) and \*(L"all\*(R". The \fImode\fR defines how \fBcclive\fR passes the extracted
-video file names to the \fIcommand\fR. For example:
+.IP "\fB\-e, \-\-exec=\fR\fI\s-1COMMAND\s0\fR\fB;\fR" 4
+.IX Item "-e, --exec=COMMAND;"
+Execute \fIcommand\fR. Optional arguments may be passed to the command.
+The expression must be terminated by a semicolon (\*(L";\*(R"). If the specifier
+\&\*(L"%i\*(R" appears anywhere in \fIcommand\fR name or the arguments it is replaced
+by the pathname of the extracted video file.
 .Sp
-.Vb 3
-\&  % cclive -r "mplayer %i" -m sep URL URL2
-\&  => mplayer VIDEO1
-\&  => mplayer VIDEO2
-.Ve
-.Sp
-.Vb 2
-\&  % cclive -r "mplayer" -m all URL URL2
-\&  => mplayer VIDEO1 VIDEO2
-.Ve
+Example:
+  % cclive \-e \*(L"mplayer \f(CW%i\fR;\*(R" \s-1URL\s0
+.IP "\fB\-e, \-\-exec=\fR\fI\s-1COMMAND\s0\fR\fB+\fR" 4
+.IX Item "-e, --exec=COMMAND+"
+Same as \fB\-\-exec\fR, except that \*(L"%i\*(R" is replaced with as many pathnames
+as possible for the invocation of \fIcommand\fR.
 .SH "EXAMPLES"
 .IX Header "EXAMPLES"
 .Vb 7

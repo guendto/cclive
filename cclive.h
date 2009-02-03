@@ -12,9 +12,10 @@ struct cclive_s {
     struct cmdline_parser_params *pp;
     struct gengetopt_args_info gi;
     char *http_proxy_env;
+    llst_node_t fnames;
     struct CURL *curl;
     char *curl_errmsg;
-    llst_node_t subseq;
+    char exec_mode;
 };
 extern struct cclive_s cc;
 
@@ -33,6 +34,9 @@ strsub(const char *s, const char *from, const char *to);
 
 char *
 strrepl(const char *s, const char *what, const char *with);
+
+void
+strrmch(char *s, const char c);
 
 int
 handle_host(char *url);

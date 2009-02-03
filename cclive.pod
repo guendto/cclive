@@ -88,23 +88,20 @@ extraction, even if the batch does not contain any Youtube hosted links.
 
 Use I<password> for Youtube login.  If undefined, B<cclive> prompts for it.
 
-=item B<-r, --subsequent=>I<COMMAND>
+=item B<-e, --exec=>I<COMMAND>B<;>
 
-Run a I<command> subsequently after extracting video. Any "%i" specifiers
-in the I<command> are replaced with the extracted video file name.
+Execute I<command>. Optional arguments may be passed to the command.
+The expression must be terminated by a semicolon (";"). If the specifier
+"%i" appears anywhere in I<command> name or the arguments it is replaced
+by the pathname of the extracted video file.
 
-=item B<-m, --subsequent-mode=>I<MODE>
+Example:
+  % cclive -e "mplayer %i;" URL
 
-I<Mode> for running the subsequent I<command>. Possible values are: "sep"
-(default) and "all". The I<mode> defines how B<cclive> passes the extracted
-video file names to the I<command>. For example:
+=item B<-e, --exec=>I<COMMAND>B<+>
 
-  % cclive -r "mplayer %i" -m sep URL URL2
-  => mplayer VIDEO1
-  => mplayer VIDEO2
-
-  % cclive -r "mplayer" -m all URL URL2
-  => mplayer VIDEO1 VIDEO2
+Same as B<--exec>, except that "%i" is replaced with as many pathnames
+as possible for the invocation of I<command>.
 
 =back
 

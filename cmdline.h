@@ -62,12 +62,9 @@ struct gengetopt_args_info
   char * youtube_pass_arg;	/**< @brief login password for youtube, prompt if undefined.  */
   char * youtube_pass_orig;	/**< @brief login password for youtube, prompt if undefined original value given at command line.  */
   const char *youtube_pass_help; /**< @brief login password for youtube, prompt if undefined help description.  */
-  char * subsequent_arg;	/**< @brief run subsequent command with extracted video.  */
-  char * subsequent_orig;	/**< @brief run subsequent command with extracted video original value given at command line.  */
-  const char *subsequent_help; /**< @brief run subsequent command with extracted video help description.  */
-  char * subsequent_mode_arg;	/**< @brief mode for running subsequent command (default='sep').  */
-  char * subsequent_mode_orig;	/**< @brief mode for running subsequent command original value given at command line.  */
-  const char *subsequent_mode_help; /**< @brief mode for running subsequent command help description.  */
+  char * exec_arg;	/**< @brief execute subsequent command with extracted video.  */
+  char * exec_orig;	/**< @brief execute subsequent command with extracted video original value given at command line.  */
+  const char *exec_help; /**< @brief execute subsequent command with extracted video help description.  */
   
   unsigned int help_given ;	/**< @brief Whether help was given.  */
   unsigned int version_given ;	/**< @brief Whether version was given.  */
@@ -85,8 +82,7 @@ struct gengetopt_args_info
   unsigned int no_proxy_given ;	/**< @brief Whether no-proxy was given.  */
   unsigned int youtube_user_given ;	/**< @brief Whether youtube-user was given.  */
   unsigned int youtube_pass_given ;	/**< @brief Whether youtube-pass was given.  */
-  unsigned int subsequent_given ;	/**< @brief Whether subsequent was given.  */
-  unsigned int subsequent_mode_given ;	/**< @brief Whether subsequent-mode was given.  */
+  unsigned int exec_given ;	/**< @brief Whether exec was given.  */
 
   char **inputs ; /**< @brief unamed options (options without names) */
   unsigned inputs_num ; /**< @brief unamed options number */
@@ -237,7 +233,6 @@ int cmdline_parser_required (struct gengetopt_args_info *args_info,
   const char *prog_name);
 
 extern char *cmdline_parser_download_values[] ;	/**< @brief Possible values for download.  */
-extern char *cmdline_parser_subsequent_mode_values[] ;	/**< @brief Possible values for subsequent-mode.  */
 
 
 #ifdef __cplusplus

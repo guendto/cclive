@@ -95,6 +95,19 @@ strrepl (const char *s, const char *what, const char *with) {
     return(ret);
 }
 
+void /* remove all occurences of c in a string */
+strrmch (char *s, const char c) {
+    char *s1=s,*s2=s;
+
+    while (*s1 != '\0') {
+        if (*s1 == c)
+            ++s1;
+        else
+            *s2++ = *s1++;
+    }
+    *s2 = '\0';
+}
+
 double /* check if file exists; zero or file length */
 file_exists (char *path) {
     double len=0;

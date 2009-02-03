@@ -24,12 +24,12 @@
 #include "progress.h"
 
 static void
-add_subseq (char *fname) {
+store_fname (char *fname) {
     assert(fname != 0);
-    if (cc.gi.subsequent_given) {
+    if (cc.gi.exec_given) {
         char *tmp;
         asprintf(&tmp,"\"%s\"",fname);
-        llst_append(&cc.subseq,tmp);
+        llst_append(&cc.fnames,tmp);
         free(tmp);
     }
 }
@@ -107,7 +107,7 @@ prep_video (char *xurl, char *id, char *host) {
             else {
                 rc = dl_file(xurl, fname, initial, len);
                 if (!rc)
-                    add_subseq(fname);
+                    store_fname(fname);
             }
             free(fname);
         }
@@ -231,7 +231,7 @@ create_fname(
             if (*initial == 0) {
                 break;
             } else if (*initial == total) {
-                add_subseq(tmp);
+                store_fname(tmp);
                 cc_log("error: file is already fully retrieved; "
                         "nothing to do\n");
                 return(0);
@@ -249,7 +249,7 @@ create_fname(
     else {
         *initial = file_exists(cc.gi.output_video_arg);
         if (*initial == total) {
-            add_subseq(cc.gi.output_video_arg);
+            store_fname(cc.gi.output_video_arg);
             cc_log("error: file is already fully retrieved; nothing to do\n");
             return(0);
         }
