@@ -74,6 +74,7 @@ llst_append (llst_node_t *head, const char *fmt, ...) {
             curr = curr->next;
         rc = llst_push(&(curr->next),str);
     }
+    free(str);
     return(rc);
 }
 
