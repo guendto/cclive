@@ -90,20 +90,20 @@ Use I<password> for Youtube login.  If undefined, B<cclive> prompts for it.
 
 =item B<-r, --subsequent=>I<COMMAND>
 
-Run a I<command> subsequently after extracting video. If "%i" specifier is
-found, B<cclive> replaces it with the name of the extracted video file.
+Run a I<command> subsequently after extracting video. Any "%i" specifiers
+in the I<command> are replaced with the extracted video file name.
 
 =item B<-m, --subsequent-mode=>I<MODE>
 
-I<Mode> for running the subsequent command. Possible values are: "linear"
-(default) and "batch". The only difference is how B<cclive> passes the
-names of the extracted video files to the command, e.g.:
+I<Mode> for running the subsequent I<command>. Possible values are: "sep"
+(default) and "all". The I<mode> defines how B<cclive> passes the extracted
+video file names to the I<command>. For example:
 
-  % cclive -r "mplayer %i" -m linear URL URL2
+  % cclive -r "mplayer %i" -m sep URL URL2
   => mplayer VIDEO1
   => mplayer VIDEO2
 
-  % cclive -r "mplayer" -m batch URL URL2
+  % cclive -r "mplayer" -m all URL URL2
   => mplayer VIDEO1 VIDEO2
 
 =back
@@ -116,6 +116,7 @@ names of the extracted video files to the command, e.g.:
   % cclive "http://youtube.com/watch?v=3HD220e0bx4" -cf mp4
   % cclive -u username "http://youtube.com/watch?v=3HD220e0bx4" -f mp4
   % cclive "http://youtube.com/watch?v=3HD220e0bx4" -r "mplayer %i"
+  % cclive "http://youtube.com/watch?v=..." -r "ffmpeg -i %i %i.mp3"
 
 =head1 FORMATS
 

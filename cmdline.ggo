@@ -65,8 +65,8 @@ option "subsequent"
     optional
 option "subsequent-mode"
     m "mode for running subsequent command"
-    values="linear","batch"
-    default="linear"
+    values="sep","all"
+    default="sep"
     typestr="MODE"
     optional
     dependon="subsequent"

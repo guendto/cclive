@@ -129,7 +129,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2009-02-02" "0.2.0" "cclive manual"
+.TH cclive 1 "2009-02-03" "0.2.0" "cclive manual"
 .SH "NAME"
 cclive \- video extraction utility
 .SH "SYNOPSIS"
@@ -198,33 +198,34 @@ extraction, even if the batch does not contain any Youtube hosted links.
 Use \fIpassword\fR for Youtube login.  If undefined, \fBcclive\fR prompts for it.
 .IP "\fB\-r, \-\-subsequent=\fR\fI\s-1COMMAND\s0\fR" 4
 .IX Item "-r, --subsequent=COMMAND"
-Run a \fIcommand\fR subsequently after extracting video. If \*(L"%i\*(R" specifier is
-found, \fBcclive\fR replaces it with the name of the extracted video file.
+Run a \fIcommand\fR subsequently after extracting video. Any \*(L"%i\*(R" specifiers
+in the \fIcommand\fR are replaced with the extracted video file name.
 .IP "\fB\-m, \-\-subsequent\-mode=\fR\fI\s-1MODE\s0\fR" 4
 .IX Item "-m, --subsequent-mode=MODE"
-\&\fIMode\fR for running the subsequent command. Possible values are: \*(L"linear\*(R"
-(default) and \*(L"batch\*(R". The only difference is how \fBcclive\fR passes the
-names of the extracted video files to the command, e.g.:
+\&\fIMode\fR for running the subsequent \fIcommand\fR. Possible values are: \*(L"sep\*(R"
+(default) and \*(L"all\*(R". The \fImode\fR defines how \fBcclive\fR passes the extracted
+video file names to the \fIcommand\fR. For example:
 .Sp
 .Vb 3
-\&  % cclive -r "mplayer %i" -m linear URL URL2
+\&  % cclive -r "mplayer %i" -m sep URL URL2
 \&  => mplayer VIDEO1
 \&  => mplayer VIDEO2
 .Ve
 .Sp
 .Vb 2
-\&  % cclive -r "mplayer" -m batch URL URL2
+\&  % cclive -r "mplayer" -m all URL URL2
 \&  => mplayer VIDEO1 VIDEO2
 .Ve
 .SH "EXAMPLES"
 .IX Header "EXAMPLES"
-.Vb 6
+.Vb 7
 \&  % cclive "http://youtube.com/watch?v=3HD220e0bx4"
 \&  % cclive -n "http://youtube.com/watch?v=3HD220e0bx4"
 \&  % cclive -f mp4 "http://youtube.com/watch?v=3HD220e0bx4"
 \&  % cclive "http://youtube.com/watch?v=3HD220e0bx4" -cf mp4
 \&  % cclive -u username "http://youtube.com/watch?v=3HD220e0bx4" -f mp4
 \&  % cclive "http://youtube.com/watch?v=3HD220e0bx4" -r "mplayer %i"
+\&  % cclive "http://youtube.com/watch?v=..." -r "ffmpeg -i %i %i.mp3"
 .Ve
 .SH "FORMATS"
 .IX Header "FORMATS"

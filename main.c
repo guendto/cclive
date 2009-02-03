@@ -44,7 +44,7 @@ init_curl (void) {
 }
 
 static void
-run_subseq_linear (void) {
+run_subseq_sep (void) {
     llst_node_t curr = cc.subseq;
     char *cmd=0;
     while (curr != 0) {
@@ -57,7 +57,7 @@ run_subseq_linear (void) {
 }
 
 static void
-run_subseq_batch (void) {
+run_subseq_all (void) {
     size_t rsize = strlen(cc.gi.subsequent_arg);
     llst_node_t curr = cc.subseq;
     char *cmd=0;
@@ -92,10 +92,10 @@ run_subseq_batch (void) {
 
 static void /* run subsequent command */
 run_subseq (void) {
-    if (!strcmp(cc.gi.subsequent_mode_arg,"linear"))
-        run_subseq_linear();
+    if (!strcmp(cc.gi.subsequent_mode_arg,"sep"))
+        run_subseq_sep();
     else
-        run_subseq_batch();
+        run_subseq_all();
 }
 
 static void /* function to be called at exit */

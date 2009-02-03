@@ -45,7 +45,7 @@ const char *gengetopt_args_info_help[] = {
   "  -u, --youtube-user=USERNAME  login username for youtube",
   "  -p, --youtube-pass=PASSWORD  login password for youtube, prompt if undefined",
   "  -r, --subsequent=COMMAND     run subsequent command with extracted video",
-  "  -m, --subsequent-mode=MODE   mode for running subsequent command  (possible \n                                 values=\"linear\", \"batch\" default=`linear')",
+  "  -m, --subsequent-mode=MODE   mode for running subsequent command  (possible \n                                 values=\"sep\", \"all\" default=`sep')",
     0
 };
 
@@ -91,7 +91,7 @@ free_cmd_list(void)
 
 
 char *cmdline_parser_download_values[] = {"flv", "mp4", "wmv", "3gpp", "xflv", 0} ;	/* Possible values for download.  */
-char *cmdline_parser_subsequent_mode_values[] = {"linear", "batch", 0} ;	/* Possible values for subsequent-mode.  */
+char *cmdline_parser_subsequent_mode_values[] = {"sep", "all", 0} ;	/* Possible values for subsequent-mode.  */
 
 static char *
 gengetopt_strdup (const char *s);
@@ -137,7 +137,7 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->youtube_pass_orig = NULL;
   args_info->subsequent_arg = NULL;
   args_info->subsequent_orig = NULL;
-  args_info->subsequent_mode_arg = gengetopt_strdup ("linear");
+  args_info->subsequent_mode_arg = gengetopt_strdup ("sep");
   args_info->subsequent_mode_orig = NULL;
   
 }
@@ -809,7 +809,7 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
         
           if (update_arg( (void *)&(args_info->subsequent_mode_arg), 
                &(args_info->subsequent_mode_orig), &(args_info->subsequent_mode_given),
-              &(local_args_info.subsequent_mode_given), optarg, cmdline_parser_subsequent_mode_values, "linear", ARG_STRING,
+              &(local_args_info.subsequent_mode_given), optarg, cmdline_parser_subsequent_mode_values, "sep", ARG_STRING,
               check_ambiguity, override, 0, 0,
               "subsequent-mode", 'm',
               additional_error))

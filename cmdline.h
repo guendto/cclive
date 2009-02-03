@@ -65,7 +65,7 @@ struct gengetopt_args_info
   char * subsequent_arg;	/**< @brief run subsequent command with extracted video.  */
   char * subsequent_orig;	/**< @brief run subsequent command with extracted video original value given at command line.  */
   const char *subsequent_help; /**< @brief run subsequent command with extracted video help description.  */
-  char * subsequent_mode_arg;	/**< @brief mode for running subsequent command (default='linear').  */
+  char * subsequent_mode_arg;	/**< @brief mode for running subsequent command (default='sep').  */
   char * subsequent_mode_orig;	/**< @brief mode for running subsequent command original value given at command line.  */
   const char *subsequent_mode_help; /**< @brief mode for running subsequent command help description.  */
   
