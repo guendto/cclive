@@ -106,7 +106,7 @@ llst_free (llst_node_t *head) {
     assert(head != 0);
     while (curr != 0) {
         FREE(curr->str);
-        FREE(curr);
+        free(curr);
         curr=curr->next;
     }
     *head=0;
