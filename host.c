@@ -327,7 +327,6 @@ handle_dmotion (mem_t page) {
     id = strsub(page->p, id_begin, id_end);
     if (id) {
         char *tmp=strsub(page->p, paths_begin, paths_end);
-        llst_node_t path_lst=0, curr=0;
         char *paths=0;
 
         if (tmp)
@@ -337,42 +336,33 @@ handle_dmotion (mem_t page) {
             const char sep[]="||";
             char *tok=strtok(paths,sep);
             while (tok) {
-                llst_append(&path_lst,tok);
+                char *type = strstr(tok,"@@");
+                if (type) {
+                    type += 2;
+                    if (!strcmp(type,"spark"))
+                        asprintf(&xurl,"http://dailymotion.com%s",tok);
+                    if (!strcmp(type,cc.gi.download_arg)) {
+                        FREE(xurl);
+                        asprintf(&xurl,"http://dailymotion.com%s",tok);
+                        break;
+                    }
+                }
                 tok = strtok(0,sep);
             }
         }
         curl_free(paths);
         FREE(tmp);
 
-        /* handle paths */
-        curr = path_lst;
-        while (curr) {
-            char *type = strstr(curr->str,"@@");
-            if (!type)
-                continue;
-            type += 2; /* skip "@@" */
-            if (!strcmp(type,cc.gi.download_arg)) {
-                asprintf(&xurl,"http://dailymotion.com%s",curr->str);
-                if (xurl) {
-                    xurl[strstr(xurl,"@@")-xurl] = '\0';
-                    break;
-                }
-            }
-            curr = curr->next;
+        if (xurl) {
+            char *p = strstr(xurl,"@@");
+            if (p)
+                xurl[p-xurl] = '\0';
+            rc = prep_video(xurl,id,"dmotion");
         }
-        if (!xurl) {
-            /* download_arg defaults to 'flv', use spark/flv if user
-             * did not specify dmotion specific format */
-            curr = path_lst;
-            asprintf(&xurl,"http://dailymotion.com%s",curr->str);
-            if (xurl)
-                xurl[strstr(xurl,"@@")-xurl] = '\0';
-        }
-        llst_free(&path_lst);
-        rc = prep_video(xurl,id,"dmotion");
+        FREE(xurl);
     }
     FREE(id);
-    FREE(xurl);
+    FREE(page->p);
 
     return(rc);
 }
