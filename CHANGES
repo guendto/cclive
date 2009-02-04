@@ -1,7 +1,7 @@
 0.2.0
 
  User-visible changes:
- * Added --subsequent and --subsequent-mode options
+ * Added --exec option
  * Fixed file naming ("$id-($host).$suffix.$num" => "$host-($id).$suffix.$num")
 
  Developer-visible changes:
