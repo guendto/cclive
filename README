@@ -18,7 +18,6 @@ left out in order to keep the prerequisites low.
  * No <title> parsing (+htmlparser prereq., +proper utf8 support, overkill)
  * Limited --emit features (CSV only)
  * No fancy filename formatters (std. "$host-($id).$suffix, +--output-video)
- * No subsequent command support (play, re-encode, may be subject to change)
 
 Apart from clivepass, cclive can be used together with the clive utilities
 (clive-utils).
