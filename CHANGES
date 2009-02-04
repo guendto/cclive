@@ -5,6 +5,8 @@
  * Fixed file naming ("$id-($host).$suffix.$num" => "$host-($id).$suffix.$num")
 
  Developer-visible changes:
+ * Fixed incorrect freeing of previously embed => page converted link
+   - Symptoms: % cclive < tests/youtube.url => crash at fetch 2nd link
  * Cleaned up .c and .h files
    - Relocated some of the functions to reduce .h spam
    - Removed obsoleted .c files

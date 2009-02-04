@@ -372,9 +372,9 @@ handle_host (char *url) {
     for (i=0; i<c; ++i) {
         memset(&page,0,sizeof(page));
         if (strstr(url,hosts[i].lookup) != 0) {
-            if (_url)
-                free(_url);
-            if (!fetch_link(url,&page,1))
+            int rc = fetch_link(url,&page,1);
+            free(_url); /* url points to _url if embed => page conv. was made */
+            if (!rc)
                 return((hosts[i].fp)(&page));
             else
                 return(1);
