@@ -99,6 +99,8 @@ void /* remove all occurences of c in a string */
 strrmch (char *s, const char c) {
     char *s1=s,*s2=s;
 
+    assert(s != 0);
+
     while (*s1 != '\0') {
         if (*s1 == c)
             ++s1;
