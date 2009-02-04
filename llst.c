@@ -22,7 +22,7 @@
 #include <memory.h>
 #include <assert.h>
 
-#include "llst.h"
+#include "cclive.h"
 
 int
 llst_push (llst_node_t *head, const char *fmt, ...) {
@@ -44,7 +44,7 @@ llst_push (llst_node_t *head, const char *fmt, ...) {
             *head   = n;
             return(0);
         } else {
-            free(str);
+            FREE(str);
             perror("malloc");
         }
     }
@@ -74,7 +74,7 @@ llst_append (llst_node_t *head, const char *fmt, ...) {
             curr = curr->next;
         rc = llst_push(&(curr->next),str);
     }
-    free(str);
+    FREE(str);
     return(rc);
 }
 
@@ -105,8 +105,8 @@ llst_free (llst_node_t *head) {
     llst_node_t curr = *head;
     assert(head != 0);
     while (curr != 0) {
-        free(curr->str);
-        free(curr);
+        FREE(curr->str);
+        FREE(curr);
         curr=curr->next;
     }
     *head=0;

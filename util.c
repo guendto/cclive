@@ -175,7 +175,7 @@ cc_log (const char *fmt, ...) {
 
     if (p)
         fprintf(stderr,"%s",p);
-    free(p);
+    FREE(p);
 
     return(0);
 }

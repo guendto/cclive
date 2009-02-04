@@ -6,6 +6,9 @@
 
 #define ToMB(b) (b/0x100000)
 
+#define FREE(p) \
+    do { free(p); p=0; } while(0)
+
 typedef struct cc_mem_s * cc_mem_t;
 
 struct cclive_s {

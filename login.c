@@ -38,7 +38,7 @@ login_youtube (void) {
         asprintf(&prompt,"enter login password for %s:",
             cc.gi.youtube_user_arg);
         p = getpass(prompt);
-        free(prompt);
+        FREE(prompt);
         pass = strdup(p);
         bzero(p,strlen(pass));
     }
@@ -48,7 +48,7 @@ login_youtube (void) {
         "&username=%s&password=%s&action_login=log+in&hl=en-GB",
         cc.gi.youtube_user_arg, pass ? pass:cc.gi.youtube_pass_arg);
 
-    free(pass);
+    FREE(pass);
 
     curl_easy_setopt(cc.curl, CURLOPT_URL,              req);
     curl_easy_setopt(cc.curl, CURLOPT_COOKIEFILE,       "");
@@ -60,7 +60,7 @@ login_youtube (void) {
         cc.gi.youtube_user_arg);
 
     rc = curl_easy_perform(cc.curl);
-    free(req);
+    FREE(req);
 
     if (rc == CURLE_OK) {
         CURLcode httpcode;
@@ -82,6 +82,6 @@ login_youtube (void) {
         }
     }
 
-    free(data.p);
+    FREE(data.p);
     return(ret);
 }

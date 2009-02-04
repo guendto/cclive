@@ -30,7 +30,7 @@ store_fname (char *fname) {
         char *tmp;
         asprintf(&tmp,"\"%s\"",fname);
         llst_append(&cc.fnames,tmp);
-        free(tmp);
+        FREE(tmp);
     }
 }
 
@@ -109,7 +109,7 @@ prep_video (char *xurl, char *id, char *host) {
                 if (!rc)
                     store_fname(fname);
             }
-            free(fname);
+            FREE(fname);
         }
     }
     return(rc);
@@ -242,7 +242,7 @@ create_fname(
             snprintf(tmp,sizeof(tmp),dflt,host,id,suffix);
             asprintf(&n,".%d",i);
             strcat(tmp,n);
-            free(n);
+            FREE(n);
         }
         asprintf(&p,tmp);
     }

@@ -35,7 +35,7 @@ parse_opts (int argc, char **argv) {
             cc.pp->check_required = 0;
 
             rc = cmdline_parser_config_file(c,&cc.gi,cc.pp);
-            free(c);
+            FREE(c);
 
             if (rc != 0)
                 exit(EXIT_FAILURE);
@@ -50,7 +50,7 @@ parse_opts (int argc, char **argv) {
             noconf = 0;
         }
         else
-            free(c);
+            FREE(c);
     } else {
         fprintf(stderr,
             "warn: HOME environment variable not defined\n"

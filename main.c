@@ -54,7 +54,7 @@ exec_semi (void) {
             strrmch(cmd,';');
             system(cmd);
         }
-        free(cmd);
+        FREE(cmd);
         curr = curr->next;
     }
 }
@@ -71,7 +71,7 @@ exec_plus (void) {
         strlcat(cmd, arg, _POSIX_ARG_MAX);
         strrmch(cmd,'+');
         strlcat(cmd, " ", _POSIX_ARG_MAX);
-        free(arg);
+        FREE(arg);
 
         while (curr != 0) {
             if (strlcat(cmd, curr->str, _POSIX_ARG_MAX) >= _POSIX_ARG_MAX)
@@ -89,7 +89,7 @@ exec_plus (void) {
     }
     else
         perror("malloc");
-    free(cmd);
+    FREE(cmd);
 }
 
 static void /* execute subsequent command */
@@ -105,8 +105,8 @@ handle_exit (void) {
     cmdline_parser_free(&cc.gi);
     curl_easy_cleanup(cc.curl);
     llst_free(&cc.fnames);
-    free(cc.curl_errmsg);
-    free(cc.pp);
+    FREE(cc.curl_errmsg);
+    FREE(cc.pp);
 }
 
 static const char copyr_notice[] =
@@ -185,7 +185,7 @@ main (int argc, char *argv[]) {
             if (strlen(ln))
                 handle_host(ln);
         }
-        free(ln);
+        FREE(ln);
     } else {
         int i;
         for (i=0; i<cc.gi.inputs_num; ++i) {

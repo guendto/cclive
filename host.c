@@ -58,9 +58,9 @@ handle_youtube (struct cc_mem_s *page) {
         rc = prep_video(xurl,id,"youtube");
     }
 
-    free(id);
-    free(t);
-    free(page->p);
+    FREE(id);
+    FREE(t);
+    FREE(page->p);
 
     return(rc);
 }
@@ -97,11 +97,11 @@ handle_break (struct cc_mem_s *page) {
         rc = prep_video(xurl,id,"break");
     }
 
-    free(id);
-    free(fpath);
-    free(fname);
-    free(xurl);
-    free(page->p);
+    FREE(id);
+    FREE(fpath);
+    FREE(fname);
+    FREE(xurl);
+    FREE(page->p);
 
     return(rc);
 }
@@ -132,16 +132,16 @@ handle_gvideo (struct cc_mem_s *page) {
                 char *p;
                 asprintf(&p,"http://vp.%s",mp4);
                 xurl = curl_easy_unescape(cc.curl,p,0,0);
-                free(p);
+                FREE(p);
             } else {
                 cc_log("error: mp4 format unavailable\n");
             }
-            free(mp4);
+            FREE(mp4);
         } else {
             char *flv = strsub(page->p, flv_begin, flv_end);
             if (flv)
                 xurl = curl_easy_unescape(cc.curl,flv,0,0);
-            free(flv);
+            FREE(flv);
         }
     }
 
@@ -149,8 +149,8 @@ handle_gvideo (struct cc_mem_s *page) {
         rc = prep_video(xurl,id,"gvideo");
 
     curl_free(xurl);
-    free(page->p);
-    free(id);
+    FREE(page->p);
+    FREE(id);
 
     return(rc);
 }
@@ -175,11 +175,11 @@ handle_evisor (struct cc_mem_s *page) {
         xurl = strsub(page->p, xurl_begin, xurl_end);
         if (xurl)
             rc = prep_video(xurl,id,"evisor");
-        free(xurl);
-        free(id);
+        FREE(xurl);
+        FREE(id);
     }
 
-    free(page->p);
+    FREE(page->p);
     return(rc);
 }
 
@@ -206,7 +206,7 @@ handle_7load (struct cc_mem_s *page) {
     assert(page->size   > 0);
 
     config = strsub(page->p, config_begin, config_end);
-    free(page->p);
+    FREE(page->p);
 
     if (!config)
         return(0);
@@ -214,7 +214,7 @@ handle_7load (struct cc_mem_s *page) {
     cc_log("fetch config xml ...");
 
     p  = curl_easy_unescape(cc.curl,config,0,0);
-    free(config);
+    FREE(config);
 
     rc = fetch_link(p,page,0);
     curl_free(p);
@@ -227,11 +227,11 @@ handle_7load (struct cc_mem_s *page) {
         xurl = strsub(page->p, xurl_begin, xurl_end);
         if (xurl)
             rc = prep_video(xurl,id,"7load");
-        free(xurl);
-        free(id);
+        FREE(xurl);
+        FREE(id);
     }
 
-    free(page->p);
+    FREE(page->p);
     return(rc);
 }
 
@@ -264,18 +264,18 @@ handle_lleak (struct cc_mem_s *page) {
     id = strsub(page->p, id_begin, id_end);
     if (id)
         config = strsub(page->p, config_begin, config_end);
-    free(page->p);
+    FREE(page->p);
 
     if (!id || !config) {
-        free(config);
-        free(id);
+        FREE(config);
+        FREE(id);
         return(0);
     }
 
     cc_log("fetch xml config ...");
 
     p  = curl_easy_unescape(cc.curl,config,0,0);
-    free(config);
+    FREE(config);
 
     rc = fetch_link(p,page,0);
     curl_free(p);
@@ -284,7 +284,7 @@ handle_lleak (struct cc_mem_s *page) {
         return(0);
 
     pl = strsub(page->p, pl_begin, pl_end);
-    free(page->p);
+    FREE(page->p);
 
     if (rc)
         return(rc);
@@ -292,7 +292,7 @@ handle_lleak (struct cc_mem_s *page) {
     cc_log("fetch playlist ...");
 
     p  = curl_easy_unescape(cc.curl,pl,0,0);
-    free(pl);
+    FREE(pl);
 
     rc = fetch_link(p,page,0);
     curl_free(p);
@@ -301,11 +301,11 @@ handle_lleak (struct cc_mem_s *page) {
         return(rc);
 
     xurl = strsub(page->p, xurl_begin, xurl_end);
-    free(page->p);
+    FREE(page->p);
 
     rc = prep_video(xurl,id,"lleak");
-    free(xurl);
-    free(id);
+    FREE(xurl);
+    FREE(id);
 
     return(rc);
 }
@@ -373,7 +373,7 @@ handle_host (char *url) {
         memset(&page,0,sizeof(page));
         if (strstr(url,hosts[i].lookup) != 0) {
             int rc = fetch_link(url,&page,1);
-            free(_url); /* url points to _url if embed => page conv. was made */
+            FREE(_url); /* url points to _url if embed => page conv. was made */
             if (!rc)
                 return((hosts[i].fp)(&page));
             else
