@@ -38,6 +38,9 @@ strrepl(const char *s, const char *what, const char *with);
 void
 strrmch(char *s, const char c);
 
+size_t
+strlcat(char *dst, const char *src, size_t size);
+
 int
 handle_host(char *url);
 
