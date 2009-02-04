@@ -22,7 +22,6 @@
 #include <assert.h>
 #include <curl/curl.h>
 
-#include "mem.h"
 #include "cclive.h"
 
 char * /* extract substring */
@@ -111,7 +110,7 @@ strrmch (char *s, const char c) {
 }
 
 double /* check if file exists; zero or file length */
-file_exists (char *path) {
+file_exists (const char *path) {
     double len=0;
     FILE *f=0;
 
@@ -126,7 +125,7 @@ file_exists (char *path) {
 }
 
 int /* fetch data from url */
-fetch_link (char *url, struct cc_mem_s *page, int log) {
+fetch_link (const char *url, mem_t page, const int log) {
     CURLcode rc;
     int ret=1;
 
@@ -141,7 +140,7 @@ fetch_link (char *url, struct cc_mem_s *page, int log) {
 
     curl_easy_setopt(cc.curl, CURLOPT_URL,           url);
     curl_easy_setopt(cc.curl, CURLOPT_ENCODING,      "");
-    curl_easy_setopt(cc.curl, CURLOPT_WRITEFUNCTION, cc_writemem_cb);
+    curl_easy_setopt(cc.curl, CURLOPT_WRITEFUNCTION, writemem_cb);
     curl_easy_setopt(cc.curl, CURLOPT_WRITEDATA,     page);
 
     if ( (rc = curl_easy_perform(cc.curl)) == CURLE_OK) {

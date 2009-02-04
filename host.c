@@ -21,10 +21,9 @@
 #include <curl/curl.h>
 
 #include "cclive.h"
-#include "mem.h"
 
 static int /* page handler for youtube */
-handle_youtube (struct cc_mem_s *page) {
+handle_youtube (mem_t page) {
     char *id=0,*t=0;
     int rc=1;
 
@@ -66,7 +65,7 @@ handle_youtube (struct cc_mem_s *page) {
 }
 
 static int /* page handler for break.com */
-handle_break (struct cc_mem_s *page) {
+handle_break (mem_t page) {
     char *id=0,*fpath=0,*fname=0,*xurl=0;
     int rc=1;
 
@@ -107,7 +106,7 @@ handle_break (struct cc_mem_s *page) {
 }
 
 static int /* page handler for google video */
-handle_gvideo (struct cc_mem_s *page) {
+handle_gvideo (mem_t page) {
     char *id=0,*xurl=0;
     int rc=1;
 
@@ -156,7 +155,7 @@ handle_gvideo (struct cc_mem_s *page) {
 }
 
 static int /* page handler for evisor.tv */
-handle_evisor (struct cc_mem_s *page) {
+handle_evisor (mem_t page) {
     char *id=0,*xurl=0;
     int rc=1;
 
@@ -184,7 +183,7 @@ handle_evisor (struct cc_mem_s *page) {
 }
 
 static int /* page handler for sevenload.com */
-handle_7load (struct cc_mem_s *page) {
+handle_7load (mem_t page) {
 /*
  * 1) parse page html for config url
  * 2) parse config for video link
@@ -236,7 +235,7 @@ handle_7load (struct cc_mem_s *page) {
 }
 
 static int /* page handler for liveleak.com */
-handle_lleak (struct cc_mem_s *page) {
+handle_lleak (mem_t page) {
 /*
  * 1) parse page html for config url
  * 2) fetch config and parse it for playlist url
@@ -311,7 +310,7 @@ handle_lleak (struct cc_mem_s *page) {
 }
 
 static char * /* convert embed link to video page link */
-embed2video(char *url) {
+embed2video(const char *url) {
     struct lookup_s {
         char *what;
         char *with;
@@ -334,11 +333,10 @@ embed2video(char *url) {
     return(p);
 }
 
-typedef int (*handlerfunc)(struct cc_mem_s *);
-
+typedef int (*handlerfp)(mem_t);
 struct host_s {
     char *lookup;
-    handlerfunc fp;
+    handlerfp fp;
 };
 
 static const struct host_s hosts[] = {
@@ -359,8 +357,8 @@ list_hosts (void) {
 }
 
 int /* handle host */
-handle_host (char *url) {
-    struct cc_mem_s page;
+handle_host (const char *url) {
+    struct _mem_s page;
     char *_url=0;
     int i,c=sizeof(hosts)/sizeof(hosts[0]);
 

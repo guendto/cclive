@@ -9,7 +9,11 @@
 #define FREE(p) \
     do { free(p); p=0; } while(0)
 
-typedef struct cc_mem_s * cc_mem_t;
+struct _mem_s {
+    long size;
+    char *p;
+};
+typedef struct _mem_s *mem_t;
 
 struct cclive_s {
     struct cmdline_parser_params *pp;
@@ -22,15 +26,8 @@ struct cclive_s {
 };
 extern struct cclive_s cc;
 
-
 int
-fetch_link(char *url, cc_mem_t page, int enable_log);
-
-int
-dl_file(char *xurl, char *fn, double initial, double total);
-
-char *
-create_fname(double *initial, double total, char *id, char *suffix, char *host);
+fetch_link(const char *url, mem_t page, const int enable_log);
 
 char *
 strsub(const char *s, const char *from, const char *to);
@@ -45,24 +42,27 @@ size_t
 strlcat(char *dst, const char *src, size_t size);
 
 int
-handle_host(char *url);
+handle_host(const char *url);
 
 int
 cc_log(const char *fmt, ...);
 
 void
-parse_opts(int argc, char **argv);
+parse_opts(const int argc, char **argv);
 
 double
-file_exists(char *path);
+file_exists(const char *path);
 
 int
-prep_video(char *xurl, char *id, char *host);
+prep_video(const char *xurl, const char *id, const char *host);
 
 void
 list_hosts(void);
 
 int
 login_youtube(void);
+
+size_t
+writemem_cb(void *p, size_t size, size_t nmemb, void *data);
 
 #endif

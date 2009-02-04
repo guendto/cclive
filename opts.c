@@ -20,7 +20,7 @@
 #include "cclive.h"
 
 void /* parse cmdline opts and config (if exists) */
-parse_opts (int argc, char **argv) {
+parse_opts (const int argc, char **argv) {
     int noconf=1;
     char *env=0;
 

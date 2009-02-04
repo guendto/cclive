@@ -19,27 +19,27 @@
 #include <memory.h>
 #include <assert.h>
 
-#include "mem.h"
+#include "cclive.h"
 
 static void *
-cc_realloc (void *p, size_t size) {
+_realloc (void *p, const size_t size) {
     if (p) return realloc(p,size);
     return malloc(size);
 }
 
 size_t /* write to memory handler for fetching video page data */
-cc_writemem_cb (void *ptr, size_t size, size_t nmemb, void *data) {
-    struct cc_mem_s *m;
+writemem_cb (void *ptr, size_t size, size_t nmemb, void *data) {
     size_t rsize;
     void *tmp;
+    mem_t m;
 
     assert(ptr  != 0);
     assert(data != 0);
 
-    m = (struct cc_mem_s *)data;
-    rsize = size * nmemb;
+    m = (mem_t)data;
+    rsize = size*nmemb;
 
-    tmp = cc_realloc(m->p, m->size+rsize+1);
+    tmp = _realloc(m->p, m->size+rsize+1);
     if (tmp) {
         m->p = tmp;
         memcpy(&(m->p[m->size]), ptr, rsize);

@@ -24,7 +24,7 @@
 #include "progress.h"
 
 static void
-store_fname (char *fname) {
+store_fname (const char *fname) {
     assert(fname != 0);
     if (cc.gi.exec_given) {
         char *tmp;
@@ -35,7 +35,7 @@ store_fname (char *fname) {
 }
 
 static int /* check remote file length */
-query_filelen(char *xurl, double *len, char **ct) {
+query_filelen(const char *xurl, double *len, char **ct) {
     CURLcode rc, httpcode;
     FILE *f = tmpfile();
     int ret=1;
@@ -84,131 +84,13 @@ query_filelen(char *xurl, double *len, char **ct) {
     return(ret);
 }
 
-int /* prepare video file for extraction */
-prep_video (char *xurl, char *id, char *host) {
-    double len=0,initial=0;
-    char *fname=0,*ct=0;
-    int rc=1;
-
-    assert(xurl != 0);
-    assert(id   != 0);
-    assert(host != 0);
-
-    rc = query_filelen(xurl, &len, &ct);
-    if (!rc) {
-        fname = create_fname(&initial, len, id, cc.gi.download_arg, host);
-        if (fname) {
-            rc = 0;
-            if (cc.gi.no_extract_given)
-                cc_log("%s  %.2fMB  [%s]\n",fname,ToMB(len),ct);
-            else if (cc.gi.emit_csv_given)
-                fprintf(stdout,"csv:\"%s\",\"%.0f\",\"%.0f\",\"%s\"\n",
-                    fname,len,initial,xurl);
-            else {
-                rc = dl_file(xurl, fname, initial, len);
-                if (!rc)
-                    store_fname(fname);
-            }
-            FREE(fname);
-        }
-    }
-    return(rc);
-}
-
-struct getdata_s { /* used to pass data between dl_file and write_cb */
-    double initial;
-    char *fname;
-    FILE *f;
-};
-
-static int /* curl write callback function for file transfers */
-write_cb (void *data, size_t size, size_t nmemb, void *stream) {
-    struct getdata_s *get = (struct getdata_s *)stream;
-
-    assert(data   != 0);
-    assert(stream != 0);
-
-    if (get && !get->f) {
-        const char *mode = get->initial ? "ab" : "wb";
-        if ( !(get->f = fopen(get->fname,mode)) ) {
-            perror(get->fname);
-            return(-1);
-        }
-    }
-    return(fwrite(data,size,nmemb,get->f));
-}
-
-int /* copy a remote file from url */
-dl_file (char *xurl, char *fname, double initial, double total) {
-    struct progressbar_s bp;
-    struct getdata_s get;
-    CURLcode rc;
-    int ret=0;
-
-    assert(xurl  != 0);
-    assert(fname != 0);
-
-    memset(&bp,0,sizeof(bp));
-    memset(&get,0,sizeof(get));
-
-    if (cc.gi.continue_given && initial > 0) {
-        double remaining = total - initial;
-        cc_log("from: %.0f (%.2fMB)  remaining: %.0f (%.2fMB)\n",
-            initial, ToMB(initial), remaining, ToMB(remaining));
-    } else {
-        initial = 0;
-    }
-
-    bar_init(&bp, initial, total);
-    bp.fname    = fname;
-
-    get.initial = initial;
-    get.fname   = fname;
-
-    curl_easy_setopt(cc.curl, CURLOPT_URL,              xurl);
-    curl_easy_setopt(cc.curl, CURLOPT_WRITEFUNCTION,    write_cb);
-    curl_easy_setopt(cc.curl, CURLOPT_WRITEDATA,        &get);
-    curl_easy_setopt(cc.curl, CURLOPT_NOPROGRESS,       0);
-    curl_easy_setopt(cc.curl, CURLOPT_PROGRESSFUNCTION, &progress_cb);
-    curl_easy_setopt(cc.curl, CURLOPT_PROGRESSDATA,     &bp);
-    curl_easy_setopt(cc.curl, CURLOPT_ENCODING,         "identity");
-    curl_easy_setopt(cc.curl, CURLOPT_HEADER,           0);
-    curl_easy_setopt(cc.curl, CURLOPT_RESUME_FROM,      (long)initial);
-
-    if ( (rc = curl_easy_perform(cc.curl)) != CURLE_OK) {
-        curl_easy_getinfo(cc.curl, CURLINFO_RESPONSE_CODE, &rc);
-        cc_log("\nerror: ");
-        if (cc.curl_errmsg)
-            cc_log("%s",cc.curl_errmsg);
-        else
-            cc_log("server closed with http/%d",rc);
-        cc_log("\n");
-        ret = 1;
-    }
-
-    if (get.f) {
-        fflush(get.f);
-        fclose(get.f);
-    }
-
-    if (!ret)
-        bar_finish(&bp);
-
-    curl_easy_setopt(cc.curl, CURLOPT_HEADER,       1);
-    curl_easy_setopt(cc.curl, CURLOPT_NOPROGRESS,   1);
-    curl_easy_setopt(cc.curl, CURLOPT_RESUME_FROM,  0);
-
-    cc_log("\n");
-    return(ret);
-}
-
-char * /* return video output filename */
+static char * /* return video output filename */
 create_fname(
     double *initial,
     double total,
-    char *id,
-    char *suffix,
-    char *host)
+    const char *id,
+    const char *suffix,
+    const char *host)
 {
     char *p=0;
 
@@ -256,4 +138,127 @@ create_fname(
         asprintf(&p,cc.gi.output_video_arg);
     }
     return(p);
+}
+
+struct getdata_s { /* used to pass data between dl_file and write_cb */
+    double initial;
+    char *fname;
+    FILE *f;
+};
+
+static int /* curl write callback function for file transfers */
+write_cb (void *data, size_t size, size_t nmemb, void *stream) {
+    struct getdata_s *get = (struct getdata_s *)stream;
+
+    assert(data   != 0);
+    assert(stream != 0);
+
+    if (get && !get->f) {
+        const char *mode = get->initial ? "ab" : "wb";
+        if ( !(get->f = fopen(get->fname,mode)) ) {
+            perror(get->fname);
+            return(-1);
+        }
+    }
+    return(fwrite(data,size,nmemb,get->f));
+}
+
+static int /* copy a remote file from url */
+dl_file (
+    const char *xurl,
+    const char *fname,
+    double initial,
+    const double total)
+{
+    struct progressbar_s bp;
+    struct getdata_s get;
+    CURLcode rc;
+    int ret=0;
+
+    assert(xurl  != 0);
+    assert(fname != 0);
+
+    memset(&bp,0,sizeof(bp));
+    memset(&get,0,sizeof(get));
+
+    if (cc.gi.continue_given && initial > 0) {
+        double remaining = total - initial;
+        cc_log("from: %.0f (%.2fMB)  remaining: %.0f (%.2fMB)\n",
+            initial, ToMB(initial), remaining, ToMB(remaining));
+    } else {
+        initial = 0;
+    }
+
+    bar_init(&bp, initial, total);
+    bp.fname    = (char*)fname;
+
+    get.initial = initial;
+    get.fname   = (char*)fname;
+
+    curl_easy_setopt(cc.curl, CURLOPT_URL,              xurl);
+    curl_easy_setopt(cc.curl, CURLOPT_WRITEFUNCTION,    write_cb);
+    curl_easy_setopt(cc.curl, CURLOPT_WRITEDATA,        &get);
+    curl_easy_setopt(cc.curl, CURLOPT_NOPROGRESS,       0);
+    curl_easy_setopt(cc.curl, CURLOPT_PROGRESSFUNCTION, &progress_cb);
+    curl_easy_setopt(cc.curl, CURLOPT_PROGRESSDATA,     &bp);
+    curl_easy_setopt(cc.curl, CURLOPT_ENCODING,         "identity");
+    curl_easy_setopt(cc.curl, CURLOPT_HEADER,           0);
+    curl_easy_setopt(cc.curl, CURLOPT_RESUME_FROM,      (long)initial);
+
+    if ( (rc = curl_easy_perform(cc.curl)) != CURLE_OK) {
+        curl_easy_getinfo(cc.curl, CURLINFO_RESPONSE_CODE, &rc);
+        cc_log("\nerror: ");
+        if (cc.curl_errmsg)
+            cc_log("%s",cc.curl_errmsg);
+        else
+            cc_log("server closed with http/%d",rc);
+        cc_log("\n");
+        ret = 1;
+    }
+
+    if (get.f) {
+        fflush(get.f);
+        fclose(get.f);
+    }
+
+    if (!ret)
+        bar_finish(&bp);
+
+    curl_easy_setopt(cc.curl, CURLOPT_HEADER,       1);
+    curl_easy_setopt(cc.curl, CURLOPT_NOPROGRESS,   1);
+    curl_easy_setopt(cc.curl, CURLOPT_RESUME_FROM,  0);
+
+    cc_log("\n");
+    return(ret);
+}
+
+int /* prepare video file for extraction */
+prep_video (const char *xurl, const char *id, const char *host) {
+    double len=0,initial=0;
+    char *fname=0,*ct=0;
+    int rc=1;
+
+    assert(xurl != 0);
+    assert(id   != 0);
+    assert(host != 0);
+
+    rc = query_filelen(xurl, &len, &ct);
+    if (!rc) {
+        fname = create_fname(&initial, len, id, cc.gi.download_arg, host);
+        if (fname) {
+            rc = 0;
+            if (cc.gi.no_extract_given)
+                cc_log("%s  %.2fMB  [%s]\n",fname,ToMB(len),ct);
+            else if (cc.gi.emit_csv_given)
+                fprintf(stdout,"csv:\"%s\",\"%.0f\",\"%.0f\",\"%s\"\n",
+                    fname,len,initial,xurl);
+            else {
+                rc = dl_file(xurl, fname, initial, len);
+                if (!rc)
+                    store_fname(fname);
+            }
+            FREE(fname);
+        }
+    }
+    return(rc);
 }

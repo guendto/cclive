@@ -22,11 +22,10 @@
 #include <curl/curl.h>
 
 #include "cclive.h"
-#include "mem.h"
 
 int /* log into youtube */
 login_youtube (void) {
-    struct cc_mem_s data;
+    struct _mem_s data;
     char *pass=0,*req=0;
     CURLcode rc;
     int ret=1;
@@ -53,7 +52,7 @@ login_youtube (void) {
     curl_easy_setopt(cc.curl, CURLOPT_URL,              req);
     curl_easy_setopt(cc.curl, CURLOPT_COOKIEFILE,       "");
     curl_easy_setopt(cc.curl, CURLOPT_ENCODING,         "");
-    curl_easy_setopt(cc.curl, CURLOPT_WRITEFUNCTION,    cc_writemem_cb);
+    curl_easy_setopt(cc.curl, CURLOPT_WRITEFUNCTION,    writemem_cb);
     curl_easy_setopt(cc.curl, CURLOPT_WRITEDATA,        &data);
 
     cc_log("[youtube] attempt to login as %s ...",
