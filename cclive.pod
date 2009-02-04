@@ -112,8 +112,8 @@ as possible for the invocation of I<command>.
   % cclive -f mp4 "http://youtube.com/watch?v=3HD220e0bx4"
   % cclive "http://youtube.com/watch?v=3HD220e0bx4" -cf mp4
   % cclive -u username "http://youtube.com/watch?v=3HD220e0bx4" -f mp4
-  % cclive "http://youtube.com/watch?v=3HD220e0bx4" -r "mplayer %i"
-  % cclive "http://youtube.com/watch?v=..." -r "ffmpeg -i %i %i.mp3"
+  % cclive "http://youtube.com/watch?v=3HD220e0bx4" -e "mplayer %i;"
+  % cclive "http://youtube.com/watch?v=..." -e "ffmpeg -i %i %i.mp3;"
 
 =head1 FORMATS
 
