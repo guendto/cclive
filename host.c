@@ -309,8 +309,76 @@ handle_lleak (mem_t page) {
     return(rc);
 }
 
+static int
+handle_dmotion (mem_t page) {
+    char *id=0,*xurl=0;
+    int rc=1;
+
+    const char id_begin[] = "/swf/";
+    const char id_end[]   = "?";
+
+    const char paths_begin[]= "\"video\", \"";
+    const char paths_end[]  = "\"";
+
+    assert(page         != 0);
+    assert(page->p      != 0);
+    assert(page->size   > 0);
+
+    id = strsub(page->p, id_begin, id_end);
+    if (id) {
+        char *tmp=strsub(page->p, paths_begin, paths_end);
+        llst_node_t path_lst=0, curr=0;
+        char *paths=0;
+
+        if (tmp)
+            paths = curl_easy_unescape(cc.curl,tmp,0,0);
+
+        if (paths) {
+            const char sep[]="||";
+            char *tok=strtok(paths,sep);
+            while (tok) {
+                llst_append(&path_lst,tok);
+                tok = strtok(0,sep);
+            }
+        }
+        curl_free(paths);
+        FREE(tmp);
+
+        /* handle paths */
+        curr = path_lst;
+        while (curr) {
+            char *type = strstr(curr->str,"@@");
+            if (!type)
+                continue;
+            type += 2; /* skip "@@" */
+            if (!strcmp(type,cc.gi.download_arg)) {
+                asprintf(&xurl,"http://dailymotion.com%s",curr->str);
+                if (xurl) {
+                    xurl[strstr(xurl,"@@")-xurl] = '\0';
+                    break;
+                }
+            }
+            curr = curr->next;
+        }
+        if (!xurl) {
+            /* download_arg defaults to 'flv', use spark/flv if user
+             * did not specify dmotion specific format */
+            curr = path_lst;
+            asprintf(&xurl,"http://dailymotion.com%s",curr->str);
+            if (xurl)
+                xurl[strstr(xurl,"@@")-xurl] = '\0';
+        }
+        llst_free(&path_lst);
+        rc = prep_video(xurl,id,"dmotion");
+    }
+    FREE(id);
+    FREE(xurl);
+
+    return(rc);
+}
+
 static char * /* convert embed link to video page link */
-embed2video(const char *url) {
+embed2video (const char *url) {
     struct lookup_s {
         char *what;
         char *with;
@@ -346,6 +414,7 @@ static const struct host_s hosts[] = {
     {"evisor.tv",       handle_evisor},
     {"sevenload.com",   handle_7load},
     {"liveleak.com",    handle_lleak},
+    {"dailymotion.com", handle_dmotion},
 };
 
 void /* --supported-hosts */

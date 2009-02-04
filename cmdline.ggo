@@ -21,7 +21,9 @@ option "continue"
     optional
 option "download"
     f "download format"
-    values="flv","mp4","wmv","3gpp","xflv"
+    values="flv","mp4","wmv","3gpp","xflv",
+        # dmotion:
+        "spark","spak-mini","vp6-hq","vp6-hd","vp6","h264"
     default="flv"
     typestr="FORMAT"
     optional

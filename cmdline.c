@@ -35,7 +35,7 @@ const char *gengetopt_args_info_help[] = {
   "      --debug                  show curl debug messages",
   "  -n, --no-extract             do not extract video",
   "  -c, --continue               resume partially downloaded file",
-  "  -f, --download=FORMAT        download format  (possible values=\"flv\", \n                                 \"mp4\", \"wmv\", \"3gpp\", \"xflv\" \n                                 default=`flv')",
+  "  -f, --download=FORMAT        download format  (possible values=\"flv\", \n                                 \"mp4\", \"wmv\", \"3gpp\", \"xflv\", \n                                 \"spark\", \"spak-mini\", \"vp6-hq\", \n                                 \"vp6-hd\", \"vp6\", \"h264\" default=`flv')",
   "  -O, --output-video=FILE      write video to file",
   "      --emit-csv               emit video details as csv to stdout",
   "      --limit-rate=AMOUNT      limit download speed to amount kb per second",
@@ -89,7 +89,7 @@ free_cmd_list(void)
 }
 
 
-char *cmdline_parser_download_values[] = {"flv", "mp4", "wmv", "3gpp", "xflv", 0} ;	/* Possible values for download.  */
+char *cmdline_parser_download_values[] = {"flv", "mp4", "wmv", "3gpp", "xflv", "spark", "spak-mini", "vp6-hq", "vp6-hd", "vp6", "h264", 0} ;	/* Possible values for download.  */
 
 static char *
 gengetopt_strdup (const char *s);

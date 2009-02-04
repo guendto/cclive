@@ -49,8 +49,9 @@ servers. Be sure to read the L</FORMATS> section.
 =item B<-f, --download=>I<FORMAT>
 
 Extract I<format> instead of the default "flv". Possible values are "flv"
-(default), "mp4", "wmv", "3gpp", "xflv". Note that only certain hosts
-support certain formats. See the L</FORMATS> section for more on this.
+(default), "mp4", "wmv", "3gpp", "xflv", "spark", "vp6-hq", "vp6-hd", "vp6",
+"h264", "spak-mini". Note that only certain hosts support only certain
+formats. See the L</FORMATS> section for more on this.
 
 =item B<-O, --output-video=>I<FILE>
 
@@ -139,6 +140,11 @@ as possible for the invocation of I<command>.
 
   liveleak.com
     * flv
+
+  dailymotion.com
+    * spark / spak-mini / vp6-hq / vp6-hd / vp6 / h264
+    * spark is the "regular" 320x240 flv
+    * cclive defaults to spark if format is not available
 
 =head1 FILES
 

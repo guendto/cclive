@@ -166,8 +166,9 @@ servers. Be sure to read the \*(L"\s-1FORMATS\s0\*(R" section.
 .IP "\fB\-f, \-\-download=\fR\fI\s-1FORMAT\s0\fR" 4
 .IX Item "-f, --download=FORMAT"
 Extract \fIformat\fR instead of the default \*(L"flv\*(R". Possible values are \*(L"flv\*(R"
-(default), \*(L"mp4\*(R", \*(L"wmv\*(R", \*(L"3gpp\*(R", \*(L"xflv\*(R". Note that only certain hosts
-support certain formats. See the \*(L"\s-1FORMATS\s0\*(R" section for more on this.
+(default), \*(L"mp4\*(R", \*(L"wmv\*(R", \*(L"3gpp\*(R", \*(L"xflv\*(R", \*(L"spark\*(R", \*(L"vp6\-hq\*(R", \*(L"vp6\-hd\*(R", \*(L"vp6\*(R",
+\&\*(L"h264\*(R", \*(L"spak\-mini\*(R". Note that only certain hosts support only certain
+formats. See the \*(L"\s-1FORMATS\s0\*(R" section for more on this.
 .IP "\fB\-O, \-\-output\-video=\fR\fI\s-1FILE\s0\fR" 4
 .IX Item "-O, --output-video=FILE"
 Write extracted video to \fIfile\fR. Do \fInot\fR use this when extracting multiple
@@ -255,6 +256,13 @@ as possible for the invocation of \fIcommand\fR.
 .Vb 2
 \&  liveleak.com
 \&    * flv
+.Ve
+.PP
+.Vb 4
+\&  dailymotion.com
+\&    * spark / spak-mini / vp6-hq / vp6-hd / vp6 / h264
+\&    * spark is the "regular" 320x240 flv
+\&    * cclive defaults to spark if format is not available
 .Ve
 .SH "FILES"
 .IX Header "FILES"
