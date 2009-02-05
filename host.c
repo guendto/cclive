@@ -286,9 +286,10 @@ handle_lleak (mem_t page) {
                 FREE(pl);
             }
         }
-        FREE(config);
-        FREE(id);
     }
+    FREE(id);
+    FREE(config);
+
     return(rc);
 }
 
