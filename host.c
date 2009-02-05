@@ -283,6 +283,7 @@ handle_lleak (mem_t page) {
                     }
                     FREE(page->p);
                 }
+                FREE(pl);
             }
         }
         FREE(config);
