@@ -223,9 +223,9 @@ handle_7load (mem_t page) {
                 FREE(id);
                 FREE(page->p);
             }
+            curl_free(tmp);
         }
         FREE(config);
-        curl_free(tmp);
     }
     return(rc);
 }
