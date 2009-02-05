@@ -1,6 +1,7 @@
 0.2.0
 
  User-visible changes:
+ * Fixed sevenload support
  * Extracted videos are now saved as $host_$id.$suffix
  * Added support for dailymotion
  * Added --exec option

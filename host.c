@@ -197,8 +197,8 @@ handle_7load (mem_t page) {
     const char id_begin[]       = "item id=\"";
     const char id_end[]         = "\"";
 
-    const char xurl_begin[]     = "video url=\"";
-    const char xurl_end[]       = "\"";
+    const char xurl_begin[]     = "<location seeking=\"yes\">";
+    const char xurl_end[]       = "</location>";
 
     assert(page         != 0);
     assert(page->p      != 0);
