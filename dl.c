@@ -100,7 +100,7 @@ create_fname(
     assert(host     != 0);
 
     if (!cc.gi.output_video_given) {
-        const char dflt[] = "%s-(%s).%s";
+        const char dflt[] = "%s_%s.%s";
         char tmp[PATH_MAX];
         char *n=0;
         int i;
