@@ -237,7 +237,7 @@ handle_lleak (mem_t page) {
  * 2) fetch config and parse it for playlist url
  * 3) parse playlist for video link
  */
-    char *id=0,*config=0,*pl=0,*xurl=0,*p=0;
+    char *id=0,*config=0;
     int rc=1;
 
     const char id_begin[]       = "token=";
@@ -261,47 +261,33 @@ handle_lleak (mem_t page) {
         config = strsub(page->p, config_begin, config_end);
     FREE(page->p);
 
-    if (!id || !config) {
+    if (id && config) {
+        char *tmp = curl_easy_unescape(cc.curl, config, 0, 0);
+        cc_log("fetch xml config ...");
+        if (tmp) {
+            rc = fetch_link(tmp,page,0);
+            curl_free(tmp);
+            if (!rc) {
+                char *pl = strsub(page->p, pl_begin, pl_end);
+                FREE(page->p);
+                if (pl) {
+                    cc_log("fetch playlist ...");
+                    tmp = curl_easy_unescape(cc.curl, pl, 0, 0);
+                    rc = fetch_link(tmp,page,0);
+                    curl_free(tmp);
+                    if (!rc) {
+                        char *xurl = strsub(page->p, xurl_begin, xurl_end);
+                        if (xurl)
+                            rc = prep_video(xurl,id,"lleak");
+                        FREE(xurl);
+                    }
+                    FREE(page->p);
+                }
+            }
+        }
         FREE(config);
         FREE(id);
-        return(0);
     }
-
-    cc_log("fetch xml config ...");
-
-    p  = curl_easy_unescape(cc.curl,config,0,0);
-    FREE(config);
-
-    rc = fetch_link(p,page,0);
-    curl_free(p);
-
-    if (rc)
-        return(0);
-
-    pl = strsub(page->p, pl_begin, pl_end);
-    FREE(page->p);
-
-    if (rc)
-        return(rc);
-
-    cc_log("fetch playlist ...");
-
-    p  = curl_easy_unescape(cc.curl,pl,0,0);
-    FREE(pl);
-
-    rc = fetch_link(p,page,0);
-    curl_free(p);
-
-    if (rc)
-        return(rc);
-
-    xurl = strsub(page->p, xurl_begin, xurl_end);
-    FREE(page->p);
-
-    rc = prep_video(xurl,id,"lleak");
-    FREE(xurl);
-    FREE(id);
-
     return(rc);
 }
 
