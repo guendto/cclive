@@ -188,7 +188,7 @@ handle_7load (mem_t page) {
  * 1) parse page html for config url
  * 2) parse config for video link
  */
-    char *id=0,*config=0,*xurl=0,*p=0;
+    char *config=0;
     int rc=1;
 
     const char config_begin[]   = "configPath=";
@@ -207,30 +207,26 @@ handle_7load (mem_t page) {
     config = strsub(page->p, config_begin, config_end);
     FREE(page->p);
 
-    if (!config)
-        return(0);
-
-    cc_log("fetch config xml ...");
-
-    p  = curl_easy_unescape(cc.curl,config,0,0);
-    FREE(config);
-
-    rc = fetch_link(p,page,0);
-    curl_free(p);
-
-    if (rc)
-        return(0);
-
-    id = strsub(page->p, id_begin, id_end);
-    if (id) {
-        xurl = strsub(page->p, xurl_begin, xurl_end);
-        if (xurl)
-            rc = prep_video(xurl,id,"7load");
-        FREE(xurl);
-        FREE(id);
+    if (config) {
+        char *tmp = curl_easy_unescape(cc.curl,config,0,0);
+        if (tmp) {
+            cc_log("fetch config xml ...");
+            rc = fetch_link(tmp,page,0);
+            if (!rc) {
+                char *id = strsub(page->p, id_begin, id_end);
+                if (id) {
+                    char *xurl = strsub(page->p, xurl_begin, xurl_end);
+                    if (xurl)
+                        rc = prep_video(xurl,id,"7load");
+                    FREE(xurl);
+                }
+                FREE(id);
+                FREE(page->p);
+            }
+        }
+        FREE(config);
+        curl_free(tmp);
     }
-
-    FREE(page->p);
     return(rc);
 }
 
