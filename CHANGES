@@ -8,6 +8,7 @@
   * Fixed file naming ("$id-($host).$suffix.$num" => "$host-($id).$suffix.$num")
 
  Developer-visible changes:
+  * Added AUTHORS
   * Added tests/dmotion.url
   * Updated tests/7load.url
   * Use of FREE macro (cclive.h) instead of free(3)
