@@ -44,17 +44,21 @@ query_filelen(const char *xurl, double *len, char **ct) {
     assert(len  != 0);
     assert(ct   != 0);
 
+    if (!f) {
+        perror("tmpfile");
+        return(1);
+    }
+    
     cc_log("verify video link ...");
-
-    *len    = 0;
-    *ct     = 0;
 
     curl_easy_setopt(cc.curl, CURLOPT_URL, xurl);
     curl_easy_setopt(cc.curl, CURLOPT_NOBODY, 1); /* GET => HEAD request */
     curl_easy_setopt(cc.curl, CURLOPT_WRITEDATA, f);
     curl_easy_setopt(cc.curl, CURLOPT_WRITEFUNCTION, 0);
 
-    rc = curl_easy_perform(cc.curl);
+    *len    = 0;
+    *ct     = 0;
+    rc      = curl_easy_perform(cc.curl);
 
     curl_easy_getinfo(cc.curl, CURLINFO_RESPONSE_CODE, &httpcode);
 
@@ -79,8 +83,8 @@ query_filelen(const char *xurl, double *len, char **ct) {
     }
 
     curl_easy_setopt(cc.curl, CURLOPT_HTTPGET, 1); /* reset: HEAD => GET */
-
     fclose(f);
+
     return(ret);
 }
 
