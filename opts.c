@@ -25,17 +25,17 @@ parse_opts (const int argc, char **argv) {
     char *env=0;
 
     if ((env = getenv("HOME")) != 0) {
-        char *c=0;
-        asprintf(&c,"%s/.ccliverc",env);
+        char *path=0;
+        asprintf(&path,"%s/.ccliverc",env);
 
-        if (file_exists(c) != 0) {
+        if (file_exists(path) != 0) {
             int rc;
 
             cc.pp = cmdline_parser_params_create();
             cc.pp->check_required = 0;
 
-            rc = cmdline_parser_config_file(c,&cc.gi,cc.pp);
-            FREE(c);
+            rc = cmdline_parser_config_file(path,&cc.gi,cc.pp);
+            FREE(path);
 
             if (rc != 0)
                 exit(EXIT_FAILURE);
@@ -50,7 +50,7 @@ parse_opts (const int argc, char **argv) {
             noconf = 0;
         }
         else
-            FREE(c);
+            FREE(path);
     } else {
         fprintf(stderr,
             "warn: HOME environment variable not defined\n"
