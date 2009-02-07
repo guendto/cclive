@@ -17,7 +17,6 @@
  */
 #include <stdlib.h>
 #include <memory.h>
-#include <pwd.h>
 #include <unistd.h>
 #include <curl/curl.h>
 

@@ -17,7 +17,6 @@
  */
 #include <stdlib.h>
 #include <memory.h>
-#include <limits.h>
 #include <curl/curl.h>
 
 #include "cclive.h"
