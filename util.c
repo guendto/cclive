@@ -77,12 +77,12 @@ strrepl (const char *s, const char *what, const char *with) {
     else
         retlen = strlen(s);
 
-    if ( !(ret=malloc(retlen+1))) {
+    if ( !(ret=malloc(retlen+1)) ) {
         perror("malloc");
         return(0);
     }
 
-    for (r=ret,p=s; (q=strstr(p,what)) != 0; p=q+rl) {
+    for (r=ret,p=s; (q=strstr(p,what))!=0; p=q+rl) {
         l = q-p;
         memcpy(r,p,l);
         r += l;
@@ -125,7 +125,7 @@ file_exists (const char *path) {
 }
 
 int /* fetch data from url */
-fetch_link (const char *url, mem_t page, const int log) {
+fetch_link (const char *url, mem_t page, const int log_fetch) {
     CURLcode rc;
     int ret=1;
 
@@ -135,7 +135,7 @@ fetch_link (const char *url, mem_t page, const int log) {
     page->p     = 0;
     page->size  = 0;
 
-    if (log)
+    if (log_fetch)
         cc_log("fetch %s ...",url);
 
     curl_easy_setopt(cc.curl, CURLOPT_URL,           url);
