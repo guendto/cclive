@@ -5,12 +5,14 @@
   * Fixed sevenload support
   * Added support for dailymotion
   * Extracted videos are now saved as $host_$id.$suffix
-  * Fixed file naming ("$id-($host).$suffix.$num" => "$host-($id).$suffix.$num")
+  * Fixed file naming: $id-($host).$suffix.$num => $host-($id).$suffix.$num
 
  Developer-visible changes:
+  * Updated TODO
   * Added AUTHORS
   * Added tests/dmotion.url
   * Updated tests/7load.url
+  * Updated README with "cclive != clive" section
   * Use of FREE macro (cclive.h) instead of free(3)
   * Fixed incorrect freeing of embed to video page converted link
     - Symptoms: % cclive < tests/youtube.url => crash at fetch 2nd link
@@ -19,8 +21,6 @@
     - Removed obsoleted .c files
     - Renamed much of the functions with "cc_" prefix
     - Removed "extern" from .h files
-  * Updated README with "cclive != clive" section
-  * Updated TODO
 
 
 0.1.0
