@@ -78,7 +78,7 @@ bar_update (progressbar_t bp, double total, double now) {
     char buffer[80];
     char *p=(char*)&buffer;
     char tmp[30];
-    int i;
+    int i,l;
 
     assert(bp != 0);
 
@@ -129,7 +129,7 @@ bar_update (progressbar_t bp, double total, double now) {
     }
 
     /* pad to max. width and append rate+eta */
-    for (i=p-buffer; i<BP_DEFAULT_WIDTH-strlen(tmp); ++i)
+    for (i=p-buffer,l=strlen(tmp); i<BP_DEFAULT_WIDTH-l; ++i)
         *p++ = ' ';
     p += sprintf(p,tmp);
 
