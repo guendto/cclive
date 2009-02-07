@@ -195,5 +195,5 @@ main (int argc, char *argv[]) {
     if (cc.gi.exec_given)
         exec_subseq();
 
-    exit(EXIT_SUCCESS);
+    return(EXIT_SUCCESS);
 }
