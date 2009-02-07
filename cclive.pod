@@ -10,8 +10,8 @@ cclive [options] [url...]
 
 =head1 DESCRIPTION
 
-cclive is a command line video extraction utility similar to clive
-but focuses on low requirements. Its features are few and essential.
+cclive is a command line video extraction utility similar to clive but
+focusing on low requirements. Its features are few and essential. 
 
 =head1 OPTIONS
 
