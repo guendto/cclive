@@ -187,7 +187,7 @@ dl_file (
 
     if (cc.gi.continue_given && initial > 0) {
         double remaining = total - initial;
-        cc_log("from: %.0f (%.2fMB)  remaining: %.0f (%.2fMB)\n",
+        cc_log("from: %.0f (%.1fM)  remaining: %.0f (%.1fM)\n",
             initial, ToMB(initial), remaining, ToMB(remaining));
     } else {
         initial = 0;
@@ -252,7 +252,7 @@ prep_video (const char *xurl, const char *id, const char *host) {
         if (fname) {
             rc = 0;
             if (cc.gi.no_extract_given)
-                cc_log("%s  %.2fMB  [%s]\n",fname,ToMB(len),ct);
+                cc_log("%s  %.1fM  [%s]\n",fname,ToMB(len),ct);
             else if (cc.gi.emit_csv_given)
                 fprintf(stdout,"csv:\"%s\",\"%.0f\",\"%.0f\",\"%s\"\n",
                     fname,len,initial,xurl);
