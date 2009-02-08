@@ -73,10 +73,10 @@ bar_init (progressbar_t bp, double initial, double total) {
 
 void /* update progressbar */
 bar_update (progressbar_t bp, double total, double now) {
+    char buffer[BP_DEFAULT_WIDTH];
+    char *p=(char*)&buffer;
     time_t tnow, elapsed;
     double size, rate;
-    char buffer[80];
-    char *p=(char*)&buffer;
     char tmp[30];
     int i,l;
 
@@ -108,7 +108,7 @@ bar_update (progressbar_t bp, double total, double now) {
         else
             p += sprintf(p,"  100%%"); /* +6 = 36 */
         snprintf(tmp,20,
-            "  %4.2fMB / %4.2fMB",ToMB(_size),ToMB(bp->total));
+            "  %4.1fM / %4.1fM",ToMB(_size),ToMB(bp->total));
         p += sprintf(p,tmp); /* max. +20 = 56 */
     }
 
@@ -123,7 +123,7 @@ bar_update (progressbar_t bp, double total, double now) {
             time2str(elapsed,eta,sizeof(eta));
         }
         get_units(&rate,&unit);
-        snprintf(tmp,20,"  %4.2f%s  %6s",rate,unit,eta); /* max. +20 = 76 */
+        snprintf(tmp,20,"  %4.1f%s  %6s",rate,unit,eta); /* max. +20 = 76 */
     } else {
         snprintf(tmp,20,"  --.-K/s  --:--");  /* +16 = 72 */
     }
