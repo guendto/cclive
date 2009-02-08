@@ -73,16 +73,14 @@ bar_init (progressbar_t bp, double initial, double total) {
 
 void /* update progressbar */
 bar_update (progressbar_t bp, double total, double now) {
-    char buffer[BP_DEFAULT_WIDTH];
-    char *p=(char*)&buffer;
-    time_t tnow, elapsed;
-    double size, rate;
-    char tmp[30];
+    static char buffer[BP_DEFAULT_WIDTH+1];
+    char *p=(char*)buffer;
+    time_t tnow,elapsed;
+    double size,rate;
+    char tmp[32];
     int i,l;
 
     assert(bp != 0);
-
-    *p='\0';
 
     time(&tnow);
     elapsed = tnow - bp->started;
@@ -98,18 +96,18 @@ bar_update (progressbar_t bp, double total, double now) {
     size            = bp->initial + now;
 
     snprintf(tmp,sizeof(tmp),"%s",bp->fname);
-    p += sprintf(p,tmp); /* max. +30 */
+    p += sprintf(p,tmp); /* max. +32 */
 
     if (bp->total > 0) {
         double _size = !bp->done ? size:now;
         int percent = 100.0 * size / bp->total;
         if (percent < 100)
-            p += sprintf(p,"  %2d%% ",percent); /* +6 = 36 */
+            p += sprintf(p,"  %2d%% ",percent); /* +6 = 38 */
         else
-            p += sprintf(p,"  100%%"); /* +6 = 36 */
+            p += sprintf(p,"  100%%"); /* +6 = 38 */
         snprintf(tmp,20,
             "  %4.1fM / %4.1fM",ToMB(_size),ToMB(bp->total));
-        p += sprintf(p,tmp); /* max. +20 = 56 */
+        p += sprintf(p,tmp); /* max. +20 = 58 */
     }
 
     rate = elapsed ? (now/elapsed) : 0;
@@ -119,22 +117,24 @@ bar_update (progressbar_t bp, double total, double now) {
         if (!bp->done) {
             int left = (int)((total-now)/rate);
             time2str(left,eta,sizeof(eta));
-        } else {
-            time2str(elapsed,eta,sizeof(eta));
         }
+        else
+            time2str(elapsed,eta,sizeof(eta));
         get_units(&rate,&unit);
-        snprintf(tmp,20,"  %4.1f%s  %6s",rate,unit,eta); /* max. +20 = 76 */
-    } else {
-        snprintf(tmp,20,"  --.-K/s  --:--");  /* +16 = 72 */
+        snprintf(tmp,20,"  %4.1f%s  %6s",rate,unit,eta); /* max. +20 = 78 */
     }
+    else
+        sprintf(tmp,"  --.-K/s  --:--");  /* +16 = 74 */
 
     /* pad to max. width and append rate+eta */
     for (i=p-buffer,l=strlen(tmp); i<BP_DEFAULT_WIDTH-l; ++i)
         *p++ = ' ';
     p += sprintf(p,tmp);
 
-    bp->count = now;
+    *p='\0';
     cc_log("\r%s",buffer);
+
+    bp->count = now;
 }
 
 void /* tidy up after file transfer */
