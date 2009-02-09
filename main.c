@@ -87,14 +87,6 @@ exec_plus (void) {
     FREE(cmd);
 }
 
-static void /* execute subsequent command */
-exec_subseq (void) {
-    if (cc.exec_mode == ';')
-        exec_semi();
-    else
-        exec_plus();
-}
-
 static void /* function to be called at exit */
 handle_exit (void) {
     cmdline_parser_free(&cc.gi);
@@ -188,8 +180,12 @@ main (int argc, char *argv[]) {
         }
     }
 
-    if (cc.gi.exec_given)
-        exec_subseq();
+    if (cc.gi.exec_given) {
+        if (cc.exec_mode == ';')
+            exec_semi();
+        else
+            exec_plus();
+    }
 
     return(EXIT_SUCCESS);
 }
