@@ -134,10 +134,9 @@ bar_update (progressbar_t bp, double total, double now) {
         ++i;
     }
     p += sprintf(p,tmp);
-
     *p='\0';
-    cc_log("\r%s",buffer);
 
+    cc_log("\r%s",buffer);
     bp->count = now;
 }
 
