@@ -24,30 +24,33 @@
 
 int
 llst_push (llst_node_t *head, const char *fmt, ...) {
+    struct _llst_node_s *n=0;
     va_list args;
     char *str=0;
 
     assert(head != 0);
-    assert(fmt != 0);
+    assert(fmt  != 0);
 
     va_start(args,fmt);
     vasprintf(&str,fmt,args);
     va_end(args);
 
-    if (str) {
-        struct _llst_node_s *n = malloc(sizeof(*n));
-        if (n) {
-            n->str  = str;
-            n->next = *head;
-            *head   = n;
-            return(0);
-        } else {
-            FREE(str);
-            perror("malloc");
-        }
-    }
-    else
+    if (!str) {
         perror("vasprintf");
+        return(1);
+    }
+
+    n = malloc(sizeof(*n));
+    if (n) {
+        n->str  = str;
+        n->next = *head;
+        *head   = n;
+        return(0);
+    }
+
+    perror("malloc");
+    FREE(str);
+
     return(1);
 }
 
@@ -59,7 +62,7 @@ llst_append (llst_node_t *head, const char *fmt, ...) {
     int rc;
 
     assert(head != 0);
-    assert(fmt != 0);
+    assert(fmt  != 0);
 
     va_start(args,fmt);
     vasprintf(&str,fmt,args);
