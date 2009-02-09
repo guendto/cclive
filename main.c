@@ -37,10 +37,6 @@ init_curl (void) {
     curl_easy_setopt(cc.curl, CURLOPT_ERRORBUFFER,     cc.curl_errmsg);
     if (cc.gi.proxy_given)
         curl_easy_setopt(cc.curl, CURLOPT_PROXY, cc.gi.proxy_arg);
-    if (cc.gi.limit_rate_given) {
-        curl_off_t r = (curl_off_t)cc.gi.limit_rate_arg*1024;
-        curl_easy_setopt(cc.curl, CURLOPT_MAX_RECV_SPEED_LARGE, r);
-    }
 }
 
 static void

@@ -2,6 +2,7 @@
 
  User-visible changes:
   * Tweaked progressbar to fit better
+  * --limit-rate now limits file transfers only
 
 
 0.2.0

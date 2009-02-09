@@ -176,6 +176,7 @@ dl_file (
 {
     struct progressbar_s bp;
     struct getdata_s get;
+    curl_off_t r;
     CURLcode rc;
     int ret=0;
 
@@ -208,6 +209,9 @@ dl_file (
     curl_easy_setopt(cc.curl, CURLOPT_ENCODING,         "identity");
     curl_easy_setopt(cc.curl, CURLOPT_HEADER,           0);
     curl_easy_setopt(cc.curl, CURLOPT_RESUME_FROM,      (long)initial);
+
+    r = (curl_off_t)cc.gi.limit_rate_arg * 1024;
+    curl_easy_setopt(cc.curl, CURLOPT_MAX_RECV_SPEED_LARGE, r);
 
     if ( (rc = curl_easy_perform(cc.curl)) != CURLE_OK) {
         curl_easy_getinfo(cc.curl, CURLINFO_RESPONSE_CODE, &rc);
