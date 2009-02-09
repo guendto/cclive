@@ -126,9 +126,13 @@ bar_update (progressbar_t bp, double total, double now) {
     else
         sprintf(tmp,"  --.-K/s  --:--");  /* +16 = 74 */
 
-    /* pad to max. width and append rate+eta */
-    for (i=p-buffer,l=strlen(tmp); i<BP_DEFAULT_WIDTH-l; ++i)
+    /* pad to max. width leaving enough space for rate+eta */
+    l = BP_DEFAULT_WIDTH - strlen(tmp) - 1;
+    i = p - buffer;
+    while (i<l) {
         *p++ = ' ';
+        ++i;
+    }
     p += sprintf(p,tmp);
 
     *p='\0';
