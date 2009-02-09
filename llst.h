@@ -31,6 +31,6 @@ void
 llst_dump (llst_node_t head);
 
 void
-llst_free (llst_node_t *ead);
+llst_free (llst_node_t *head);
 
 #endif
