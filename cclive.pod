@@ -65,7 +65,7 @@ B<--quiet> has I<no> effect on the emitted CSV.
 
 =item B<--limit-rate=>I<AMOUNT>
 
-Limit download speed to I<amount> (KB/s).
+Limit download speed to I<amount> (KB/s). Limits only file transfers.
 
 =item B<--agent=>I<STRING>
 
