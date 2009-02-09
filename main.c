@@ -56,34 +56,34 @@ exec_semi (void) {
 
 static void
 exec_plus (void) {
-    char *cmd = malloc(_POSIX_ARG_MAX);
-    if (cmd) {
-        char *arg=strrepl(cc.gi.exec_arg,"%i"," "); /* strip any %i */
-        llst_node_t curr=cc.fnames;
-        int exceeds=0;
+    char *arg=0, *cmd=malloc(_POSIX_ARG_MAX);
+    llst_node_t curr=cc.fnames;
+    int exceeds=0;
 
-        cmd[0] = '\0';
-        strlcat(cmd, arg, _POSIX_ARG_MAX);
-        strrmch(cmd,'+');
-        strlcat(cmd, " ", _POSIX_ARG_MAX);
-        FREE(arg);
-
-        while (curr != 0) {
-            if (strlcat(cmd, curr->str, _POSIX_ARG_MAX) >= _POSIX_ARG_MAX)
-                exceeds=1;
-            if (strlcat(cmd, " ", _POSIX_ARG_MAX) >= _POSIX_ARG_MAX)
-                exceeds=1;
-            if (exceeds) {
-                cc_log("warning: exceeded _POSIX_ARG_MAX (%d)\n",
-                    _POSIX_ARG_MAX);
-                break;
-            }
-            curr = curr->next;
-        }
-        system(cmd);
-    }
-    else
+    if (!cmd) {
         perror("malloc");
+        return;
+    }
+    cmd[0] = '\0';
+
+    arg = strrepl(cc.gi.exec_arg,"%i"," "); /* strip any %i */
+    strlcat(cmd, arg, _POSIX_ARG_MAX);
+    strrmch(cmd,'+');
+    strlcat(cmd, " ", _POSIX_ARG_MAX);
+    FREE(arg);
+
+    while (curr != 0) {
+        if (strlcat(cmd, curr->str, _POSIX_ARG_MAX) >= _POSIX_ARG_MAX)
+            exceeds=1;
+        if (strlcat(cmd, " ", _POSIX_ARG_MAX) >= _POSIX_ARG_MAX)
+            exceeds=1;
+        if (exceeds) {
+            cc_log("warning: exceeded _POSIX_ARG_MAX (%d)\n",_POSIX_ARG_MAX);
+            break;
+        }
+        curr = curr->next;
+    }
+    system(cmd);
     FREE(cmd);
 }
 
@@ -138,8 +138,8 @@ main (int argc, char *argv[]) {
     }
 
     if (cc.gi.exec_given) {
-        int  l = strlen(cc.gi.exec_arg);
-        char c = cc.gi.exec_arg[l-1];
+        const int  l = strlen(cc.gi.exec_arg);
+        const char c = cc.gi.exec_arg[l-1];
         if (c != ';' && c != '+') {
             cc_log("error: --exec expression must be terminated "
                 "by either ';' or '+'\n");
