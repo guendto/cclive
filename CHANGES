@@ -3,6 +3,8 @@
  User-visible changes:
   * Tweaked progressbar to fit better
   * --limit-rate now limits file transfers only
+  * Fixed crashing at exit while using --exec
+    - Caused by incorrect use of free in llst_free (llst.c)
 
 
 0.2.0

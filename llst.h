@@ -25,18 +25,12 @@ struct _llst_node_s {
 typedef struct _llst_node_s *llst_node_t;
 
 int
-llst_push (llst_node_t *head, const char *fmt, ...);
-
-int
 llst_append (llst_node_t *head, const char *fmt, ...);
-
-size_t
-llst_size (llst_node_t head);
 
 void
 llst_dump (llst_node_t head);
 
 void
-llst_free (llst_node_t *head);
+llst_free (llst_node_t *ead);
 
 #endif

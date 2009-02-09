@@ -18,83 +18,51 @@
 
 #include <stdlib.h>
 #include <stdarg.h>
+#include <string.h>
 #include <assert.h>
 
 #include "cclive.h"
 
 int
-llst_push (llst_node_t *head, const char *fmt, ...) {
-    struct _llst_node_s *n=0;
-    va_list args;
-    char *str=0;
-
-    assert(head != 0);
-    assert(fmt  != 0);
-
-    va_start(args,fmt);
-    vasprintf(&str,fmt,args);
-    va_end(args);
-
-    if (!str) {
-        perror("vasprintf");
-        return(1);
-    }
-
-    n = malloc(sizeof(*n));
-    if (n) {
-        n->str  = str;
-        n->next = *head;
-        *head   = n;
-        return(0);
-    }
-
-    perror("malloc");
-    FREE(str);
-
-    return(1);
-}
-
-int
 llst_append (llst_node_t *head, const char *fmt, ...) {
-    llst_node_t curr=*head;
     va_list args;
     char *str=0;
-    int rc;
+    int rc=1;
 
     assert(head != 0);
-    assert(fmt  != 0);
 
     va_start(args,fmt);
     vasprintf(&str,fmt,args);
     va_end(args);
 
-    if (curr == 0)
-        rc = llst_push(head,str);
-    else {
-        while (curr->next != 0)
-            curr = curr->next;
-        rc = llst_push(&(curr->next),str);
+    if (str) {
+        llst_node_t n=malloc(sizeof(struct _llst_node_s));
+        if (n) {
+            llst_node_t curr = *head;
+            n->str  = str;
+            n->next = 0;
+            if (curr == 0)
+                *head = n;
+            else {
+                while (curr->next != 0)
+                    curr = curr->next;
+                curr->next = n;
+            }
+            rc=0;
+        }
+        else {
+            perror("malloc");
+            FREE(str);
+        }
     }
-    FREE(str);
+    else
+        perror("vasprintf");
     return(rc);
-}
-
-size_t
-llst_size (llst_node_t head) {
-    llst_node_t curr = head;
-    size_t c = 0;
-    assert(head != 0);
-    while (curr != 0) {
-        curr = curr->next;
-        ++c;
-    }
-    return(c);
 }
 
 void
 llst_dump (llst_node_t head) {
     llst_node_t curr = head;
-    assert(head != 0);
     while (curr != 0) {
         puts(curr->str);
         curr = curr->next;
@@ -104,37 +72,11 @@ llst_dump (llst_node_t head) {
 void
 llst_free (llst_node_t *head) {
     llst_node_t curr = *head;
-    assert(head != 0);
     while (curr != 0) {
+        llst_node_t next = curr->next;
         FREE(curr->str);
-        free(curr);
-        curr=curr->next;
+        FREE(curr);
+        curr = next;
     }
-    *head=0;
+    *head = 0;
 }
-
-#ifdef TEST_LLST
-int
-main (int argc, char *argv[]) {
-    llst_node_t head=0;
-    int i;
-
-    for (i=0; i<5; ++i)
-        llst_push(&head,"item #%d",i+1);
-
-    printf("size: %d\n",llst_size(head));
-    llst_dump(head);
-    llst_free(&head);
-    printf("size: %d\n",llst_size(head));
-
-    for (i=0; i<5; ++i)
-        llst_append(&head,"item #%d",i+1);
-
-    printf("size: %d\n",llst_size(head));
-    llst_dump(head);
-    llst_free(&head);
-    printf("size: %d\n",llst_size(head));
-
-    return(0);
-}
-#endif
