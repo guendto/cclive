@@ -18,7 +18,11 @@
 #ifndef progress_h
 #define progress_h
 
+#define BP_REFRESH_INTERVAL 0.2
+#define BP_DEFAULT_WIDTH    80
+
 struct progressbar_s {
+    char last_buffer[BP_DEFAULT_WIDTH+1];
     time_t last_update;
     time_t started;
     double initial;
