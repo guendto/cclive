@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-cclive - video extraction utility
+cclive - video extraction utility for the flash dismissing hordes
 
 =head1 SYNOPSIS
 
