@@ -66,8 +66,10 @@ bar_init (progressbar_t bp, double initial, double total) {
     bp->initial = initial; /* bytes dl previously */
     bp->total   = total;   /* expected bytes */
     time(&bp->started);
-    bp->last_buffer[0] = '\0';
 }
+
+#define BP_REFRESH_INTERVAL 0.2
+#define BP_DEFAULT_WIDTH    80
 
 void /* update progressbar */
 bar_update (progressbar_t bp, double total, double now) {
@@ -134,12 +136,7 @@ bar_update (progressbar_t bp, double total, double now) {
     p += sprintf(p,tmp);
     *p='\0';
 
-    /* refresh only if output has changed */
-    if (strcmp(buffer,bp->last_buffer)) {
-        snprintf(bp->last_buffer,sizeof(bp->last_buffer),"%s",buffer);
-        cc_log("\r%s",buffer);
-    }
-
+    cc_log("\r%s",buffer);
     bp->count = now;
 }
 
