@@ -17,7 +17,9 @@
  */
 #include <stdlib.h>
 #include <memory.h>
+#ifdef WITH_SIGWINCH
 #include <signal.h>
+#endif
 #include <curl/curl.h>
 
 #include "cclive.h"
@@ -38,10 +40,8 @@ init_curl (void) {
     curl_easy_setopt(cc.curl, CURLOPT_NOBODY,          0);
     curl_easy_setopt(cc.curl, CURLOPT_VERBOSE,         cc.gi.debug_given);
     curl_easy_setopt(cc.curl, CURLOPT_ERRORBUFFER,     cc.curl_errmsg);
-    if (cc.gi.proxy_given) {
-        puts(cc.gi.proxy_arg);
+    if (cc.gi.proxy_given)
         curl_easy_setopt(cc.curl, CURLOPT_PROXY, cc.gi.proxy_arg);
-    }
 }
 
 static void
@@ -159,7 +159,9 @@ main (int argc, char *argv[]) {
             exit(EXIT_FAILURE);
     }
 
+#ifdef WITH_SIGWINCH
     signal(SIGWINCH, handle_sigwinch);
+#endif
 
     if (!cc.gi.inputs_num) {
         const size_t size = 1024;

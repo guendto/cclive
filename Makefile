@@ -24,7 +24,8 @@ CURL_CONFIG = curl-config
 GENGETOPT   = gengetopt
 POD2MAN     = pod2man
 
-WITH_MAN    = yes
+WITH_MAN        = yes
+WITH_SIGWINCH   = yes
 
 ifndef V
 QUIET_CC        = @echo '  ' CC $@;
@@ -42,6 +43,9 @@ CURL_LDFLAGS := $(shell sh -c "$(CURL_CONFIG) --libs")
 CFLAGS      = -g -Wall
 ALL_CFLAGS  = -D_GNU_SOURCE -DOSNAME=\"$(OS_NAME)\" -I. $(CFLAGS)
 ALL_CFLAGS += $(CURL_CFLAGS)
+ifeq ($(WITH_SIGWINCH),yes)
+ALL_CFLAGS += -DWITH_SIGWINCH
+endif
 
 LDFLAGS     =
 ALL_LDFLAGS = $(LDFLAGS)

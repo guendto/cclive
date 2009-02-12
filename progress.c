@@ -17,14 +17,17 @@
  */
 #include <time.h>
 #include <string.h>
+#ifdef WITH_SIGWINCH
 #include <signal.h>
 #include <sys/ioctl.h>
+#endif
 #include <assert.h>
 
 #include "cclive.h"
 #include "progress.h"
 
 static int term_width;
+#ifdef WITH_SIGWINCH
 static volatile sig_atomic_t recv_sigwinch;
 
 void
@@ -32,6 +35,18 @@ handle_sigwinch (int sig) {
     recv_sigwinch = 1;
     signal (SIGWINCH, handle_sigwinch);
 }
+
+static int
+get_term_width (void) {
+    struct winsize wsz;
+    int fd = fileno(stderr);
+
+    if (ioctl(fd,TIOCGWINSZ,&wsz) < 0)
+        return(0);
+
+    return(wsz.ws_col);
+}
+#endif
 
 static void /* convert time to formatted string */
 time2str (int secs, char *dst, size_t size) {
@@ -69,17 +84,6 @@ get_units (double *rate, char **unit) {
     *unit = (char *)units[i];
 }
 
-static int
-get_term_width (void) {
-    struct winsize wsz;
-    int fd = fileno(stderr);
-
-    if (ioctl(fd,TIOCGWINSZ,&wsz) < 0)
-        return(0);
-
-    return(wsz.ws_col);
-}
-
 #define DEFAULT_TERM_WIDTH  80
 
 void /* init progressbar */
@@ -90,11 +94,15 @@ bar_init (progressbar_t bp, double initial, double total) {
     bp->initial = initial; /* bytes dl previously */
     bp->total   = total;   /* expected bytes */
 
+#ifdef WITH_SIGWINCH
     if (!term_width || recv_sigwinch) {
         term_width = get_term_width();
         if (!term_width)
             term_width = DEFAULT_TERM_WIDTH;
     }
+#else
+    term_width = DEFAULT_TERM_WIDTH;
+#endif
     bp->width   = term_width-1; /* do not use the last column */
 
     time(&bp->started);
@@ -114,6 +122,7 @@ bar_update (progressbar_t bp, double total, double now) {
 
     assert(bp != 0);
 
+#ifdef WITH_SIGWINCH
     if (recv_sigwinch) {
         int old_width = term_width;
         term_width    = get_term_width();
@@ -125,6 +134,7 @@ bar_update (progressbar_t bp, double total, double now) {
         }
         recv_sigwinch = 0;
     }
+#endif
 
     time(&tnow);
     elapsed = tnow - bp->started;
