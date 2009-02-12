@@ -21,6 +21,7 @@
 
 void /* parse cmdline opts and config (if exists) */
 parse_opts (const int argc, char **argv) {
+    char *http_proxy_env=0;
     int noconf=1;
     char *env=0;
 
@@ -28,29 +29,19 @@ parse_opts (const int argc, char **argv) {
         char *path=0;
         asprintf(&path,"%s/.ccliverc",env);
 
-        if (file_exists(path) != 0) {
-            int rc;
-
-            cc.pp = cmdline_parser_params_create();
-            cc.pp->check_required = 0;
-
-            rc = cmdline_parser_config_file(path,&cc.gi,cc.pp);
-            FREE(path);
-
-            if (rc != 0)
-                exit(EXIT_FAILURE);
-
-            cc.pp->initialize      = 0;
-            cc.pp->override        = 1;
-            cc.pp->check_required  = 1;
-
-            if (cmdline_parser_ext(argc,argv,&cc.gi,cc.pp) != 0)
-                exit(EXIT_FAILURE);
-
-            noconf = 0;
+        if (path && file_exists(path) != 0) {
+            struct cmdline_parser_params *pp = cmdline_parser_params_create();
+            pp->check_required      = 0;
+            if (cmdline_parser_config_file(path,&cc.gi,pp) == 0) {
+                pp->initialize      = 0;
+                pp->override        = 1;
+                pp->check_required  = 1;
+                if (cmdline_parser_ext(argc,argv,&cc.gi,pp) == 0)
+                    noconf = 0;
+            }
+            FREE(pp);
         }
-        else
-            FREE(path);
+        FREE(path);
     } else {
         fprintf(stderr,
             "warn: HOME environment variable not defined\n"
@@ -63,9 +54,9 @@ parse_opts (const int argc, char **argv) {
     }
 
     if (!cc.gi.proxy_given) {
-        if ((cc.http_proxy_env = getenv("http_proxy")) != 0) {
+        if ((http_proxy_env = getenv("http_proxy")) != 0) {
             cc.gi.proxy_given = 1;
-            cc.gi.proxy_arg   = cc.http_proxy_env;
+            cc.gi.proxy_arg   = http_proxy_env;
         }
     }
 

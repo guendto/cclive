@@ -38,8 +38,10 @@ init_curl (void) {
     curl_easy_setopt(cc.curl, CURLOPT_NOBODY,          0);
     curl_easy_setopt(cc.curl, CURLOPT_VERBOSE,         cc.gi.debug_given);
     curl_easy_setopt(cc.curl, CURLOPT_ERRORBUFFER,     cc.curl_errmsg);
-    if (cc.gi.proxy_given)
+    if (cc.gi.proxy_given) {
+        puts(cc.gi.proxy_arg);
         curl_easy_setopt(cc.curl, CURLOPT_PROXY, cc.gi.proxy_arg);
+    }
 }
 
 static void
@@ -96,7 +98,6 @@ handle_exit (void) {
     curl_easy_cleanup(cc.curl);
     llst_free(&cc.fnames);
     FREE(cc.curl_errmsg);
-    FREE(cc.pp);
 }
 
 static const char copyr_notice[] =
@@ -114,6 +115,8 @@ static const char copyr_notice[] =
 
 int /* entry point */
 main (int argc, char *argv[]) {
+    int exec_mode;
+
     memset(&cc,0,sizeof(cc));
     atexit(handle_exit);
 
@@ -148,7 +151,7 @@ main (int argc, char *argv[]) {
                 "by either ';' or '+'\n");
             exit(EXIT_FAILURE);
         }
-        cc.exec_mode = c;
+        exec_mode = c;
     }
 
     if (cc.gi.youtube_user_given) {
@@ -186,7 +189,7 @@ main (int argc, char *argv[]) {
     }
 
     if (cc.gi.exec_given) {
-        if (cc.exec_mode == ';')
+        if (exec_mode == ';')
             exec_semi();
         else
             exec_plus();
