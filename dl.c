@@ -232,9 +232,10 @@ dl_file (
     if (!ret)
         bar_finish(&bp);
 
-    curl_easy_setopt(cc.curl, CURLOPT_HEADER,       1);
-    curl_easy_setopt(cc.curl, CURLOPT_NOPROGRESS,   1);
-    curl_easy_setopt(cc.curl, CURLOPT_RESUME_FROM,  0);
+    curl_easy_setopt(cc.curl, CURLOPT_HEADER,               1);
+    curl_easy_setopt(cc.curl, CURLOPT_NOPROGRESS,           1);
+    curl_easy_setopt(cc.curl, CURLOPT_RESUME_FROM,          0);
+    curl_easy_setopt(cc.curl, CURLOPT_MAX_RECV_SPEED_LARGE, 0);
 
     cc_log("\n");
     return(ret);

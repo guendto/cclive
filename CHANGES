@@ -1,4 +1,8 @@
+0.2.2
 
+ User-visible changes:
+  * Fixed: --limit-rate no longer limits following page transfers after file dl
+ 
 
 0.2.1
 (February 9, 2009)
