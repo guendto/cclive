@@ -4,6 +4,15 @@
   * Implemented SIGWINCH signal handling
     - cclive now resizes progressbar based on terminal width
   * Fixed: --limit-rate no longer limits following page transfers after file dl
+
+ Developer-visible changes:
+  * Rewrote cclive struct
+    - instead of carrying config parser (pp) instance throughout the program's
+      lifespan, it is now freed immediately after parsing, should save some
+      memory (opts.c)
+    - removed http_proxy_env from the struct, made it a local pointer (opts.c)
+    - similarly exec_mode is now a local variable
+    - cleaned up parse_opts function (opts.c)
  
 
 0.2.1
