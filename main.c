@@ -17,11 +17,14 @@
  */
 #include <stdlib.h>
 #include <memory.h>
+#include <signal.h>
 #include <curl/curl.h>
 
 #include "cclive.h"
 
 struct cclive_s cc;
+
+extern void handle_sigwinch(int); /* progress.c */
 
 static void /* init curl handle which will be reused */
 init_curl (void) {
@@ -152,6 +155,8 @@ main (int argc, char *argv[]) {
         if (login_youtube() != 0)
             exit(EXIT_FAILURE);
     }
+
+    signal(SIGWINCH, handle_sigwinch);
 
     if (!cc.gi.inputs_num) {
         const size_t size = 1024;

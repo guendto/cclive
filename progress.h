@@ -26,8 +26,8 @@ struct progressbar_s {
     double count;
     char *fname;
     int done;
+    int width;
 };
-
 typedef struct progressbar_s * progressbar_t;
 
 void

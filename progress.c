@@ -17,10 +17,21 @@
  */
 #include <time.h>
 #include <string.h>
+#include <signal.h>
+#include <sys/ioctl.h>
 #include <assert.h>
 
 #include "cclive.h"
 #include "progress.h"
+
+static int term_width;
+static volatile sig_atomic_t recv_sigwinch;
+
+void
+handle_sigwinch (int sig) {
+    recv_sigwinch = 1;
+    signal (SIGWINCH, handle_sigwinch);
+}
 
 static void /* convert time to formatted string */
 time2str (int secs, char *dst, size_t size) {
@@ -58,6 +69,19 @@ get_units (double *rate, char **unit) {
     *unit = (char *)units[i];
 }
 
+static int
+get_term_width (void) {
+    struct winsize wsz;
+    int fd = fileno(stderr);
+
+    if (ioctl(fd,TIOCGWINSZ,&wsz) < 0)
+        return(0);
+
+    return(wsz.ws_col);
+}
+
+#define DEFAULT_TERM_WIDTH  80
+
 void /* init progressbar */
 bar_init (progressbar_t bp, double initial, double total) {
     assert(bp != 0);
@@ -65,28 +89,48 @@ bar_init (progressbar_t bp, double initial, double total) {
         total = initial;
     bp->initial = initial; /* bytes dl previously */
     bp->total   = total;   /* expected bytes */
+
+    if (!term_width || recv_sigwinch) {
+        term_width = get_term_width();
+        if (!term_width)
+            term_width = DEFAULT_TERM_WIDTH;
+    }
+    bp->width   = term_width-1; /* do not use the last column */
+
     time(&bp->started);
 }
 
-#define BP_REFRESH_INTERVAL 0.2
-#define BP_DEFAULT_WIDTH    80
+#define REFRESH_INTERVAL 0.2
 
 void /* update progressbar */
 bar_update (progressbar_t bp, double total, double now) {
-    static char buffer[BP_DEFAULT_WIDTH+1];
-    char *p=(char*)buffer;
+    static char buffer[1024];
+    char *p = (char *)buffer;
+    int force_update = 0;
     time_t tnow,elapsed;
     double size,rate;
-    char tmp[32];
+    char tmp[1024];
     int i,l;
 
     assert(bp != 0);
+
+    if (recv_sigwinch) {
+        int old_width = term_width;
+        term_width    = get_term_width();
+        if (!term_width)
+            term_width = DEFAULT_TERM_WIDTH;
+        if (term_width != old_width) {
+            bp->width    = term_width - 1;
+            force_update = 1;
+        }
+        recv_sigwinch = 0;
+    }
 
     time(&tnow);
     elapsed = tnow - bp->started;
 
     if (!bp->done) {
-        if ( (elapsed - bp->last_update) < BP_REFRESH_INTERVAL)
+        if ( (elapsed - bp->last_update) < REFRESH_INTERVAL && !force_update)
             return;
     }
     else
@@ -95,8 +139,14 @@ bar_update (progressbar_t bp, double total, double now) {
     bp->last_update = elapsed;
     size            = bp->initial + now;
 
-    snprintf(tmp,sizeof(tmp),"%s",bp->fname);
-    p += sprintf(p,tmp); /* max. +32 */
+    l = 32;
+    if (bp->width > DEFAULT_TERM_WIDTH) {
+        l += bp->width - DEFAULT_TERM_WIDTH;
+        if (l > sizeof(tmp))
+            l = sizeof(tmp);
+    }
+    snprintf(tmp,l,"%s",bp->fname);
+    p += sprintf(p,tmp);
 
     if (bp->total > 0) {
         double _size = !bp->done ? size:now;
@@ -127,7 +177,7 @@ bar_update (progressbar_t bp, double total, double now) {
         sprintf(tmp,"  --.-K/s  --:--");  /* +16 = 74 */
 
     /* pad to max. width leaving enough space for rate+eta */
-    l = BP_DEFAULT_WIDTH - strlen(tmp) - 1;
+    l = bp->width - strlen(tmp);
     i = p - buffer;
     while (i<l) {
         *p++ = ' ';

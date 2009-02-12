@@ -1,6 +1,8 @@
 0.2.2
 
  User-visible changes:
+  * Implemented SIGWINCH signal handling
+    - cclive now resizes progressbar based on terminal width
   * Fixed: --limit-rate no longer limits following page transfers after file dl
  
 
