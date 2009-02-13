@@ -2,7 +2,7 @@
 
  User-visible changes:
   * Implemented SIGWINCH signal handling
-    - cclive now resizes progressbar based on terminal width
+    - cclive now resizes progressbar based on terminal width (min. 80 chars)
   * Fixed: --limit-rate no longer limits following page transfers after file dl
 
  Developer-visible changes:
