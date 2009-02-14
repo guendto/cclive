@@ -93,7 +93,6 @@ bar_init (progressbar_t bp, double initial, double total) {
         total = initial;
     bp->initial = initial; /* bytes dl previously */
     bp->total   = total;   /* expected bytes */
-
 #ifdef WITH_SIGWINCH
     if (!term_width || recv_sigwinch) {
         term_width = get_term_width();
@@ -104,7 +103,6 @@ bar_init (progressbar_t bp, double initial, double total) {
     term_width = DEFAULT_TERM_WIDTH;
 #endif
     bp->width   = term_width-1; /* do not use the last column */
-
     time(&bp->started);
 }
 
@@ -121,7 +119,6 @@ bar_update (progressbar_t bp, double total, double now) {
     int i,l;
 
     assert(bp != 0);
-
 #ifdef WITH_SIGWINCH
     if (recv_sigwinch) {
         int old_width = term_width;
@@ -135,7 +132,6 @@ bar_update (progressbar_t bp, double total, double now) {
         recv_sigwinch = 0;
     }
 #endif
-
     time(&tnow);
     elapsed = tnow - bp->started;
 
@@ -172,8 +168,8 @@ bar_update (progressbar_t bp, double total, double now) {
 
     rate = elapsed ? (now/elapsed) : 0;
     if (rate > 0) {
-        char eta[12];
         char *unit = "";
+        char eta[12];
         if (!bp->done) {
             int left = (int)((total-now)/rate);
             time2str(left,eta,sizeof(eta));
