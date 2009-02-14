@@ -30,18 +30,24 @@ extern void handle_sigwinch(int); /* progress.c */
 
 static void /* init curl handle which will be reused */
 init_curl (void) {
+    char *proxy = cc.gi.proxy_arg;
+
     if ( !(cc.curl = curl_easy_init()) ) {
         fprintf(stderr,"error: curl_easy_init returned null\n");
         exit(EXIT_FAILURE);
     }
+
     curl_easy_setopt(cc.curl, CURLOPT_USERAGENT,       cc.gi.agent_arg);
     curl_easy_setopt(cc.curl, CURLOPT_FOLLOWLOCATION,  1);
     curl_easy_setopt(cc.curl, CURLOPT_AUTOREFERER,     1);
     curl_easy_setopt(cc.curl, CURLOPT_NOBODY,          0);
     curl_easy_setopt(cc.curl, CURLOPT_VERBOSE,         cc.gi.debug_given);
     curl_easy_setopt(cc.curl, CURLOPT_ERRORBUFFER,     cc.curl_errmsg);
-    if (cc.gi.proxy_given)
-        curl_easy_setopt(cc.curl, CURLOPT_PROXY, cc.gi.proxy_arg);
+
+    if (cc.gi.no_proxy_given)
+        proxy = "";
+
+    curl_easy_setopt(cc.curl, CURLOPT_PROXY, proxy);
 }
 
 static void

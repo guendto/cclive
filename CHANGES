@@ -1,6 +1,13 @@
 0.2.2
 
  User-visible changes:
+  * Fixed HTTP proxy support (main.c, opts.c)
+    - Fixed: --no-proxy was not doing what was expected if http_proxy was set
+    - Fixed: http_proxy was misshandled causing cclive to crash at exit
+      - cclive set cc.gi.proxy_given variable if http_proxy env. var. was set
+      - This caused the gengetopt code attempt to free invalid pointer
+    - Changed: libcurl is now responsible for using http_proxy if it is set
+      - --proxy can still be used to override the http_proxy value
   * Implemented SIGWINCH signal handling
     - cclive now resizes progressbar based on terminal width (min. 80 chars)
   * Fixed: --limit-rate no longer limits following page transfers after file dl

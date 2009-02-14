@@ -21,7 +21,6 @@
 
 void /* parse cmdline opts and config (if exists) */
 parse_opts (const int argc, char **argv) {
-    char *http_proxy_env=0;
     int noconf=1;
     char *home=0;
 
@@ -52,14 +51,4 @@ parse_opts (const int argc, char **argv) {
         if (cmdline_parser(argc,argv,&cc.gi) != 0)
             exit(EXIT_FAILURE);
     }
-
-    if (!cc.gi.proxy_given) {
-        if ((http_proxy_env = getenv("http_proxy")) != 0) {
-            cc.gi.proxy_given = 1;
-            cc.gi.proxy_arg   = http_proxy_env;
-        }
-    }
-
-    if (cc.gi.no_proxy_given)
-        cc.gi.proxy_given = 0;
 }
