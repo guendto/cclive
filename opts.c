@@ -23,11 +23,11 @@ void /* parse cmdline opts and config (if exists) */
 parse_opts (const int argc, char **argv) {
     char *http_proxy_env=0;
     int noconf=1;
-    char *env=0;
+    char *home=0;
 
-    if ((env = getenv("HOME")) != 0) {
+    if ((home = getenv("HOME")) != 0) {
         char *path=0;
-        asprintf(&path,"%s/.ccliverc",env);
+        asprintf(&path,"%s/.ccliverc",home);
 
         if (path && file_exists(path) != 0) {
             struct cmdline_parser_params *pp = cmdline_parser_params_create();
