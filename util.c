@@ -152,7 +152,7 @@ fetch_link (const char *url, mem_t page, const int log_fetch) {
         else
             cc_log("\nerror: server returned http/%d\n",httpcode);
     } else {
-        cc_log("\nerror: server returned %s\n",cc.curl_errmsg);
+        cc_log("\nerror: %s\n",cc.curl_errmsg);
     }
     return(ret);
 }
