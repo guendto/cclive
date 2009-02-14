@@ -15,11 +15,10 @@
  Developer-visible changes:
   * Merged opts.c into main.c
   * Rewrote cclive struct
-    - Instead of carrying config parser (pp) instance throughout the program's
-      lifespan, it is now freed immediately after parsing, should save some
-      memory (opts.c)
-    - Removed http_proxy_env from the struct, made it a local pointer (opts.c)
-    - Similarly exec_mode is now a local variable
+    - config parser (pp) is now freed immediately after parsing, should save
+      some mem (opts.c)
+    - Removed http_proxy_env from the struct (opts.c)
+    - exec_mode is now a local variable (main.c)
     - Cleaned up parse_opts function (opts.c)
   * Added WITH_SIGWINCH to Makefile, e.g. "make WITH_SIGWINCH=no"
     - Builds cclive without the progressbar resizing feature described above
