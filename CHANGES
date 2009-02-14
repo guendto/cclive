@@ -13,6 +13,7 @@
   * Fixed: --limit-rate no longer limits following page transfers after file dl
 
  Developer-visible changes:
+  * Merged opts.c into main.c
   * Rewrote cclive struct
     - Instead of carrying config parser (pp) instance throughout the program's
       lifespan, it is now freed immediately after parsing, should save some

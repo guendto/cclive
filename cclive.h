@@ -45,9 +45,6 @@ handle_host(const char *url);
 int
 cc_log(const char *fmt, ...);
 
-void
-parse_opts(const int argc, char **argv);
-
 double
 file_exists(const char *path);
 

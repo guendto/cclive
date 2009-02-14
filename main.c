@@ -28,6 +28,40 @@ struct cclive_s cc;
 
 extern void handle_sigwinch(int); /* progress.c */
 
+static void /* parse cmdline opts and config (if exists) */
+parse_opts (const int argc, char **argv) {
+    int noconf=1;
+    char *home=0;
+
+    if ((home = getenv("HOME")) != 0) {
+        char *path=0;
+        asprintf(&path,"%s/.ccliverc",home);
+
+        if (path && file_exists(path) != 0) {
+            struct cmdline_parser_params *pp = cmdline_parser_params_create();
+            pp->check_required      = 0;
+            if (cmdline_parser_config_file(path,&cc.gi,pp) == 0) {
+                pp->initialize      = 0;
+                pp->override        = 1;
+                pp->check_required  = 1;
+                if (cmdline_parser_ext(argc,argv,&cc.gi,pp) == 0)
+                    noconf = 0;
+            }
+            FREE(pp);
+        }
+        FREE(path);
+    } else {
+        fprintf(stderr,
+            "warn: HOME environment variable not defined\n"
+            "warn: config will not be parsed\n");
+    }
+
+    if (noconf) {
+        if (cmdline_parser(argc,argv,&cc.gi) != 0)
+            exit(EXIT_FAILURE);
+    }
+}
+
 static void /* init curl handle which will be reused */
 init_curl (void) {
     char *proxy = cc.gi.proxy_arg;
