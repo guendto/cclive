@@ -3,27 +3,27 @@
  User-visible changes:
   * Added --number-videos
   * Fixed HTTP proxy support (main.c, opts.c)
-    - Fixed: --no-proxy was not doing what was expected if http_proxy was set
-    - Fixed: http_proxy was misshandled causing cclive to crash at exit
-      - cclive set cc.gi.proxy_given variable if http_proxy env. var. was set
-      - This caused the gengetopt code attempt to free invalid pointer
-    - Changed: libcurl is now responsible for using http_proxy if it is set
-      - --proxy can still be used to override the http_proxy value
+    - Fixed: --no-proxy was ignored if http_proxy env. variable was set
+    - Fixed: http_proxy env.v. was misshandled causing cclive to crash at exit
+      - missused cc.gi.proxy_given by setting it to 1 when http_proxy was set,
+        causing gengetopt generated code to try to free an invalid pointer
+    - Changed: libcurl is now responsible for using http_proxy
+      - option --proxy=address still overrides http_proxy definition
   * Implemented SIGWINCH signal handling
-    - cclive now resizes progressbar based on terminal width (min. 80 chars)
+    - progressbar now resizes along with terminal width but not below 80 chars
   * Fixed: --limit-rate no longer limits following page transfers after file dl
 
  Developer-visible changes:
   * Replaced remaining (excl. gengetopt generated) strcat with safer strlcat
   * Merged opts.c into main.c
   * Rewrote cclive struct
-    - config parser (pp) is now freed immediately after parsing, should save
-      some mem (opts.c)
-    - Removed http_proxy_env from the struct (opts.c)
-    - exec_mode is now a local variable (main.c)
-    - Cleaned up parse_opts function (opts.c)
+    - config parser (pp) is now freed immediately after parsing
+    - Removed http_proxy_env from the struct
+    - exec_mode is now a local variable
+  * Rewrote up parse_opts function
   * Added WITH_SIGWINCH to Makefile, e.g. "make WITH_SIGWINCH=no"
-    - Builds cclive without the progressbar resizing feature described above
+    - if != "yes" cclive is built without the resizing feature described above
+      which depends on SIGWINCH and ioctl(TIOCGWINSZ)
  
 
 0.2.1
