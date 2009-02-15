@@ -48,11 +48,11 @@ handle_youtube (mem_t page) {
             "http://youtube.com/get_video?video_id=%s&t=%s",id,t);
 
         if (!strcmp(cc.gi.download_arg,"mp4"))
-            strcat(xurl,"&fmt=18");
+            strlcat(xurl,"&fmt=18",sizeof(xurl));
         else if(!strcmp(cc.gi.download_arg,"3gpp"))
-            strcat(xurl,"&fmt=17");
+            strlcat(xurl,"&fmt=17",sizeof(xurl));
         else if(!strcmp(cc.gi.download_arg,"xflv"))
-            strcat(xurl,"&fmt=6");
+            strlcat(xurl,"&fmt=6",sizeof(xurl));
 
         rc = prep_video(xurl,id,"youtube");
     }

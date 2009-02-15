@@ -14,6 +14,7 @@
   * Fixed: --limit-rate no longer limits following page transfers after file dl
 
  Developer-visible changes:
+  * Replaced remaining (excl. gengetopt generated) strcat with safer strlcat
   * Merged opts.c into main.c
   * Rewrote cclive struct
     - config parser (pp) is now freed immediately after parsing, should save

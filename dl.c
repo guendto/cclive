@@ -134,7 +134,7 @@ create_fname(
             }
             snprintf(fname,sizeof(fname),num,dflt,host,id,suffix);
             asprintf(&n,".%d",i);
-            strcat(fname,n);
+            strlcat(fname,n,sizeof(fname));
             FREE(n);
         }
         asprintf(&p,fname);
