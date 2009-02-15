@@ -37,6 +37,7 @@ const char *gengetopt_args_info_help[] = {
   "  -c, --continue               resume partially downloaded file",
   "  -f, --download=FORMAT        download format  (possible values=\"flv\", \n                                 \"mp4\", \"wmv\", \"3gpp\", \"xflv\", \n                                 \"spark\", \"spak-mini\", \"vp6-hq\", \n                                 \"vp6-hd\", \"vp6\", \"h264\" default=`flv')",
   "  -O, --output-video=FILE      write video to file",
+  "  -N, --number-videos          number extracted videos",
   "      --emit-csv               emit video details as csv to stdout",
   "      --limit-rate=AMOUNT      limit download speed to amount kb per second",
   "      --agent=STRING           identify as string  (default=`Mozilla/5.0')",
@@ -106,6 +107,7 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->continue_given = 0 ;
   args_info->download_given = 0 ;
   args_info->output_video_given = 0 ;
+  args_info->number_videos_given = 0 ;
   args_info->emit_csv_given = 0 ;
   args_info->limit_rate_given = 0 ;
   args_info->agent_given = 0 ;
@@ -151,14 +153,15 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->continue_help = gengetopt_args_info_help[6] ;
   args_info->download_help = gengetopt_args_info_help[7] ;
   args_info->output_video_help = gengetopt_args_info_help[8] ;
-  args_info->emit_csv_help = gengetopt_args_info_help[9] ;
-  args_info->limit_rate_help = gengetopt_args_info_help[10] ;
-  args_info->agent_help = gengetopt_args_info_help[11] ;
-  args_info->proxy_help = gengetopt_args_info_help[12] ;
-  args_info->no_proxy_help = gengetopt_args_info_help[13] ;
-  args_info->youtube_user_help = gengetopt_args_info_help[14] ;
-  args_info->youtube_pass_help = gengetopt_args_info_help[15] ;
-  args_info->exec_help = gengetopt_args_info_help[16] ;
+  args_info->number_videos_help = gengetopt_args_info_help[9] ;
+  args_info->emit_csv_help = gengetopt_args_info_help[10] ;
+  args_info->limit_rate_help = gengetopt_args_info_help[11] ;
+  args_info->agent_help = gengetopt_args_info_help[12] ;
+  args_info->proxy_help = gengetopt_args_info_help[13] ;
+  args_info->no_proxy_help = gengetopt_args_info_help[14] ;
+  args_info->youtube_user_help = gengetopt_args_info_help[15] ;
+  args_info->youtube_pass_help = gengetopt_args_info_help[16] ;
+  args_info->exec_help = gengetopt_args_info_help[17] ;
   
 }
 
@@ -349,6 +352,8 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "download", args_info->download_orig, cmdline_parser_download_values);
   if (args_info->output_video_given)
     write_into_file(outfile, "output-video", args_info->output_video_orig, 0);
+  if (args_info->number_videos_given)
+    write_into_file(outfile, "number-videos", 0, 0 );
   if (args_info->emit_csv_given)
     write_into_file(outfile, "emit-csv", 0, 0 );
   if (args_info->limit_rate_given)
@@ -658,6 +663,7 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
         { "continue",	0, NULL, 'c' },
         { "download",	1, NULL, 'f' },
         { "output-video",	1, NULL, 'O' },
+        { "number-videos",	0, NULL, 'N' },
         { "emit-csv",	0, NULL, 0 },
         { "limit-rate",	1, NULL, 0 },
         { "agent",	1, NULL, 0 },
@@ -669,7 +675,7 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
         { NULL,	0, NULL, 0 }
       };
 
-      c = getopt_long (argc, argv, "hvqncf:O:u:p:e:", long_options, &option_index);
+      c = getopt_long (argc, argv, "hvqncf:O:Nu:p:e:", long_options, &option_index);
 
       if (c == -1) break;	/* Exit from `while (1)' loop.  */
 
@@ -748,6 +754,18 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
               &(local_args_info.output_video_given), optarg, 0, 0, ARG_STRING,
               check_ambiguity, override, 0, 0,
               "output-video", 'O',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 'N':	/* number extracted videos.  */
+        
+        
+          if (update_arg( 0 , 
+               0 , &(args_info->number_videos_given),
+              &(local_args_info.number_videos_given), optarg, 0, 0, ARG_NO,
+              check_ambiguity, override, 0, 0,
+              "number-videos", 'N',
               additional_error))
             goto failure;
         

@@ -45,6 +45,7 @@ struct gengetopt_args_info
   char * output_video_arg;	/**< @brief write video to file.  */
   char * output_video_orig;	/**< @brief write video to file original value given at command line.  */
   const char *output_video_help; /**< @brief write video to file help description.  */
+  const char *number_videos_help; /**< @brief number extracted videos help description.  */
   const char *emit_csv_help; /**< @brief emit video details as csv to stdout help description.  */
   int limit_rate_arg;	/**< @brief limit download speed to amount kb per second.  */
   char * limit_rate_orig;	/**< @brief limit download speed to amount kb per second original value given at command line.  */
@@ -75,6 +76,7 @@ struct gengetopt_args_info
   unsigned int continue_given ;	/**< @brief Whether continue was given.  */
   unsigned int download_given ;	/**< @brief Whether download was given.  */
   unsigned int output_video_given ;	/**< @brief Whether output-video was given.  */
+  unsigned int number_videos_given ;	/**< @brief Whether number-videos was given.  */
   unsigned int emit_csv_given ;	/**< @brief Whether emit-csv was given.  */
   unsigned int limit_rate_given ;	/**< @brief Whether limit-rate was given.  */
   unsigned int agent_given ;	/**< @brief Whether agent was given.  */

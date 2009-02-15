@@ -88,6 +88,8 @@ query_filelen(const char *xurl, double *len, char **ct) {
     return(ret);
 }
 
+static int video_num;
+
 static char * /* return video output filename */
 create_fname(
     double *initial,
@@ -104,20 +106,25 @@ create_fname(
     assert(host     != 0);
 
     if (!cc.gi.output_video_given) {
-        const char dflt[] = "%s_%s.%s";
-        char tmp[PATH_MAX];
+        const char dflt[] = "%s%s_%s.%s";
+        char fname[PATH_MAX];
+        char num[8];
         char *n=0;
         int i;
 
-        snprintf(tmp,sizeof(tmp),dflt,host,id,suffix);
+        num[0] = '\0';
+        if (cc.gi.number_videos_given)
+            snprintf(num,sizeof(num),"%03d_",++video_num);
+
+        snprintf(fname,sizeof(fname),dflt,num,host,id,suffix);
 
         /* create a temporary output filename if needed by adding a suffix */
         for (i=1; i<INT_MAX; ++i) {
-            *initial = file_exists(tmp);
+            *initial = file_exists(fname);
             if (*initial == 0) {
                 break;
             } else if (*initial == total) {
-                store_fname(tmp);
+                store_fname(fname);
                 cc_log("error: file is already fully retrieved; "
                         "nothing to do\n");
                 return(0);
@@ -125,12 +132,12 @@ create_fname(
                 if (cc.gi.continue_given)
                     break;
             }
-            snprintf(tmp,sizeof(tmp),dflt,host,id,suffix);
+            snprintf(fname,sizeof(fname),num,dflt,host,id,suffix);
             asprintf(&n,".%d",i);
-            strcat(tmp,n);
+            strcat(fname,n);
             FREE(n);
         }
-        asprintf(&p,tmp);
+        asprintf(&p,fname);
     }
     else {
         *initial = file_exists(cc.gi.output_video_arg);

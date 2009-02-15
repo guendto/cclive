@@ -58,6 +58,12 @@ formats. See the L</FORMATS> section for more on this.
 Write extracted video to I<file>. Do I<not> use this when extracting multiple
 videos on one go. Causes B<cclive> to overwrite an already existing file.
 
+=item B<-N, --number-videos>
+
+Number extracted video files. Causes B<cclive> to add a numeric prefix to
+the file names. Typically used for extracting multipart videos to keep them
+in order.
+
 =item B<--emit-csv>
 
 Emit video details as CSV to stdout. Implies B<--no-extract>. Note that

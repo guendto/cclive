@@ -129,7 +129,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2009-02-10" "0.2.1" "cclive manual"
+.TH cclive 1 "2009-02-15" "0.2.2" "cclive manual"
 .SH "NAME"
 cclive \- video extraction utility for the flash dismissing hordes
 .SH "SYNOPSIS"
@@ -173,6 +173,11 @@ formats. See the \*(L"\s-1FORMATS\s0\*(R" section for more on this.
 .IX Item "-O, --output-video=FILE"
 Write extracted video to \fIfile\fR. Do \fInot\fR use this when extracting multiple
 videos on one go. Causes \fBcclive\fR to overwrite an already existing file.
+.IP "\fB\-N, \-\-number\-videos\fR" 4
+.IX Item "-N, --number-videos"
+Number extracted video files. Causes \fBcclive\fR to add a numeric prefix to
+the file names. Typically used for extracting multipart videos to keep them
+in order.
 .IP "\fB\-\-emit\-csv\fR" 4
 .IX Item "--emit-csv"
 Emit video details as \s-1CSV\s0 to stdout. Implies \fB\-\-no\-extract\fR. Note that

@@ -31,6 +31,9 @@ option "output-video"
     O "write video to file"
     string typestr="FILE"
     no
+option "number-videos"
+    N "number extracted videos"
+    optional
 option "emit-csv"
     - "emit video details as csv to stdout"
     optional

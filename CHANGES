@@ -1,6 +1,7 @@
 0.2.2
 
  User-visible changes:
+  * Added --number-videos
   * Fixed HTTP proxy support (main.c, opts.c)
     - Fixed: --no-proxy was not doing what was expected if http_proxy was set
     - Fixed: http_proxy was misshandled causing cclive to crash at exit
