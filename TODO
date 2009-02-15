@@ -2,9 +2,12 @@
 
 Ongoing
 
- * improve and test portability
-   - cclive is developed on FreeBSD and Debian based systems, both i386
-   - please send any test feedback to cclive@googlegroups.com
+ * no bug/typo is too minor to report
+   - send bug reports to cclive@googlegroups.com
+
+ * improve portability
+   - cclive is being developed on FreeBSD and Debian (both i386)
+   - send any feedback to cclive@googlegroups.com
 
  * add support for new hosts
    - see host.c to get started

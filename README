@@ -5,19 +5,35 @@
 cclive is a command line video extraction utility similar to clive but
 focusing on low requirements. Its features are few and essential. 
 
-If you are interested in contributing, please see the TODO file.
+If you are interested in contributing, or you have test feedback,
+please see the TODO file.
 
 
                 cclive != clive
 
-While cclive shares many of the same features with clive, some features were
-left out in order to keep the prerequisites low.
+cclive and clive share much of the same features. Some have been excluded
+from cclive to keep the prerequisites low. Others may have been implemented
+differently or are unique to cclive. Notable differences:
 
- * No clipboard support (use "xclip -o | cclive")
- * No cache (+bdb prereq., probably not missed by many)
- * No <title> parsing (+htmlparser prereq., +proper utf8 support, overkill)
- * Limited --emit features (CSV only)
- * No fancy filename formatters (std. "$host_$id.$suffix, +--output-video)
+ * No clipboard support
+   - You can use "xclip -o | cclive" instead
 
-Apart from clivepass, cclive can be used together with the clive utilities
-(clive-utils).
+ * No cache
+   - Additional prerequisite (e.g. bdb)
+
+ * No <title> parsing
+   - Additional prerequisites
+     - HTML parser/tokenizer +proper utf8 support
+     - overkill (we would only want the <title>...)
+
+ * Limited --emit features
+   - CSV only
+
+ * Simple video file naming
+   - $host_$id.$suffix
+   - option --output-video=FILE
+
+cclive can be used together with clive-utils:
+  http://code.google.com/p/clive-utils
+
+With the exception of clivepass.
