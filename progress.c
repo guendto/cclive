@@ -33,13 +33,13 @@ static volatile sig_atomic_t recv_sigwinch;
 void
 handle_sigwinch (int sig) {
     recv_sigwinch = 1;
-    signal (SIGWINCH, handle_sigwinch);
+    signal(SIGWINCH, handle_sigwinch);
 }
 
 static int
 get_term_width (void) {
-    struct winsize wsz;
     int fd = fileno(stderr);
+    struct winsize wsz;
 
     if (ioctl(fd,TIOCGWINSZ,&wsz) < 0)
         return(0);
