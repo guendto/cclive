@@ -49,7 +49,7 @@ servers. Be sure to read the L</FORMATS> section.
 =item B<-f, --download=>I<FORMAT>
 
 Extract I<format> instead of the default "flv". Possible values are "flv"
-(default), "mp4", "wmv", "3gpp", "xflv", "spark", "vp6-hq", "vp6-hd", "vp6",
+(default), "mp4", "3gpp", "xflv", "spark", "vp6-hq", "vp6-hd", "vp6",
 "h264", "spak-mini". Note that only certain hosts support only certain
 formats. See the L</FORMATS> section for more on this.
 
@@ -140,7 +140,7 @@ Print output filename on a dedicated line before file transfer starts.
     * mp4 != youtube-mp4
 
   break.com
-    * flv/wmv
+    * flv
 
   evisor.tv
     * flv

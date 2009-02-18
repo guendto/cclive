@@ -91,8 +91,7 @@ handle_break (mem_t page) {
 
     if (id && fpath && fname) {
         asprintf(&xurl,
-            "http://media1.break.com/dnet/media/%s/%s.%s",fpath,fname,
-            (!strcmp(cc.gi.download_arg,"wmv")) ? "wmv":"flv");
+            "http://media1.break.com/dnet/media/%s/%s.flv",fpath,fname);
         rc = prep_video(xurl,id,"break");
     }
 
