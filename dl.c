@@ -132,7 +132,7 @@ create_fname(
                 if (cc.gi.continue_given)
                     break;
             }
-            snprintf(fname,sizeof(fname),num,dflt,host,id,suffix);
+            snprintf(fname,sizeof(fname),dflt,num,host,id,suffix);
             asprintf(&n,".%d",i);
             strlcat(fname,n,sizeof(fname));
             FREE(n);
