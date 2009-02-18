@@ -11,10 +11,6 @@ please see the TODO file.
 
                 cclive != clive
 
-cclive and clive share much of the same features. Some have been excluded
-from cclive to keep the prerequisites low. Others may have been implemented
-differently or are unique to cclive. Notable differences:
-
  * No clipboard support
    - You can use "xclip -o | cclive" instead
 
