@@ -262,13 +262,16 @@ prep_video (const char *xurl, const char *id, const char *host) {
     if (!rc) {
         fname = create_fname(&initial, len, id, cc.gi.download_arg, host);
         if (fname) {
+            const char file[] = "file: %s  %.1fM  [%s]\n";
             rc = 0;
             if (cc.gi.no_extract_given)
-                cc_log("%s  %.1fM  [%s]\n",fname,ToMB(len),ct);
+                cc_log(file,fname,ToMB(len),ct);
             else if (cc.gi.emit_csv_given)
                 fprintf(stdout,"csv:\"%s\",\"%.0f\",\"%.0f\",\"%s\"\n",
                     fname,len,initial,xurl);
             else {
+                if (cc.gi.print_fname_given)
+                    cc_log(file,fname,ToMB(len),ct);
                 rc = dl_file(xurl, fname, initial, len);
                 if (!rc)
                     store_fname(fname);

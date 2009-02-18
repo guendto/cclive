@@ -46,6 +46,7 @@ const char *gengetopt_args_info_help[] = {
   "  -u, --youtube-user=USERNAME  login username for youtube",
   "  -p, --youtube-pass=PASSWORD  login password for youtube, prompt if undefined",
   "  -e, --exec=COMMAND           execute subsequent command with extracted video",
+  "      --print-fname            print output filename on a dedicated line",
     0
 };
 
@@ -116,6 +117,7 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->youtube_user_given = 0 ;
   args_info->youtube_pass_given = 0 ;
   args_info->exec_given = 0 ;
+  args_info->print_fname_given = 0 ;
 }
 
 static
@@ -162,6 +164,7 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->youtube_user_help = gengetopt_args_info_help[15] ;
   args_info->youtube_pass_help = gengetopt_args_info_help[16] ;
   args_info->exec_help = gengetopt_args_info_help[17] ;
+  args_info->print_fname_help = gengetopt_args_info_help[18] ;
   
 }
 
@@ -370,6 +373,8 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "youtube-pass", args_info->youtube_pass_orig, 0);
   if (args_info->exec_given)
     write_into_file(outfile, "exec", args_info->exec_orig, 0);
+  if (args_info->print_fname_given)
+    write_into_file(outfile, "print-fname", 0, 0 );
   
 
   i = EXIT_SUCCESS;
@@ -672,6 +677,7 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
         { "youtube-user",	1, NULL, 'u' },
         { "youtube-pass",	1, NULL, 'p' },
         { "exec",	1, NULL, 'e' },
+        { "print-fname",	0, NULL, 0 },
         { NULL,	0, NULL, 0 }
       };
 
@@ -902,6 +908,20 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
                 &(local_args_info.no_proxy_given), optarg, 0, 0, ARG_NO,
                 check_ambiguity, override, 0, 0,
                 "no-proxy", '-',
+                additional_error))
+              goto failure;
+          
+          }
+          /* print output filename on a dedicated line.  */
+          else if (strcmp (long_options[option_index].name, "print-fname") == 0)
+          {
+          
+          
+            if (update_arg( 0 , 
+                 0 , &(args_info->print_fname_given),
+                &(local_args_info.print_fname_given), optarg, 0, 0, ARG_NO,
+                check_ambiguity, override, 0, 0,
+                "print-fname", '-',
                 additional_error))
               goto failure;
           

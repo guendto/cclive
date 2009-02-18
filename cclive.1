@@ -129,7 +129,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2009-02-15" "0.2.2" "cclive manual"
+.TH cclive 1 "2009-02-18" "0.2.3" "cclive manual"
 .SH "NAME"
 cclive \- video extraction utility for the flash dismissing hordes
 .SH "SYNOPSIS"
@@ -137,8 +137,8 @@ cclive \- video extraction utility for the flash dismissing hordes
 cclive [options] [url...]
 .SH "DESCRIPTION"
 .IX Header "DESCRIPTION"
-cclive is a command line video extraction utility similar to clive but
-focusing on low requirements. Its features are few and essential. 
+cclive is command line video extraction utility similar to clive but with
+lower requirements. Its features are few and essential. 
 .SH "OPTIONS"
 .IX Header "OPTIONS"
 .IP "\fB\-h, \-\-help\fR" 4
@@ -215,6 +215,9 @@ Example:
 .IX Item "-e, --exec=COMMAND+"
 Same as \fB\-\-exec\fR, except that \*(L"%i\*(R" is replaced with as many pathnames
 as possible for the invocation of \fIcommand\fR.
+.IP "\fB\-\-print\-fname\fR" 4
+.IX Item "--print-fname"
+Print output filename on a dedicated line before file transfer starts.
 .SH "EXAMPLES"
 .IX Header "EXAMPLES"
 .Vb 7

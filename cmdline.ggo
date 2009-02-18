@@ -68,3 +68,6 @@ option "exec"
     e "execute subsequent command with extracted video"
     string typestr="COMMAND"
     optional
+option "print-fname"
+    - "print output filename on a dedicated line"
+    optional

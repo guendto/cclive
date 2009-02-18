@@ -1,6 +1,7 @@
 0.2.3
 
  User-visible changes:
+  * Added --print-fname
   * Fixed file naming when output file exists already
     Symptoms: output file is called ".1" or ".2" etc.
 

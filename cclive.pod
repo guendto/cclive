@@ -110,6 +110,10 @@ Example:
 Same as B<--exec>, except that "%i" is replaced with as many pathnames
 as possible for the invocation of I<command>.
 
+=item B<--print-fname>
+
+Print output filename on a dedicated line before file transfer starts.
+
 =back
 
 =head1 EXAMPLES

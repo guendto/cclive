@@ -66,6 +66,7 @@ struct gengetopt_args_info
   char * exec_arg;	/**< @brief execute subsequent command with extracted video.  */
   char * exec_orig;	/**< @brief execute subsequent command with extracted video original value given at command line.  */
   const char *exec_help; /**< @brief execute subsequent command with extracted video help description.  */
+  const char *print_fname_help; /**< @brief print output filename on a dedicated line help description.  */
   
   unsigned int help_given ;	/**< @brief Whether help was given.  */
   unsigned int version_given ;	/**< @brief Whether version was given.  */
@@ -85,6 +86,7 @@ struct gengetopt_args_info
   unsigned int youtube_user_given ;	/**< @brief Whether youtube-user was given.  */
   unsigned int youtube_pass_given ;	/**< @brief Whether youtube-pass was given.  */
   unsigned int exec_given ;	/**< @brief Whether exec was given.  */
+  unsigned int print_fname_given ;	/**< @brief Whether print-fname was given.  */
 
   char **inputs ; /**< @brief unamed options (options without names) */
   unsigned inputs_num ; /**< @brief unamed options number */
