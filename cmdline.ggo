@@ -1,5 +1,5 @@
 package "cclive"
-version "0.2.3"
+version "0.2.4"
 
 option "version"
     v "print version and exit"
