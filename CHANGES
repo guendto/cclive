@@ -3,6 +3,9 @@
  User-visible changes:
   * Added --stream-exec and --stream options
 
+ Developer-visible changes:
+  * Added missing GPL note to cclive.h
+
 
 0.2.3
 (February 20, 2009)
