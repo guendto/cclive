@@ -15,6 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/wait.h>
 #include <time.h>
 #include <string.h>
 #ifdef WITH_SIGWINCH
@@ -25,6 +28,9 @@
 
 #include "cclive.h"
 #include "progress.h"
+
+static int streaming_flag;
+static pid_t streaming_pid;
 
 static int term_width;
 #ifdef WITH_SIGWINCH
@@ -84,11 +90,26 @@ get_units (double *rate, char **unit) {
     *unit = (char *)units[i];
 }
 
+static void
+fork_streamer (progressbar_t bp) {
+    streaming_flag = 1;
+    if ( (streaming_pid = fork()) < 0)
+        perror("fork");
+    else if (streaming_pid == 0) {
+        char *cmd = strrepl(cc.gi.stream_exec_arg,"%i",bp->fname);
+        if (cmd)
+            system(cmd);
+        FREE(cmd);
+        exit(0);
+    }
+}
+
 #define DEFAULT_TERM_WIDTH  80
 
 void /* init progressbar */
 bar_init (progressbar_t bp, double initial, double total) {
     assert(bp != 0);
+    streaming_flag = 0;
     if (initial > total)
         total = initial;
     bp->initial = initial; /* bytes dl previously */
@@ -164,6 +185,14 @@ bar_update (progressbar_t bp, double total, double now) {
         snprintf(tmp,20,
             "  %4.1fM / %4.1fM",ToMB(_size),ToMB(bp->total));
         p += sprintf(p,tmp); /* max. +20 = 58 */
+
+        if (cc.gi.stream_given
+            && cc.gi.stream_exec_given
+            && !streaming_flag)
+        {
+            if (percent >= cc.gi.stream_arg)
+                fork_streamer(bp);
+        }
     }
 
     rate = elapsed ? (now/elapsed) : 0;
@@ -206,6 +235,11 @@ bar_finish (progressbar_t bp) {
     }
     bp->done = 1;
     bar_update(bp,-1,-1);
+
+    if (streaming_flag) {
+        if (waitpid(streaming_pid,0,0) != streaming_pid)
+            perror("waitpid");
+    }
 }
 
 int /* curl progress callback function */

@@ -129,7 +129,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2009-02-19" "0.2.3" "cclive manual"
+.TH cclive 1 "2009-03-01" "0.2.3" "cclive manual"
 .SH "NAME"
 cclive \- video extraction utility for the flash dismissing hordes
 .SH "SYNOPSIS"
@@ -210,11 +210,35 @@ The expression must be terminated by a semicolon (\*(L";\*(R"). If the specifier
 by the pathname of the extracted video file.
 .Sp
 Example:
-  % cclive \-e \*(L"mplayer \f(CW%i\fR;\*(R" \s-1URL\s0
+  % cclive \-e \*(L"mplayer \-real\-quiet \f(CW%i\fR;\*(R" \s-1URL\s0
 .IP "\fB\-e, \-\-exec=\fR\fI\s-1COMMAND\s0\fR\fB+\fR" 4
 .IX Item "-e, --exec=COMMAND+"
 Same as \fB\-\-exec\fR, except that \*(L"%i\*(R" is replaced with as many pathnames
 as possible for the invocation of \fIcommand\fR.
+.IP "\fB\-\-stream\-exec=\fR\fI\s-1COMMAND\s0\fR" 4
+.IX Item "--stream-exec=COMMAND"
+Execute \fIcommand\fR when file download reaches \fIpercent\fR as defined with
+with the \fB\-\-stream\fR option. The \*(L"%i\*(R" specifier for video pathname is
+expected to appear somewhere in the \fIcommand\fR expression.
+.Sp
+Unlike the \fB\-\-exec\fR option which is executed subsequently, \fBcclive\fR
+forks the streaming process and continues with the file transfer.
+.Sp
+It should also be noted that \fBcclive\fR makes no effort to check whether
+there's enough data to be streamed. It assumes the user knows how much
+data needs to be buffered before starting the process. Similarly, if the
+transfer rate drops significantly after starting the process and the
+forked process runs out of data, \fBcclive\fR simply ignores this.
+.Sp
+Some players and formats may not work properly. Use \fImplayer\fR\|(1) and choose
+flv if you are unsure. These have proven to be fairly reliable.
+.IP "\fB\-\-stream=\fR\fI\s-1PERCENT\s0\fR" 4
+.IX Item "--stream=PERCENT"
+Trigger the \fIcommand\fR defined with the \fB\-\-stream\-exec\fR option when the
+\&\fIpercent\fR is reached. 
+.Sp
+Example:
+  % cclive \-\-stream\-exec=\*(L"mplayer \-real\-quiet \f(CW%i\fR\*(R" \-\-stream=20 \s-1URL\s0
 .IP "\fB\-\-print\-fname\fR" 4
 .IX Item "--print-fname"
 Print output filename on a dedicated line before file transfer starts.

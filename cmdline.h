@@ -66,6 +66,12 @@ struct gengetopt_args_info
   char * exec_arg;	/**< @brief execute subsequent command with extracted video.  */
   char * exec_orig;	/**< @brief execute subsequent command with extracted video original value given at command line.  */
   const char *exec_help; /**< @brief execute subsequent command with extracted video help description.  */
+  char * stream_exec_arg;	/**< @brief command to be executed when stream percent is met.  */
+  char * stream_exec_orig;	/**< @brief command to be executed when stream percent is met original value given at command line.  */
+  const char *stream_exec_help; /**< @brief command to be executed when stream percent is met help description.  */
+  int stream_arg;	/**< @brief execute streaming command at percent.  */
+  char * stream_orig;	/**< @brief execute streaming command at percent original value given at command line.  */
+  const char *stream_help; /**< @brief execute streaming command at percent help description.  */
   const char *print_fname_help; /**< @brief print output filename on a dedicated line help description.  */
   
   unsigned int help_given ;	/**< @brief Whether help was given.  */
@@ -86,6 +92,8 @@ struct gengetopt_args_info
   unsigned int youtube_user_given ;	/**< @brief Whether youtube-user was given.  */
   unsigned int youtube_pass_given ;	/**< @brief Whether youtube-pass was given.  */
   unsigned int exec_given ;	/**< @brief Whether exec was given.  */
+  unsigned int stream_exec_given ;	/**< @brief Whether stream-exec was given.  */
+  unsigned int stream_given ;	/**< @brief Whether stream was given.  */
   unsigned int print_fname_given ;	/**< @brief Whether print-fname was given.  */
 
   char **inputs ; /**< @brief unamed options (options without names) */

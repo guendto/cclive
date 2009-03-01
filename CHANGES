@@ -1,3 +1,9 @@
+0.2.4
+
+ User-visible changes:
+  * Added --stream-exec and --stream options
+
+
 0.2.3
 (February 20, 2009)
 

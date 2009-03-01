@@ -103,12 +103,38 @@ The expression must be terminated by a semicolon (";"). If the specifier
 by the pathname of the extracted video file.
 
 Example:
-  % cclive -e "mplayer %i;" URL
+  % cclive -e "mplayer -real-quiet %i;" URL
 
 =item B<-e, --exec=>I<COMMAND>B<+>
 
 Same as B<--exec>, except that "%i" is replaced with as many pathnames
 as possible for the invocation of I<command>.
+
+=item B<--stream-exec=>I<COMMAND>
+
+Execute I<command> when file download reaches I<percent> as defined with
+with the B<--stream> option. The "%i" specifier for video pathname is
+expected to appear somewhere in the I<command> expression.
+
+Unlike the B<--exec> option which is executed subsequently, B<cclive>
+forks the streaming process and continues with the file transfer.
+
+It should also be noted that B<cclive> makes no effort to check whether
+there's enough data to be streamed. It assumes the user knows how much
+data needs to be buffered before starting the process. Similarly, if the
+transfer rate drops significantly after starting the process and the
+forked process runs out of data, B<cclive> simply ignores this.
+
+Some players and formats may not work properly. Use L<mplayer(1)> and choose
+flv if you are unsure. These have proven to be fairly reliable.
+
+=item B<--stream=>I<PERCENT>
+
+Trigger the I<command> defined with the B<--stream-exec> option when the
+I<percent> is reached. 
+
+Example:
+  % cclive --stream-exec="mplayer -real-quiet %i" --stream=20 URL
 
 =item B<--print-fname>
 

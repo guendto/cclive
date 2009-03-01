@@ -68,6 +68,15 @@ option "exec"
     e "execute subsequent command with extracted video"
     string typestr="COMMAND"
     optional
+option "stream-exec"
+    - "command to be executed when stream percent is met"
+    string typestr="COMMAND"
+    optional
+option "stream"
+    - "execute streaming command at percent"
+    int typestr="PERCENT"
+    optional
+    dependon="stream-exec"
 option "print-fname"
     - "print output filename on a dedicated line"
     optional
