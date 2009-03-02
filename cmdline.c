@@ -46,8 +46,8 @@ const char *gengetopt_args_info_help[] = {
   "  -u, --youtube-user=USERNAME  login username for youtube",
   "  -p, --youtube-pass=PASSWORD  login password for youtube, prompt if undefined",
   "  -e, --exec=COMMAND           execute subsequent command with extracted video",
-  "      --stream-exec=COMMAND    command to be executed when stream percent is \n                                 met",
-  "      --stream=PERCENT         execute streaming command at percent",
+  "      --stream-exec=COMMAND    stream command to be executed",
+  "      --stream=PERCENT         execute stream command when transfer reaches %",
   "      --print-fname            print output filename on a dedicated line",
     0
 };
@@ -940,7 +940,7 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
               goto failure;
           
           }
-          /* command to be executed when stream percent is met.  */
+          /* stream command to be executed.  */
           else if (strcmp (long_options[option_index].name, "stream-exec") == 0)
           {
           
@@ -954,7 +954,7 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
               goto failure;
           
           }
-          /* execute streaming command at percent.  */
+          /* execute stream command when transfer reaches %.  */
           else if (strcmp (long_options[option_index].name, "stream") == 0)
           {
           
