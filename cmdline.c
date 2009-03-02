@@ -513,6 +513,11 @@ cmdline_parser_required2 (struct gengetopt_args_info *args_info, const char *pro
       fprintf (stderr, "%s: '--youtube-pass' ('-p') option depends on option 'youtube-user'%s\n", prog_name, (additional_error ? additional_error : ""));
       error = 1;
     }
+  if (args_info->stream_exec_given && ! args_info->stream_given)
+    {
+      fprintf (stderr, "%s: '--stream-exec' option depends on option 'stream'%s\n", prog_name, (additional_error ? additional_error : ""));
+      error = 1;
+    }
   if (args_info->stream_given && ! args_info->stream_exec_given)
     {
       fprintf (stderr, "%s: '--stream' option depends on option 'stream-exec'%s\n", prog_name, (additional_error ? additional_error : ""));

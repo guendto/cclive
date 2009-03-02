@@ -72,6 +72,7 @@ option "stream-exec"
     - "command to be executed when stream percent is met"
     string typestr="COMMAND"
     optional
+    dependon="stream"
 option "stream"
     - "execute streaming command at percent"
     int typestr="PERCENT"
