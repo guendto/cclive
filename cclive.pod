@@ -95,7 +95,7 @@ extraction, even if the batch does not contain any Youtube hosted links.
 
 Use I<password> for Youtube login.  If undefined, B<cclive> prompts for it.
 
-=item B<-e, --exec=>I<COMMAND>B<;>
+=item B<--exec=>I<COMMAND>B<;>
 
 Execute I<command>. Optional arguments may be passed to the command.
 The expression must be terminated by a semicolon (";"). If the specifier
@@ -103,16 +103,16 @@ The expression must be terminated by a semicolon (";"). If the specifier
 by the pathname of the extracted video file.
 
 Example:
-  % cclive -e "mplayer -real-quiet %i;" URL
+  % cclive --exec="mplayer -real-quiet %i;" URL
 
-=item B<-e, --exec=>I<COMMAND>B<+>
+=item B<--exec=>I<COMMAND>B<+>
 
 Same as B<--exec>, except that "%i" is replaced with as many pathnames
 as possible for the invocation of I<command>.
 
 =item B<--stream-exec=>I<COMMAND>
 
-Execute I<command> when file download reaches I<percent> as defined with
+Execute I<command> when file transfer reaches I<percent> done defined
 with the B<--stream> option. The "%i" specifier for video pathname is
 expected to appear somewhere in the I<command> expression.
 
@@ -130,8 +130,8 @@ flv if you are unsure. These have proven to be fairly reliable.
 
 =item B<--stream=>I<PERCENT>
 
-Trigger the I<command> defined with the B<--stream-exec> option when the
-I<percent> is reached. 
+Execute the I<command> defined with the B<--stream-exec> option when the
+file transfer reaches I<percent> done.
 
 Example:
   % cclive --stream-exec="mplayer -real-quiet %i" --stream=20 URL
@@ -144,13 +144,22 @@ Print output filename on a dedicated line before file transfer starts.
 
 =head1 EXAMPLES
 
-  % cclive "http://youtube.com/watch?v=3HD220e0bx4"
-  % cclive -n "http://youtube.com/watch?v=3HD220e0bx4"
-  % cclive -f mp4 "http://youtube.com/watch?v=3HD220e0bx4"
-  % cclive "http://youtube.com/watch?v=3HD220e0bx4" -cf mp4
-  % cclive -u username "http://youtube.com/watch?v=3HD220e0bx4" -f mp4
-  % cclive "http://youtube.com/watch?v=3HD220e0bx4" -e "mplayer %i;"
-  % cclive "http://youtube.com/watch?v=..." -e "ffmpeg -i %i %i.mp3;"
+Typical use:
+  % cclive URL
+
+Extract mp4 format video from the URL:
+  % cclive -f mp4 URL
+
+Play extracted video with L<mplayer(1)> subsequently:
+  % cclive --exec="mplayer -really-quiet %i;" URL
+
+Extract audio from the downloaded video and save it as mp3
+using L<ffmpeg(1)>:
+  % cclive --exec="ffmpeg -i %i %i.mp3;" URL
+
+Start streaming the video being extracted with L<mplayer(1)>
+when the file transfer reaches 20% done:
+  % cclive --stream-exec="mplayer -really-quiet %i" --stream=20 URL
 
 =head1 FORMATS
 

@@ -129,7 +129,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2009-03-01" "0.2.4" "cclive manual"
+.TH cclive 1 "2009-03-02" "0.2.4" "cclive manual"
 .SH "NAME"
 cclive \- video extraction utility for the flash dismissing hordes
 .SH "SYNOPSIS"
@@ -202,22 +202,22 @@ extraction, even if the batch does not contain any Youtube hosted links.
 .IP "\fB\-p, \-\-youtube\-pass=\fR\fI\s-1PASSWORD\s0\fR" 4
 .IX Item "-p, --youtube-pass=PASSWORD"
 Use \fIpassword\fR for Youtube login.  If undefined, \fBcclive\fR prompts for it.
-.IP "\fB\-e, \-\-exec=\fR\fI\s-1COMMAND\s0\fR\fB;\fR" 4
-.IX Item "-e, --exec=COMMAND;"
+.IP "\fB\-\-exec=\fR\fI\s-1COMMAND\s0\fR\fB;\fR" 4
+.IX Item "--exec=COMMAND;"
 Execute \fIcommand\fR. Optional arguments may be passed to the command.
 The expression must be terminated by a semicolon (\*(L";\*(R"). If the specifier
 \&\*(L"%i\*(R" appears anywhere in \fIcommand\fR name or the arguments it is replaced
 by the pathname of the extracted video file.
 .Sp
 Example:
-  % cclive \-e \*(L"mplayer \-real\-quiet \f(CW%i\fR;\*(R" \s-1URL\s0
-.IP "\fB\-e, \-\-exec=\fR\fI\s-1COMMAND\s0\fR\fB+\fR" 4
-.IX Item "-e, --exec=COMMAND+"
+  % cclive \-\-exec=\*(L"mplayer \-real\-quiet \f(CW%i\fR;\*(R" \s-1URL\s0
+.IP "\fB\-\-exec=\fR\fI\s-1COMMAND\s0\fR\fB+\fR" 4
+.IX Item "--exec=COMMAND+"
 Same as \fB\-\-exec\fR, except that \*(L"%i\*(R" is replaced with as many pathnames
 as possible for the invocation of \fIcommand\fR.
 .IP "\fB\-\-stream\-exec=\fR\fI\s-1COMMAND\s0\fR" 4
 .IX Item "--stream-exec=COMMAND"
-Execute \fIcommand\fR when file download reaches \fIpercent\fR as defined with
+Execute \fIcommand\fR when file transfer reaches \fIpercent\fR done defined
 with the \fB\-\-stream\fR option. The \*(L"%i\*(R" specifier for video pathname is
 expected to appear somewhere in the \fIcommand\fR expression.
 .Sp
@@ -234,8 +234,8 @@ Some players and formats may not work properly. Use \fImplayer\fR\|(1) and choos
 flv if you are unsure. These have proven to be fairly reliable.
 .IP "\fB\-\-stream=\fR\fI\s-1PERCENT\s0\fR" 4
 .IX Item "--stream=PERCENT"
-Trigger the \fIcommand\fR defined with the \fB\-\-stream\-exec\fR option when the
-\&\fIpercent\fR is reached. 
+Execute the \fIcommand\fR defined with the \fB\-\-stream\-exec\fR option when the
+file transfer reaches \fIpercent\fR done.
 .Sp
 Example:
   % cclive \-\-stream\-exec=\*(L"mplayer \-real\-quiet \f(CW%i\fR\*(R" \-\-stream=20 \s-1URL\s0
@@ -244,15 +244,22 @@ Example:
 Print output filename on a dedicated line before file transfer starts.
 .SH "EXAMPLES"
 .IX Header "EXAMPLES"
-.Vb 7
-\&  % cclive "http://youtube.com/watch?v=3HD220e0bx4"
-\&  % cclive -n "http://youtube.com/watch?v=3HD220e0bx4"
-\&  % cclive -f mp4 "http://youtube.com/watch?v=3HD220e0bx4"
-\&  % cclive "http://youtube.com/watch?v=3HD220e0bx4" -cf mp4
-\&  % cclive -u username "http://youtube.com/watch?v=3HD220e0bx4" -f mp4
-\&  % cclive "http://youtube.com/watch?v=3HD220e0bx4" -e "mplayer %i;"
-\&  % cclive "http://youtube.com/watch?v=..." -e "ffmpeg -i %i %i.mp3;"
-.Ve
+Typical use:
+  % cclive \s-1URL\s0
+.PP
+Extract mp4 format video from the \s-1URL:\s0
+  % cclive \-f mp4 \s-1URL\s0
+.PP
+Play extracted video with \fImplayer\fR\|(1) subsequently:
+  % cclive \-\-exec=\*(L"mplayer \-really\-quiet \f(CW%i\fR;\*(R" \s-1URL\s0
+.PP
+Extract audio from the downloaded video and save it as mp3
+using \fIffmpeg\fR\|(1):
+  % cclive \-\-exec=\*(L"ffmpeg \-i \f(CW%i\fR \f(CW%i\fR.mp3;\*(R" \s-1URL\s0
+.PP
+Start streaming the video being extracted with \fImplayer\fR\|(1)
+when the file transfer reaches 20% done:
+  % cclive \-\-stream\-exec=\*(L"mplayer \-really\-quiet \f(CW%i\fR\*(R" \-\-stream=20 \s-1URL\s0
 .SH "FORMATS"
 .IX Header "FORMATS"
 .Vb 4
