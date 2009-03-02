@@ -45,7 +45,7 @@ const char *gengetopt_args_info_help[] = {
   "      --no-proxy               do not use proxy, even if http_proxy environment \n                                    variable is defined",
   "  -u, --youtube-user=USERNAME  login username for youtube",
   "  -p, --youtube-pass=PASSWORD  login password for youtube, prompt if undefined",
-  "  -e, --exec=COMMAND           execute subsequent command with extracted video",
+  "      --exec=COMMAND           execute subsequent command with extracted video",
   "      --stream-exec=COMMAND    stream command to be executed",
   "      --stream=PERCENT         execute stream command when transfer reaches %",
   "      --print-fname            print output filename on a dedicated line",
@@ -702,14 +702,14 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
         { "no-proxy",	0, NULL, 0 },
         { "youtube-user",	1, NULL, 'u' },
         { "youtube-pass",	1, NULL, 'p' },
-        { "exec",	1, NULL, 'e' },
+        { "exec",	1, NULL, 0 },
         { "stream-exec",	1, NULL, 0 },
         { "stream",	1, NULL, 0 },
         { "print-fname",	0, NULL, 0 },
         { NULL,	0, NULL, 0 }
       };
 
-      c = getopt_long (argc, argv, "hvqncf:O:Nu:p:e:", long_options, &option_index);
+      c = getopt_long (argc, argv, "hvqncf:O:Nu:p:", long_options, &option_index);
 
       if (c == -1) break;	/* Exit from `while (1)' loop.  */
 
@@ -828,18 +828,6 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             goto failure;
         
           break;
-        case 'e':	/* execute subsequent command with extracted video.  */
-        
-        
-          if (update_arg( (void *)&(args_info->exec_arg), 
-               &(args_info->exec_orig), &(args_info->exec_given),
-              &(local_args_info.exec_given), optarg, 0, 0, ARG_STRING,
-              check_ambiguity, override, 0, 0,
-              "exec", 'e',
-              additional_error))
-            goto failure;
-        
-          break;
 
         case 0:	/* Long option with no short option */
           /* list supported hosts.  */
@@ -936,6 +924,20 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
                 &(local_args_info.no_proxy_given), optarg, 0, 0, ARG_NO,
                 check_ambiguity, override, 0, 0,
                 "no-proxy", '-',
+                additional_error))
+              goto failure;
+          
+          }
+          /* execute subsequent command with extracted video.  */
+          else if (strcmp (long_options[option_index].name, "exec") == 0)
+          {
+          
+          
+            if (update_arg( (void *)&(args_info->exec_arg), 
+                 &(args_info->exec_orig), &(args_info->exec_given),
+                &(local_args_info.exec_given), optarg, 0, 0, ARG_STRING,
+                check_ambiguity, override, 0, 0,
+                "exec", '-',
                 additional_error))
               goto failure;
           
