@@ -197,12 +197,13 @@ when the file transfer reaches 20% done:
 
 =item B<$HOME/.ccliverc>, for example:
 
- agent = Furball/1.0
- proxy = http://foo:1234
- limit-rate = 50 # KB/s
- # NOTE: in theory any command-line option can be defined
- # in the config file. Command-line option overrides config
- # file definition.
+ agent      = Furball/1.0
+ proxy      = http://foo:1234
+ limit-rate = 50
+
+Basically all command-line options can be defined in the
+config file. Note that command-line options override the
+config file definitions.
 
 =back
 
