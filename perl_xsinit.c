@@ -1,3 +1,4 @@
+/* perl -MExtUtils::Embed -e xsinit -- -o perl_xsinit.c */
 
 #ifdef OSNAME
 # undef OSNAME /* Perl sets its own */
