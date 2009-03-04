@@ -1,6 +1,7 @@
 0.2.4
 
  User-visible changes:
+  * --version now prints out build-time options (e.g. --with-sigwinch)
   * Added --stream-exec and --stream options
   * Removed -e short option from --exec
 

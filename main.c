@@ -170,9 +170,13 @@ main (int argc, char *argv[]) {
 
     if (cc.gi.version_given) {
         curl_version_info_data *c = curl_version_info(CURLVERSION_NOW);
-        cc_log("%s version %s with libcurl version %s  [%s].\n%s\n",
+        cc_log("%s version %s with libcurl version %s  [%s].\n",
             CMDLINE_PARSER_PACKAGE, CMDLINE_PARSER_VERSION,
-            c->version, OSNAME, copyr_notice);
+            c->version, OSNAME);
+#ifdef WITH_SIGWINCH
+        cc_log("--with-sigwinch");
+#endif
+        cc_log("\n\n%s\n",copyr_notice);
         exit(EXIT_SUCCESS);
     }
 
