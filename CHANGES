@@ -1,11 +1,18 @@
 0.2.4
 
  User-visible changes:
+  * Added --title and --title-cclass options
   * --version now prints out build-time options (e.g. --with-sigwinch)
   * Added --stream-exec and --stream options
   * Removed -e short option from --exec
 
  Developer-visible changes:
+  * Updated INSTALL, be sure to read
+  * Makefile: added WITH_PERL (default:no) support
+    - If enabled, --title and --title-cclass can be used
+    - If enabled, make sure the following Perl modules are also installed:
+        * HTML::TokeParser
+        * URI::Escape
   * Added missing GPL note to cclive.h
   * Updated manual page
 

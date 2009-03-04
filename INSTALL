@@ -22,6 +22,27 @@ find the following make targets useful:
  man     # generate cclive.1 from cclive.pod (req. pod2man)
 
 
+            Build-time options
+
+ - WITH_MAN=(yes|no)        [default:yes]
+    Whether the cclive.1 manual page should be installed
+
+ - WITH_SIGWINCH=(yes|no)   [default:yes]
+    Whether cclive should handle the SIGWINCH. cclive uses
+    this signal to resize the progressbar as the terminal
+    width changes. Should work on *BSD/Linux systems,
+    possibly others, too.
+
+ - WITH_PERL=(yes|no)       [default:no]
+    Whether build cclive with embedded Perl interpreter.
+    This is currently used only to parse video page titles,
+    see also the --title option in the manual page. Note
+    that if this is enabled, make sure the following
+    Perl modules have also been installed:
+        * HTML::TokeParser
+        * URI::Escape
+
+
             cclive prerequisites
 
  - libcurl library (7.18.0+)
