@@ -34,21 +34,25 @@ find the following make targets useful:
     possibly others, too.
 
  - WITH_PERL=(yes|no)       [default:no]
-    Whether build cclive with embedded Perl interpreter.
-    This is currently used only to parse video page titles,
-    see also the --title option in the manual page. Note
-    that if this is enabled, make sure the following
-    Perl modules have also been installed:
-        * HTML::TokeParser
-        * URI::Escape
+    Whether cclive should be build with embedded Perl interpreter.
+    If "yes"
+      * HTML::TokeParser and URI::Escape Perl modules become prerequisites
+      * --title and --title-cclass options are supported
+    If "no"
+      * --title and --title-cclass options are ignored
 
 
             cclive prerequisites
 
  - libcurl library (7.18.0+)
 
+ - Perl 5.8 with HTML::TokeParser and URI::Escape modules.
+ This is optional, see WITH_PERL above.
+
 
             Examples
 
  BSD    : gmake prefix=/usr/local mandir=/usr/local/man install
+    Recommended: cd /usr/ports/multimedia/cclive; make install clean
+
  Linux  : make prefix=/usr install
