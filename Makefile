@@ -23,9 +23,11 @@ AWK         = awk
 CURL_CONFIG = curl-config
 GENGETOPT   = gengetopt
 POD2MAN     = pod2man
+PERL        = perl
 
 WITH_MAN        = yes
 WITH_SIGWINCH   = yes
+WITH_PERL       = no
 
 ifndef V
 QUIET_CC        = @echo '  ' CC $@;
@@ -43,17 +45,28 @@ CURL_LDFLAGS := $(shell sh -c "$(CURL_CONFIG) --libs")
 CFLAGS      = -g -Wall
 ALL_CFLAGS  = -D_GNU_SOURCE -DOSNAME=\"$(OS_NAME)\" -I. $(CFLAGS)
 ALL_CFLAGS += $(CURL_CFLAGS)
-ifeq ($(WITH_SIGWINCH),yes)
-ALL_CFLAGS += -DWITH_SIGWINCH
-endif
 
 LDFLAGS     =
 ALL_LDFLAGS = $(LDFLAGS)
 ALL_LDFLAGS += $(CURL_LDFLAGS)
 
-PROG        = cclive
 SRCS        = main.c cmdline.c mem.c host.c dl.c llst.c \
                 util.c progress.c login.c strlcat.c
+
+ifeq ($(WITH_SIGWINCH),yes)
+ALL_CFLAGS += -DWITH_SIGWINCH
+endif
+
+ifeq ($(WITH_PERL),yes)
+PERL_CFLAGS  := $(shell sh -c "$(PERL) -MExtUtils::Embed -e ccopts")
+PERL_LDFLAGS := $(shell sh -c "$(PERL) -MExtUtils::Embed -e ldopts")
+ALL_CFLAGS   += -DWITH_PERL
+ALL_CFLAGS   += $(PERL_CFLAGS)
+ALL_LDFLAGS  += $(PERL_LDFLAGS)
+SRCS         += title.c perl_xsinit.c
+endif
+
+PROG        = cclive
 OBJS        = $(SRCS:%.c=%.o)
 
 .PHONY: all
