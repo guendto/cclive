@@ -33,6 +33,8 @@ const char *gengetopt_args_info_help[] = {
   "      --supported-hosts        list supported hosts",
   "  -q, --quiet                  turn off all output",
   "      --debug                  show curl debug messages",
+  "  -t, --title                  use video page title for naming video files",
+  "      --title-cclass=CCLASS    character class for filtering page titles",
   "  -n, --no-extract             do not extract video",
   "  -c, --continue               resume partially downloaded file",
   "  -f, --download=FORMAT        download format  (possible values=\"flv\", \n                                 \"mp4\", \"3gpp\", \"xflv\", \"spark\", \n                                 \"spak-mini\", \"vp6-hq\", \"vp6-hd\", \n                                 \"vp6\", \"h264\" default=`flv')",
@@ -106,6 +108,8 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->supported_hosts_given = 0 ;
   args_info->quiet_given = 0 ;
   args_info->debug_given = 0 ;
+  args_info->title_given = 0 ;
+  args_info->title_cclass_given = 0 ;
   args_info->no_extract_given = 0 ;
   args_info->continue_given = 0 ;
   args_info->download_given = 0 ;
@@ -127,6 +131,8 @@ void clear_given (struct gengetopt_args_info *args_info)
 static
 void clear_args (struct gengetopt_args_info *args_info)
 {
+  args_info->title_cclass_arg = NULL;
+  args_info->title_cclass_orig = NULL;
   args_info->download_arg = gengetopt_strdup ("flv");
   args_info->download_orig = NULL;
   args_info->output_video_arg = NULL;
@@ -158,22 +164,24 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->supported_hosts_help = gengetopt_args_info_help[2] ;
   args_info->quiet_help = gengetopt_args_info_help[3] ;
   args_info->debug_help = gengetopt_args_info_help[4] ;
-  args_info->no_extract_help = gengetopt_args_info_help[5] ;
-  args_info->continue_help = gengetopt_args_info_help[6] ;
-  args_info->download_help = gengetopt_args_info_help[7] ;
-  args_info->output_video_help = gengetopt_args_info_help[8] ;
-  args_info->number_videos_help = gengetopt_args_info_help[9] ;
-  args_info->emit_csv_help = gengetopt_args_info_help[10] ;
-  args_info->limit_rate_help = gengetopt_args_info_help[11] ;
-  args_info->agent_help = gengetopt_args_info_help[12] ;
-  args_info->proxy_help = gengetopt_args_info_help[13] ;
-  args_info->no_proxy_help = gengetopt_args_info_help[14] ;
-  args_info->youtube_user_help = gengetopt_args_info_help[15] ;
-  args_info->youtube_pass_help = gengetopt_args_info_help[16] ;
-  args_info->exec_help = gengetopt_args_info_help[17] ;
-  args_info->stream_exec_help = gengetopt_args_info_help[18] ;
-  args_info->stream_help = gengetopt_args_info_help[19] ;
-  args_info->print_fname_help = gengetopt_args_info_help[20] ;
+  args_info->title_help = gengetopt_args_info_help[5] ;
+  args_info->title_cclass_help = gengetopt_args_info_help[6] ;
+  args_info->no_extract_help = gengetopt_args_info_help[7] ;
+  args_info->continue_help = gengetopt_args_info_help[8] ;
+  args_info->download_help = gengetopt_args_info_help[9] ;
+  args_info->output_video_help = gengetopt_args_info_help[10] ;
+  args_info->number_videos_help = gengetopt_args_info_help[11] ;
+  args_info->emit_csv_help = gengetopt_args_info_help[12] ;
+  args_info->limit_rate_help = gengetopt_args_info_help[13] ;
+  args_info->agent_help = gengetopt_args_info_help[14] ;
+  args_info->proxy_help = gengetopt_args_info_help[15] ;
+  args_info->no_proxy_help = gengetopt_args_info_help[16] ;
+  args_info->youtube_user_help = gengetopt_args_info_help[17] ;
+  args_info->youtube_pass_help = gengetopt_args_info_help[18] ;
+  args_info->exec_help = gengetopt_args_info_help[19] ;
+  args_info->stream_exec_help = gengetopt_args_info_help[20] ;
+  args_info->stream_help = gengetopt_args_info_help[21] ;
+  args_info->print_fname_help = gengetopt_args_info_help[22] ;
   
 }
 
@@ -255,6 +263,8 @@ static void
 cmdline_parser_release (struct gengetopt_args_info *args_info)
 {
   unsigned int i;
+  free_string_field (&(args_info->title_cclass_arg));
+  free_string_field (&(args_info->title_cclass_orig));
   free_string_field (&(args_info->download_arg));
   free_string_field (&(args_info->download_orig));
   free_string_field (&(args_info->output_video_arg));
@@ -359,6 +369,10 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "quiet", 0, 0 );
   if (args_info->debug_given)
     write_into_file(outfile, "debug", 0, 0 );
+  if (args_info->title_given)
+    write_into_file(outfile, "title", 0, 0 );
+  if (args_info->title_cclass_given)
+    write_into_file(outfile, "title-cclass", args_info->title_cclass_orig, 0);
   if (args_info->no_extract_given)
     write_into_file(outfile, "no-extract", 0, 0 );
   if (args_info->continue_given)
@@ -690,6 +704,8 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
         { "supported-hosts",	0, NULL, 0 },
         { "quiet",	0, NULL, 'q' },
         { "debug",	0, NULL, 0 },
+        { "title",	0, NULL, 't' },
+        { "title-cclass",	1, NULL, 0 },
         { "no-extract",	0, NULL, 'n' },
         { "continue",	0, NULL, 'c' },
         { "download",	1, NULL, 'f' },
@@ -709,7 +725,7 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
         { NULL,	0, NULL, 0 }
       };
 
-      c = getopt_long (argc, argv, "hvqncf:O:Nu:p:", long_options, &option_index);
+      c = getopt_long (argc, argv, "hvqtncf:O:Nu:p:", long_options, &option_index);
 
       if (c == -1) break;	/* Exit from `while (1)' loop.  */
 
@@ -740,6 +756,18 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
               &(local_args_info.quiet_given), optarg, 0, 0, ARG_NO,
               check_ambiguity, override, 0, 0,
               "quiet", 'q',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 't':	/* use video page title for naming video files.  */
+        
+        
+          if (update_arg( 0 , 
+               0 , &(args_info->title_given),
+              &(local_args_info.title_given), optarg, 0, 0, ARG_NO,
+              check_ambiguity, override, 0, 0,
+              "title", 't',
               additional_error))
             goto failure;
         
@@ -854,6 +882,20 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
                 &(local_args_info.debug_given), optarg, 0, 0, ARG_NO,
                 check_ambiguity, override, 0, 0,
                 "debug", '-',
+                additional_error))
+              goto failure;
+          
+          }
+          /* character class for filtering page titles.  */
+          else if (strcmp (long_options[option_index].name, "title-cclass") == 0)
+          {
+          
+          
+            if (update_arg( (void *)&(args_info->title_cclass_arg), 
+                 &(args_info->title_cclass_orig), &(args_info->title_cclass_given),
+                &(local_args_info.title_cclass_given), optarg, 0, 0, ARG_STRING,
+                check_ambiguity, override, 0, 0,
+                "title-cclass", '-',
                 additional_error))
               goto failure;
           

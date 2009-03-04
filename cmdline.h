@@ -37,6 +37,10 @@ struct gengetopt_args_info
   const char *supported_hosts_help; /**< @brief list supported hosts help description.  */
   const char *quiet_help; /**< @brief turn off all output help description.  */
   const char *debug_help; /**< @brief show curl debug messages help description.  */
+  const char *title_help; /**< @brief use video page title for naming video files help description.  */
+  char * title_cclass_arg;	/**< @brief character class for filtering page titles.  */
+  char * title_cclass_orig;	/**< @brief character class for filtering page titles original value given at command line.  */
+  const char *title_cclass_help; /**< @brief character class for filtering page titles help description.  */
   const char *no_extract_help; /**< @brief do not extract video help description.  */
   const char *continue_help; /**< @brief resume partially downloaded file help description.  */
   char * download_arg;	/**< @brief download format (default='flv').  */
@@ -79,6 +83,8 @@ struct gengetopt_args_info
   unsigned int supported_hosts_given ;	/**< @brief Whether supported-hosts was given.  */
   unsigned int quiet_given ;	/**< @brief Whether quiet was given.  */
   unsigned int debug_given ;	/**< @brief Whether debug was given.  */
+  unsigned int title_given ;	/**< @brief Whether title was given.  */
+  unsigned int title_cclass_given ;	/**< @brief Whether title-cclass was given.  */
   unsigned int no_extract_given ;	/**< @brief Whether no-extract was given.  */
   unsigned int continue_given ;	/**< @brief Whether continue was given.  */
   unsigned int download_given ;	/**< @brief Whether download was given.  */

@@ -96,7 +96,8 @@ create_fname(
     double total,
     const char *id,
     const char *suffix,
-    const char *host)
+    const char *host,
+    const char *title)
 {
     char *p=0;
 
@@ -106,7 +107,7 @@ create_fname(
     assert(host     != 0);
 
     if (!cc.gi.output_video_given) {
-        const char dflt[] = "%s%s_%s.%s";
+        const char *dflt = title ? "%s%s.%s" : "%s%s_%s.%s";
         char fname[PATH_MAX];
         char num[8];
         char *n=0;
@@ -116,7 +117,11 @@ create_fname(
         if (cc.gi.number_videos_given)
             snprintf(num,sizeof(num),"%03d_",++video_num);
 
-        snprintf(fname,sizeof(fname),dflt,num,host,id,suffix);
+        if (title)
+            snprintf(fname,sizeof(fname),dflt,num,title,suffix);
+        else
+            snprintf(fname,sizeof(fname),dflt,num,host,id,suffix);
+            
 
         /* create a temporary output filename if needed by adding a suffix */
         for (i=1; i<INT_MAX; ++i) {
@@ -132,7 +137,10 @@ create_fname(
                 if (cc.gi.continue_given)
                     break;
             }
-            snprintf(fname,sizeof(fname),dflt,num,host,id,suffix);
+            if (title)
+                snprintf(fname,sizeof(fname),dflt,num,title,suffix);
+            else
+                snprintf(fname,sizeof(fname),dflt,num,host,id,suffix);
             asprintf(&n,".%d",i);
             strlcat(fname,n,sizeof(fname));
             FREE(n);
@@ -249,7 +257,12 @@ dl_file (
 }
 
 int /* prepare video file for extraction */
-prep_video (const char *xurl, const char *id, const char *host) {
+prep_video (
+    const char *xurl,
+    const char *id,
+    const char *host,
+    const char *title
+) {
     double len=0,initial=0;
     char *fname=0,*ct=0;
     int rc=1;
@@ -260,7 +273,8 @@ prep_video (const char *xurl, const char *id, const char *host) {
 
     rc = query_filelen(xurl, &len, &ct);
     if (!rc) {
-        fname = create_fname(&initial, len, id, cc.gi.download_arg, host);
+        fname =
+            create_fname(&initial, len, id, cc.gi.download_arg, host, title);
         if (fname) {
             const char file[] = "file: %s  %.1fM  [%s]\n";
             rc = 0;

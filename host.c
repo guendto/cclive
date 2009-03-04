@@ -43,6 +43,7 @@ handle_youtube (mem_t page) {
 
     if (id && t) {
         char xurl[128];
+        char *title = 0;
 
         snprintf(xurl,sizeof(xurl),
             "http://youtube.com/get_video?video_id=%s&t=%s",id,t);
@@ -54,7 +55,11 @@ handle_youtube (mem_t page) {
         else if(!strcmp(cc.gi.download_arg,"xflv"))
             strlcat(xurl,"&fmt=6",sizeof(xurl));
 
-        rc = prep_video(xurl,id,"youtube");
+#ifdef WITH_PERL
+        title = page_title(page->p);
+#endif
+        rc = prep_video(xurl,id,"youtube",title);
+        FREE(title);
     }
 
     FREE(id);
@@ -90,9 +95,15 @@ handle_break (mem_t page) {
     }
 
     if (id && fpath && fname) {
+        char *title = 0;
+
         asprintf(&xurl,
             "http://media1.break.com/dnet/media/%s/%s.flv",fpath,fname);
-        rc = prep_video(xurl,id,"break");
+#ifdef WITH_PERL
+        title = page_title(page->p);
+#endif
+        rc = prep_video(xurl,id,"break",title);
+        FREE(title);
     }
 
     FREE(id);
@@ -143,8 +154,14 @@ handle_gvideo (mem_t page) {
         }
     }
 
-    if (xurl)
-        rc = prep_video(xurl,id,"gvideo");
+    if (xurl) {
+        char *title = 0;
+#ifdef WITH_PERL
+        title = page_title(page->p);
+#endif
+        rc = prep_video(xurl,id,"gvideo",title);
+        FREE(title);
+    }
 
     curl_free(xurl);
     FREE(page->p);
@@ -170,9 +187,15 @@ handle_evisor (mem_t page) {
 
     id = strsub(page->p, id_begin, id_end);
     if (id) {
+        char *title = 0;
         xurl = strsub(page->p, xurl_begin, xurl_end);
-        if (xurl)
-            rc = prep_video(xurl,id,"evisor");
+        if (xurl) {
+#ifdef WITH_PERL
+            title = page_title(page->p);
+#endif
+            rc = prep_video(xurl,id,"evisor",title);
+            FREE(title);
+        }
         FREE(xurl);
         FREE(id);
     }
@@ -187,7 +210,7 @@ handle_7load (mem_t page) {
  * 1) parse page html for config url
  * 2) parse config for video link
  */
-    char *config=0;
+    char *config=0,*title=0;
     int rc=1;
 
     const char config_begin[]   = "configPath=";
@@ -204,6 +227,9 @@ handle_7load (mem_t page) {
     assert(page->size   > 0);
 
     config = strsub(page->p, config_begin, config_end);
+#ifdef WITH_PERL
+    title = page_title(page->p);
+#endif
     FREE(page->p);
 
     if (config) {
@@ -216,7 +242,7 @@ handle_7load (mem_t page) {
                 if (id) {
                     char *xurl = strsub(page->p, xurl_begin, xurl_end);
                     if (xurl)
-                        rc = prep_video(xurl,id,"7load");
+                        rc = prep_video(xurl,id,"7load",title);
                     FREE(xurl);
                 }
                 FREE(id);
@@ -226,6 +252,7 @@ handle_7load (mem_t page) {
         }
         FREE(config);
     }
+    FREE(title);
     return(rc);
 }
 
@@ -236,7 +263,7 @@ handle_lleak (mem_t page) {
  * 2) fetch config and parse it for playlist url
  * 3) parse playlist for video link
  */
-    char *id=0,*config=0;
+    char *id=0,*config=0,*title=0;
     int rc=1;
 
     const char id_begin[]       = "token=";
@@ -256,8 +283,12 @@ handle_lleak (mem_t page) {
     assert(page->size   > 0);
 
     id = strsub(page->p, id_begin, id_end);
-    if (id)
+    if (id) {
+#ifdef WITH_PERL
+        title = page_title(page->p);
+#endif
         config = strsub(page->p, config_begin, config_end);
+    }
     FREE(page->p);
 
     if (id && config) {
@@ -277,7 +308,7 @@ handle_lleak (mem_t page) {
                     if (!rc) {
                         char *xurl = strsub(page->p, xurl_begin, xurl_end);
                         if (xurl)
-                            rc = prep_video(xurl,id,"lleak");
+                            rc = prep_video(xurl,id,"lleak",title);
                         FREE(xurl);
                     }
                     FREE(page->p);
@@ -288,6 +319,7 @@ handle_lleak (mem_t page) {
     }
     FREE(id);
     FREE(config);
+    FREE(title);
 
     return(rc);
 }
@@ -337,10 +369,15 @@ handle_dmotion (mem_t page) {
         FREE(tmp);
 
         if (xurl) {
+            char *title = 0;
             char *p = strstr(xurl,"@@");
             if (p)
                 xurl[p-xurl] = '\0';
-            rc = prep_video(xurl,id,"dmotion");
+#ifdef WITH_PERL
+            title = page_title(page->p);
+#endif
+            rc = prep_video(xurl,id,"dmotion",title);
+            FREE(title);
         }
         FREE(xurl);
     }

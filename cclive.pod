@@ -37,6 +37,19 @@ Turn off all output.
 
 Print libcurl debug messages to stderr.
 
+=item B<-t, --title>
+
+Causes B<cclive> to use video page title for output video filename.
+If cclive was built B<without> the WITH_PERL=yes variable, this option
+is ignored quietly.
+
+=item B<--title-cclass=>I<CCLASS>
+
+The I<character-class> is used to filter the video page title. Default is B<\w>.
+The filtered titles are then used for naming the video file. The default
+class is usually enough for most users, others may want to read up on Perl
+regular expressions and character classes.
+
 =item B<-n, --no-extract>
 
 Do not extract any videos.

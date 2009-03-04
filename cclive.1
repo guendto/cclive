@@ -129,7 +129,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2009-03-02" "0.2.4" "cclive manual"
+.TH cclive 1 "2009-03-04" "0.2.4" "cclive manual"
 .SH "NAME"
 cclive \- video extraction utility for the flash dismissing hordes
 .SH "SYNOPSIS"
@@ -156,6 +156,17 @@ Turn off all output.
 .IP "\fB\-\-debug\fR" 4
 .IX Item "--debug"
 Print libcurl debug messages to stderr.
+.IP "\fB\-t, \-\-title\fR" 4
+.IX Item "-t, --title"
+Causes \fBcclive\fR to use video page title for output video filename.
+If cclive was built \fBwithout\fR the WITH_PERL=yes variable, this option
+is ignored quietly.
+.IP "\fB\-\-title\-cclass=\fR\fI\s-1CCLASS\s0\fR" 4
+.IX Item "--title-cclass=CCLASS"
+The \fIcharacter-class\fR is used to filter the video page title. Default is \fB\ew\fR.
+The filtered titles are then used for naming the video file. The default
+class is usually enough for most users, others may want to read up on Perl
+regular expressions and character classes.
 .IP "\fB\-n, \-\-no\-extract\fR" 4
 .IX Item "-n, --no-extract"
 Do not extract any videos.

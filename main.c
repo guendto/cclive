@@ -174,7 +174,10 @@ main (int argc, char *argv[]) {
             CMDLINE_PARSER_PACKAGE, CMDLINE_PARSER_VERSION,
             c->version, OSNAME);
 #ifdef WITH_SIGWINCH
-        cc_log("--with-sigwinch");
+        cc_log("--with-sigwinch ");
+#endif
+#ifdef WITH_PERL
+        cc_log("--with-perl ");
 #endif
         cc_log("\n\n%s\n",copyr_notice);
         exit(EXIT_SUCCESS);

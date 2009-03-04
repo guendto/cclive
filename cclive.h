@@ -66,7 +66,12 @@ double
 file_exists(const char *path);
 
 int
-prep_video(const char *xurl, const char *id, const char *host);
+prep_video(
+    const char *xurl,
+    const char *id,
+    const char *host,
+    const char *title
+);
 
 void
 list_hosts(void);
@@ -76,5 +81,10 @@ login_youtube(void);
 
 size_t
 writemem_cb(void *p, size_t size, size_t nmemb, void *data);
+
+#ifdef WITH_PERL
+char *
+page_title(char *html);
+#endif
 
 #endif
