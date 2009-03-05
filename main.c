@@ -183,6 +183,11 @@ main (int argc, char *argv[]) {
         exit(EXIT_SUCCESS);
     }
 
+#ifndef WITH_PERL
+    if (cc.gi.title_given)
+        cc_log("warn: ignored --title; cclive was built WITH_PERL=no\n");
+#endif
+
     init_curl();
 
     if (cc.gi.supported_hosts_given) {
