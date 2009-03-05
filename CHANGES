@@ -9,7 +9,7 @@
  Developer-visible changes:
   * Fixed "format not a string literal and no format arguments" warnings
   * Updated INSTALL, be sure to read
-  * Makefile: added WITH_PERL (default:no) support
+  * Makefile: added WITH_PERL [default:no]
   * Added missing GPL note to cclive.h
   * Updated manual page
 
