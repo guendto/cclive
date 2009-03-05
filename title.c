@@ -31,40 +31,35 @@
 EXTERN_C void xs_init (pTHX);
 static PerlInterpreter *perl;
 
+static const char script[] =
+"use HTML::TokeParser;"
+"$parser = HTML::TokeParser->new(\\$html);"
+"$parser->get_tag('title');"
+"$title = $parser->get_trimmed_text;"
+"$title =~ s/(youtube|video|liveleak.com|sevenload|dailymotion)//gi;"
+"$title =~ s/^\\s+//;"
+"$title =~ s/\\s+$//;"
+"$re = $cclass || qr|\\w|;"
+"$title = join('', $title =~ /$re/g);";
+
 static char *
 extract_title (char *html) {
-    const char eval[] =
-        "binmode (STDOUT, ':utf8');"
-        "use URI::Escape qw(uri_unescape);"
-        "use HTML::TokeParser;"
-        "$html = uri_unescape($html);"
-        "$p = HTML::TokeParser->new(\\$html);"
-        "$p->get_tag('title');"
-        "$title = $p->get_trimmed_text;"
-        /* remove title crap */
-        "$title =~ s/(youtube|video|liveleak.com|sevenload|dailymotion)//gi;"
-        /* apply character-class */
-        "$re = $cclass || qr|\\w|;"
-        "$title = join('',$title=~/$re/g);";
-
-    char *escaped = curl_easy_escape(cc.curl, html, 0);
-    STRLEN n_a;
-    char *str;
-
-    asprintf(&str, "$html = '%s';", escaped);
-    perl_eval_pv(str,TRUE);
-    curl_free(escaped);
-    FREE(str);
+    SV *sv_html = perl_get_sv("html", TRUE);
+    char *title = 0;
 
     if (cc.gi.title_cclass_given) {
-        asprintf(&str, "$cclass = '%s';", cc.gi.title_cclass_arg);
-        perl_eval_pv(str,TRUE);
-        FREE(str);
+        SV *sv_cclass = perl_get_sv("cclass", TRUE);
+        sv_setpv(sv_cclass, cc.gi.title_cclass_arg);
     }
 
-    perl_eval_pv(eval,TRUE);
-    str = SvPV(perl_get_sv("title",FALSE), n_a);
-    return(strdup(str));
+    sv_setpv(sv_html, html);
+    perl_eval_pv(script, TRUE);
+
+    title = SvPV(perl_get_sv("title", FALSE), PL_na);
+
+    return (title
+        ? strdup(title)
+        : NULL);
 }
 
 char *
@@ -77,9 +72,12 @@ page_title (char *html) {
 
     perl = perl_alloc();
     perl_construct(perl);
+
     perl_parse(perl, xs_init, 3, args, 0);
     perl_run(perl);
+
     title = extract_title(html);
+
     perl_destruct(perl);
     perl_free(perl);
 

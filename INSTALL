@@ -36,18 +36,19 @@ find the following make targets useful:
  - WITH_PERL=(yes|no)       [default:no]
     Whether cclive should be build with embedded Perl interpreter.
     If "yes"
-      * HTML::TokeParser and URI::Escape Perl modules become prerequisites
-      * --title and --title-cclass options are supported
+      * HTML::TokeParser Perl module becomes a new prerequisite
+      * --title and --title-cclass options can be used
     If "no"
-      * --title and --title-cclass options are ignored
+      * --title and --title-cclass options are disabled
 
 
             cclive prerequisites
 
  - libcurl (7.18.0+)
 
- - Perl 5.8 with HTML::TokeParser and URI::Escape modules.
- This is optional, see WITH_PERL above.
+ - Perl 5.8+ with HTML::TokeParser module. This is optional,
+ see WITH_PERL above.
+
 
 
             Examples
