@@ -28,10 +28,12 @@ find the following make targets useful:
     Whether the cclive.1 manual page should be installed
 
  - WITH_SIGWINCH=(yes|no)   [default:yes]
-    Whether cclive should handle the SIGWINCH. cclive uses
-    this signal to resize the progressbar as the terminal
-    width changes. Should work on *BSD/Linux systems,
-    possibly others, too.
+    Whether cclive should handle the SIGWINCH. Should work
+    on *BSD and Linux systems at least.
+    If "yes"
+      * progressbar resizes along with the terminal
+    If "no"
+      * progressbar remains at default size even if terminal width changes
 
  - WITH_PERL=(yes|no)       [default:no]
     Whether cclive should be build with embedded Perl interpreter.
@@ -46,9 +48,9 @@ find the following make targets useful:
 
  - libcurl (7.18.0+)
 
- - Perl 5.8+ with HTML::TokeParser module. This is optional,
- see WITH_PERL above.
-
+Optional:
+ - Perl 5.8+ with HTML::TokeParser module. Currently needed for using --title.
+ See also WITH_PERL above.
 
 
             Examples
@@ -61,6 +63,7 @@ find the following make targets useful:
 
             Notes
 
- Debian 5.0+ packages (WITH_PERL=yes):
-    apt-get install libcurl4-gnutls-dev libperl-dev liburi-perl \
-        libhtml-tokeparser-simple-perl gcc make
+ Debian 5.0
+   Packages needed: libcurl4-gnutls-dev libperl-dev
+                    libhtml-tokeparser-simple-perl
+                    gcc make
