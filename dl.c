@@ -145,7 +145,7 @@ create_fname(
             strlcat(fname,n,sizeof(fname));
             FREE(n);
         }
-        asprintf(&p,fname);
+        asprintf(&p,"%s",fname);
     }
     else {
         *initial = file_exists(cc.gi.output_video_arg);
@@ -154,7 +154,7 @@ create_fname(
             cc_log("error: file is already fully retrieved; nothing to do\n");
             return(0);
         }
-        asprintf(&p,cc.gi.output_video_arg);
+        asprintf(&p,"%s",cc.gi.output_video_arg);
     }
     return(p);
 }

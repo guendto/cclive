@@ -173,7 +173,7 @@ bar_update (progressbar_t bp, double total, double now) {
             l = sizeof(tmp);
     }
     snprintf(tmp,l,"%s",bp->fname);
-    p += sprintf(p,tmp);
+    p += sprintf(p,"%s",tmp);
 
     if (bp->total > 0) {
         double _size = !bp->done ? size:now;
@@ -184,7 +184,7 @@ bar_update (progressbar_t bp, double total, double now) {
             p += sprintf(p,"  100%%"); /* +6 = 38 */
         snprintf(tmp,20,
             "  %4.1fM / %4.1fM",ToMB(_size),ToMB(bp->total));
-        p += sprintf(p,tmp); /* max. +20 = 58 */
+        p += sprintf(p,"%s",tmp); /* max. +20 = 58 */
 
         if (cc.gi.stream_given
             && cc.gi.stream_exec_given
@@ -218,7 +218,7 @@ bar_update (progressbar_t bp, double total, double now) {
         *p++ = ' ';
         ++i;
     }
-    p += sprintf(p,tmp);
+    p += sprintf(p,"%s",tmp);
     *p='\0';
 
     cc_log("\r%s",buffer);
