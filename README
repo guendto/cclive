@@ -11,15 +11,16 @@ please see the TODO file.
 
                 What's not in cclive?
 
-In comparison to clive(1), cclive does not have the following features:
+Compared to clive(1), some of the most notable differences between clive(1)
+and cclive(1) are:
 
  * No clipboard support ("xclip -o | cclive" works OK)
  * No output filename formatting features
  * No --emit-xml
  * No cache
 
-There are other minor differences but these are the most notable ones.
-A significant difference are the prerequisites and runtime requirements.
+
+                Notes
 
 cclive can be used together with clive-utils (excl. clivepass):
   http://code.google.com/p/clive-utils
