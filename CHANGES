@@ -10,10 +10,6 @@
   * Fixed "format not a string literal and no format arguments" warnings
   * Updated INSTALL, be sure to read
   * Makefile: added WITH_PERL (default:no) support
-    - If enabled, --title and --title-cclass can be used
-    - If enabled, make sure the following Perl modules are also installed:
-        * HTML::TokeParser
-        * URI::Escape
   * Added missing GPL note to cclive.h
   * Updated manual page
 
