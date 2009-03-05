@@ -9,27 +9,17 @@ If you are interested in contributing, or you have test feedback,
 please see the TODO file.
 
 
-                cclive != clive
+                What's not in cclive?
 
- * No clipboard support
-   - You can use "xclip -o | cclive" instead
+In comparison to clive(1), cclive does not have the following features:
 
+ * No clipboard support ("xclip -o | cclive" works OK)
+ * No output filename formatting features
+ * No --emit-xml
  * No cache
-   - Additional prerequisite (e.g. bdb)
 
- * No <title> parsing
-   - Additional prerequisites
-     - HTML parser/tokenizer +proper utf8 support
-     - overkill (we would only want the <title>...)
+There are other minor differences but these are the most notable ones.
+A significant difference are the prerequisites and runtime requirements.
 
- * Limited --emit features
-   - CSV only
-
- * Simple video file naming
-   - $host_$id.$suffix
-   - option --output-video=FILE
-
-cclive can be used together with clive-utils:
+cclive can be used together with clive-utils (excl. clivepass):
   http://code.google.com/p/clive-utils
-
-With the exception of clivepass.
