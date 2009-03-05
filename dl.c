@@ -273,8 +273,9 @@ prep_video (
 
     rc = query_filelen(xurl, &len, &ct);
     if (!rc) {
+        const char *_title = (title != 0 && strlen(title) > 0) ? title : 0;
         fname =
-            create_fname(&initial, len, id, cc.gi.download_arg, host, title);
+            create_fname(&initial, len, id, cc.gi.download_arg, host, _title);
         if (fname) {
             const char file[] = "file: %s  %.1fM  [%s]\n";
             rc = 0;
