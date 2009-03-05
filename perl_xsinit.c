@@ -6,8 +6,6 @@
 
 #include <EXTERN.h>
 #include <perl.h>
-/* added manually: caused compilation errors on debian systems otherwise */
-#include <XSUB.h>
 
 EXTERN_C void xs_init (pTHX);
 

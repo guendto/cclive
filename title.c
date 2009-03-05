@@ -22,6 +22,8 @@
 
 #include <EXTERN.h>
 #include <perl.h>
+/* added manually: caused compilation errors on debian systems otherwise */
+#include <XSUB.h>
 #include <curl/curl.h>
 
 #include "cclive.h"
