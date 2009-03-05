@@ -7,6 +7,7 @@
   * Removed -e short option from --exec
 
  Developer-visible changes:
+  * Fixed "format not a string literal and no format arguments" warnings
   * Updated INSTALL, be sure to read
   * Makefile: added WITH_PERL (default:no) support
     - If enabled, --title and --title-cclass can be used
