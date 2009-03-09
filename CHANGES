@@ -1,17 +1,17 @@
 0.2.4
 
  User-visible changes:
-  * Added --title and --title-cclass options
-  * --version now prints out build-time options (e.g. --with-sigwinch)
-  * Added --stream-exec and --stream options
-  * Removed -e short option from --exec
+  * Add --title and --title-cclass options
+  * Add --stream-exec and --stream options
+  * Change --version to print build-time options (e.g. --with-sigwinch)
+  * Remove -e short option (--exec)
 
  Developer-visible changes:
-  * Fixed "format not a string literal and no format arguments" warnings
-  * Updated INSTALL, be sure to read
-  * Makefile: added WITH_PERL [default:no]
-  * Added missing GPL note to cclive.h
-  * Updated manual page
+  * Touch INSTALL, cclive.pod, cclive.1 and README
+  * Touch INSTALL -- be sure to read
+  * Fix gcc 4.3+ "format not a string literal and no format arguments" warning
+  * Makefile: add WITH_PERL  [default:no]
+  * Add missing GPL header (cclive.h)
 
 
 0.2.3
