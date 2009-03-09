@@ -8,7 +8,6 @@
 
  Developer-visible changes:
   * Touch INSTALL, cclive.pod, cclive.1 and README
-  * Touch INSTALL -- be sure to read
   * Fix gcc 4.3+ "format not a string literal and no format arguments" warning
   * Makefile: add WITH_PERL  [default:no]
   * Add missing GPL header (cclive.h)
