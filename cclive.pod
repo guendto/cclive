@@ -40,8 +40,7 @@ Print libcurl debug messages to stderr.
 =item B<-t, --title>
 
 Causes B<cclive> to use video page title for output video filename.
-If cclive was built B<without> the WITH_PERL=yes variable, this option
-is ignored quietly.
+Ignored if cclive was built WITH_PERL=no.
 
 =item B<--title-cclass=>I<CCLASS>
 
