@@ -129,7 +129,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2009-03-10" "0.2.4" "cclive manual"
+.TH cclive 1 "2009-03-10" "0.2.5" "cclive manual"
 .SH "NAME"
 cclive \- video extraction utility for the flash dismissing hordes
 .SH "SYNOPSIS"
@@ -217,10 +217,10 @@ extraction, even if the batch does not contain any Youtube hosted links.
 Use \fIpassword\fR for Youtube login.  If undefined, \fBcclive\fR prompts for it.
 .IP "\fB\-\-exec=\fR\fI\s-1COMMAND\s0\fR\fB;\fR" 4
 .IX Item "--exec=COMMAND;"
-Execute \fIcommand\fR. Optional arguments may be passed to the command.
-The expression must be terminated by a semicolon (\*(L";\*(R"). If the specifier
-\&\*(L"%i\*(R" appears anywhere in \fIcommand\fR name or the arguments it is replaced
-by the pathname of the extracted video file.
+Execute \fIcommand\fR after each file transfer. Optional arguments may be passed
+to the command. The expression must be terminated by a semicolon (\*(L";\*(R"). If the
+specifier \*(L"%i\*(R" appears anywhere in \fIcommand\fR name or the arguments it is
+replaced by the pathname of the extracted video file.
 .Sp
 Example:
   % cclive \-\-exec=\*(L"mplayer \-real\-quiet \f(CW%i\fR;\*(R" \s-1URL\s0
@@ -230,31 +230,32 @@ Same as \fB\-\-exec\fR, except that \*(L"%i\*(R" is replaced with as many pathna
 as possible for the invocation of \fIcommand\fR.
 .IP "\fB\-\-stream\-exec=\fR\fI\s-1COMMAND\s0\fR" 4
 .IX Item "--stream-exec=COMMAND"
-Execute \fIcommand\fR when file transfer reaches \fIpercent\fR done defined
-with the \fB\-\-stream\fR option. The \*(L"%i\*(R" specifier for video pathname is
-expected to appear somewhere in the \fIcommand\fR expression.
+Execute \fIcommand\fR when file transfer progress reaches \fIpercent\fR as defined
+with the \fB\-\-stream\fR option. The \*(L"%i\*(R" specifier for video pathname is expected
+to appear somewhere in the \fIcommand\fR expression.
 .Sp
-Unlike the \fB\-\-exec\fR option which is executed subsequently, \fBcclive\fR
-forks the streaming process and continues with the file transfer.
+Unlike the \fB\-\-exec\fR option which is executed subsequently, \fBcclive\fR forks
+the streaming process and continues with the file transfer \*(-- but will not
+continue to download another file until the child process terminates.
 .Sp
-It should also be noted that \fBcclive\fR makes no effort to check whether
-there's enough data to be streamed. It assumes the user knows how much
-data needs to be buffered before starting the process. Similarly, if the
-transfer rate drops significantly after starting the process and the
-forked process runs out of data, \fBcclive\fR simply ignores this.
+It should also be noted that \fBcclive\fR makes no effort to check whether there
+is enough data to be streamed. It assumes the user knows how much data needs
+to be buffered before starting the child process. Similarly, if the transfer
+rate drops significantly after starting the process and the forked process
+runs out of data, \fBcclive\fR simply ignores this.
 .Sp
 Some players and formats may not work properly. Use \fImplayer\fR\|(1) and choose
 flv if you are unsure. These have proven to be fairly reliable.
 .IP "\fB\-\-stream=\fR\fI\s-1PERCENT\s0\fR" 4
 .IX Item "--stream=PERCENT"
 Execute the \fIcommand\fR defined with the \fB\-\-stream\-exec\fR option when the
-file transfer reaches \fIpercent\fR done.
+file transfer progress reaches \fIpercent\fR.
 .Sp
 Example:
   % cclive \-\-stream\-exec=\*(L"mplayer \-real\-quiet \f(CW%i\fR\*(R" \-\-stream=20 \s-1URL\s0
 .IP "\fB\-\-print\-fname\fR" 4
 .IX Item "--print-fname"
-Print output filename on a dedicated line before file transfer starts.
+Print output filename on a dedicated line before each file transfer.
 .SH "EXAMPLES"
 .IX Header "EXAMPLES"
 Typical use:
