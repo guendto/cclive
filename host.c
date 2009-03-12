@@ -450,11 +450,10 @@ handle_host (const char *url) {
         memset(&page,0,sizeof(page));
         if (strstr(url,hosts[i].lookup) != 0) {
             int rc = fetch_link(url,&page,1);
-            FREE(_url); /* url points to _url if embed => page conv. was made */
-            if (!rc)
-                return((hosts[i].fp)(&page));
-            else
-                return(1);
+            FREE(_url); /* points to _url if embed => page conv. was done */
+            return (rc == 0
+                ? (hosts[i].fp)(&page)
+                : 1);
         }
     }
     cc_log("error: no support: %s\n",url);
