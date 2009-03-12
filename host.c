@@ -124,7 +124,7 @@ handle_gvideo (mem_t page) {
     const char id_end[]     = "'";
 
     const char flv_begin[]  = "videoUrl\\x3d";
-    const char flv_end[]    = "\\x26hl";
+    const char flv_end[]    = "\\x26";
 
     const char mp4_begin[]  = "href=\"http://vp.";
     const char mp4_end[]    = "\"";
