@@ -118,7 +118,7 @@ specifier "%i" appears anywhere in I<command> name or the arguments it is
 replaced by the pathname of the extracted video file.
 
 Example:
-  % cclive --exec="mplayer -real-quiet %i;" URL
+  % cclive --exec="mplayer -really-quiet %i;" URL
 
 =item B<--exec=>I<COMMAND>B<+>
 
@@ -131,18 +131,19 @@ Execute I<command> when file transfer progress reaches I<percent> as defined
 with the B<--stream> option. The "%i" specifier for video pathname is expected
 to appear somewhere in the I<command> expression.
 
-Unlike the B<--exec> option which is executed subsequently, B<cclive> forks
-the streaming process and continues with the file transfer -- but will not
-continue to download another file until the child process terminates.
+Unlike the B<--exec> option which is executed subsequently after each file
+transfer, B<cclive> forks the streaming process and continues with the file
+transfer -- and will not continue to download another file until the child
+process terminates.
 
 It should also be noted that B<cclive> makes no effort to check whether there
 is enough data to be streamed. It assumes the user knows how much data needs
 to be buffered before starting the child process. Similarly, if the transfer
-rate drops significantly after starting the process and the forked process
-runs out of data, B<cclive> simply ignores this.
+rate drops significantly after starting the process and it runs out of data,
+B<cclive> simply ignores that.
 
-Some players and formats may not work properly. Use L<mplayer(1)> and choose
-flv if you are unsure. These have proven to be fairly reliable.
+Some players and formats may not work properly with this feature. Use
+L<mplayer(1)> and choose flv if you are unsure.
 
 =item B<--stream=>I<PERCENT>
 
@@ -150,7 +151,7 @@ Execute the I<command> defined with the B<--stream-exec> option when the
 file transfer progress reaches I<percent>.
 
 Example:
-  % cclive --stream-exec="mplayer -real-quiet %i" --stream=20 URL
+  % cclive --stream-exec="mplayer -really-quiet %i" --stream=20 URL
 
 =item B<--print-fname>
 
