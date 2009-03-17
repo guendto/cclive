@@ -51,7 +51,7 @@ ALL_LDFLAGS = $(LDFLAGS)
 ALL_LDFLAGS += $(CURL_LDFLAGS)
 
 SRCS        = main.c cmdline.c mem.c host.c dl.c llst.c \
-                util.c progress.c login.c strlcat.c
+                util.c progress.c login.c strlcat.c strlcpy.c
 
 ifeq ($(WITH_SIGWINCH),yes)
 ALL_CFLAGS += -DWITH_SIGWINCH
