@@ -1,9 +1,11 @@
 0.2.5
 
  User-visible changes:
+  * Port lastfm-youtube support from clive
   * Fix googlevideo support
 
  Developer-visible changes:
+  * Add strlcpy.c
   * Touch cclive.pod and cclive.1
 
 
