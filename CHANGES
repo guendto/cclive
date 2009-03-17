@@ -4,7 +4,8 @@
   * Port lastfm-youtube support from clive
   * Fix googlevideo support
 
- Developer-visible changes:
+ Developer-visible changes
+  * Add tests/lastfm.url
   * Add strlcpy.c
   * Touch cclive.pod and cclive.1
 
