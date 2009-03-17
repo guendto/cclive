@@ -411,6 +411,24 @@ embed2video (const char *url) {
     return(p);
 }
 
+static char * /* convert lastfm-youtube link to youtube link */
+lastfm2youtube (const char *url) {
+    static const char lastfm_find[] = "+1-";
+    char *p = strstr(url,lastfm_find);
+
+    if (strstr(url,"last.fm") && p) {
+        char id[16];
+        char *_url = 0;
+
+        p += strlen(lastfm_find);
+        strlcpy(id,p,sizeof(id));
+        asprintf(&_url,"http://youtube.com/watch?v=%s",id);
+
+        return(_url);
+    }
+    return(0);
+}
+
 typedef int (*handlerfp)(mem_t);
 struct host_s {
     char *lookup;
@@ -443,14 +461,16 @@ handle_host (const char *url) {
 
     assert(url != 0);
 
-    if ((_url=embed2video(url)) != 0)
+    if ((_url = embed2video(url)) != 0)
+        url = _url;
+    else if ((_url = lastfm2youtube(url)) != 0)
         url = _url;
 
     for (i=0; i<c; ++i) {
         memset(&page,0,sizeof(page));
         if (strstr(url,hosts[i].lookup) != 0) {
             int rc = fetch_link(url,&page,1);
-            FREE(_url); /* points to _url if embed => page conv. was done */
+            FREE(_url); /* points to _url if any conv. was done above */
             return (rc == 0
                 ? (hosts[i].fp)(&page)
                 : 1);

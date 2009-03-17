@@ -208,6 +208,10 @@ when the file transfer reaches 20% done:
     * spark is the "regular" 320x240 flv
     * cclive defaults to spark if format is not available
 
+  last.fm
+    * youtube hosted videos only
+    * see "youtube.com" above for format info
+
 =head1 FILES
 
 =over 4
