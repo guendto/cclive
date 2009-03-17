@@ -3,6 +3,9 @@
  User-visible changes:
   * Fix googlevideo support
 
+ Developer-visible changes:
+  * Touch cclive.pod and cclive.1
+
 
 0.2.4
 (March 9, 2009)
