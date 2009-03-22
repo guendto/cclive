@@ -1,7 +1,7 @@
 0.2.6
 
  User-visible changes:
-  * Fix dmotion support
+  * Fix dailymotion support
     - Video ID was extracted incorrectly
 
 
