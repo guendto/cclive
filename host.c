@@ -329,8 +329,8 @@ handle_dmotion (mem_t page) {
     char *id=0,*xurl=0;
     int rc=1;
 
-    const char id_begin[] = "/swf/";
-    const char id_end[]   = "?";
+    const char id_begin[] = "swf%2F";
+    const char id_end[]   = "\"";
 
     const char paths_begin[]= "\"video\", \"";
     const char paths_end[]  = "\"";
