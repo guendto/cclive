@@ -21,12 +21,12 @@ extern "C" {
 
 #ifndef CMDLINE_PARSER_PACKAGE
 /** @brief the program name */
-#define CMDLINE_PARSER_PACKAGE "cclive"
+#define CMDLINE_PARSER_PACKAGE PACKAGE
 #endif
 
 #ifndef CMDLINE_PARSER_VERSION
 /** @brief the program version */
-#define CMDLINE_PARSER_VERSION "0.2.6"
+#define CMDLINE_PARSER_VERSION VERSION
 #endif
 
 /** @brief Where the command line options are stored */

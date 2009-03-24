@@ -15,8 +15,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <stdlib.h>
-#include <memory.h>
+
+#include "config.h"
+
+#ifdef HAVE_STDLIB_H
+  #include <stdlib.h>
+#endif
+#ifdef HAVE_MEMORY_H
+  #include <memory.h>
+#endif
 #ifdef WITH_SIGWINCH
 #include <signal.h>
 #endif
@@ -101,7 +108,11 @@ exec_semi (void) {
 
 static void
 exec_plus (void) {
+#ifdef HAVE_MALLOC
     char *arg=0, *cmd=malloc(_POSIX_ARG_MAX);
+#else
+    #error TODO: malloc function missing; workaround needed
+#endif
     llst_node_t curr=cc.fnames;
     int exceeds=0;
 
@@ -157,10 +168,22 @@ int /* entry point */
 main (int argc, char *argv[]) {
     int exec_mode;
 
+#ifdef HAVE_MEMSET
     memset(&cc,0,sizeof(cc));
+#else
+    #error TODO: memset function missing; workaround needed
+#endif
+#ifdef HAVE_ATEXIT
     atexit(handle_exit);
+#else
+    #error TODO: atexit function missing; needs a workaround
+#endif
 
+#ifdef HAVE_MALLOC
     if ( !(cc.curl_errmsg=malloc(CURL_ERROR_SIZE)) ) {
+#else
+    #error TODO: malloc function missing; workaround needed
+#endif
         perror("malloc");
         exit(EXIT_FAILURE);
     }
@@ -172,7 +195,7 @@ main (int argc, char *argv[]) {
         curl_version_info_data *c = curl_version_info(CURLVERSION_NOW);
         cc_log("%s version %s with libcurl version %s  [%s].\n",
             CMDLINE_PARSER_PACKAGE, CMDLINE_PARSER_VERSION,
-            c->version, OSNAME);
+            c->version, CANONICAL_HOST);
 #ifdef WITH_SIGWINCH
         cc_log("--with-sigwinch ");
 #endif
@@ -217,7 +240,11 @@ main (int argc, char *argv[]) {
 
     if (!cc.gi.inputs_num) {
         const size_t size = 1024;
+#ifdef HAVE_MALLOC
         char *ln = malloc(size);
+#else
+    #error TODO: malloc function missing; workaround needed
+#endif
         int l;
 
         if (!ln) {

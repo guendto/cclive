@@ -15,9 +15,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <stdlib.h>
+
+#include "config.h"
+
+#ifdef HAVE_STDLIB_H
+  #include <stdlib.h>
+#endif
 #include <stdarg.h>
-#include <string.h>
+#ifdef HAVE_STRING_H
+  #include <string.h>
+#endif
 #include <assert.h>
 #include <curl/curl.h>
 
@@ -41,7 +48,11 @@ strsub (const char *s, const char *from, const char *to) {
     if (!pt) return((char*)cc_log(e,to));
     l = pt-pf;
 
+#ifdef HAVE_MALLOC
     if ( !(p=malloc(l+1)) ) {
+#else
+    #error TODO: malloc function missing; workaround needed
+#endif
         perror("malloc");
         return(0);
     }
@@ -76,7 +87,11 @@ strrepl (const char *s, const char *what, const char *with) {
     else
         retlen = strlen(s);
 
+#ifdef HAVE_MALLOC
     if ( !(ret=malloc(retlen+1)) ) {
+#else
+    #error TODO: malloc function missing; workaround needed
+#endif
         perror("malloc");
         return(0);
     }

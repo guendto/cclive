@@ -15,16 +15,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <stdlib.h>
-#include <memory.h>
+
+#include "config.h"
+
+#ifdef HAVE_STDLIB_H
+  #include <stdlib.h>
+#endif
+#ifdef HAVE_MEMORY_H
+  #include <memory.h>
+#endif
 #include <assert.h>
 
 #include "cclive.h"
 
 static void *
 _realloc (void *p, const size_t size) {
+#ifdef HAVE_REALLOC
     if (p) return realloc(p,size);
+#endif
+#ifdef HAVE_MALLOC
     return malloc(size);
+#else
+    #error TODO: malloc function missing; workaround needed
+#endif
 }
 
 size_t /* write to memory handler for fetching video page data */

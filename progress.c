@@ -15,14 +15,28 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <stdlib.h>
-#include <unistd.h>
+
+#include "config.h"
+
+#ifdef HAVE_STDLIB_H
+  #include <stdlib.h>
+#endif
+#ifdef HAVE_UNISTD_H
+  #include <unistd.h>
+#endif
 #include <sys/wait.h>
 #include <time.h>
-#include <string.h>
+#ifdef HAVE_STRING_H
+  #include <string.h>
+#endif
 #ifdef WITH_SIGWINCH
-#include <signal.h>
-#include <sys/ioctl.h>
+  #include <signal.h>
+  #ifdef HAVE_SYS_IOCTL_H
+    #include <sys/ioctl.h>
+  #endif
+#endif
+#ifdef HAVE_SYS_TYPES_H
+  #include <sys/types.h>
 #endif
 #include <assert.h>
 
@@ -36,7 +50,7 @@ static int term_width;
 #ifdef WITH_SIGWINCH
 static volatile sig_atomic_t recv_sigwinch;
 
-void
+RETSIGTYPE
 handle_sigwinch (int sig) {
     recv_sigwinch = 1;
     signal(SIGWINCH, handle_sigwinch);
@@ -93,15 +107,17 @@ get_units (double *rate, char **unit) {
 static void
 fork_streamer (progressbar_t bp) {
     streaming_flag = 1;
-    if ( (streaming_pid = fork()) < 0)
+#if defined(HAVE_FORK) && defined(HAVE_WORKING_FORK)
+    if ( (streaming_pid = fork()) < 0) {
         perror("fork");
-    else if (streaming_pid == 0) {
+    } else if (streaming_pid == 0) {
         char *cmd = strrepl(cc.gi.stream_exec_arg,"%i",bp->fname);
         if (cmd)
             system(cmd);
         FREE(cmd);
         exit(0);
     }
+#endif
 }
 
 #define DEFAULT_TERM_WIDTH  80

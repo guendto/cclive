@@ -1,8 +1,6 @@
 /* perl -MExtUtils::Embed -e xsinit -- -o perl_xsinit.c */
 
-#ifdef OSNAME
-# undef OSNAME /* Perl sets its own */
-#endif
+#include "config.h"
 
 #include <EXTERN.h>
 #include <perl.h>

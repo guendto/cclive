@@ -16,8 +16,14 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#include <sys/types.h>
-#include <string.h>
+#include "config.h"
+
+#ifdef HAVE_SYS_TYPES_H
+  #include <sys/types.h>
+#endif
+#ifdef HAVE_STRING_H
+  #include <string.h>
+#endif
 
 /*
  * Copy src to string dst of size siz.  At most siz-1 characters

@@ -16,9 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifdef OSNAME
-# undef OSNAME /* Perl sets its own */
-#endif
+#include "config.h"
 
 #include <EXTERN.h>
 #include <perl.h>
@@ -57,7 +55,11 @@ extract_title (char *html) {
     title = SvPV(perl_get_sv("title", FALSE), PL_na);
 
     return (title
+#ifdef HAVE_STRDUP
         ? strdup(title)
+#else
+    #error TODO: strdup function missing; workaround needed
+#endif
         : NULL);
 }
 

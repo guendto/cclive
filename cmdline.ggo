@@ -1,5 +1,3 @@
-package "cclive"
-version "0.2.6"
 
 option "version"
     v "print version and exit"
