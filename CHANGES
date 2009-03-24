@@ -1,3 +1,10 @@
+0.2.7
+
+ Developer-visible changes
+  * Remove GNU Makefile
+  * Convert to use GNU Autotools
+
+
 0.2.6
 (March 24, 2009)
 
