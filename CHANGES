@@ -1,8 +1,10 @@
 0.2.6
+(March 24, 2009)
 
  User-visible changes:
   * Fix dailymotion support
-    - Video ID was extracted incorrectly
+    - Changes to website HTML; incorrect copy-to-string
+    - Symptoms: output filename utter gibberish
 
 
 0.2.5
