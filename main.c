@@ -204,7 +204,7 @@ main (int argc, char *argv[]) {
 
 #ifndef WITH_PERL
     if (cc.gi.title_given)
-        cc_log("warn: ignoring --title; cclive was built WITH_PERL=no\n");
+        cc_log("warn: ignoring --title; cclive was built --without-perl\n");
 #endif
 
     init_curl();
