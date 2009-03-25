@@ -55,11 +55,7 @@ extract_title (char *html) {
     title = SvPV(perl_get_sv("title", FALSE), PL_na);
 
     return (title
-#ifdef HAVE_STRDUP
         ? strdup(title)
-#else
-    #error TODO: strdup function missing; workaround needed
-#endif
         : NULL);
 }
 

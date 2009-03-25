@@ -15,6 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+#define _GNU_SOURCE
+
 #include "config.h"
 
 #ifdef HAVE_STDLIB_H
@@ -31,6 +34,10 @@
 #endif
 #include <curl/curl.h>
 
+#ifndef HAVE_GETPASS
+#error Cannot compile without getpass() support
+#endif
+
 #include "cclive.h"
 
 int /* log into youtube */
@@ -40,34 +47,18 @@ login_youtube (void) {
     CURLcode rc;
     int ret=1,n;
 
-#ifdef HAVE_MEMSET
     memset(&data,0,sizeof(data));
-#else
-    #error TODO: memset function missing; workaround needed
-#endif
 
     if (!cc.gi.youtube_pass_given) {
         char *prompt=0,*p=0;
         if (asprintf(&prompt,"enter login password for %s:",
             cc.gi.youtube_user_arg) > 0)
         {
-#ifdef HAVE_GETPASS
             p = getpass(prompt);
-#else
-    #error TODO: getpass function missing; needs a workaround
-#endif
         }
         FREE(prompt);
-#ifdef HAVE_STRDUP
         pass = strdup(p);
-#else
-    #error TODO: strdup function missing; workaround needed
-#endif
-#ifdef HAVE_BZERO
         bzero(p,strlen(pass));
-#else
-        memset(p,0,strlen(pass));
-#endif
     }
 
     n = asprintf(&req,

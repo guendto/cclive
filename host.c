@@ -16,6 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#define _GNU_SOURCE
+
 #include "config.h"
 
 #ifdef HAVE_STDLIB_H
@@ -359,11 +361,7 @@ handle_dmotion (mem_t page) {
             const char sep[]="||";
             char *tok=strtok(paths,sep);
             while (tok) {
-#ifdef HAVE_STRSTR
                 char *type = strstr(tok,"@@");
-#else
-    #error TODO: strstr function missing; workaround needed
-#endif
                 if (type) {
                     int n;
                     type += 2;
@@ -383,11 +381,7 @@ handle_dmotion (mem_t page) {
 
         if (xurl) {
             char *title = 0;
-#ifdef HAVE_STRSTR
             char *p = strstr(xurl,"@@");
-#else
-    #error TODO: strstr function missing; workaround needed
-#endif
             if (p)
                 xurl[p-xurl] = '\0';
 #ifdef WITH_PERL
@@ -420,11 +414,7 @@ embed2video (const char *url) {
     int i,c=sizeof(lookup)/sizeof(lookup[0]);
 
     for (i=0; i<c; ++i) {
-#ifdef HAVE_STRSTR
         if (strstr(url,lookup[i].what)) {
-#else
-    #error TODO: strstr function missing; workaround needed
-#endif
             p = strrepl(url, lookup[i].what, lookup[i].with);
             break;
         }
@@ -435,12 +425,8 @@ embed2video (const char *url) {
 static char * /* convert lastfm-youtube link to youtube link */
 lastfm2youtube (const char *url) {
     static const char lastfm_find[] = "+1-";
-#ifdef HAVE_STRSTR
     char *p = strstr(url,lastfm_find);
     if (strstr(url,"last.fm") && p) {
-#else
-    #error TODO: strstr function missing; workaround needed
-#endif
         char id[16];
         char *_url = 0;
 
@@ -490,16 +476,8 @@ handle_host (const char *url) {
         url = _url;
 
     for (i=0; i<c; ++i) {
-#ifdef HAVE_MEMSET
         memset(&page,0,sizeof(page));
-#else
-    #error TODO: memset function missing; workaround needed
-#endif
-#ifdef HAVE_STRSTR
         if (strstr(url,hosts[i].lookup) != 0) {
-#else
-    #error TODO: strstr function missing; workaround needed
-#endif
             int rc = fetch_link(url,&page,1);
             FREE(_url); /* points to _url if any conv. was done above */
             return (rc == 0

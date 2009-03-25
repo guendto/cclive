@@ -16,6 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#define _GNU_SOURCE
+
 #include "config.h"
 
 #ifdef HAVE_STDLIB_H
@@ -23,6 +25,10 @@
 #endif
 #include <stdarg.h>
 #include <assert.h>
+
+#ifndef HAVE_MALLOC
+#error Cannot compile without malloc() support
+#endif
 
 #include "cclive.h"
 
@@ -39,11 +45,7 @@ llst_append (llst_node_t *head, const char *fmt, ...) {
     va_end(args);
 
     if (l > 0 && str != 0) {
-#ifdef HAVE_MALLOC
         llst_node_t n=malloc(sizeof(struct _llst_node_s));
-#else
-    #error TODO: malloc function missing; workaround needed
-#endif
         if (n) {
             llst_node_t curr = *head;
             n->str  = str;

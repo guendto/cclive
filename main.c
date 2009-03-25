@@ -16,6 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#define _GNU_SOURCE
+
 #include "config.h"
 
 #ifdef HAVE_STDLIB_H
@@ -28,6 +30,14 @@
 #include <signal.h>
 #endif
 #include <curl/curl.h>
+
+#ifndef HAVE_MALLOC
+#error Cannot compile without malloc() support
+#endif
+
+#ifndef HAVE_ATEXIT
+#error Cannot compile without atexit() support
+#endif
 
 #include "cclive.h"
 
@@ -108,11 +118,7 @@ exec_semi (void) {
 
 static void
 exec_plus (void) {
-#ifdef HAVE_MALLOC
     char *arg=0, *cmd=malloc(_POSIX_ARG_MAX);
-#else
-    #error TODO: malloc function missing; workaround needed
-#endif
     llst_node_t curr=cc.fnames;
     int exceeds=0;
 
@@ -168,22 +174,10 @@ int /* entry point */
 main (int argc, char *argv[]) {
     int exec_mode;
 
-#ifdef HAVE_MEMSET
     memset(&cc,0,sizeof(cc));
-#else
-    #error TODO: memset function missing; workaround needed
-#endif
-#ifdef HAVE_ATEXIT
     atexit(handle_exit);
-#else
-    #error TODO: atexit function missing; needs a workaround
-#endif
 
-#ifdef HAVE_MALLOC
     if ( !(cc.curl_errmsg=malloc(CURL_ERROR_SIZE)) ) {
-#else
-    #error TODO: malloc function missing; workaround needed
-#endif
         perror("malloc");
         exit(EXIT_FAILURE);
     }
@@ -240,11 +234,7 @@ main (int argc, char *argv[]) {
 
     if (!cc.gi.inputs_num) {
         const size_t size = 1024;
-#ifdef HAVE_MALLOC
         char *ln = malloc(size);
-#else
-    #error TODO: malloc function missing; workaround needed
-#endif
         int l;
 
         if (!ln) {

@@ -16,6 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#define _GNU_SOURCE
+
 #include "config.h"
 
 #ifdef HAVE_STDLIB_H
@@ -205,12 +207,8 @@ dl_file (
     assert(xurl  != 0);
     assert(fname != 0);
 
-#ifdef HAVE_MEMSET
     memset(&bp,0,sizeof(bp));
     memset(&get,0,sizeof(get));
-#else
-    #error TODO: memset function missing; workaround needed
-#endif
 
     if (cc.gi.continue_given && initial > 0) {
         double remaining = total - initial;

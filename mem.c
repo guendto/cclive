@@ -26,6 +26,10 @@
 #endif
 #include <assert.h>
 
+#ifndef HAVE_MALLOC
+#error Cannot compile without malloc() support
+#endif
+
 #include "cclive.h"
 
 static void *
@@ -33,11 +37,7 @@ _realloc (void *p, const size_t size) {
 #ifdef HAVE_REALLOC
     if (p) return realloc(p,size);
 #endif
-#ifdef HAVE_MALLOC
     return malloc(size);
-#else
-    #error TODO: malloc function missing; workaround needed
-#endif
 }
 
 size_t /* write to memory handler for fetching video page data */
