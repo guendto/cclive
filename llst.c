@@ -30,15 +30,15 @@ int
 llst_append (llst_node_t *head, const char *fmt, ...) {
     va_list args;
     char *str=0;
-    int rc=1;
+    int rc=1,l;
 
     assert(head != 0);
 
     va_start(args,fmt);
-    vasprintf(&str,fmt,args);
+    l = vasprintf(&str,fmt,args);
     va_end(args);
 
-    if (str) {
+    if (l > 0 && str != 0) {
 #ifdef HAVE_MALLOC
         llst_node_t n=malloc(sizeof(struct _llst_node_s));
 #else

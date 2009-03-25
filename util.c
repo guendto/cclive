@@ -176,6 +176,7 @@ int /* general purpose log function; notice stderr */
 cc_log (const char *fmt, ...) {
     va_list args;
     char *p=0;
+    int n;
 
     assert(fmt != 0);
 
@@ -183,10 +184,10 @@ cc_log (const char *fmt, ...) {
         return(0);
     
     va_start(args,fmt);
-    vasprintf(&p,fmt,args);
+    n = vasprintf(&p,fmt,args);
     va_end(args);
 
-    if (p)
+    if (n > 0 && p != 0)
         fprintf(stderr,"%s",p);
     FREE(p);
 

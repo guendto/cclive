@@ -34,9 +34,9 @@ static void
 store_fname (const char *fname) {
     assert(fname != 0);
     if (cc.gi.exec_given) {
-        char *tmp;
-        asprintf(&tmp,"\"%s\"",fname);
-        llst_append(&cc.fnames,tmp);
+        char *tmp = 0;
+        if (asprintf(&tmp,"\"%s\"",fname) > 0)
+            llst_append(&cc.fnames,tmp);
         FREE(tmp);
     }
 }
@@ -107,6 +107,7 @@ create_fname(
     const char *title)
 {
     char *p=0;
+    int l;
 
     assert(initial  != 0);
     assert(id       != 0);
@@ -128,7 +129,6 @@ create_fname(
             snprintf(fname,sizeof(fname),dflt,num,title,suffix);
         else
             snprintf(fname,sizeof(fname),dflt,num,host,id,suffix);
-            
 
         /* create a temporary output filename if needed by adding a suffix */
         for (i=1; i<INT_MAX; ++i) {
@@ -148,11 +148,11 @@ create_fname(
                 snprintf(fname,sizeof(fname),dflt,num,title,suffix);
             else
                 snprintf(fname,sizeof(fname),dflt,num,host,id,suffix);
-            asprintf(&n,".%d",i);
-            strlcat(fname,n,sizeof(fname));
+            if (asprintf(&n,".%d",i) > 0)
+                strlcat(fname,n,sizeof(fname));
             FREE(n);
         }
-        asprintf(&p,"%s",fname);
+        l = asprintf(&p,"%s",fname);
     }
     else {
         *initial = file_exists(cc.gi.output_video_arg);
@@ -161,7 +161,7 @@ create_fname(
             cc_log("error: file is already fully retrieved; nothing to do\n");
             return(0);
         }
-        asprintf(&p,"%s",cc.gi.output_video_arg);
+        l = asprintf(&p,"%s",cc.gi.output_video_arg);
     }
     return(p);
 }

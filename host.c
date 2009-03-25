@@ -103,8 +103,9 @@ handle_break (mem_t page) {
 
     if (id && fpath && fname) {
         char *title = 0;
+        int n;
 
-        asprintf(&xurl,
+        n = asprintf(&xurl,
             "http://media1.break.com/dnet/media/%s/%s.flv",fpath,fname);
 #ifdef WITH_PERL
         title = page_title(page->p);
@@ -145,9 +146,9 @@ handle_gvideo (mem_t page) {
         if (!strcmp(cc.gi.download_arg,"mp4")) {
             char *mp4 = strsub(page->p, mp4_begin, mp4_end);
             if (mp4) {
-                char *p;
-                asprintf(&p,"http://vp.%s",mp4);
-                xurl = curl_easy_unescape(cc.curl,p,0,0);
+                char *p = 0;
+                if (asprintf(&p,"http://vp.%s",mp4) > 0)
+                    xurl = curl_easy_unescape(cc.curl,p,0,0);
                 FREE(p);
             } else {
                 cc_log("error: mp4 format unavailable\n");
@@ -364,12 +365,13 @@ handle_dmotion (mem_t page) {
     #error TODO: strstr function missing; workaround needed
 #endif
                 if (type) {
+                    int n;
                     type += 2;
                     if (!strcmp(type,"spark"))
-                        asprintf(&xurl,"http://dailymotion.com%s",tok);
+                        n = asprintf(&xurl,"http://dailymotion.com%s",tok);
                     if (!strcmp(type,cc.gi.download_arg)) {
                         FREE(xurl);
-                        asprintf(&xurl,"http://dailymotion.com%s",tok);
+                        n = asprintf(&xurl,"http://dailymotion.com%s",tok);
                         break;
                     }
                 }
@@ -444,9 +446,8 @@ lastfm2youtube (const char *url) {
 
         p += strlen(lastfm_find);
         strlcpy(id,p,sizeof(id));
-        asprintf(&_url,"http://youtube.com/watch?v=%s",id);
-
-        return(_url);
+        if (asprintf(&_url,"http://youtube.com/watch?v=%s",id) > 0)
+            return(_url);
     }
     return(0);
 }

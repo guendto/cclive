@@ -38,7 +38,7 @@ login_youtube (void) {
     struct _mem_s data;
     char *pass=0,*req=0;
     CURLcode rc;
-    int ret=1;
+    int ret=1,n;
 
 #ifdef HAVE_MEMSET
     memset(&data,0,sizeof(data));
@@ -48,13 +48,15 @@ login_youtube (void) {
 
     if (!cc.gi.youtube_pass_given) {
         char *prompt=0,*p=0;
-        asprintf(&prompt,"enter login password for %s:",
-            cc.gi.youtube_user_arg);
+        if (asprintf(&prompt,"enter login password for %s:",
+            cc.gi.youtube_user_arg) > 0)
+        {
 #ifdef HAVE_GETPASS
-        p = getpass(prompt);
+            p = getpass(prompt);
 #else
     #error TODO: getpass function missing; needs a workaround
 #endif
+        }
         FREE(prompt);
 #ifdef HAVE_STRDUP
         pass = strdup(p);
@@ -68,12 +70,17 @@ login_youtube (void) {
 #endif
     }
 
-    asprintf(&req,
+    n = asprintf(&req,
         "http://uk.youtube.com/login?current_form=loginform"
         "&username=%s&password=%s&action_login=log+in&hl=en-GB",
         cc.gi.youtube_user_arg, pass ? pass:cc.gi.youtube_pass_arg);
 
     FREE(pass);
+
+    if (n < 0 || req == 0) {
+        perror("asprintf");
+        return(ret); /* 1 */
+    }
 
     curl_easy_setopt(cc.curl, CURLOPT_URL,              req);
     curl_easy_setopt(cc.curl, CURLOPT_COOKIEFILE,       "");

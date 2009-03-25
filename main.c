@@ -42,9 +42,9 @@ parse_opts (const int argc, char **argv) {
 
     if ((home = getenv("HOME")) != 0) {
         char *path=0;
-        asprintf(&path,"%s/.ccliverc",home);
+        int n = asprintf(&path,"%s/.ccliverc",home);
 
-        if (path && file_exists(path) != 0) {
+        if (n > 0 && path != 0 && file_exists(path) != 0) {
             struct cmdline_parser_params *pp = cmdline_parser_params_create();
             pp->check_required      = 0;
             if (cmdline_parser_config_file(path,&cc.gi,pp) == 0) {
