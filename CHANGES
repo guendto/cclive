@@ -1,5 +1,9 @@
 0.2.7
 
+ User-visible changes:
+  * Change --version output
+  * Update OTHER section in the manual page (cclive.1, cclive.pod)
+
  Developer-visible changes
   * Remove GNU Makefile
   * Convert to use GNU Autotools
