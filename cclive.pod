@@ -232,23 +232,22 @@ that command-line options override the config file definitions.
 
 =head1 OTHER
 
-You can obtain the development repository with:
+Project page:
+  <http://code.google.com/p/cclive/>
+
+Development repository can be cloned with:
   % git clone git://repo.or.cz/cclive.git
 
-Send questions, patches and bug reports to:
-  cclive@googlegroups.com
-
-To subscribe, send an email to:
-  cclive-subscribe@googlegroups.com
-
-List archive:
-  http://groups.google.com/group/cclive/
+Mailing-list:
+  <cclive-subscribe@googlegroups.com>
+  <cclive@googlegroups.com>
+  <http://groups.google.com/group/cclive/>
 
 Release announcements:
-  http://freshmeat.net/projects/cclive/
+  <http://freshmeat.net/projects/cclive/>
 
 Front-end:
-  http://code.google.com/p/abby/
+  <http://code.google.com/p/abby/>
 
 =head1 AUTHOR
 
