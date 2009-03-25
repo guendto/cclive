@@ -164,13 +164,7 @@ static const char copyr_notice[] =
 "This program is free software: you can redistribute it and/or modify\n"
 "it under the terms of the GNU General Public License as published by\n"
 "the Free Software Foundation, either version 3 of the License, or\n"
-"(at your option) any later version.\n\n"
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"GNU General Public License for more details.\n\n"
-"You should have received a copy of the GNU General Public License\n"
-"along with this program.  If not, see <http://www.gnu.org/licenses/>.";
+"(at your option) any later version <http://www.gnu.org/licenses/>.";
 
 int /* entry point */
 main (int argc, char *argv[]) {
@@ -192,13 +186,14 @@ main (int argc, char *argv[]) {
         cc_log("%s version %s with libcurl version %s  [%s].\n",
             CMDLINE_PARSER_PACKAGE, CMDLINE_PARSER_VERSION,
             c->version, CANONICAL_HOST);
+        cc_log("%s\n\n\tFeatures: ",copyr_notice);
 #ifdef WITH_SIGWINCH
         cc_log("--with-sigwinch ");
 #endif
 #ifdef WITH_PERL
         cc_log("--with-perl ");
 #endif
-        cc_log("\n\n%s\n",copyr_notice);
+        cc_log("\n\tReport bugs: <http://code.google.com/p/cclive/issues/>\n");
         exit(EXIT_SUCCESS);
     }
 
