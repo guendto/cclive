@@ -76,6 +76,12 @@ if [ test x"$with_perl" = "xyes" ]; then
     perl_LDOPTS=`$PERL -MExtUtils::Embed -e ldopts`
     AC_SUBST(perl_CCOPTS)
     AC_SUBST(perl_LDOPTS)
+    AC_MSG_CHECKING([for HTML::TokeParser])
+    if $PERL -MHTML::TokeParser >/dev/null 2>&1; then
+        AC_MSG_RESULT([yes])
+    else
+        AC_MSG_ERROR([HTML::TokeParser module is required])
+    fi
     AC_DEFINE([WITH_PERL], [1], [Whether Perl is embedded])
 fi
 AM_CONDITIONAL([WITH_PERL], [test x"$with_perl" != "xno"])
