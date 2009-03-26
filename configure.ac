@@ -2,8 +2,8 @@
 # Process this file with autoconf to produce a configure script.
 
 m4_define([vmaj], [0])
-m4_define([vmin], [2])
-m4_define([vmic], [7])
+m4_define([vmin], [3])
+m4_define([vmic], [0])
 m4_define([bugs], [legatvs@gmail.com])
 
 AC_PREREQ(2.62)

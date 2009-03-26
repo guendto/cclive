@@ -1,4 +1,4 @@
-0.2.7
+0.3.0
 
  User-visible changes:
   * Fix googlevideo support (reason: id extraction failed)
@@ -7,9 +7,9 @@
   * Update OTHER section in the manual page (cclive.1, cclive.pod)
 
  Developer-visible changes
-  * Update INSTALL
   * Convert to use GNU Autotools
   * Remove GNU Makefile
+  * Update INSTALL
 
 
 0.2.6
