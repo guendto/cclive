@@ -132,7 +132,7 @@ handle_gvideo (mem_t page) {
     char *id=0,*xurl=0;
     int rc=1;
 
-    const char id_begin[]   = "docid: '";
+    const char id_begin[]   = "docid:'";
     const char id_end[]     = "'";
 
     const char flv_begin[]  = "videoUrl\\x3d";
