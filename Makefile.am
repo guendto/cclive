@@ -14,7 +14,7 @@ endif
 bin_PROGRAMS = cclive
 cclive_SOURCES = $(src)
 if WITH_MAN
-man1_MANS = cclive.1
+dist_man_MANS = cclive.1
 endif
 
 .PHONY: cmdline man

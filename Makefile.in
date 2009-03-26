@@ -37,10 +37,11 @@ host_triplet = @host@
 @WITH_PERL_TRUE@am__append_3 = title.c perl_xsinit.c
 bin_PROGRAMS = cclive$(EXEEXT)
 subdir = .
-DIST_COMMON = README $(am__configure_deps) $(srcdir)/Makefile.am \
-	$(srcdir)/Makefile.in $(srcdir)/config.h.in \
-	$(top_srcdir)/configure AUTHORS COPYING ChangeLog INSTALL NEWS \
-	TODO config.guess config.sub depcomp install-sh missing
+DIST_COMMON = README $(am__configure_deps) $(dist_man_MANS) \
+	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
+	$(srcdir)/config.h.in $(top_srcdir)/configure AUTHORS COPYING \
+	ChangeLog INSTALL NEWS TODO config.guess config.sub depcomp \
+	install-sh missing
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
@@ -75,7 +76,7 @@ SOURCES = $(cclive_SOURCES)
 DIST_SOURCES = $(am__cclive_SOURCES_DIST)
 man1dir = $(mandir)/man1
 NROFF = nroff
-MANS = $(man1_MANS)
+MANS = $(dist_man_MANS)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -195,7 +196,7 @@ src = main.c cmdline.c mem.c host.c dl.c llst.c util.c progress.c \
 	progress.h $(am__append_3)
 INCLUDES = $(libcurl_CFLAGS) $(am__append_1)
 cclive_SOURCES = $(src)
-@WITH_MAN_TRUE@man1_MANS = cclive.1
+@WITH_MAN_TRUE@dist_man_MANS = cclive.1
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
