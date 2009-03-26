@@ -1,6 +1,8 @@
 0.2.7
 
  User-visible changes:
+  * Fix googlevideo support (reason: id extraction failed)
+    - Symptom: "error: 'docid: ' not found"
   * Change --version output
   * Update OTHER section in the manual page (cclive.1, cclive.pod)
 
