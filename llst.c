@@ -1,19 +1,18 @@
 /*
- * cclive Copyright (C) 2009 Toni Gundogdu.
- * This file is part of cclive.
- *
- * cclive is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * cclive is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * cclive Copyright (C) 2009 Toni Gundogdu. This file is part of cclive.
+ * 
+ * cclive is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * cclive is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef _GNU_SOURCE
@@ -23,7 +22,7 @@
 #include "config.h"
 
 #ifdef HAVE_STDLIB_H
-  #include <stdlib.h>
+#include <stdlib.h>
 #endif
 #include <stdarg.h>
 #include <assert.h>
@@ -35,22 +34,23 @@
 #include "cclive.h"
 
 int
-llst_append (llst_node_t *head, const char *fmt, ...) {
+llst_append(llst_node_t * head, const char *fmt,...)
+{
     va_list args;
-    char *str=0;
-    int rc=1,l;
+    char   *str = 0;
+    int     rc = 1, l;
 
     assert(head != 0);
 
-    va_start(args,fmt);
-    l = vasprintf(&str,fmt,args);
+    va_start(args, fmt);
+    l = vasprintf(&str, fmt, args);
     va_end(args);
 
     if (l > 0 && str != 0) {
-        llst_node_t n=malloc(sizeof(struct _llst_node_s));
+        llst_node_t n = malloc(sizeof(struct _llst_node_s));
         if (n) {
             llst_node_t curr = *head;
-            n->str  = str;
+            n->str = str;
             n->next = 0;
             if (curr == 0)
                 *head = n;
@@ -59,20 +59,19 @@ llst_append (llst_node_t *head, const char *fmt, ...) {
                     curr = curr->next;
                 curr->next = n;
             }
-            rc=0;
-        }
-        else {
+            rc = 0;
+        } else {
             perror("malloc");
             FREE(str);
         }
-    }
-    else
+    } else
         perror("vasprintf");
-    return(rc);
+    return (rc);
 }
 
 void
-llst_dump (llst_node_t head) {
+llst_dump(llst_node_t head)
+{
     llst_node_t curr = head;
     while (curr != 0) {
         puts(curr->str);
@@ -81,7 +80,8 @@ llst_dump (llst_node_t head) {
 }
 
 void
-llst_free (llst_node_t *head) {
+llst_free(llst_node_t * head)
+{
     llst_node_t curr = *head;
     while (curr != 0) {
         llst_node_t next = curr->next;

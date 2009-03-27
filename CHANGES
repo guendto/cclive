@@ -7,6 +7,8 @@
   * Update OTHER section in the manual page (cclive.1, cclive.pod)
 
  Developer-visible changes
+  * Cleanup code (style-wise)
+    - indent -nut -i4 -ldi8
   * Convert to use GNU Autotools
   * Remove GNU Makefile
   * Update INSTALL
