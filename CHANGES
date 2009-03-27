@@ -1,8 +1,9 @@
 0.3.0
 
  User-visible changes:
-  * Fix googlevideo support (reason: id extraction failed)
+  * Fix googlevideo support
     - Symptom: "error: 'docid: ' not found"
+    - Cause: id extraction failed
   * Change --version output
   * Update OTHER section in the manual page (cclive.1, cclive.pod)
 
