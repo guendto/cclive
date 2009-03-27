@@ -208,7 +208,7 @@ dl_file(
 {
     struct progressbar_s bp;
     struct getdata_s get;
-    curl_off_t r;
+    curl_off_t limit_rate;
     CURLcode rc;
     int     ret = 0;
 
@@ -242,8 +242,8 @@ dl_file(
     curl_easy_setopt(cc.curl, CURLOPT_HEADER, 0L);
     curl_easy_setopt(cc.curl, CURLOPT_RESUME_FROM, (long)initial);
 
-    r = (curl_off_t) cc.gi.limit_rate_arg * 1024;
-    curl_easy_setopt(cc.curl, CURLOPT_MAX_RECV_SPEED_LARGE, r);
+    limit_rate = cc.gi.limit_rate_arg * 1024;
+    curl_easy_setopt(cc.curl, CURLOPT_MAX_RECV_SPEED_LARGE, limit_rate);
 
     if ((rc = curl_easy_perform(cc.curl)) != CURLE_OK) {
         long    httpcode;
@@ -266,7 +266,7 @@ dl_file(
     curl_easy_setopt(cc.curl, CURLOPT_HEADER, 1L);
     curl_easy_setopt(cc.curl, CURLOPT_NOPROGRESS, 1L);
     curl_easy_setopt(cc.curl, CURLOPT_RESUME_FROM, 0L);
-    curl_easy_setopt(cc.curl, CURLOPT_MAX_RECV_SPEED_LARGE, 0L);
+    curl_easy_setopt(cc.curl, CURLOPT_MAX_RECV_SPEED_LARGE, (curl_off_t)0);
 
     cc_log("\n");
     return (ret);
