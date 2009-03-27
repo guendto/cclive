@@ -49,7 +49,8 @@ store_fname(const char *fname)
 static int
 query_filelen(const char *xurl, double *len, char **ct)
 {
-    CURLcode rc, httpcode;
+    CURLcode rc;
+    long    httpcode;
     FILE   *f = tmpfile();
     int     ret = 1;
 
@@ -64,9 +65,9 @@ query_filelen(const char *xurl, double *len, char **ct)
     cc_log("verify video link ...");
 
     curl_easy_setopt(cc.curl, CURLOPT_URL, xurl);
-    curl_easy_setopt(cc.curl, CURLOPT_NOBODY, 1);       /* GET => HEAD */
+    curl_easy_setopt(cc.curl, CURLOPT_NOBODY, 1L);      /* GET => HEAD */
     curl_easy_setopt(cc.curl, CURLOPT_WRITEDATA, f);
-    curl_easy_setopt(cc.curl, CURLOPT_WRITEFUNCTION, 0);
+    curl_easy_setopt(cc.curl, CURLOPT_WRITEFUNCTION, NULL);
 
     *len = 0;
     *ct = 0;
@@ -94,7 +95,7 @@ query_filelen(const char *xurl, double *len, char **ct)
             cc_log("\nerror: server returned http/%d\n", httpcode);
     }
 
-    curl_easy_setopt(cc.curl, CURLOPT_HTTPGET, 1);      /* reset: HEAD => GET */
+    curl_easy_setopt(cc.curl, CURLOPT_HTTPGET, 1L);     /* reset: HEAD => GET */
     fclose(f);
 
     return (ret);
@@ -179,7 +180,7 @@ struct getdata_s {
 };
 
 /* curl write callback function for file transfers */
-static int
+static          size_t
 write_cb(void *data, size_t size, size_t nmemb, void *stream)
 {
     struct getdata_s *get = (struct getdata_s *)stream;
@@ -234,23 +235,24 @@ dl_file(
     curl_easy_setopt(cc.curl, CURLOPT_URL, xurl);
     curl_easy_setopt(cc.curl, CURLOPT_WRITEFUNCTION, write_cb);
     curl_easy_setopt(cc.curl, CURLOPT_WRITEDATA, &get);
-    curl_easy_setopt(cc.curl, CURLOPT_NOPROGRESS, 0);
+    curl_easy_setopt(cc.curl, CURLOPT_NOPROGRESS, 0L);
     curl_easy_setopt(cc.curl, CURLOPT_PROGRESSFUNCTION, &progress_cb);
     curl_easy_setopt(cc.curl, CURLOPT_PROGRESSDATA, &bp);
     curl_easy_setopt(cc.curl, CURLOPT_ENCODING, "identity");
-    curl_easy_setopt(cc.curl, CURLOPT_HEADER, 0);
+    curl_easy_setopt(cc.curl, CURLOPT_HEADER, 0L);
     curl_easy_setopt(cc.curl, CURLOPT_RESUME_FROM, (long)initial);
 
     r = (curl_off_t) cc.gi.limit_rate_arg * 1024;
     curl_easy_setopt(cc.curl, CURLOPT_MAX_RECV_SPEED_LARGE, r);
 
     if ((rc = curl_easy_perform(cc.curl)) != CURLE_OK) {
-        curl_easy_getinfo(cc.curl, CURLINFO_RESPONSE_CODE, &rc);
+        long    httpcode;
+        curl_easy_getinfo(cc.curl, CURLINFO_RESPONSE_CODE, &httpcode);
         cc_log("\nerror: ");
         if (cc.curl_errmsg)
             cc_log("%s", cc.curl_errmsg);
         else
-            cc_log("server closed with http/%d", rc);
+            cc_log("server closed with http/%d", httpcode);
         cc_log("\n");
         ret = 1;
     }
@@ -261,10 +263,10 @@ dl_file(
     if (!ret)
         bar_finish(&bp);
 
-    curl_easy_setopt(cc.curl, CURLOPT_HEADER, 1);
-    curl_easy_setopt(cc.curl, CURLOPT_NOPROGRESS, 1);
-    curl_easy_setopt(cc.curl, CURLOPT_RESUME_FROM, 0);
-    curl_easy_setopt(cc.curl, CURLOPT_MAX_RECV_SPEED_LARGE, 0);
+    curl_easy_setopt(cc.curl, CURLOPT_HEADER, 1L);
+    curl_easy_setopt(cc.curl, CURLOPT_NOPROGRESS, 1L);
+    curl_easy_setopt(cc.curl, CURLOPT_RESUME_FROM, 0L);
+    curl_easy_setopt(cc.curl, CURLOPT_MAX_RECV_SPEED_LARGE, 0L);
 
     cc_log("\n");
     return (ret);

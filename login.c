@@ -85,7 +85,7 @@ login_youtube(void)
     FREE(req);
 
     if (rc == CURLE_OK) {
-        CURLcode httpcode;
+        long    httpcode;
         curl_easy_getinfo(cc.curl, CURLINFO_RESPONSE_CODE, &httpcode);
         if (httpcode == 200) {
             if (strstr(data.p, "your log-in was incorrect") != 0) {

@@ -7,6 +7,7 @@
   * Update OTHER section in the manual page (cclive.1, cclive.pod)
 
  Developer-visible changes
+  * Fix various compilation warnings (gcc 4.3+)
   * Cleanup code (style-wise)
     - indent -nut -i4 -ldi8
   * Convert to use GNU Autotools

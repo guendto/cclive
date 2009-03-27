@@ -169,7 +169,7 @@ fetch_link(const char *url, mem_t page, const int log_fetch)
     curl_easy_setopt(cc.curl, CURLOPT_WRITEDATA, page);
 
     if ((rc = curl_easy_perform(cc.curl)) == CURLE_OK) {
-        CURLcode httpcode;
+        long    httpcode;
         curl_easy_getinfo(cc.curl, CURLINFO_RESPONSE_CODE, &httpcode);
         if (httpcode == 200) {
             cc_log("done.\n");

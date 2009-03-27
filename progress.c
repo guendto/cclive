@@ -118,8 +118,10 @@ fork_streamer(progressbar_t bp)
         perror("fork");
     } else if (streaming_pid == 0) {
         char   *cmd = strrepl(cc.gi.stream_exec_arg, "%i", bp->fname);
-        if (cmd)
-            system(cmd);
+        if (cmd) {
+            /* TODO: proper error checking */
+            int     n = system(cmd);
+        }
         FREE(cmd);
         exit(0);
     }

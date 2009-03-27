@@ -93,9 +93,9 @@ init_curl(void)
         exit(EXIT_FAILURE);
     }
     curl_easy_setopt(cc.curl, CURLOPT_USERAGENT, cc.gi.agent_arg);
-    curl_easy_setopt(cc.curl, CURLOPT_FOLLOWLOCATION, 1);
-    curl_easy_setopt(cc.curl, CURLOPT_AUTOREFERER, 1);
-    curl_easy_setopt(cc.curl, CURLOPT_NOBODY, 0);
+    curl_easy_setopt(cc.curl, CURLOPT_FOLLOWLOCATION, 1L);
+    curl_easy_setopt(cc.curl, CURLOPT_AUTOREFERER, 1L);
+    curl_easy_setopt(cc.curl, CURLOPT_NOBODY, 0L);
     curl_easy_setopt(cc.curl, CURLOPT_VERBOSE, cc.gi.debug_given);
     curl_easy_setopt(cc.curl, CURLOPT_ERRORBUFFER, cc.curl_errmsg);
 
@@ -114,7 +114,8 @@ exec_semi(void)
         cmd = strrepl(cc.gi.exec_arg, "%i", curr->str);
         if (cmd) {
             strrmch(cmd, ';');
-            system(cmd);
+            /* TODO: proper error checking */
+            int     n = system(cmd);
         }
         FREE(cmd);
         curr = curr->next;
@@ -126,7 +127,7 @@ exec_plus(void)
 {
     char   *arg = 0, *cmd = malloc(_POSIX_ARG_MAX);
     llst_node_t curr = cc.fnames;
-    int     exceeds = 0;
+    int     exceeds = 0, n;
 
     if (!cmd) {
         perror("malloc");
@@ -151,7 +152,8 @@ exec_plus(void)
         }
         curr = curr->next;
     }
-    system(cmd);
+    /* TODO: proper error checking */
+    n = system(cmd);
     FREE(cmd);
 }
 
