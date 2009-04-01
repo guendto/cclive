@@ -1,6 +1,10 @@
 0.3.1
 
- Developer-visible changes
+ User-visible changes:
+  * Add Youtube HD support (--download=mp4_hd)
+    - Thanks bf for the patch
+
+ Developer-visible changes:
   * Cleanup manual page (cclive.1, cclive.pod)
 
 

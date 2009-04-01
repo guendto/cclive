@@ -62,6 +62,8 @@ handle_youtube(mem_t page)
 
         if (!strcmp(cc.gi.download_arg, "mp4"))
             strlcat(xurl, "&fmt=18", sizeof(xurl));
+        else if (!strcmp(cc.gi.download_arg, "mp4_hd"))
+            strlcat(xurl, "&fmt=22", sizeof(xurl));
         else if (!strcmp(cc.gi.download_arg, "3gpp"))
             strlcat(xurl, "&fmt=17", sizeof(xurl));
         else if (!strcmp(cc.gi.download_arg, "xflv"))

@@ -66,7 +66,7 @@ servers. Be sure to read the L</FORMATS> section.
 =item B<-f, --download=>I<FORMAT>
 
 Extract I<format> instead of the default "flv". Possible values are "flv"
-(default), "mp4", "3gpp", "xflv", "spark", "vp6-hq", "vp6-hd", "vp6",
+(default), "mp4", "mp4_hd", "3gpp", "xflv", "spark", "vp6-hq", "vp6-hd", "vp6",
 "h264", "spak-mini". Note that only certain hosts support only certain
 formats. See the L</FORMATS> section for more on this.
 
@@ -182,9 +182,12 @@ reaches 20% mark:
 =head1 FORMATS
 
   youtube.com
-    * flv/mp4/3gpp/xflv
+    * flv/mp4/mp4_hd/3gpp/xflv
     * Resuming flv with --continue does not work
     * 3gpp and xflv formats may not always be available
+    * mp4_hd format is currently available for a limited
+      number of videos, which are usually explicitly marked
+      as "HD" or "720p"
 
   video.google.com
     * flv/mp4
