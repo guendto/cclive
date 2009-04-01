@@ -49,8 +49,10 @@ The filtered titles are then used for naming the video file. The default class
 is usually enough for most users, others may want to read up on Perl regular
 expressions and character classes.
 
-Using character-classes:
-  <http://perldoc.perl.org/perlrequick.html>
+About using character-classes:
+  http://perldoc.perl.org/perlrequick.html
+Or:
+  % perldoc perlrequick
 
 =item B<-n, --no-extract>
 
@@ -164,18 +166,17 @@ Print output filename on a dedicated line before each file transfer.
 Typical use:
   % cclive URL
 
-Extract mp4 format video from the URL:
+Download mp4 format of the video from the URL:
   % cclive -f mp4 URL
 
-Play extracted video with L<mplayer(1)> subsequently:
+Play the downloaded video with L<mplayer(1)> subsequently:
   % cclive --exec="mplayer -really-quiet %i;" URL
 
-Extract audio from the downloaded video and save it as mp3
-using L<ffmpeg(1)>:
+Extract audio to an mp3 file from the downloaded video with L<ffmpeg(1)>:
   % cclive --exec="ffmpeg -i %i %i.mp3;" URL
 
-Start streaming the video being extracted with L<mplayer(1)>
-when the file transfer reaches 20% done:
+Start playing the video being downloaded with L<mplayer(1)> when the transfer
+reaches 20% mark:
   % cclive --stream-exec="mplayer -really-quiet %i" --stream=20 URL
 
 =head1 FORMATS
@@ -191,25 +192,16 @@ when the file transfer reaches 20% done:
     * mp4 format may not always be available
     * mp4 != youtube-mp4
 
-  break.com
-    * flv
-
-  evisor.tv
-    * flv
-
-  sevenload.com
-    * flv
-
-  liveleak.com
+  break.com | evisor.tv | sevenload.com | liveleak.com
     * flv
 
   dailymotion.com
-    * spark / spak-mini / vp6-hq / vp6-hd / vp6 / h264
+    * spark | spak-mini | vp6-hq | vp6-hd | vp6 | h264
     * spark is the "regular" 320x240 flv
     * cclive defaults to spark if format is not available
 
   last.fm
-    * youtube hosted videos only
+    * cclive can extract the videos marked as youtube videos
     * see "youtube.com" above for format info
 
 =head1 FILES
@@ -230,24 +222,28 @@ that command-line options override the config file definitions.
 
 =back
 
+=head1 EXIT STATUS
+
+cclive exits 0 on success, and >0 if an error occurs.
+
 =head1 OTHER
 
 Project page:
-  <http://code.google.com/p/cclive/>
+  http://code.google.com/p/cclive/
 
 Development repository can be cloned with:
   % git clone git://repo.or.cz/cclive.git
 
 Mailing-list:
-  <cclive-subscribe@googlegroups.com>
-  <cclive@googlegroups.com>
-  <http://groups.google.com/group/cclive/>
+  cclive-subscribe@googlegroups.com
+  cclive@googlegroups.com
+  http://groups.google.com/group/cclive/
 
 Release announcements:
-  <http://freshmeat.net/projects/cclive/>
+  http://freshmeat.net/projects/cclive/
 
 Front-end:
-  <http://code.google.com/p/abby/>
+  http://code.google.com/p/abby/
 
 =head1 AUTHOR
 
