@@ -1,10 +1,13 @@
 0.3.1
 
  User-visible changes:
+  * Use returned content-type for video file name suffix
+    - If this fails, use --download=format for suffix
   * Add Youtube HD support (--download=mp4_hd)
     - Thanks bf for the patch
 
  Developer-visible changes:
+  * Add tests/youtube-hd.url
   * Cleanup manual page (cclive.1, cclive.pod)
 
 

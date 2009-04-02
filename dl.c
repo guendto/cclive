@@ -266,10 +266,39 @@ dl_file(
     curl_easy_setopt(cc.curl, CURLOPT_HEADER, 1L);
     curl_easy_setopt(cc.curl, CURLOPT_NOPROGRESS, 1L);
     curl_easy_setopt(cc.curl, CURLOPT_RESUME_FROM, 0L);
-    curl_easy_setopt(cc.curl, CURLOPT_MAX_RECV_SPEED_LARGE, (curl_off_t)0);
+    curl_easy_setopt(cc.curl, CURLOPT_MAX_RECV_SPEED_LARGE, (curl_off_t) 0);
 
     cc_log("\n");
     return (ret);
+}
+
+static char    *
+suffix_from_contenttype(const char *ct)
+{
+    const size_t size = 16;
+    char   *p = strstr(ct, "/");
+    char   *suffix = 0;
+
+    assert(ct != 0);
+
+    if (!p)
+        return (0);
+
+    if ((suffix = malloc(size)) != 0) {
+        memset(suffix, 0, size);
+        strlcpy(suffix, p + 1, size);
+        if (strstr(suffix, "octet") != 0
+            || strstr(suffix, "x-flv") != 0
+            || strstr(suffix, "plain") != 0) {
+            /*
+             * default to --download=format for suffix if any of these are
+             * returned.
+             */
+            FREE(suffix);
+        }
+    } else
+        perror("malloc");
+    return (suffix);
 }
 
 /* prepare video file for extraction */
@@ -282,8 +311,9 @@ prep_video(
 )
 {
     double  len = 0, initial = 0;
-    char   *fname = 0, *ct = 0;
+    char   *ct = 0;
     int     rc = 1;
+    char   *suffix = 0;
 
     assert(xurl != 0);
     assert(id != 0);
@@ -292,8 +322,15 @@ prep_video(
     rc = query_filelen(xurl, &len, &ct);
     if (!rc) {
         const char *_title = (title != 0 && strlen(title) > 0) ? title : 0;
-        fname =
-            create_fname(&initial, len, id, cc.gi.download_arg, host, _title);
+
+        char   *suffix = suffix_from_contenttype(ct);
+
+        char   *fname =
+        create_fname(&initial, len, id,
+                     suffix ? suffix : cc.gi.download_arg, host, _title);
+
+        FREE(suffix);
+
         if (fname) {
             const char file[] = "file: %s  %.1fM  [%s]\n";
             rc = 0;
