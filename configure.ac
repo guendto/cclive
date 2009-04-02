@@ -8,12 +8,14 @@ m4_define([bugs], [legatvs@gmail.com])
 
 AC_PREREQ(2.62)
 AC_INIT([cclive], vmaj[.]vmin[.]vmic, [bugs])
-AM_INIT_AUTOMAKE()
 AC_CONFIG_SRCDIR([main.c])
 AC_CONFIG_HEADERS([config.h])
 
-AC_CANONICAL_HOST
+AC_CANONICAL_SYSTEM
+AC_DEFINE_UNQUOTED(CANONICAL_TARGET, "$target", [Canonical target])
 AC_DEFINE_UNQUOTED(CANONICAL_HOST, "$host", [Canonical host])
+
+AM_INIT_AUTOMAKE()
 
 # Checks for programs.
 AC_PROG_CC

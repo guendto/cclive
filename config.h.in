@@ -3,6 +3,9 @@
 /* Canonical host */
 #undef CANONICAL_HOST
 
+/* Canonical target */
+#undef CANONICAL_TARGET
+
 /* Define to 1 if you have the `atexit' function. */
 #undef HAVE_ATEXIT
 

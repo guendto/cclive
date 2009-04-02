@@ -8,6 +8,8 @@
     - Thanks bf for the patch
 
  Developer-visible changes:
+  * configure.ac: Use CANONICAL_SYSTEM instead of CANONICAL_HOST
+    - main.c: use CANONICAL_TARGET instead of CANONICAL_HOST
   * Add tests/youtube-hd.url
   * Cleanup manual page (cclive.1, cclive.pod)
 

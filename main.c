@@ -195,7 +195,7 @@ main(int argc, char *argv[])
         curl_version_info_data *c = curl_version_info(CURLVERSION_NOW);
         cc_log("%s version %s with libcurl version %s  [%s].\n",
                CMDLINE_PARSER_PACKAGE, CMDLINE_PARSER_VERSION,
-               c->version, CANONICAL_HOST);
+               c->version, CANONICAL_TARGET);
         cc_log("%s\n\n\tFeatures: ", copyr_notice);
 #ifdef WITH_SIGWINCH
         cc_log("--with-sigwinch ");
