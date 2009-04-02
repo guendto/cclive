@@ -3,7 +3,7 @@
  User-visible changes:
   * Replace dashes in filenames (id, suffix) with underscores
   * Use returned content-type for video file name suffix
-    - If this fails, use --download=format for suffix
+    - Use "flv" for exceptions (e.g. octet-*, x-flv, etc.)
   * Add Youtube HD support (--download=mp4_hd)
     - Thanks bf for the patch
 
