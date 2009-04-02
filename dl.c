@@ -293,11 +293,10 @@ suffix_from_contenttype(const char *ct)
         if (strstr(suffix, "octet") != 0
             || strstr(suffix, "x-flv") != 0
             || strstr(suffix, "plain") != 0) {
-            /*
-             * default to --download=format for suffix if any of these are
-             * returned.
-             */
+            /* use "flv" for these exceptions. */
+            int     n;
             FREE(suffix);
+            n = asprintf(&suffix, "flv");
         }
     } else
         perror("malloc");
