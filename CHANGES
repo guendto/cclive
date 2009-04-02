@@ -1,6 +1,7 @@
 0.3.1
 
  User-visible changes:
+  * Replace dashes in filenames (id, suffix) with underscores
   * Use returned content-type for video file name suffix
     - If this fails, use --download=format for suffix
   * Add Youtube HD support (--download=mp4_hd)

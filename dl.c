@@ -108,8 +108,8 @@ static char    *
 create_fname(
              double *initial,
              double total,
-             const char *id,
-             const char *suffix,
+             char *id,
+             char *suffix,
              const char *host,
              const char *title)
 {
@@ -120,6 +120,9 @@ create_fname(
     assert(id != 0);
     assert(suffix != 0);
     assert(host != 0);
+
+    strreplch(id, '-', '_');
+    strreplch(suffix, '-', '_');
 
     if (!cc.gi.output_video_given) {
         const char *dflt = title ? "%s%s.%s" : "%s%s_%s.%s";
@@ -305,7 +308,7 @@ suffix_from_contenttype(const char *ct)
 int
 prep_video(
            const char *xurl,
-           const char *id,
+           char *id,
            const char *host,
            const char *title
 )
@@ -313,7 +316,6 @@ prep_video(
     double  len = 0, initial = 0;
     char   *ct = 0;
     int     rc = 1;
-    char   *suffix = 0;
 
     assert(xurl != 0);
     assert(id != 0);

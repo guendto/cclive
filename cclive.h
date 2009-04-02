@@ -51,6 +51,9 @@ char *
 strrepl(const char *s, const char *what, const char *with);
 
 void
+strreplch(char *s, const char c, const char with);
+
+void
 strrmch(char *s, const char c);
 
 size_t
@@ -71,7 +74,7 @@ file_exists(const char *path);
 int
 prep_video(
     const char *xurl,
-    const char *id,
+    char *id,
     const char *host,
     const char *title
 );

@@ -113,6 +113,19 @@ strrepl(const char *s, const char *what, const char *with)
     return (ret);
 }
 
+void
+strreplch(char *s, const char c, const char with) {
+    char *p = s;
+
+    assert(s != 0);
+
+    while (*p != '\0') {
+        if (*p == c)
+            *p = with;
+        *p++;
+    }
+}
+
 /* remove all occurences of c in a string */
 void
 strrmch(char *s, const char c)
