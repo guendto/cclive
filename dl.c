@@ -276,15 +276,15 @@ dl_file(
 }
 
 static char    *
-suffix_from_contenttype(const char *ct)
+ct2suffix(const char *content_type)
 {
     const size_t size = 16;
-    char   *p = strstr(ct, "/");
+    char   *p = 0;
     char   *suffix = 0;
 
-    assert(ct != 0);
+    assert(content_type != 0);
 
-    if (!p)
+    if (!(p = strstr(content_type, "/")))
         return (0);
 
     if ((suffix = malloc(size)) != 0) {
@@ -324,7 +324,7 @@ prep_video(
     if (!rc) {
         const char *_title = (title != 0 && strlen(title) > 0) ? title : 0;
 
-        char   *suffix = suffix_from_contenttype(ct);
+        char   *suffix = ct2suffix(ct);
 
         char   *fname =
         create_fname(&initial, len, id,
