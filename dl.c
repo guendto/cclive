@@ -122,7 +122,6 @@ create_fname(
     assert(host != 0);
 
     strreplch(id, '-', '_');
-    strreplch(suffix, '-', '_');
 
     if (!cc.gi.output_video_given) {
         const char *dflt = title ? "%s%s.%s" : "%s%s_%s.%s";
