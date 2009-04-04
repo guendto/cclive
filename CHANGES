@@ -1,7 +1,8 @@
 0.3.1
+(April 4, 2009)
 
  User-visible changes:
-  * Replace dashes in video ID with underscores
+  * Replace dashes in video IDs with underscores before using them in fnames
   * Use returned content-type for video file name suffix
     - Use "flv" for exceptions (e.g. octet-*, x-flv, etc.)
   * Add Youtube HD support (--download=mp4_hd)
