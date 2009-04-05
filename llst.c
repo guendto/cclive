@@ -15,10 +15,6 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _GNU_SOURCE
-#define _GNU_SOURCE
-#endif
-
 #include "config.h"
 
 #ifdef HAVE_STDLIB_H

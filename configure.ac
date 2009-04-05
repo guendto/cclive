@@ -19,6 +19,7 @@ AM_INIT_AUTOMAKE()
 
 # Checks for programs.
 AC_PROG_CC
+AC_GNU_SOURCE
 
 AC_PATH_PROG(GENGETOPT, gengetopt, no)
 AM_CONDITIONAL([HAVE_GENGETOPT], [test x"$GENGETOPT" != "xno"])
