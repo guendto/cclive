@@ -1,3 +1,10 @@
+0.3.2
+
+ Developer-visible changes:
+  * configure.ac: use AC_GNU_SOURCE instead of defining _GNU_SOURCE manually
+    - main.c, dl.c, llst.c, host.c, login.c, util.c: remove _GNU_SOURCE define
+
+
 0.3.1
 (April 4, 2009)
 
