@@ -1,7 +1,9 @@
 0.3.2
 
  User-visible changes:
-  * Add --connect-timeout option
+  * Add new options:
+    - --connect-timeout
+    - --connect-timeout-socks
 
  Developer-visible changes:
   * configure.ac: use AC_GNU_SOURCE instead of defining _GNU_SOURCE manually
