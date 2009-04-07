@@ -63,6 +63,10 @@ option "connect-timeout"
     - "max time allowed connection to server take"
     int typestr="SECS"
     optional
+option "connect-timeout-socks"
+    - "same as above but with SOCKS proxy workaround"
+    int typestr="S"
+    optional
 option "youtube-user"
     u "login username for youtube"
     string typestr="USERNAME"

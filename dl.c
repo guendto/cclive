@@ -66,11 +66,14 @@ query_filelen(const char *xurl, double *len, char **ct)
     curl_easy_setopt(cc.curl, CURLOPT_WRITEFUNCTION, NULL);
     curl_easy_setopt(cc.curl, CURLOPT_CONNECTTIMEOUT,
                      cc.gi.connect_timeout_arg);
+    curl_easy_setopt(cc.curl, CURLOPT_TIMEOUT,
+        cc.gi.connect_timeout_socks_arg);
 
     *len = 0;
     *ct = 0;
     rc = curl_easy_perform(cc.curl);
 
+    curl_easy_setopt(cc.curl, CURLOPT_TIMEOUT, 0L);
     curl_easy_getinfo(cc.curl, CURLINFO_RESPONSE_CODE, &httpcode);
 
     if (rc == CURLE_OK && httpcode == 200) {
@@ -258,10 +261,12 @@ dl_file(
         cc_log("\n");
         ret = 1;
     }
+
     if (get.f) {
         fflush(get.f);
         fclose(get.f);
     }
+
     if (!ret)
         bar_finish(&bp);
 

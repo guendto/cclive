@@ -28,30 +28,31 @@ const char *gengetopt_args_info_usage = "Usage: " CMDLINE_PARSER_PACKAGE " [OPTI
 const char *gengetopt_args_info_description = "";
 
 const char *gengetopt_args_info_help[] = {
-  "  -h, --help                   Print help and exit",
-  "  -v, --version                print version and exit",
-  "      --supported-hosts        list supported hosts",
-  "  -q, --quiet                  turn off all output",
-  "      --debug                  show curl debug messages",
-  "  -t, --title                  use video page title for naming video files",
-  "      --title-cclass=CCLASS    character class for filtering page titles",
-  "  -n, --no-extract             do not extract video",
-  "  -c, --continue               resume partially downloaded file",
-  "  -f, --download=FORMAT        download format  (possible values=\"flv\", \n                                 \"mp4\", \"mp4_hd\", \"3gpp\", \"xflv\", \n                                 \"spark\", \"spak-mini\", \"vp6-hq\", \n                                 \"vp6-hd\", \"vp6\", \"h264\" default=`flv')",
-  "  -O, --output-video=FILE      write video to file",
-  "  -N, --number-videos          number extracted videos",
-  "      --emit-csv               emit video details as csv to stdout",
-  "      --limit-rate=AMOUNT      limit download speed to amount kb per second",
-  "      --agent=STRING           identify as string  (default=`Mozilla/5.0')",
-  "      --proxy=ADDRESS          use address for http proxy",
-  "      --no-proxy               do not use proxy, even if http_proxy environment \n                                     variable is defined",
-  "      --connect-timeout=SECS   max time allowed connection to server take",
-  "  -u, --youtube-user=USERNAME  login username for youtube",
-  "  -p, --youtube-pass=PASSWORD  login password for youtube, prompt if undefined",
-  "      --exec=COMMAND           execute subsequent command with extracted video",
-  "      --stream-exec=COMMAND    stream command to be executed",
-  "      --stream=PERCENT         execute stream command when transfer reaches %",
-  "      --print-fname            print output filename on a dedicated line",
+  "  -h, --help                    Print help and exit",
+  "  -v, --version                 print version and exit",
+  "      --supported-hosts         list supported hosts",
+  "  -q, --quiet                   turn off all output",
+  "      --debug                   show curl debug messages",
+  "  -t, --title                   use video page title for naming video files",
+  "      --title-cclass=CCLASS     character class for filtering page titles",
+  "  -n, --no-extract              do not extract video",
+  "  -c, --continue                resume partially downloaded file",
+  "  -f, --download=FORMAT         download format  (possible values=\"flv\", \n                                  \"mp4\", \"mp4_hd\", \"3gpp\", \"xflv\", \n                                  \"spark\", \"spak-mini\", \"vp6-hq\", \n                                  \"vp6-hd\", \"vp6\", \"h264\" default=`flv')",
+  "  -O, --output-video=FILE       write video to file",
+  "  -N, --number-videos           number extracted videos",
+  "      --emit-csv                emit video details as csv to stdout",
+  "      --limit-rate=AMOUNT       limit download speed to amount kb per second",
+  "      --agent=STRING            identify as string  (default=`Mozilla/5.0')",
+  "      --proxy=ADDRESS           use address for http proxy",
+  "      --no-proxy                do not use proxy, even if http_proxy \n                                  environment     variable is defined",
+  "      --connect-timeout=SECS    max time allowed connection to server take",
+  "      --connect-timeout-socks=S same as above but with SOCKS proxy workaround",
+  "  -u, --youtube-user=USERNAME   login username for youtube",
+  "  -p, --youtube-pass=PASSWORD   login password for youtube, prompt if undefined",
+  "      --exec=COMMAND            execute subsequent command with extracted video",
+  "      --stream-exec=COMMAND     stream command to be executed",
+  "      --stream=PERCENT          execute stream command when transfer reaches %",
+  "      --print-fname             print output filename on a dedicated line",
     0
 };
 
@@ -122,6 +123,7 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->proxy_given = 0 ;
   args_info->no_proxy_given = 0 ;
   args_info->connect_timeout_given = 0 ;
+  args_info->connect_timeout_socks_given = 0 ;
   args_info->youtube_user_given = 0 ;
   args_info->youtube_pass_given = 0 ;
   args_info->exec_given = 0 ;
@@ -145,6 +147,7 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->proxy_arg = NULL;
   args_info->proxy_orig = NULL;
   args_info->connect_timeout_orig = NULL;
+  args_info->connect_timeout_socks_orig = NULL;
   args_info->youtube_user_arg = NULL;
   args_info->youtube_user_orig = NULL;
   args_info->youtube_pass_arg = NULL;
@@ -180,12 +183,13 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->proxy_help = gengetopt_args_info_help[15] ;
   args_info->no_proxy_help = gengetopt_args_info_help[16] ;
   args_info->connect_timeout_help = gengetopt_args_info_help[17] ;
-  args_info->youtube_user_help = gengetopt_args_info_help[18] ;
-  args_info->youtube_pass_help = gengetopt_args_info_help[19] ;
-  args_info->exec_help = gengetopt_args_info_help[20] ;
-  args_info->stream_exec_help = gengetopt_args_info_help[21] ;
-  args_info->stream_help = gengetopt_args_info_help[22] ;
-  args_info->print_fname_help = gengetopt_args_info_help[23] ;
+  args_info->connect_timeout_socks_help = gengetopt_args_info_help[18] ;
+  args_info->youtube_user_help = gengetopt_args_info_help[19] ;
+  args_info->youtube_pass_help = gengetopt_args_info_help[20] ;
+  args_info->exec_help = gengetopt_args_info_help[21] ;
+  args_info->stream_exec_help = gengetopt_args_info_help[22] ;
+  args_info->stream_help = gengetopt_args_info_help[23] ;
+  args_info->print_fname_help = gengetopt_args_info_help[24] ;
   
 }
 
@@ -279,6 +283,7 @@ cmdline_parser_release (struct gengetopt_args_info *args_info)
   free_string_field (&(args_info->proxy_arg));
   free_string_field (&(args_info->proxy_orig));
   free_string_field (&(args_info->connect_timeout_orig));
+  free_string_field (&(args_info->connect_timeout_socks_orig));
   free_string_field (&(args_info->youtube_user_arg));
   free_string_field (&(args_info->youtube_user_orig));
   free_string_field (&(args_info->youtube_pass_arg));
@@ -400,6 +405,8 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "no-proxy", 0, 0 );
   if (args_info->connect_timeout_given)
     write_into_file(outfile, "connect-timeout", args_info->connect_timeout_orig, 0);
+  if (args_info->connect_timeout_socks_given)
+    write_into_file(outfile, "connect-timeout-socks", args_info->connect_timeout_socks_orig, 0);
   if (args_info->youtube_user_given)
     write_into_file(outfile, "youtube-user", args_info->youtube_user_orig, 0);
   if (args_info->youtube_pass_given)
@@ -724,6 +731,7 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
         { "proxy",	1, NULL, 0 },
         { "no-proxy",	0, NULL, 0 },
         { "connect-timeout",	1, NULL, 0 },
+        { "connect-timeout-socks",	1, NULL, 0 },
         { "youtube-user",	1, NULL, 'u' },
         { "youtube-pass",	1, NULL, 'p' },
         { "exec",	1, NULL, 0 },
@@ -988,6 +996,20 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
                 &(local_args_info.connect_timeout_given), optarg, 0, 0, ARG_INT,
                 check_ambiguity, override, 0, 0,
                 "connect-timeout", '-',
+                additional_error))
+              goto failure;
+          
+          }
+          /* same as above but with SOCKS proxy workaround.  */
+          else if (strcmp (long_options[option_index].name, "connect-timeout-socks") == 0)
+          {
+          
+          
+            if (update_arg( (void *)&(args_info->connect_timeout_socks_arg), 
+                 &(args_info->connect_timeout_socks_orig), &(args_info->connect_timeout_socks_given),
+                &(local_args_info.connect_timeout_socks_given), optarg, 0, 0, ARG_INT,
+                check_ambiguity, override, 0, 0,
+                "connect-timeout-socks", '-',
                 additional_error))
               goto failure;
           
