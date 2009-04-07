@@ -235,6 +235,16 @@ http://curl.haxx.se/docs/knownbugs.html:
 \&  is not properly acknowledged after the actual TCP connect
 \&  (during the SOCKS \*(Aqnegotiate\*(Aq phase)."
 .Ve
+.Sp
+See also \fB\-\-connect\-timeout\-socks\fR.
+.IP "\fB\-\-connect\-timeout\-socks=\fR\fI\s-1SECONDS\s0\fR" 4
+.IX Item "--connect-timeout-socks=SECONDS"
+Same as above but works around the \s-1SOCKS\s0 proxy bug by using \s-1CURLOPT_TIMEOUT\s0
+instead of \s-1CURLOPT_CONNECTIMEOUT\s0. Ignored for file transfers, otherwise
+curl could interrupt already started transfers.
+.Sp
+More about these two options:
+  http://curl.haxx.se/libcurl/c/curl_easy_setopt.html
 .IP "\fB\-u, \-\-youtube\-user=\fR\fI\s-1USERNAME\s0\fR" 4
 .IX Item "-u, --youtube-user=USERNAME"
 Causes \fBcclive\fR to log into Youtube as \fIusername\fR. This is done \fIbefore\fR

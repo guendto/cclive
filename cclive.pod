@@ -120,6 +120,17 @@ http://curl.haxx.se/docs/knownbugs.html:
   is not properly acknowledged after the actual TCP connect
   (during the SOCKS 'negotiate' phase)."
 
+See also B<--connect-timeout-socks>.
+
+=item B<--connect-timeout-socks=>I<SECONDS>
+
+Same as above but works around the SOCKS proxy bug by using CURLOPT_TIMEOUT
+instead of CURLOPT_CONNECTIMEOUT. Ignored for file transfers, otherwise
+curl could interrupt already started transfers.
+
+More about these two options:
+  http://curl.haxx.se/libcurl/c/curl_easy_setopt.html
+
 =item B<-u, --youtube-user=>I<USERNAME>
 
 Causes B<cclive> to log into Youtube as I<username>. This is done I<before>
