@@ -110,8 +110,9 @@ strrepl(const char *s, const char *what, const char *with)
 }
 
 void
-strreplch(char *s, const char c, const char with) {
-    char *p = s;
+strreplch(char *s, const char c, const char with)
+{
+    char   *p = s;
 
     assert(s != 0);
 
@@ -176,6 +177,8 @@ fetch_link(const char *url, mem_t page, const int log_fetch)
     curl_easy_setopt(cc.curl, CURLOPT_ENCODING, "");
     curl_easy_setopt(cc.curl, CURLOPT_WRITEFUNCTION, writemem_cb);
     curl_easy_setopt(cc.curl, CURLOPT_WRITEDATA, page);
+    curl_easy_setopt(cc.curl, CURLOPT_CONNECTTIMEOUT,
+                     cc.gi.connect_timeout_arg);
 
     if ((rc = curl_easy_perform(cc.curl)) == CURLE_OK) {
         long    httpcode;

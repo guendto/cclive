@@ -44,7 +44,8 @@ const char *gengetopt_args_info_help[] = {
   "      --limit-rate=AMOUNT      limit download speed to amount kb per second",
   "      --agent=STRING           identify as string  (default=`Mozilla/5.0')",
   "      --proxy=ADDRESS          use address for http proxy",
-  "      --no-proxy               do not use proxy, even if http_proxy environment \n                                    variable is defined",
+  "      --no-proxy               do not use proxy, even if http_proxy environment \n                                     variable is defined",
+  "      --connect-timeout=SECS   max time allowed connection to server take",
   "  -u, --youtube-user=USERNAME  login username for youtube",
   "  -p, --youtube-pass=PASSWORD  login password for youtube, prompt if undefined",
   "      --exec=COMMAND           execute subsequent command with extracted video",
@@ -120,6 +121,7 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->agent_given = 0 ;
   args_info->proxy_given = 0 ;
   args_info->no_proxy_given = 0 ;
+  args_info->connect_timeout_given = 0 ;
   args_info->youtube_user_given = 0 ;
   args_info->youtube_pass_given = 0 ;
   args_info->exec_given = 0 ;
@@ -142,6 +144,7 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->agent_orig = NULL;
   args_info->proxy_arg = NULL;
   args_info->proxy_orig = NULL;
+  args_info->connect_timeout_orig = NULL;
   args_info->youtube_user_arg = NULL;
   args_info->youtube_user_orig = NULL;
   args_info->youtube_pass_arg = NULL;
@@ -176,12 +179,13 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->agent_help = gengetopt_args_info_help[14] ;
   args_info->proxy_help = gengetopt_args_info_help[15] ;
   args_info->no_proxy_help = gengetopt_args_info_help[16] ;
-  args_info->youtube_user_help = gengetopt_args_info_help[17] ;
-  args_info->youtube_pass_help = gengetopt_args_info_help[18] ;
-  args_info->exec_help = gengetopt_args_info_help[19] ;
-  args_info->stream_exec_help = gengetopt_args_info_help[20] ;
-  args_info->stream_help = gengetopt_args_info_help[21] ;
-  args_info->print_fname_help = gengetopt_args_info_help[22] ;
+  args_info->connect_timeout_help = gengetopt_args_info_help[17] ;
+  args_info->youtube_user_help = gengetopt_args_info_help[18] ;
+  args_info->youtube_pass_help = gengetopt_args_info_help[19] ;
+  args_info->exec_help = gengetopt_args_info_help[20] ;
+  args_info->stream_exec_help = gengetopt_args_info_help[21] ;
+  args_info->stream_help = gengetopt_args_info_help[22] ;
+  args_info->print_fname_help = gengetopt_args_info_help[23] ;
   
 }
 
@@ -274,6 +278,7 @@ cmdline_parser_release (struct gengetopt_args_info *args_info)
   free_string_field (&(args_info->agent_orig));
   free_string_field (&(args_info->proxy_arg));
   free_string_field (&(args_info->proxy_orig));
+  free_string_field (&(args_info->connect_timeout_orig));
   free_string_field (&(args_info->youtube_user_arg));
   free_string_field (&(args_info->youtube_user_orig));
   free_string_field (&(args_info->youtube_pass_arg));
@@ -393,6 +398,8 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "proxy", args_info->proxy_orig, 0);
   if (args_info->no_proxy_given)
     write_into_file(outfile, "no-proxy", 0, 0 );
+  if (args_info->connect_timeout_given)
+    write_into_file(outfile, "connect-timeout", args_info->connect_timeout_orig, 0);
   if (args_info->youtube_user_given)
     write_into_file(outfile, "youtube-user", args_info->youtube_user_orig, 0);
   if (args_info->youtube_pass_given)
@@ -716,6 +723,7 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
         { "agent",	1, NULL, 0 },
         { "proxy",	1, NULL, 0 },
         { "no-proxy",	0, NULL, 0 },
+        { "connect-timeout",	1, NULL, 0 },
         { "youtube-user",	1, NULL, 'u' },
         { "youtube-pass",	1, NULL, 'p' },
         { "exec",	1, NULL, 0 },
@@ -956,7 +964,7 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
               goto failure;
           
           }
-          /* do not use proxy, even if http_proxy environment    variable is defined.  */
+          /* do not use proxy, even if http_proxy environment     variable is defined.  */
           else if (strcmp (long_options[option_index].name, "no-proxy") == 0)
           {
           
@@ -966,6 +974,20 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
                 &(local_args_info.no_proxy_given), optarg, 0, 0, ARG_NO,
                 check_ambiguity, override, 0, 0,
                 "no-proxy", '-',
+                additional_error))
+              goto failure;
+          
+          }
+          /* max time allowed connection to server take.  */
+          else if (strcmp (long_options[option_index].name, "connect-timeout") == 0)
+          {
+          
+          
+            if (update_arg( (void *)&(args_info->connect_timeout_arg), 
+                 &(args_info->connect_timeout_orig), &(args_info->connect_timeout_given),
+                &(local_args_info.connect_timeout_given), optarg, 0, 0, ARG_INT,
+                check_ambiguity, override, 0, 0,
+                "connect-timeout", '-',
                 additional_error))
               goto failure;
           

@@ -56,8 +56,12 @@ option "proxy"
     string typestr="ADDRESS"
     no
 option "no-proxy"
-    - "do not use proxy, even if http_proxy environment\
+    - "do not use proxy, even if http_proxy environment \
     variable is defined"
+    optional
+option "connect-timeout"
+    - "max time allowed connection to server take"
+    int typestr="SECS"
     optional
 option "youtube-user"
     u "login username for youtube"

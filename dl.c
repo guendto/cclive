@@ -64,6 +64,8 @@ query_filelen(const char *xurl, double *len, char **ct)
     curl_easy_setopt(cc.curl, CURLOPT_NOBODY, 1L);      /* GET => HEAD */
     curl_easy_setopt(cc.curl, CURLOPT_WRITEDATA, f);
     curl_easy_setopt(cc.curl, CURLOPT_WRITEFUNCTION, NULL);
+    curl_easy_setopt(cc.curl, CURLOPT_CONNECTTIMEOUT,
+                     cc.gi.connect_timeout_arg);
 
     *len = 0;
     *ct = 0;
@@ -239,6 +241,8 @@ dl_file(
     curl_easy_setopt(cc.curl, CURLOPT_ENCODING, "identity");
     curl_easy_setopt(cc.curl, CURLOPT_HEADER, 0L);
     curl_easy_setopt(cc.curl, CURLOPT_RESUME_FROM, (long)initial);
+    curl_easy_setopt(cc.curl, CURLOPT_CONNECTTIMEOUT,
+                     cc.gi.connect_timeout_arg);
 
     limit_rate = cc.gi.limit_rate_arg * 1024;
     curl_easy_setopt(cc.curl, CURLOPT_MAX_RECV_SPEED_LARGE, limit_rate);

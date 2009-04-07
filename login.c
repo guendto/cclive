@@ -73,6 +73,8 @@ login_youtube(void)
     curl_easy_setopt(cc.curl, CURLOPT_ENCODING, "");
     curl_easy_setopt(cc.curl, CURLOPT_WRITEFUNCTION, writemem_cb);
     curl_easy_setopt(cc.curl, CURLOPT_WRITEDATA, &data);
+    curl_easy_setopt(cc.curl, CURLOPT_CONNECTTIMEOUT,
+                     cc.gi.connect_timeout_arg);
 
     cc_log("[youtube] attempt to login as %s ...",
            cc.gi.youtube_user_arg);

@@ -60,7 +60,10 @@ struct gengetopt_args_info
   char * proxy_arg;	/**< @brief use address for http proxy.  */
   char * proxy_orig;	/**< @brief use address for http proxy original value given at command line.  */
   const char *proxy_help; /**< @brief use address for http proxy help description.  */
-  const char *no_proxy_help; /**< @brief do not use proxy, even if http_proxy environment    variable is defined help description.  */
+  const char *no_proxy_help; /**< @brief do not use proxy, even if http_proxy environment     variable is defined help description.  */
+  int connect_timeout_arg;	/**< @brief max time allowed connection to server take.  */
+  char * connect_timeout_orig;	/**< @brief max time allowed connection to server take original value given at command line.  */
+  const char *connect_timeout_help; /**< @brief max time allowed connection to server take help description.  */
   char * youtube_user_arg;	/**< @brief login username for youtube.  */
   char * youtube_user_orig;	/**< @brief login username for youtube original value given at command line.  */
   const char *youtube_user_help; /**< @brief login username for youtube help description.  */
@@ -95,6 +98,7 @@ struct gengetopt_args_info
   unsigned int agent_given ;	/**< @brief Whether agent was given.  */
   unsigned int proxy_given ;	/**< @brief Whether proxy was given.  */
   unsigned int no_proxy_given ;	/**< @brief Whether no-proxy was given.  */
+  unsigned int connect_timeout_given ;	/**< @brief Whether connect-timeout was given.  */
   unsigned int youtube_user_given ;	/**< @brief Whether youtube-user was given.  */
   unsigned int youtube_pass_given ;	/**< @brief Whether youtube-pass was given.  */
   unsigned int exec_given ;	/**< @brief Whether exec was given.  */
