@@ -132,7 +132,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2009-04-04" "0.3.1" "cclive manual"
+.TH cclive 1 "2009-04-07" "0.3.2" "cclive manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -217,6 +217,24 @@ http_proxy environment variable if it is defined. Example: http://foo:1234.
 .IP "\fB\-\-no\-proxy\fR" 4
 .IX Item "--no-proxy"
 Do not use proxy, even if http_proxy environment variable is defined.
+.IP "\fB\-\-connect\-timeout=\fR\fI\s-1SECONDS\s0\fR" 4
+.IX Item "--connect-timeout=SECONDS"
+Maximum time in \fIseconds\fR allowed the connection to the server to take.
+This limits only the connection phase. \fBcclive\fR will only timeout
+on the system's internal timeouts by default.
+.Sp
+http://curl.haxx.se/docs/knownbugs.html:
+.Sp
+.Vb 4
+\&  "34. The SOCKS4 connection codes don\*(Aqt properly acknowledge
+\&  (connect) timeouts. Also see #12. According to bug #1556528,
+\&  even the SOCKS5 connect code does not do it right:
+\&    http://curl.haxx.se/bug/view.cgi?id=1556528"
+\&
+\&  "12. When connecting to a SOCKS proxy, the (connect) timeout
+\&  is not properly acknowledged after the actual TCP connect
+\&  (during the SOCKS \*(Aqnegotiate\*(Aq phase)."
+.Ve
 .IP "\fB\-u, \-\-youtube\-user=\fR\fI\s-1USERNAME\s0\fR" 4
 .IX Item "-u, --youtube-user=USERNAME"
 Causes \fBcclive\fR to log into Youtube as \fIusername\fR. This is done \fIbefore\fR

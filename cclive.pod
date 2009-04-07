@@ -103,6 +103,23 @@ http_proxy environment variable if it is defined. Example: http://foo:1234.
 
 Do not use proxy, even if http_proxy environment variable is defined.
 
+=item B<--connect-timeout=>I<SECONDS>
+
+Maximum time in I<seconds> allowed the connection to the server to take.
+This limits only the connection phase. B<cclive> will only timeout
+on the system's internal timeouts by default.
+
+http://curl.haxx.se/docs/knownbugs.html:
+
+  "34. The SOCKS4 connection codes don't properly acknowledge
+  (connect) timeouts. Also see #12. According to bug #1556528,
+  even the SOCKS5 connect code does not do it right:
+    http://curl.haxx.se/bug/view.cgi?id=1556528"
+
+  "12. When connecting to a SOCKS proxy, the (connect) timeout
+  is not properly acknowledged after the actual TCP connect
+  (during the SOCKS 'negotiate' phase)."
+
 =item B<-u, --youtube-user=>I<USERNAME>
 
 Causes B<cclive> to log into Youtube as I<username>. This is done I<before>
