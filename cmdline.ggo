@@ -56,8 +56,7 @@ option "proxy"
     string typestr="ADDRESS"
     no
 option "no-proxy"
-    - "do not use proxy, even if http_proxy environment \
-    variable is defined"
+    - "do not use proxy at all"
     optional
 option "connect-timeout"
     - "max time allowed connection to server take"

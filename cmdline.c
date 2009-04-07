@@ -44,7 +44,7 @@ const char *gengetopt_args_info_help[] = {
   "      --limit-rate=AMOUNT       limit download speed to amount kb per second",
   "      --agent=STRING            identify as string  (default=`Mozilla/5.0')",
   "      --proxy=ADDRESS           use address for http proxy",
-  "      --no-proxy                do not use proxy, even if http_proxy \n                                  environment     variable is defined",
+  "      --no-proxy                do not use proxy at all",
   "      --connect-timeout=SECS    max time allowed connection to server take",
   "      --connect-timeout-socks=S same as above but with SOCKS proxy workaround",
   "  -u, --youtube-user=USERNAME   login username for youtube",
@@ -972,7 +972,7 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
               goto failure;
           
           }
-          /* do not use proxy, even if http_proxy environment     variable is defined.  */
+          /* do not use proxy at all.  */
           else if (strcmp (long_options[option_index].name, "no-proxy") == 0)
           {
           

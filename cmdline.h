@@ -60,7 +60,7 @@ struct gengetopt_args_info
   char * proxy_arg;	/**< @brief use address for http proxy.  */
   char * proxy_orig;	/**< @brief use address for http proxy original value given at command line.  */
   const char *proxy_help; /**< @brief use address for http proxy help description.  */
-  const char *no_proxy_help; /**< @brief do not use proxy, even if http_proxy environment     variable is defined help description.  */
+  const char *no_proxy_help; /**< @brief do not use proxy at all help description.  */
   int connect_timeout_arg;	/**< @brief max time allowed connection to server take.  */
   char * connect_timeout_orig;	/**< @brief max time allowed connection to server take original value given at command line.  */
   const char *connect_timeout_help; /**< @brief max time allowed connection to server take help description.  */
