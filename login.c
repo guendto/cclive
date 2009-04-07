@@ -76,7 +76,7 @@ login_youtube(void)
     curl_easy_setopt(cc.curl, CURLOPT_CONNECTTIMEOUT,
                      cc.gi.connect_timeout_arg);
     curl_easy_setopt(cc.curl, CURLOPT_TIMEOUT,
-        cc.gi.connect_timeout_socks_arg);
+                     cc.gi.connect_timeout_socks_arg);
 
     cc_log("[youtube] attempt to login as %s ...",
            cc.gi.youtube_user_arg);

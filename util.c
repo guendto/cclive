@@ -179,16 +179,18 @@ fetch_link(const char *url, mem_t page, const int log_fetch)
     curl_easy_setopt(cc.curl, CURLOPT_WRITEDATA, page);
 
     curl_easy_setopt(cc.curl,
-        CURLOPT_CONNECTTIMEOUT, cc.gi.connect_timeout_arg);
+                     CURLOPT_CONNECTTIMEOUT, cc.gi.connect_timeout_arg);
 
-    /* http://curl.haxx.se/docs/knownbugs.html:
-
-     "When connecting to a SOCKS proxy, the (connect) timeout
-     is not properly acknowledged after the actual TCP connect
-     (during the SOCKS 'negotiate' phase)." */
+    /*
+     * http://curl.haxx.se/docs/knownbugs.html:
+     * 
+     * "When connecting to a SOCKS proxy, the (connect) timeout is not properly
+     * acknowledged after the actual TCP connect (during the SOCKS
+     * 'negotiate' phase)."
+     */
 
     curl_easy_setopt(cc.curl, CURLOPT_TIMEOUT,
-        cc.gi.connect_timeout_socks_arg);
+                     cc.gi.connect_timeout_socks_arg);
 
     if ((rc = curl_easy_perform(cc.curl)) == CURLE_OK) {
         long    httpcode;
