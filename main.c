@@ -88,7 +88,10 @@ init_curl(void)
         fprintf(stderr, "error: curl_easy_init returned null\n");
         exit(EXIT_FAILURE);
     }
-    /* disable signals (unix-like systems); possible conflict with timeouts */
+    /*
+     * disable signals for unix-like systems to prevent possible conflicts
+     * with timeouts
+     */
     curl_easy_setopt(cc.curl, CURLOPT_NOSIGNAL, 1L);
     curl_easy_setopt(cc.curl, CURLOPT_USERAGENT, cc.gi.agent_arg);
     curl_easy_setopt(cc.curl, CURLOPT_FOLLOWLOCATION, 1L);
