@@ -3,13 +3,6 @@ web : http://repo.or.cz/w/cclive.git
 
 Ongoing
 
- * no bug/typo is too minor to report
-   - send bug reports to cclive@googlegroups.com
-
- * improve portability
-   - cclive is being developed on FreeBSD and Debian (both i386)
-   - send any feedback to cclive@googlegroups.com
-
  * add support for new hosts
-   - see host.c to get started
+   - see host.c
    - send patches to cclive@googlegroups.com
