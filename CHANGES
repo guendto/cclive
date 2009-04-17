@@ -1,7 +1,8 @@
 0.3.2
+(April, 17, 2009)
 
  User-visible changes:
-  * Add new options:
+  * Add new options: (closes issue #2)
     - --connect-timeout
     - --connect-timeout-socks
 
