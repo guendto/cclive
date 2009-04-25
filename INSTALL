@@ -1,36 +1,27 @@
 
             cclive installation
 
-Normally "./configure" followed by "make install". This will make a global
-installation. See "./configure --help" for more.
+Normally "./configure" followed by "make install". See "./configure --help"
+for more info.
 
 
             Optional packages
 
---with-man
-    If enabled (default), the manual page is installed with the program.
-    Use --without-man to disable this.
+--enable-sigwinch (default)
+    If enabled, cclive handles SIGWINCH signal to resize with terminal
+    width. Known to work on BSD/Linux, if you are using another OS
+    you may want to use --disable-sigwinch.
 
---with-sigwinch
-    If enabled (default), cclive supports SIGWINCH handling which is used
-    to resize the progressbar to match the terminal width. This may not
-    work on some platforms. Use --without-sigwinch to disable this.
+--with-man (default)
+    Whether the manual page should be installed. --without-man disables
+    this.
 
 --with-perl
-    If enabled, Perl interpreter is embedded which allows cclive to parse
-    video page titles which are then filtered and used to name the output
-    files. The Perl library and HTML::Tokenizer module must be installed
-    to the system before this. This feature is *disabled* by default.
-    When enabled, the --title and --title-cclass options may be used.
-
-Developers may also want to use the makefile targets "cmdline" and "man".
-
- cmdline
-    regenerates cmdline.h and cmdline.c from cmdline.ggo. Note that this
-    requires "gengetopt".
-
- man
-    regenerates cclive.1 from cclive.pod. Note that this requires "pod2man".
+    If enabled, cclive builds with embedded Perl interpreter. This is
+    currently used for parsing video page <title> tags. This enables the
+    use of the --title and the --title-cclass options.
+    
+    Note that you will also need the HTML::Tokenizer Perl module.
 
 
             Prerequisites
@@ -38,20 +29,10 @@ Developers may also want to use the makefile targets "cmdline" and "man".
  - libcurl (7.18.0+)
 
 Optional:
- - Perl 5.8+ with HTML::TokeParser module. Currently needed for using --title.
- See --with-perl above.
+ - Perl 5.8+ with HTML::TokeParser module. See --with-perl above.
 
 
             Examples
 
- # ./configure --prefix=/usr/local --without-sigwinch && make install
-
-
-            Notes
-
- FreeBSD ports:
-   # cd /usr/ports/multimedia/cclive; make install clean
-
- Debian (5.0) packages needed:
-   libcurl4-gnutls-dev make gcc
-   Optional: libperl-dev libhtml-tokeparser-simple-perl
+ # ./configure --prefix=/usr/local --without-sigwinch
+ # make install
