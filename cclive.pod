@@ -11,7 +11,7 @@ cclive [options] [url...]
 =head1 DESCRIPTION
 
 cclive is command line video extraction utility similar to clive but with
-lower requirements. Its features are few and essential. 
+lower requirements. It is designed to be compact and capable.
 
 =head1 OPTIONS
 
@@ -262,19 +262,23 @@ cclive exits 0 on success, and >0 if an error occurs.
 Project page:
   http://code.google.com/p/cclive/
 
-Development repository can be cloned with:
+Development code:
   % git clone git://repo.or.cz/cclive.git
-
-Mailing-list:
-  cclive-subscribe@googlegroups.com
-  cclive@googlegroups.com
-  http://groups.google.com/group/cclive/
 
 Release announcements:
   http://freshmeat.net/projects/cclive/
 
 Front-end:
   http://code.google.com/p/abby/
+
+=head1 HISTORY
+
+cclive first appeared early 2009 following the release of clive2.
+It was originally written in C but was later rewritten in C++.
+
+=head1 SEE ALSO
+
+L<clive(1)>
 
 =head1 AUTHOR
 
