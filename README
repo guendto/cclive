@@ -2,26 +2,22 @@
 
                 cclive - for the flash dismissing hordes
 
-cclive is command line video extraction utility similar to clive but with
-lower requirements. Its features are few and essential. 
+cclive is command line video extraction utility similar to clive
+but with lower requirements. It is designed to be compact and capable.
 
-If you are interested in contributing, or you have test feedback,
-please see the TODO file.
+If you are interested in contributing, please see the TODO and
+HACKING files.
 
 
-                What's not in cclive?
+                Notable differences to clive
 
-Compared to clive(1), some of the most notable differences between clive(1)
-and cclive(1) are:
-
- * No clipboard support ("xclip -o | cclive" works OK)
- * No output filename formatting features
- * No --emit-xml
- * No cache
+ * No --paste ("xclip -o | cclive" works)
+ * No --filename-format
  * No --background
+ * No --emit-xml
+ * No --progress=type
+ * No cache
 
-
-                Notes
-
-cclive can be used together with clive-utils (excl. clivepass):
-  http://code.google.com/p/clive-utils
+cclive can be used together with clive-utils (excl. clivepass).
+See more at:
+    http://code.google.com/p/clive-utils
