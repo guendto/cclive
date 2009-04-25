@@ -3,6 +3,8 @@
  User-visible changes:
   * Separation of stdout and stderr
     ** Everything was previously dumped to stderr
+  * Change: --version -> stdout
+    ** Info was previously dumped to stdout
 
  Developer-visible changes:
   * Rewrite to C++
@@ -10,6 +12,7 @@
   * Add: HACKING file
   * Add: missing cmdline.ggo file (Makefile.am)
   * Add: missing cclive.pod file (Makefile.am)
+  * Rename: --supported-hosts -> --hosts (option)
   * Rename: --with-sigwinch -> --enable-sigwinch (configure.ac)
   * Rename: CHANGES -> ChangeLog
     ** Fixes: missing CHANGES file in src tarball

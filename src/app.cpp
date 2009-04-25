@@ -236,7 +236,7 @@ App::printVersion() {
     curl_version_info_data *c =
         curl_version_info(CURLVERSION_NOW);
 
-    std::cerr
+    std::cout
         << CMDLINE_PARSER_PACKAGE   << " version "
         << CMDLINE_PARSER_VERSION   << " with libcurl version "
         << c->version               << "  ["
@@ -244,12 +244,12 @@ App::printVersion() {
         << copyr_notice             << "\n\n\tFeatures: ";
 
 #ifdef USE_SIGWINCH
-    std::cerr << "--enable-sigwinch ";
+    std::cout << "--enable-sigwinch ";
 #endif
 #ifdef WITH_PERL
-    std::cerr << "--with-perl ";
+    std::cout << "--with-perl ";
 #endif
-    std::cerr
+    std::cout
         << "\n\tReport bugs: <http://code.google.com/p/cclive/issues/>"
         << std::endl;
 }
