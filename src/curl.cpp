@@ -15,6 +15,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "config.h"
+
 #include <iostream>
 #include <iomanip>
 #include <sstream>
@@ -350,6 +352,7 @@ CurlMgr::unescape(std::string& url) const {
 
 void
 CurlMgr::logIntoYoutube() {
+#ifdef HAVE_GETPASS
     Options opts = optsmgr.getOptions();
 
     std::stringstream b;
@@ -423,6 +426,9 @@ CurlMgr::logIntoYoutube() {
         else
             throw RuntimeException("server returned http/"+httpcode);
     }
+#else
+    throw RuntimeException("getpass: no support");
+#endif // HAVE_GETPASS
 }
 
 CurlMgr::FetchException::FetchException(const std::string& error)
