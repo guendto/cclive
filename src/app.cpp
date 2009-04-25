@@ -156,7 +156,7 @@ App::run() {
         return;
     }
 
-    if (opts.supported_hosts_given) {
+    if (opts.hosts_given) {
         HostHandlerFactory::printHosts();
         return;
     }

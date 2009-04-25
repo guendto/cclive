@@ -30,7 +30,7 @@ const char *gengetopt_args_info_description = "";
 const char *gengetopt_args_info_help[] = {
   "  -h, --help                    Print help and exit",
   "  -v, --version                 print version and exit",
-  "      --supported-hosts         list supported hosts",
+  "      --hosts                   list supported hosts",
   "  -q, --quiet                   turn off all output",
   "      --debug                   show curl debug messages",
   "  -t, --title                   use video page title for naming video files",
@@ -107,7 +107,7 @@ void clear_given (struct gengetopt_args_info *args_info)
 {
   args_info->help_given = 0 ;
   args_info->version_given = 0 ;
-  args_info->supported_hosts_given = 0 ;
+  args_info->hosts_given = 0 ;
   args_info->quiet_given = 0 ;
   args_info->debug_given = 0 ;
   args_info->title_given = 0 ;
@@ -167,7 +167,7 @@ void init_args_info(struct gengetopt_args_info *args_info)
 
   args_info->help_help = gengetopt_args_info_help[0] ;
   args_info->version_help = gengetopt_args_info_help[1] ;
-  args_info->supported_hosts_help = gengetopt_args_info_help[2] ;
+  args_info->hosts_help = gengetopt_args_info_help[2] ;
   args_info->quiet_help = gengetopt_args_info_help[3] ;
   args_info->debug_help = gengetopt_args_info_help[4] ;
   args_info->title_help = gengetopt_args_info_help[5] ;
@@ -373,8 +373,8 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "help", 0, 0 );
   if (args_info->version_given)
     write_into_file(outfile, "version", 0, 0 );
-  if (args_info->supported_hosts_given)
-    write_into_file(outfile, "supported-hosts", 0, 0 );
+  if (args_info->hosts_given)
+    write_into_file(outfile, "hosts", 0, 0 );
   if (args_info->quiet_given)
     write_into_file(outfile, "quiet", 0, 0 );
   if (args_info->debug_given)
@@ -715,7 +715,7 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
       static struct option long_options[] = {
         { "help",	0, NULL, 'h' },
         { "version",	0, NULL, 'v' },
-        { "supported-hosts",	0, NULL, 0 },
+        { "hosts",	0, NULL, 0 },
         { "quiet",	0, NULL, 'q' },
         { "debug",	0, NULL, 0 },
         { "title",	0, NULL, 't' },
@@ -875,15 +875,15 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
 
         case 0:	/* Long option with no short option */
           /* list supported hosts.  */
-          if (strcmp (long_options[option_index].name, "supported-hosts") == 0)
+          if (strcmp (long_options[option_index].name, "hosts") == 0)
           {
           
           
             if (update_arg( 0 , 
-                 0 , &(args_info->supported_hosts_given),
-                &(local_args_info.supported_hosts_given), optarg, 0, 0, ARG_NO,
+                 0 , &(args_info->hosts_given),
+                &(local_args_info.hosts_given), optarg, 0, 0, ARG_NO,
                 check_ambiguity, override, 0, 0,
-                "supported-hosts", '-',
+                "hosts", '-',
                 additional_error))
               goto failure;
           

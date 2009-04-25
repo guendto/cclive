@@ -34,7 +34,7 @@ struct gengetopt_args_info
 {
   const char *help_help; /**< @brief Print help and exit help description.  */
   const char *version_help; /**< @brief print version and exit help description.  */
-  const char *supported_hosts_help; /**< @brief list supported hosts help description.  */
+  const char *hosts_help; /**< @brief list supported hosts help description.  */
   const char *quiet_help; /**< @brief turn off all output help description.  */
   const char *debug_help; /**< @brief show curl debug messages help description.  */
   const char *title_help; /**< @brief use video page title for naming video files help description.  */
@@ -86,7 +86,7 @@ struct gengetopt_args_info
   
   unsigned int help_given ;	/**< @brief Whether help was given.  */
   unsigned int version_given ;	/**< @brief Whether version was given.  */
-  unsigned int supported_hosts_given ;	/**< @brief Whether supported-hosts was given.  */
+  unsigned int hosts_given ;	/**< @brief Whether hosts was given.  */
   unsigned int quiet_given ;	/**< @brief Whether quiet was given.  */
   unsigned int debug_given ;	/**< @brief Whether debug was given.  */
   unsigned int title_given ;	/**< @brief Whether title was given.  */

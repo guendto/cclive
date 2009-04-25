@@ -2,7 +2,7 @@
 option "version"
     v "print version and exit"
     optional
-option "supported-hosts"
+option "hosts"
     - "list supported hosts"
     optional
 option "quiet"
