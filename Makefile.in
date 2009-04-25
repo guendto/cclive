@@ -186,7 +186,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 SUBDIRS = src tests
-EXTRA_DIST = cmdline.ggo cclive.pod HACKING TODO
+EXTRA_DIST = cmdline.ggo cclive.pod HACKING
 @WITH_MAN_TRUE@dist_man_MANS = cclive.1
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
