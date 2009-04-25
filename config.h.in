@@ -6,17 +6,8 @@
 /* Canonical target */
 #undef CANONICAL_TARGET
 
-/* Define to 1 if you have the `atexit' function. */
-#undef HAVE_ATEXIT
-
-/* Define to 1 if you have the `bzero' function. */
-#undef HAVE_BZERO
-
 /* Define to 1 if you have the `fork' function. */
 #undef HAVE_FORK
-
-/* Define to 1 if you have the `getopt_long' function. */
-#undef HAVE_GETOPT_LONG
 
 /* Define to 1 if you have the `getpass' function. */
 #undef HAVE_GETPASS
@@ -34,9 +25,8 @@
 /* Define to 1 if you have the `memset' function. */
 #undef HAVE_MEMSET
 
-/* Define to 1 if your system has a GNU libc compatible `realloc' function,
-   and to 0 otherwise. */
-#undef HAVE_REALLOC
+/* Define to 1 if stdbool.h conforms to C99. */
+#undef HAVE_STDBOOL_H
 
 /* Define to 1 if you have the <stdint.h> header file. */
 #undef HAVE_STDINT_H
@@ -50,9 +40,6 @@
 /* Define to 1 if you have the `strcspn' function. */
 #undef HAVE_STRCSPN
 
-/* Define to 1 if you have the `strdup' function. */
-#undef HAVE_STRDUP
-
 /* Define to 1 if you have the <strings.h> header file. */
 #undef HAVE_STRINGS_H
 
@@ -61,9 +48,6 @@
 
 /* Define to 1 if you have the `strspn' function. */
 #undef HAVE_STRSPN
-
-/* Define to 1 if you have the `strstr' function. */
-#undef HAVE_STRSTR
 
 /* Define to 1 if you have the `strtol' function. */
 #undef HAVE_STRTOL
@@ -76,6 +60,9 @@
 
 /* Define to 1 if you have the <sys/types.h> header file. */
 #undef HAVE_SYS_TYPES_H
+
+/* Define to 1 if you have <sys/wait.h> that is POSIX.1 compatible. */
+#undef HAVE_SYS_WAIT_H
 
 /* Define to 1 if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H
@@ -91,6 +78,9 @@
 
 /* Define to 1 if `vfork' works. */
 #undef HAVE_WORKING_VFORK
+
+/* Define to 1 if the system has the type `_Bool'. */
+#undef HAVE__BOOL
 
 /* Name of package */
 #undef PACKAGE
@@ -116,14 +106,14 @@
 /* Define to 1 if you have the ANSI C header files. */
 #undef STDC_HEADERS
 
+/* Define to enable handling */
+#undef USE_SIGWINCH
+
 /* Version number of package */
 #undef VERSION
 
 /* Whether Perl is embedded */
 #undef WITH_PERL
-
-/* Define to enable support */
-#undef WITH_SIGWINCH
 
 /* Define to 1 if on MINIX. */
 #undef _MINIX
@@ -157,14 +147,14 @@
 #endif
 
 
+/* Define to empty if `const' does not conform to ANSI C. */
+#undef const
+
 /* Define to rpl_malloc if the replacement function should be used. */
 #undef malloc
 
 /* Define to `int' if <sys/types.h> does not define. */
 #undef pid_t
-
-/* Define to rpl_realloc if the replacement function should be used. */
-#undef realloc
 
 /* Define to `unsigned int' if <sys/types.h> does not define. */
 #undef size_t

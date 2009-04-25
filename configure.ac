@@ -2,13 +2,12 @@
 # Process this file with autoconf to produce a configure script.
 
 m4_define([vmaj], [0])
-m4_define([vmin], [3])
-m4_define([vmic], [2])
-m4_define([bugs], [legatvs@gmail.com])
+m4_define([vmin], [4])
+m4_define([vmic], [0])
 
 AC_PREREQ(2.62)
-AC_INIT([cclive], vmaj[.]vmin[.]vmic, [bugs])
-AC_CONFIG_SRCDIR([main.c])
+AC_INIT([cclive], vmaj[.]vmin[.]vmic)
+AC_CONFIG_SRCDIR([src/main.cpp])
 AC_CONFIG_HEADERS([config.h])
 
 AC_CANONICAL_SYSTEM
@@ -18,6 +17,7 @@ AC_DEFINE_UNQUOTED(CANONICAL_HOST, "$host", [Canonical host])
 AM_INIT_AUTOMAKE()
 
 # Checks for programs.
+AC_PROG_CXX
 AC_PROG_CC
 AC_GNU_SOURCE
 
@@ -33,41 +33,46 @@ AC_SUBST(POD2MAN)
 PKG_CHECK_MODULES(libcurl, libcurl >= 7.18.0)
 
 # Checks for header files.
-AC_CHECK_HEADERS([memory.h stdlib.h string.h sys/ioctl.h unistd.h])
+AC_HEADER_STDC
+AC_HEADER_SYS_WAIT
+AC_CHECK_HEADERS([stdlib.h string.h sys/ioctl.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
+AC_HEADER_STDBOOL
+AC_C_CONST
 AC_TYPE_PID_T
 AC_TYPE_SIZE_T
 
 # Checks for library functions.
+AC_FUNC_ERROR_AT_LINE
 AC_FUNC_FORK
+AC_PROG_GCC_TRADITIONAL
 AC_FUNC_MALLOC
-AC_FUNC_REALLOC
 AC_TYPE_SIGNAL
-AC_CHECK_FUNCS([atexit bzero getpass memset strchr strcspn strdup strspn strstr strtol getopt_long])
+AC_CHECK_FUNCS([getpass memset strchr strcspn strspn strtol])
+
+# --enable-sigwinch
+AC_ARG_ENABLE([sigwinch],
+    [AS_HELP_STRING([--enable-sigwinch],
+        [enable SIGWINCH handling @<:@default=yes@:>@])],
+    [],
+    [enable_sigwinch=yes])
+if [ test x"$enable_sigwinch" = "xyes" ]; then
+    AC_DEFINE([USE_SIGWINCH], [1], [Define to enable handling])
+fi
 
 # --with-man
 AC_ARG_WITH([man],
     [AS_HELP_STRING([--with-man],
-        [install with manual page @<:@default=yes@:>@])],
+        [install cclive.1 manual page @<:@default=yes@:>@])],
     [],
     [with_man=yes])
 AM_CONDITIONAL([WITH_MAN], [test x"$with_man" != "xno"])
 
-# --with-sigwinch
-AC_ARG_WITH([sigwinch],
-    [AS_HELP_STRING([--with-sigwinch],
-        [support SIGWINCH @<:@default=yes@:>@])],
-    [],
-    [with_sigwinch=yes])
-if [ test x"$with_sigwinch" = "xyes" ]; then
-    AC_DEFINE([WITH_SIGWINCH], [1], [Define to enable support])
-fi
-
 # --with-perl
 AC_ARG_WITH([perl],
     [AS_HELP_STRING([--with-perl],
-        [embed Perl @<:@default=no@:>@])],
+        [embed Perl to enable title parsing @<:@default=no@:>@])],
     [],
     [with_perl=no])
 if [ test x"$with_perl" = "xyes" ]; then
@@ -89,5 +94,7 @@ if [ test x"$with_perl" = "xyes" ]; then
 fi
 AM_CONDITIONAL([WITH_PERL], [test x"$with_perl" != "xno"])
 
-AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([Makefile
+                 src/Makefile
+                 tests/Makefile])
 AC_OUTPUT
