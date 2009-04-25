@@ -1,0 +1,67 @@
+
+Howto: Add support for a new website
+
+  Notes
+
+  Common to these websites is the flash plugin requirement. Common
+  the to the users of (c)clive is that we either choose not to
+  install the plugin or simply cannot use it.
+
+  The hardest part is the figuring out how to extract the video
+  from the website. Some see little reason to hide the video links,
+  others can go great lengths trying to make it impossible.
+
+  The easiest ones have their links visible in the video page HTML.
+  See src/evisor.cpp.
+
+  In difficult cases, analyzing the flash generated TCP traffic may
+  be used to figure how the video link is constructed. See:
+    <http://code.google.com/p/clive/issues/detail?id=6>
+
+  The above obviously requires that you have access to a system
+  capable of running flash.
+
+  Whatever the case is, the following info summarizes how to add
+  the support to the program once the details have been sorted out.
+
+
+  Adding support to the program:
+
+  * src/hosthandler.h
+    - add new $host specific class derived from the HostHandler class
+
+  * src/hostfactory.h
+    - add new $host specific enum to the list
+
+  * src/hostfactory.cpp
+    - add the new enum to createHandler(HandlerType) switch
+
+  * src/$host.cpp
+    - create implementation file for the $hostHandler class
+    - for examples, see src/youtube.cpp, src/google.cpp etc.
+
+  * src/Makefile.am
+    - append $host.cpp to "host"
+
+  * tests/$host.url
+    - add a test link for the $host
+
+  * tests/multi.lst (optional, recommended)
+    - append the above link to this file
+
+  * tests/Makefile.am
+    - append $host.url to "EXTRA_DIST"
+
+  -- Test and development
+
+  * autoreconf && ./configure
+    - needed after modifying the *.am files above
+  
+  * make && ./src/cclive < tests/$host.url -n
+    - build and test
+
+  -- When done
+
+  * generate a patch
+    - submit it to cclive@googlegroups.com for review
+    - please use diff -u (unified format)
