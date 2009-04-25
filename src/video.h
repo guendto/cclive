@@ -27,6 +27,7 @@ public:
     void setId          (const std::string&);
     void setLink        (std::string);
     void setHost        (const std::string&);
+    void setDomain      (const std::string&);
     void setTitle       (const std::string&);
     void setLength      (const double);
     void setContentType (const std::string&);
@@ -35,6 +36,7 @@ public:
     const std::string&  getId           () const;
     const std::string&  getLink         () const;
     const std::string&  getHost         () const;
+    const std::string&  getDomain       () const;
     const double        getLength       () const;
     const double        getInitial      () const;
     const std::string&  getContentType  () const;
@@ -46,6 +48,7 @@ private:
     std::string id;
     std::string link;
     std::string host;
+    std::string domain;
     std::string title;
     double      length;
     double      initial;

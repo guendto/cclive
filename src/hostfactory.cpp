@@ -15,6 +15,7 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <iostream>
 #include <string>
 #include <tr1/memory>
 
@@ -31,6 +32,16 @@ HostHandlerFactory::createHandler(const std::string& url) {
             return p;
     }
     throw UnsupportedHostException();
+}
+
+void
+HostHandlerFactory::printHosts() {
+    for (register int type=Youtube; type < _last_type; ++type) {
+        std::tr1::shared_ptr<HostHandler> p = createHandler((HandlerType)type);
+        p->isHost(""); // Sets the domain string
+        std::cout << p->getVideoProperties().getDomain() << "\n";
+    }
+    std::cout << std::flush;
 }
 
 std::tr1::shared_ptr<HostHandler>

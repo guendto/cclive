@@ -29,8 +29,9 @@
 
 const bool
 GoogleHandler::isHost(std::string url) {
-    props.setHost("google");
-    return Util::toLower(url).find("video.google.")
+    props.setHost   ("google");
+    props.setDomain ("video.google.");
+    return Util::toLower(url).find(props.getDomain())
         != std::string::npos;
 }
 

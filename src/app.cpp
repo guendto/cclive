@@ -156,6 +156,11 @@ App::run() {
         return;
     }
 
+    if (opts.supported_hosts_given) {
+        HostHandlerFactory::printHosts();
+        return;
+    }
+
     execmgr.verifyExecArgument();
 
 #ifndef WITH_PERL

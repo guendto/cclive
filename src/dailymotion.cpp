@@ -29,8 +29,9 @@
 
 const bool
 DailymotionHandler::isHost(std::string url) {
-    props.setHost("dmotion");
-    return Util::toLower(url).find("dailymotion.com")
+    props.setHost   ("dmotion");
+    props.setDomain ("dailymotion.com");
+    return Util::toLower(url).find(props.getDomain())
         != std::string::npos;
 }
 

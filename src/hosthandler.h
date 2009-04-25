@@ -23,14 +23,14 @@ public:
     HostHandler();
     virtual ~HostHandler();
 public:
-    virtual const bool  isHost   (std::string url)   = 0;
-    virtual void        parseId  ()                  = 0;
-    virtual void        parseLink()                  = 0;
+    virtual const bool  isHost   (std::string url) = 0;
+    virtual void        parseId  ()                = 0;
+    virtual void        parseLink()                = 0;
 public:
     void                    parsePage          (const std::string& pageContent);
     const VideoProperties&  getVideoProperties () const;
 protected:
-    std::string         pageContent;
+    std::string        pageContent;
     VideoProperties    props;
 public:
     class ParseException : public RuntimeException {

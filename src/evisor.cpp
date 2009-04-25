@@ -25,8 +25,10 @@
 
 const bool
 EvisorHandler::isHost(std::string url) {
-    props.setHost("evisor");
-    return Util::toLower(url).find("evisor.tv") != std::string::npos;
+    props.setHost   ("evisor");
+    props.setDomain ("evisor.tv");
+    return Util::toLower(url).find(props.getDomain())
+        != std::string::npos;
 }
 
 void

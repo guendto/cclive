@@ -26,8 +26,9 @@
 
 const bool
 BreakHandler::isHost(std::string url) {
-    props.setHost("break");
-    return Util::toLower(url).find("break.com")
+    props.setHost   ("break");
+    props.setDomain ("break.com");
+    return Util::toLower(url).find(props.getDomain())
         != std::string::npos;
 }
 

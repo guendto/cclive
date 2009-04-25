@@ -27,8 +27,9 @@
 
 const bool
 SevenloadHandler::isHost(std::string url) {
-    props.setHost("7load");
-    return Util::toLower(url).find("sevenload.com")
+    props.setHost   ("7load");
+    props.setDomain ("sevenload.com");
+    return Util::toLower(url).find(props.getDomain())
         != std::string::npos;
 }
 

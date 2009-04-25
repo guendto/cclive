@@ -51,6 +51,11 @@ VideoProperties::setHost(const std::string& host) {
 }
 
 void
+VideoProperties::setDomain(const std::string& domain) {
+    this->domain = domain;
+}
+
+void
 VideoProperties::setLength(const double length) {
     this->length = length;
 }
@@ -99,6 +104,11 @@ VideoProperties::getLink() const {
 const std::string&
 VideoProperties::getHost() const {
     return host;
+}
+
+const std::string&
+VideoProperties::getDomain() const {
+    return domain;
 }
 
 const double

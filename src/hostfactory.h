@@ -24,6 +24,7 @@ class HostHandlerFactory {
 public:
     static std::tr1::shared_ptr<HostHandler>
         createHandler(const std::string& url);
+    static void printHosts();
 protected:
     enum HandlerType {
         Youtube,    Google,    Break,        Evisor,

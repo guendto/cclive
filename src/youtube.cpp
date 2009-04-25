@@ -30,8 +30,9 @@
 
 const bool
 YoutubeHandler::isHost(std::string url) {
-    props.setHost("youtube");
-    return Util::toLower(url).find("youtube.com")
+    props.setHost   ("youtube");
+    props.setDomain ("youtube.com");
+    return Util::toLower(url).find(props.getDomain())
         != std::string::npos;
 }
 

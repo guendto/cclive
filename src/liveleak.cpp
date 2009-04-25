@@ -27,8 +27,9 @@
 
 const bool
 LiveleakHandler::isHost(std::string url) {
-    props.setHost("lleak");
-    return Util::toLower(url).find("liveleak.com")
+    props.setHost   ("lleak");
+    props.setDomain ("liveleak.com");
+    return Util::toLower(url).find(props.getDomain())
         != std::string::npos;
 }
 
