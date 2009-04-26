@@ -17,6 +17,11 @@
   * Rename: CHANGES -> ChangeLog
     ** Fixes: missing CHANGES file in src tarball
 
+ Known-issues:
+  * Youtube login not working anymore
+    ** As of this release, cclive exits with an error if --youtube-user is used
+    ** Patches welcome
+
 
 0.3.2
 (April, 17, 2009)
