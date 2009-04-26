@@ -64,7 +64,7 @@ ExecMgr::playPlus() {
         cmd += " ";
         cmd += (*iter).getFilename();
     }
-    system(cmd.c_str());
+    int n = system(cmd.c_str());
 }
 
 void
@@ -72,6 +72,7 @@ ExecMgr::playSemi() {
     Options opts = optsmgr.getOptions();
 
     typedef std::vector<VideoProperties> vv;
+    int n;
 
     for (vv::iterator iter = queue->begin();
         iter != queue->end();
@@ -82,7 +83,7 @@ ExecMgr::playSemi() {
         Util::subStrReplace(cmd, "%i", (*iter).getFilename());
         Util::subStrReplace(cmd, ";", "");
 
-        system(cmd.c_str());
+        n = system(cmd.c_str());
     }
 }
 
@@ -91,5 +92,5 @@ ExecMgr::playStream(const VideoProperties& props) {
     Options opts = optsmgr.getOptions();
     std::string cmd = opts.stream_exec_arg;
     Util::subStrReplace(cmd, "%i", props.getFilename());
-    system(cmd.c_str());
+    int n = system(cmd.c_str());
 }
