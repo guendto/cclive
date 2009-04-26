@@ -1,6 +1,8 @@
 repo: git://repo.or.cz/cclive.git
 web : http://repo.or.cz/w/cclive.git
 
+* run with -Weffc++
+
 Ongoing
 
  * add support for new hosts
