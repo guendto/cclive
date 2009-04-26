@@ -172,7 +172,7 @@ App::run() {
 #endif
 
     if (opts.youtube_user_given) {
-        throw RuntimeException("FIXME: youtube login support");
+        throw RuntimeException("FIXME: youtube login: patches welcome");
         //curlmgr.logIntoYoutube();
     }
 
