@@ -25,6 +25,10 @@
 #include <cstring>
 #include <curl/curl.h>
 
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
+
 #include "singleton.h"
 #include "cmdline.h"
 #include "opts.h"

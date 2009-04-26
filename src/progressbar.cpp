@@ -25,13 +25,22 @@
 #include <tr1/memory>
 #include <cstdlib>
 
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
+
 #include <sys/wait.h>
+#include <time.h>
 
 #ifdef USE_SIGWINCH
  #include <signal.h>
  #ifdef HAVE_SYS_IOCTL_H
   #include <sys/ioctl.h>
  #endif
+#endif
+
+#ifdef HAVE_SYS_TYPES_H
+#include <sys/types.h>
 #endif
 
 #include "except.h"

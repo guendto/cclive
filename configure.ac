@@ -35,7 +35,7 @@ PKG_CHECK_MODULES(libcurl, libcurl >= 7.18.0)
 # Checks for header files.
 AC_HEADER_STDC
 AC_HEADER_SYS_WAIT
-AC_CHECK_HEADERS([stdlib.h string.h sys/ioctl.h])
+AC_CHECK_HEADERS([stdlib.h string.h sys/ioctl.h unistd.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_HEADER_STDBOOL
