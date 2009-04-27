@@ -7,7 +7,7 @@
   * Cleanup: manual page
 
  Developer-visible changes:
-  * Rewrite to C++
+  * Rewrite to C++ (expect bugs)
   * Add: HACKING file
   * Add: missing cmdline.ggo file (Makefile.am)
   * Add: missing cclive.pod file (Makefile.am)
@@ -16,9 +16,7 @@
   * Rename: CHANGES -> ChangeLog
 
  Known-issues:
-  * Youtube login not working anymore
-    ** As of this release, cclive exits with an error if --youtube-user is used
-    ** Patches welcome
+  * Youtube login does not work (throw an error, patches welcome!)
 
 
 0.3.2
