@@ -11,7 +11,7 @@ cclive [options] [url...]
 =head1 DESCRIPTION
 
 cclive is command line video extraction utility similar to clive but with
-lower requirements. It is designed to be compact and capable.
+lower requirements.
 
 =head1 OPTIONS
 
@@ -37,22 +37,20 @@ Turn off all output.
 
 Print libcurl debug messages to stderr.
 
-=item B<-t, --title>
+=item B<-t, --title>  [req. --with-perl]
 
 Causes B<cclive> to use video page title for output video filename.
-Ignored if cclive was built --with-perl.
+Ignored if cclive was built --without-perl.
 
-=item B<--title-cclass=>I<CCLASS>
+=item B<--title-cclass=>I<CCLASS>  [req. --with-perl]
 
-The I<character-class> is used to filter the video page title. Default is B<\w>.
-The filtered titles are then used for naming the video file. The default class
-is usually enough for most users, others may want to read up on Perl regular
-expressions and character classes.
+The I<character-class> is used to cleanup the video page <title>.
+Default is B<\w>. The cleaned up title is then used to name the
+output file.
 
-About using character-classes:
+The default I<class> is usually enough for most users. You can learn
+more about character classes here:
   http://perldoc.perl.org/perlrequick.html
-Or:
-  % perldoc perlrequick
 
 =item B<-n, --no-extract>
 
@@ -65,30 +63,34 @@ servers. Be sure to read the L</FORMATS> section.
 
 =item B<-f, --download=>I<FORMAT>
 
-Extract I<format> instead of the default "flv". Possible values are "flv"
-(default), "mp4", "mp4_hd", "3gpp", "xflv", "spark", "vp6-hq", "vp6-hd", "vp6",
-"h264", "spak-mini". Note that only certain hosts support only certain
-formats. See the L</FORMATS> section for more on this.
+Extract I<format> instead of the default "flv".
+
+Possible values are "flv", "mp4", "mp4_hd", "3gpp", "xflv", "spark", "vp6-hq",
+"vp6-hd", "vp6", "h264", "spak-mini".
+
+Note that the I<format> is host specific. See the L</FORMATS> section.
 
 =item B<-O, --output-video=>I<FILE>
 
-Write extracted video to I<file>. Do I<not> use this when extracting multiple
-videos on one go. Causes B<cclive> to overwrite an already existing file.
+Write extracted video to I<file>. Causes B<cclive> to overwrite the existing
+file unless the file is fully retrieved already.
+
+Do I<not> use this when extracting multiple videos on one run.
 
 =item B<-N, --number-videos>
 
 Number extracted video files. Causes B<cclive> to add a numeric prefix to
-the file names. Typically used for extracting multipart videos to keep them
-in order.
+the file names.
 
 =item B<--emit-csv>
 
-Emit video details as CSV to stdout. Implies B<--no-extract>. Note that
-B<--quiet> has I<no> effect on the emitted CSV.
+Emit video details as CSV to stdout. Implies B<--no-extract>.
+
+Can be used together with B<--quiet>.
 
 =item B<--limit-rate=>I<AMOUNT>
 
-Limit download speed to I<amount> (KB/s). Limits only file transfers.
+Limit download speed to I<amount> (KB/s). Does not limit video page fetches.
 
 =item B<--agent=>I<STRING>
 
@@ -96,8 +98,14 @@ Identify B<cclive> as I<string> to the HTTP servers.
 
 =item B<--proxy=>I<ADDRESS>
 
-Use I<address> for HTTP proxy. By default B<cclive> uses the value of the
-http_proxy environment variable if it is defined. Example: http://foo:1234.
+Use I<address> for HTTP proxy.
+
+Example:
+  --proxy=http://foo:1234
+
+B<cclive> uses the value of the http_proxy environment variable by default
+if it is defined.
+
 
 =item B<--no-proxy>
 
@@ -112,29 +120,30 @@ on the system's internal timeouts by default.
 http://curl.haxx.se/docs/knownbugs.html:
 
   "34. The SOCKS4 connection codes don't properly acknowledge
-  (connect) timeouts. Also see #12. According to bug #1556528,
-  even the SOCKS5 connect code does not do it right:
-    http://curl.haxx.se/bug/view.cgi?id=1556528"
+       (connect) timeouts. Also see #12. According to bug #1556528,
+       even the SOCKS5 connect code does not do it right:
+       http://curl.haxx.se/bug/view.cgi?id=1556528"
 
   "12. When connecting to a SOCKS proxy, the (connect) timeout
-  is not properly acknowledged after the actual TCP connect
-  (during the SOCKS 'negotiate' phase)."
+       is not properly acknowledged after the actual TCP connect
+       (during the SOCKS 'negotiate' phase)."
 
 See also B<--connect-timeout-socks>.
 
 =item B<--connect-timeout-socks=>I<SECONDS>
 
-Same as above but works around the SOCKS proxy bug by using CURLOPT_TIMEOUT
-instead of CURLOPT_CONNECTIMEOUT. Ignored for file transfers, otherwise
-curl could interrupt already started transfers.
+Same as B<--connect-timeout> but works around the SOCKS proxy bug by using
+CURLOPT_TIMEOUT instead of CURLOPT_CONNECTIMEOUT.
 
-More about these two options:
+Ignored for file transfers, otherwise curl could interrupt started transfers.
+
+More about these curl options:
   http://curl.haxx.se/libcurl/c/curl_easy_setopt.html
 
 =item B<-u, --youtube-user=>I<USERNAME>
 
 Causes B<cclive> to log into Youtube as I<username>. This is done I<before>
-extraction, even if the batch does not contain any Youtube hosted links.
+extraction, even if the batch does not contain any Youtube video links.
 
 =item B<-p, --youtube-pass=>I<PASSWORD>
 
@@ -143,9 +152,10 @@ Use I<password> for Youtube login.  If undefined, B<cclive> prompts for it.
 =item B<--exec=>I<COMMAND>B<;>
 
 Execute I<command> after each file transfer. Optional arguments may be passed
-to the command. The expression must be terminated by a semicolon (";"). If the
-specifier "%i" appears anywhere in I<command> name or the arguments it is
-replaced by the pathname of the extracted video file.
+to the command. The expression must be terminated by a semicolon (";").
+
+If the specifier "%i" appears anywhere in I<command> name or the arguments
+it is replaced by the pathname of the extracted video file.
 
 Example:
   % cclive --exec="mplayer -really-quiet %i;" URL
@@ -158,22 +168,15 @@ as possible for the invocation of I<command>.
 =item B<--stream-exec=>I<COMMAND>
 
 Execute I<command> when file transfer progress reaches I<percent> as defined
-with the B<--stream> option. The "%i" specifier for video pathname is expected
-to appear somewhere in the I<command> expression.
+with the B<--stream> option. If a "%i" specifier is used in the I<command>
+expression, it will be replaced with video pathname.
 
-Unlike the B<--exec> option which is executed subsequently after each file
-transfer, B<cclive> forks the streaming process and continues with the file
-transfer -- and will not continue to download another file until the child
-process terminates.
+B<cclive> forks the I<command> and continues with the transfer. Note that
+B<cclive> will not continue to download another file before the child process
+terminates.
 
-It should also be noted that B<cclive> makes no effort to check whether there
-is enough data to be streamed. It assumes the user knows how much data needs
-to be buffered before starting the child process. Similarly, if the transfer
-rate drops significantly after starting the process and it runs out of data,
-B<cclive> simply ignores that.
-
-Some players and formats may not work properly with this feature. Use
-L<mplayer(1)> and choose flv if you are unsure.
+Some players and formats may not work properly with this feature.
+L<mplayer(1)> is known to work properly with most flv videos.
 
 =item B<--stream=>I<PERCENT>
 
@@ -182,6 +185,11 @@ file transfer progress reaches I<percent>.
 
 Example:
   % cclive --stream-exec="mplayer -really-quiet %i" --stream=20 URL
+
+Note that B<cclive> does nothing to check if there is enough data buffered
+before forking the stream process. If the transfer rate drops significantly
+after starting the process and it runs out of data, B<cclive> does nothing
+to fix this.
 
 =item B<--print-fname>
 
@@ -204,7 +212,7 @@ Extract audio to an mp3 file from the downloaded video with L<ffmpeg(1)>:
   % cclive --exec="ffmpeg -i %i %i.mp3;" URL
 
 Start playing the video being downloaded with L<mplayer(1)> when the transfer
-reaches 20% mark:
+reaches 20%:
   % cclive --stream-exec="mplayer -really-quiet %i" --stream=20 URL
 
 =head1 FORMATS
@@ -248,7 +256,7 @@ reaches 20% mark:
  no-extract                     # --no-extract
  # ...
 
-Basically all command-line options can be defined in the config file. Note
+Usually all command-line options can be defined in the config file. Note
 that command-line options override the config file definitions.
 
 =back

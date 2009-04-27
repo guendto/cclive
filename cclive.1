@@ -132,7 +132,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2009-04-25" "0.4.0" "cclive manual"
+.TH cclive 1 "2009-04-27" "0.4.0" "cclive manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -145,7 +145,7 @@ cclive [options] [url...]
 .SH "DESCRIPTION"
 .IX Header "DESCRIPTION"
 cclive is command line video extraction utility similar to clive but with
-lower requirements. It is designed to be compact and capable.
+lower requirements.
 .SH "OPTIONS"
 .IX Header "OPTIONS"
 .IP "\fB\-h, \-\-help\fR" 4
@@ -163,21 +163,19 @@ Turn off all output.
 .IP "\fB\-\-debug\fR" 4
 .IX Item "--debug"
 Print libcurl debug messages to stderr.
-.IP "\fB\-t, \-\-title\fR" 4
-.IX Item "-t, --title"
+.IP "\fB\-t, \-\-title\fR  [req. \-\-with\-perl]" 4
+.IX Item "-t, --title  [req. --with-perl]"
 Causes \fBcclive\fR to use video page title for output video filename.
-Ignored if cclive was built \-\-with\-perl.
-.IP "\fB\-\-title\-cclass=\fR\fI\s-1CCLASS\s0\fR" 4
-.IX Item "--title-cclass=CCLASS"
-The \fIcharacter-class\fR is used to filter the video page title. Default is \fB\ew\fR.
-The filtered titles are then used for naming the video file. The default class
-is usually enough for most users, others may want to read up on Perl regular
-expressions and character classes.
+Ignored if cclive was built \-\-without\-perl.
+.IP "\fB\-\-title\-cclass=\fR\fI\s-1CCLASS\s0\fR  [req. \-\-with\-perl]" 4
+.IX Item "--title-cclass=CCLASS  [req. --with-perl]"
+The \fIcharacter-class\fR is used to cleanup the video page <title>.
+Default is \fB\ew\fR. The cleaned up title is then used to name the
+output file.
 .Sp
-About using character-classes:
+The default \fIclass\fR is usually enough for most users. You can learn
+more about character classes here:
   http://perldoc.perl.org/perlrequick.html
-Or:
-  % perldoc perlrequick
 .IP "\fB\-n, \-\-no\-extract\fR" 4
 .IX Item "-n, --no-extract"
 Do not extract any videos.
@@ -187,33 +185,42 @@ Resume a partially downloaded video file. May not work with some of the \s-1HTTP
 servers. Be sure to read the \*(L"\s-1FORMATS\s0\*(R" section.
 .IP "\fB\-f, \-\-download=\fR\fI\s-1FORMAT\s0\fR" 4
 .IX Item "-f, --download=FORMAT"
-Extract \fIformat\fR instead of the default \*(L"flv\*(R". Possible values are \*(L"flv\*(R"
-(default), \*(L"mp4\*(R", \*(L"mp4_hd\*(R", \*(L"3gpp\*(R", \*(L"xflv\*(R", \*(L"spark\*(R", \*(L"vp6\-hq\*(R", \*(L"vp6\-hd\*(R", \*(L"vp6\*(R",
-\&\*(L"h264\*(R", \*(L"spak-mini\*(R". Note that only certain hosts support only certain
-formats. See the \*(L"\s-1FORMATS\s0\*(R" section for more on this.
+Extract \fIformat\fR instead of the default \*(L"flv\*(R".
+.Sp
+Possible values are \*(L"flv\*(R", \*(L"mp4\*(R", \*(L"mp4_hd\*(R", \*(L"3gpp\*(R", \*(L"xflv\*(R", \*(L"spark\*(R", \*(L"vp6\-hq\*(R",
+\&\*(L"vp6\-hd\*(R", \*(L"vp6\*(R", \*(L"h264\*(R", \*(L"spak-mini\*(R".
+.Sp
+Note that the \fIformat\fR is host specific. See the \*(L"\s-1FORMATS\s0\*(R" section.
 .IP "\fB\-O, \-\-output\-video=\fR\fI\s-1FILE\s0\fR" 4
 .IX Item "-O, --output-video=FILE"
-Write extracted video to \fIfile\fR. Do \fInot\fR use this when extracting multiple
-videos on one go. Causes \fBcclive\fR to overwrite an already existing file.
+Write extracted video to \fIfile\fR. Causes \fBcclive\fR to overwrite the existing
+file unless the file is fully retrieved already.
+.Sp
+Do \fInot\fR use this when extracting multiple videos on one run.
 .IP "\fB\-N, \-\-number\-videos\fR" 4
 .IX Item "-N, --number-videos"
 Number extracted video files. Causes \fBcclive\fR to add a numeric prefix to
-the file names. Typically used for extracting multipart videos to keep them
-in order.
+the file names.
 .IP "\fB\-\-emit\-csv\fR" 4
 .IX Item "--emit-csv"
-Emit video details as \s-1CSV\s0 to stdout. Implies \fB\-\-no\-extract\fR. Note that
-\&\fB\-\-quiet\fR has \fIno\fR effect on the emitted \s-1CSV\s0.
+Emit video details as \s-1CSV\s0 to stdout. Implies \fB\-\-no\-extract\fR.
+.Sp
+Can be used together with \fB\-\-quiet\fR.
 .IP "\fB\-\-limit\-rate=\fR\fI\s-1AMOUNT\s0\fR" 4
 .IX Item "--limit-rate=AMOUNT"
-Limit download speed to \fIamount\fR (KB/s). Limits only file transfers.
+Limit download speed to \fIamount\fR (KB/s). Does not limit video page fetches.
 .IP "\fB\-\-agent=\fR\fI\s-1STRING\s0\fR" 4
 .IX Item "--agent=STRING"
 Identify \fBcclive\fR as \fIstring\fR to the \s-1HTTP\s0 servers.
 .IP "\fB\-\-proxy=\fR\fI\s-1ADDRESS\s0\fR" 4
 .IX Item "--proxy=ADDRESS"
-Use \fIaddress\fR for \s-1HTTP\s0 proxy. By default \fBcclive\fR uses the value of the
-http_proxy environment variable if it is defined. Example: http://foo:1234.
+Use \fIaddress\fR for \s-1HTTP\s0 proxy.
+.Sp
+Example:
+  \-\-proxy=http://foo:1234
+.Sp
+\&\fBcclive\fR uses the value of the http_proxy environment variable by default
+if it is defined.
 .IP "\fB\-\-no\-proxy\fR" 4
 .IX Item "--no-proxy"
 Do not use proxy, even if http_proxy environment variable is defined.
@@ -227,37 +234,39 @@ http://curl.haxx.se/docs/knownbugs.html:
 .Sp
 .Vb 4
 \&  "34. The SOCKS4 connection codes don\*(Aqt properly acknowledge
-\&  (connect) timeouts. Also see #12. According to bug #1556528,
-\&  even the SOCKS5 connect code does not do it right:
-\&    http://curl.haxx.se/bug/view.cgi?id=1556528"
+\&       (connect) timeouts. Also see #12. According to bug #1556528,
+\&       even the SOCKS5 connect code does not do it right:
+\&       http://curl.haxx.se/bug/view.cgi?id=1556528"
 \&
 \&  "12. When connecting to a SOCKS proxy, the (connect) timeout
-\&  is not properly acknowledged after the actual TCP connect
-\&  (during the SOCKS \*(Aqnegotiate\*(Aq phase)."
+\&       is not properly acknowledged after the actual TCP connect
+\&       (during the SOCKS \*(Aqnegotiate\*(Aq phase)."
 .Ve
 .Sp
 See also \fB\-\-connect\-timeout\-socks\fR.
 .IP "\fB\-\-connect\-timeout\-socks=\fR\fI\s-1SECONDS\s0\fR" 4
 .IX Item "--connect-timeout-socks=SECONDS"
-Same as above but works around the \s-1SOCKS\s0 proxy bug by using \s-1CURLOPT_TIMEOUT\s0
-instead of \s-1CURLOPT_CONNECTIMEOUT\s0. Ignored for file transfers, otherwise
-curl could interrupt already started transfers.
+Same as \fB\-\-connect\-timeout\fR but works around the \s-1SOCKS\s0 proxy bug by using
+\&\s-1CURLOPT_TIMEOUT\s0 instead of \s-1CURLOPT_CONNECTIMEOUT\s0.
 .Sp
-More about these two options:
+Ignored for file transfers, otherwise curl could interrupt started transfers.
+.Sp
+More about these curl options:
   http://curl.haxx.se/libcurl/c/curl_easy_setopt.html
 .IP "\fB\-u, \-\-youtube\-user=\fR\fI\s-1USERNAME\s0\fR" 4
 .IX Item "-u, --youtube-user=USERNAME"
 Causes \fBcclive\fR to log into Youtube as \fIusername\fR. This is done \fIbefore\fR
-extraction, even if the batch does not contain any Youtube hosted links.
+extraction, even if the batch does not contain any Youtube video links.
 .IP "\fB\-p, \-\-youtube\-pass=\fR\fI\s-1PASSWORD\s0\fR" 4
 .IX Item "-p, --youtube-pass=PASSWORD"
 Use \fIpassword\fR for Youtube login.  If undefined, \fBcclive\fR prompts for it.
 .IP "\fB\-\-exec=\fR\fI\s-1COMMAND\s0\fR\fB;\fR" 4
 .IX Item "--exec=COMMAND;"
 Execute \fIcommand\fR after each file transfer. Optional arguments may be passed
-to the command. The expression must be terminated by a semicolon (\*(L";\*(R"). If the
-specifier \*(L"%i\*(R" appears anywhere in \fIcommand\fR name or the arguments it is
-replaced by the pathname of the extracted video file.
+to the command. The expression must be terminated by a semicolon (\*(L";\*(R").
+.Sp
+If the specifier \*(L"%i\*(R" appears anywhere in \fIcommand\fR name or the arguments
+it is replaced by the pathname of the extracted video file.
 .Sp
 Example:
   % cclive \-\-exec=\*(L"mplayer \-really\-quiet \f(CW%i\fR;\*(R" \s-1URL\s0
@@ -268,22 +277,15 @@ as possible for the invocation of \fIcommand\fR.
 .IP "\fB\-\-stream\-exec=\fR\fI\s-1COMMAND\s0\fR" 4
 .IX Item "--stream-exec=COMMAND"
 Execute \fIcommand\fR when file transfer progress reaches \fIpercent\fR as defined
-with the \fB\-\-stream\fR option. The \*(L"%i\*(R" specifier for video pathname is expected
-to appear somewhere in the \fIcommand\fR expression.
+with the \fB\-\-stream\fR option. If a \*(L"%i\*(R" specifier is used in the \fIcommand\fR
+expression, it will be replaced with video pathname.
 .Sp
-Unlike the \fB\-\-exec\fR option which is executed subsequently after each file
-transfer, \fBcclive\fR forks the streaming process and continues with the file
-transfer \*(-- and will not continue to download another file until the child
-process terminates.
+\&\fBcclive\fR forks the \fIcommand\fR and continues with the transfer. Note that
+\&\fBcclive\fR will not continue to download another file before the child process
+terminates.
 .Sp
-It should also be noted that \fBcclive\fR makes no effort to check whether there
-is enough data to be streamed. It assumes the user knows how much data needs
-to be buffered before starting the child process. Similarly, if the transfer
-rate drops significantly after starting the process and it runs out of data,
-\&\fBcclive\fR simply ignores that.
-.Sp
-Some players and formats may not work properly with this feature. Use
-\&\fImplayer\fR\|(1) and choose flv if you are unsure.
+Some players and formats may not work properly with this feature.
+\&\fImplayer\fR\|(1) is known to work properly with most flv videos.
 .IP "\fB\-\-stream=\fR\fI\s-1PERCENT\s0\fR" 4
 .IX Item "--stream=PERCENT"
 Execute the \fIcommand\fR defined with the \fB\-\-stream\-exec\fR option when the
@@ -291,6 +293,11 @@ file transfer progress reaches \fIpercent\fR.
 .Sp
 Example:
   % cclive \-\-stream\-exec=\*(L"mplayer \-really\-quiet \f(CW%i\fR\*(R" \-\-stream=20 \s-1URL\s0
+.Sp
+Note that \fBcclive\fR does nothing to check if there is enough data buffered
+before forking the stream process. If the transfer rate drops significantly
+after starting the process and it runs out of data, \fBcclive\fR does nothing
+to fix this.
 .IP "\fB\-\-print\-fname\fR" 4
 .IX Item "--print-fname"
 Print output filename on a dedicated line before each file transfer.
@@ -309,7 +316,7 @@ Extract audio to an mp3 file from the downloaded video with \fIffmpeg\fR\|(1):
   % cclive \-\-exec=\*(L"ffmpeg \-i \f(CW%i\fR \f(CW%i\fR.mp3;\*(R" \s-1URL\s0
 .PP
 Start playing the video being downloaded with \fImplayer\fR\|(1) when the transfer
-reaches 20% mark:
+reaches 20%:
   % cclive \-\-stream\-exec=\*(L"mplayer \-really\-quiet \f(CW%i\fR\*(R" \-\-stream=20 \s-1URL\s0
 .SH "FORMATS"
 .IX Header "FORMATS"
@@ -354,7 +361,7 @@ reaches 20% mark:
 \& # ...
 .Ve
 .Sp
-Basically all command-line options can be defined in the config file. Note
+Usually all command-line options can be defined in the config file. Note
 that command-line options override the config file definitions.
 .SH "EXIT STATUS"
 .IX Header "EXIT STATUS"
