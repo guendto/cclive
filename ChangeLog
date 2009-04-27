@@ -4,6 +4,7 @@
   * Separation of stdout and stderr (previously all -> stderr)
   * Change: --version -> stdout (previously -> stderr)
   * Rename: --supported-hosts -> --hosts
+  * Cleanup: manual page
 
  Developer-visible changes:
   * Rewrite to C++
