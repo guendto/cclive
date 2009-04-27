@@ -34,20 +34,24 @@ protected:
     enum { BufferSize=1024 };
     char buffer[BufferSize];
 private:
-    bool verbose;
     int fd;
+    bool verbose;
 };
 
 // LogMgr
 
 class LogMgr : public Singleton<LogMgr> {
 public:
-    LogMgr();
-    virtual ~LogMgr();
+    LogMgr            ();
+    LogMgr            (const LogMgr&);
+    LogMgr& operator= (const LogMgr&);
+    virtual ~LogMgr   ();
 public:
     void            init();
     std::ostream&   cout()  const;
     std::ostream&   cerr()  const;
+protected:
+    void            _init();
 private:
     LogBuffer *_out, *_err;
     std::ostream *_cout, *_cerr;

@@ -65,6 +65,9 @@ ExecMgr::playPlus() {
         cmd += (*iter).getFilename();
     }
     int n = system(cmd.c_str());
+    if (n != 0) {
+        // TODO:
+    }
 }
 
 void
@@ -84,6 +87,9 @@ ExecMgr::playSemi() {
         Util::subStrReplace(cmd, ";", "");
 
         n = system(cmd.c_str());
+        if (n != 0) {
+            // TODO:
+        }
     }
 }
 
@@ -93,4 +99,7 @@ ExecMgr::playStream(const VideoProperties& props) {
     std::string cmd = opts.stream_exec_arg;
     Util::subStrReplace(cmd, "%i", props.getFilename());
     int n = system(cmd.c_str());
+    if (n != 0) {
+        // TODO:
+    }
 }

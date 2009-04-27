@@ -75,6 +75,24 @@ LogBuffer::sync() {
 LogMgr::LogMgr()
     : _out(NULL), _err(NULL), _cout(NULL), _cerr(NULL)
 {
+    _init();
+}
+
+    // Keeps -Weffc++ happy.
+LogMgr::LogMgr(const LogMgr&)
+    : _out(NULL), _err(NULL), _cout(NULL), _cerr(NULL)
+{
+    _init();
+}
+
+    // Ditto.
+LogMgr&
+LogMgr::operator=(const LogMgr&) {
+    return *this;
+}
+
+void
+LogMgr::_init() {
     _out = new LogBuffer( fileno(stdout) );
     _err = new LogBuffer( fileno(stderr) );
 
