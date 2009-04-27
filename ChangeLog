@@ -1,21 +1,18 @@
 0.4.0
 
  User-visible changes:
-  * Separation of stdout and stderr
-    ** Everything was previously dumped to stderr
-  * Change: --version -> stdout
-    ** Info was previously dumped to stdout
+  * Separation of stdout and stderr (previously all -> stderr)
+  * Change: --version -> stdout (previously -> stderr)
+  * Rename: --supported-hosts -> --hosts
 
  Developer-visible changes:
   * Rewrite to C++
-    ** Please report any bugs to http://code.google.com/p/cclive/issues/list
   * Add: HACKING file
   * Add: missing cmdline.ggo file (Makefile.am)
   * Add: missing cclive.pod file (Makefile.am)
-  * Rename: --supported-hosts -> --hosts (option)
   * Rename: --with-sigwinch -> --enable-sigwinch (configure.ac)
+  * Change: --enable-sigwinch: default -> no (configure.ac)
   * Rename: CHANGES -> ChangeLog
-    ** Fixes: missing CHANGES file in src tarball
 
  Known-issues:
   * Youtube login not working anymore
