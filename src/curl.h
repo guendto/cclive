@@ -20,10 +20,10 @@
 
 class CurlMgr : public Singleton<CurlMgr> {
 public:
-    CurlMgr();
-    virtual ~CurlMgr();
-    CurlMgr(const CurlMgr&);
+    CurlMgr           ();
+    CurlMgr           (const CurlMgr&);
     CurlMgr& operator=(const CurlMgr&);
+    virtual ~CurlMgr  ();
 public:
     void         init           ();
     std::string  fetchToMem     (const std::string& url,
