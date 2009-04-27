@@ -106,7 +106,7 @@
 /* Define to 1 if you have the ANSI C header files. */
 #undef STDC_HEADERS
 
-/* Define to enable handling */
+/* Define to enable SIGWINCH handling */
 #undef USE_SIGWINCH
 
 /* Version number of package */

@@ -51,16 +51,6 @@ AC_FUNC_MALLOC
 AC_TYPE_SIGNAL
 AC_CHECK_FUNCS([getpass memset strchr strcspn strspn strtol])
 
-# --enable-sigwinch
-AC_ARG_ENABLE([sigwinch],
-    [AS_HELP_STRING([--enable-sigwinch],
-        [enable SIGWINCH handling @<:@default=yes@:>@])],
-    [],
-    [enable_sigwinch=yes])
-if [ test x"$enable_sigwinch" = "xyes" ]; then
-    AC_DEFINE([USE_SIGWINCH], [1], [Define to enable handling])
-fi
-
 # --with-man
 AC_ARG_WITH([man],
     [AS_HELP_STRING([--with-man],
@@ -68,6 +58,16 @@ AC_ARG_WITH([man],
     [],
     [with_man=yes])
 AM_CONDITIONAL([WITH_MAN], [test x"$with_man" != "xno"])
+
+# --enable-sigwinch
+AC_ARG_ENABLE([sigwinch],
+    [AS_HELP_STRING([--enable-sigwinch],
+        [enable SIGWINCH handling @<:@default=no@:>@])],
+    [],
+    [enable_sigwinch=no])
+if [ test x"$enable_sigwinch" = "xyes" ]; then
+    AC_DEFINE([USE_SIGWINCH], [1], [Define to enable SIGWINCH handling])
+fi
 
 # --with-perl
 AC_ARG_WITH([perl],
