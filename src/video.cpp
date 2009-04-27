@@ -20,6 +20,7 @@
 #include <sstream>
 #include <iterator>
 #include <climits>
+#include <iomanip>
 
 #include "util.h"
 #include "singleton.h"
@@ -144,8 +145,12 @@ VideoProperties::formatOutputFilename() {
     if (!opts.output_video_given) {
         std::stringstream b;
 
-        if (opts.number_videos_given)
-            b << ++video_num << "_";
+        if (opts.number_videos_given) {
+            b << std::setw(4)
+              << std::setfill('0')
+              << ++video_num
+              << "_";
+        }
 
         if (opts.title_given && title.length() > 0)
             b << title;
