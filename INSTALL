@@ -39,5 +39,5 @@
 
             Examples
 
- # ./configure --prefix=/usr/local --without-sigwinch
+ # ./configure --prefix=/usr/local --enable-sigwinch
  # make install
