@@ -1,22 +1,32 @@
 
 Howto: Add support for a new website
+------------------------------------
 
-  Notes
+  cclive internals
+  ----------------
 
-  Common to these websites is the flash plugin requirement. Common
-  the to the users of (c)clive is that we either choose not to
-  install the plugin or simply cannot use it.
+  cclive fetches the video page from the specified link, parses it
+  looking for specific strings and constructs the video extraction
+  link from these details. Additionally cclive parses video ID
+  for identifying and file naming purposes.
 
-  The hardest part is the figuring out how to extract the video
-  from the website. Some see little reason to hide the video links,
-  others can go great lengths trying to make it impossible.
+  If the parsing returns the expected results, cclive then proceeds
+  to download the video from the constructed video link.
+
+  Hackalot
+  --------
+
+  Usually the hardest part is the figuring out how to extract the
+  video from the website. Some websites see little reason to hide
+  the video link, others can go great lengths trying to make it
+  impossible.
 
   The easiest ones have their links visible in the video page HTML.
-  See src/evisor.cpp.
+  See src/evisor.cpp for an example of this.
 
-  In difficult cases, analyzing the flash generated TCP traffic may
-  be used to figure how the video link is constructed. See:
-    <http://code.google.com/p/clive/issues/detail?id=6>
+  Often, most of the hard ones can be figured out by analyzing the
+  flash generated TCP traffic. See:
+    http://code.google.com/p/clive/issues/detail?id=6
 
   The above obviously requires that you have access to a system
   capable of running flash.
@@ -24,8 +34,8 @@ Howto: Add support for a new website
   Whatever the case is, the following info summarizes how to add
   the support to the program once the details have been sorted out.
 
-
-  Adding support to the program:
+  Adding support to the program
+  -----------------------------
 
   * src/hosthandler.h
     - add new $host specific class derived from the HostHandler class
@@ -52,7 +62,8 @@ Howto: Add support for a new website
   * tests/Makefile.am
     - append $host.url to "EXTRA_DIST"
 
-  -- Test and development
+  Test and development
+  --------------------
 
   * autoreconf && ./configure
     - needed after modifying the *.am files above
@@ -60,7 +71,8 @@ Howto: Add support for a new website
   * make && ./src/cclive < tests/$host.url -n
     - build and test
 
-  -- When done
+  Patches away
+  ------------
 
   * generate a patch
     - submit it to cclive@googlegroups.com for review
