@@ -37,6 +37,7 @@
 #include "video.h"
 #include "progressbar.h"
 #include "macros.h"
+#include "log.h"
 #include "curl.h"
 
 static CURL *curl;
@@ -103,12 +104,12 @@ callback_writemem(void *p, size_t size, size_t nmemb, void *data) {
 
 std::string
 CurlMgr::fetchToMem(const std::string& url, const std::string &what) {
-    std::cout << "fetch ";
+    logmgr.cout() << "fetch ";
     if (what.empty())
-        std::cout << url;
+        logmgr.cout() << url;
     else
-        std::cout << what;
-    std::cout << " ..." << std::flush;
+        logmgr.cout() << what;
+    logmgr.cout() << " ..." << std::flush;
 
     curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
     curl_easy_setopt(curl, CURLOPT_ENCODING, "");
@@ -143,7 +144,7 @@ CurlMgr::fetchToMem(const std::string& url, const std::string &what) {
         long httpcode = 0;
         curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpcode);
         if (httpcode == 200)
-            std::cout << "done." << std::endl;
+            logmgr.cout() << "done." << std::endl;
         else
             errmsg = "server returned http/"+httpcode;
     }
@@ -165,7 +166,7 @@ CurlMgr::queryFileLength(VideoProperties& props) {
         perror("tmpfile");
         throw RuntimeException("error: tmpfile(3) failed");
     }
-    std::cout << "verify video link ..." << std::flush;
+    logmgr.cout() << "verify video link ..." << std::flush;
 
     Options opts = optsmgr.getOptions();
 
@@ -204,7 +205,7 @@ CurlMgr::queryFileLength(VideoProperties& props) {
         if (CURLE_OK == rc && NULL != ct && len > 0) {
             props.setLength(len);
             props.setContentType(ct);
-            std::cout << "done." << std::endl;
+            logmgr.cout() << "done." << std::endl;
         }
         else {
             curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpcode);
@@ -267,7 +268,7 @@ CurlMgr::fetchToFile(VideoProperties& props) {
 
     if (opts.continue_given && initial > 0) {
         double remaining = props.getLength() - initial;
-        std::cout
+        logmgr.cout()
             << "from: "
             << std::setprecision(0)
             << initial
@@ -343,7 +344,7 @@ CurlMgr::fetchToFile(VideoProperties& props) {
 
     pb.finish();
 
-    std::cout << std::endl;
+    logmgr.cout() << std::endl;
 }
 
 const std::string&
@@ -393,7 +394,7 @@ CurlMgr::logIntoYoutube() {
     curl_easy_setopt(curl, CURLOPT_TIMEOUT,
                      opts.connect_timeout_socks_arg);
 
-    std::cout
+    logmgr.cout()
         << "[youtube] login as "
         << opts.youtube_user_arg
         << "..."
@@ -424,7 +425,7 @@ CurlMgr::logIntoYoutube() {
             }
             else {
                 curl_easy_setopt(curl, CURLOPT_COOKIE, "is_adult=1");
-                std::cout << "done." << std::endl;
+                logmgr.cout() << "done." << std::endl;
             }
         }
         else

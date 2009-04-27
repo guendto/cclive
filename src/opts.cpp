@@ -27,6 +27,7 @@
 #include "except.h"
 #include "singleton.h"
 #include "macros.h"
+#include "log.h"
 #include "opts.h"
 
 OptionsMgr::OptionsMgr()
@@ -65,7 +66,7 @@ OptionsMgr::init(int argc, char **argv) {
         }
     }
     else {
-        std::cerr << "warn: HOME environment variable not defined\n"
+        logmgr.cerr() << "warn: HOME environment variable not defined\n"
             << "warn: config file will not be parsed"
             << std::endl;
     }

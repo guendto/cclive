@@ -20,6 +20,8 @@
 #include <vector>
 
 #include "except.h"
+#include "singleton.h"
+#include "log.h"
 #include "app.h"
 
 int
@@ -32,7 +34,7 @@ main (int argc, char *argv[]) {
         app.run();
     }
     catch (const RuntimeException& x) {
-        std::cerr << "error: " << x.getError() << std::endl;
+        logmgr.cerr() << "error: " << x.getError() << std::endl;
         rc = EXIT_FAILURE;
     }
     return rc;

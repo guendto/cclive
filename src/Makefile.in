@@ -51,17 +51,17 @@ binPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 PROGRAMS = $(bin_PROGRAMS)
 am__cclive_SOURCES_DIST = main.cpp app.cpp except.cpp util.cpp \
 	hosthandler.cpp opts.cpp video.cpp curl.cpp progressbar.cpp \
-	exec.cpp cmdline.c hostfactory.cpp xsinit.c youtube.cpp \
-	break.cpp evisor.cpp sevenload.cpp liveleak.cpp \
+	exec.cpp log.cpp cmdline.c hostfactory.cpp xsinit.c \
+	youtube.cpp break.cpp evisor.cpp sevenload.cpp liveleak.cpp \
 	dailymotion.cpp google.cpp app.h except.h util.h opts.h \
 	hosthandler.h video.h singleton.h macros.h curl.h \
-	progressbar.h exec.h cmdline.h hostfactory.h
+	progressbar.h exec.h log.h cmdline.h hostfactory.h
 @WITH_PERL_TRUE@am__objects_1 = xsinit.$(OBJEXT)
 am__objects_2 = main.$(OBJEXT) app.$(OBJEXT) except.$(OBJEXT) \
 	util.$(OBJEXT) hosthandler.$(OBJEXT) opts.$(OBJEXT) \
 	video.$(OBJEXT) curl.$(OBJEXT) progressbar.$(OBJEXT) \
-	exec.$(OBJEXT) cmdline.$(OBJEXT) hostfactory.$(OBJEXT) \
-	$(am__objects_1)
+	exec.$(OBJEXT) log.$(OBJEXT) cmdline.$(OBJEXT) \
+	hostfactory.$(OBJEXT) $(am__objects_1)
 am__objects_3 = youtube.$(OBJEXT) break.$(OBJEXT) evisor.$(OBJEXT) \
 	sevenload.$(OBJEXT) liveleak.$(OBJEXT) dailymotion.$(OBJEXT) \
 	google.$(OBJEXT)
@@ -204,7 +204,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 src = main.cpp app.cpp except.cpp util.cpp hosthandler.cpp opts.cpp \
-	video.cpp curl.cpp progressbar.cpp exec.cpp cmdline.c \
+	video.cpp curl.cpp progressbar.cpp exec.cpp log.cpp cmdline.c \
 	hostfactory.cpp $(am__append_1)
 hdr = \
 	app.h			\
@@ -218,6 +218,7 @@ hdr = \
 	curl.h			\
 	progressbar.h	\
 	exec.h	\
+	log.h			\
 	cmdline.h		\
 	hostfactory.h
 
@@ -301,6 +302,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hostfactory.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hosthandler.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liveleak.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/log.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/opts.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/progressbar.Po@am__quote@

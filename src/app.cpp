@@ -42,12 +42,14 @@
 #include "curl.h"
 #include "util.h"
 #include "exec.h"
+#include "log.h"
 #include "app.h"
 
 // singleton instances
 static std::tr1::shared_ptr<OptionsMgr> __optsmgr(new OptionsMgr);
 static std::tr1::shared_ptr<CurlMgr>    __curlmgr(new CurlMgr);
 static std::tr1::shared_ptr<ExecMgr>    __execmgr(new ExecMgr);
+static std::tr1::shared_ptr<LogMgr>     __logmgr (new LogMgr);
 
 extern void handle_sigwinch(int); // src/progress.cpp
 
@@ -57,12 +59,13 @@ App::~App() {
 void
 App::main(int argc, char **argv) {
     optsmgr.init(argc, argv);
+    logmgr.init(); // apply --quiet
     curlmgr.init();
 }
 
 static void
 printVideo(const VideoProperties& props) {
-    std::cout
+    logmgr.cout()
         << "file: "
         << props.getFilename()
         << "  "
@@ -126,7 +129,7 @@ handleURL(const std::string& url) {
                     }
                 }
                 catch (const VideoProperties::NothingToDoException& x) {
-                    std::cerr
+                    logmgr.cerr()
                         << "\nerror: file is already fully retrieved; "
                         << "nothing to do" << std::endl;
                 }
@@ -135,15 +138,15 @@ handleURL(const std::string& url) {
                     execmgr.append(props);
             }
             catch (const CurlMgr::FetchException& x) {
-                std::cerr << "\nerror: " << x.getError() << std::endl;
+                logmgr.cerr() << "\nerror: " << x.getError() << std::endl;
             }
             catch (const HostHandler::ParseException& x) {
-                std::cerr << "error: " << x.getError() << std::endl;
+                logmgr.cerr() << "error: " << x.getError() << std::endl;
             }
         }
     }
     catch (const HostHandlerFactory::UnsupportedHostException& x) {
-        std::cerr << "error: no support: " << url << std::endl;
+        logmgr.cerr() << "error: no support: " << url << std::endl;
     }
 }
 
@@ -165,7 +168,7 @@ App::run() {
 
 #ifndef WITH_PERL
     if (opts.title_given) {
-        std::cerr
+        logmgr.cerr()
             << "warn: built --without-perl; ignoring --title*"
             << std::endl;
     }
@@ -195,7 +198,7 @@ App::run() {
             Util::lastfmToYoutube(*iter);
     }
 
-    std::cout.setf(std::ios::fixed);
+    logmgr.cout().setf(std::ios::fixed);
 #ifdef USE_SIGWINCH
     signal(SIGWINCH, handle_sigwinch);
 #endif

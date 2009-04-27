@@ -51,6 +51,7 @@
 #include "macros.h"
 #include "util.h"
 #include "exec.h"
+#include "log.h"
 #include "progressbar.h"
 
 #ifdef USE_SIGWINCH
@@ -206,7 +207,7 @@ ProgressBar::update(double now) {
 
     b << tmp.str();
 
-    std::cout << "\r" << b.str() << std::flush;
+    logmgr.cout() << "\r" << b.str() << std::flush;
     count = now;
 }
 

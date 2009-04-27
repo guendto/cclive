@@ -9,6 +9,7 @@ src =				\
 	curl.cpp		\
 	progressbar.cpp	\
 	exec.cpp	\
+	log.cpp			\
 	cmdline.c		\
 	hostfactory.cpp
 
@@ -37,6 +38,7 @@ hdr =				\
 	curl.h			\
 	progressbar.h	\
 	exec.h	\
+	log.h			\
 	cmdline.h		\
 	hostfactory.h
 
