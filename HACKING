@@ -1,4 +1,12 @@
 
+Howto: Contribute to the project
+--------------------------------
+
+Send patches to:
+* cclive@googlegroups.com
+* please use diff -u (unified format)
+
+
 Howto: Add support for a new website
 ------------------------------------
 
@@ -71,9 +79,4 @@ Howto: Add support for a new website
   * make && ./src/cclive < tests/$host.url -n
     - build and test
 
-  Patches away
-  ------------
-
-  * generate a patch
-    - submit it to cclive@googlegroups.com for review
-    - please use diff -u (unified format)
+  * see "howto: contribute" at the top of this file
