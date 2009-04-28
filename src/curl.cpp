@@ -29,6 +29,10 @@
 #include <unistd.h>
 #endif
 
+#ifndef HAVE_REALLOC
+#error Cannot compile without realloc() support
+#endif
+
 #include "singleton.h"
 #include "cmdline.h"
 #include "opts.h"
@@ -90,16 +94,29 @@ CurlMgr::init() {
     curl_easy_setopt(curl, CURLOPT_PROXY, proxy);
 }
 
+static void *
+_realloc(void *p, const size_t size) {
+    if (p) return realloc(p,size);
+    return malloc(size);
+}
+
 struct mem_s {
-    mem_s() : content("") { }
-    std::string content;
+    size_t size;
+    char *p;
 };
 
 static size_t
 callback_writemem(void *p, size_t size, size_t nmemb, void *data) {
-    mem_s *m    = reinterpret_cast<mem_s *>(data);
-    m->content += reinterpret_cast<char*>(p);
-    return size * nmemb;
+    mem_s *m = reinterpret_cast<mem_s*>(data);
+    const size_t rsize = size * nmemb;
+    void *tmp = _realloc(m->p, m->size+rsize+1);
+    if (tmp) {
+        m->p = reinterpret_cast<char*>(tmp);
+        memcpy(&(m->p[m->size]), p, rsize);
+        m->size += rsize;
+        m->p[m->size] = '\0';
+    }
+    return rsize;
 }
 
 std::string
@@ -115,6 +132,8 @@ CurlMgr::fetchToMem(const std::string& url, const std::string &what) {
     curl_easy_setopt(curl, CURLOPT_ENCODING, "");
 
     mem_s mem;
+    memset(&mem, 0, sizeof(mem));
+
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &mem);
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, callback_writemem);
 
@@ -153,10 +172,17 @@ CurlMgr::fetchToMem(const std::string& url, const std::string &what) {
 
     curlErrorBuffer[0] = '\0';
 
+    std::string content;
+
+    if (NULL != mem.p) {
+        content = mem.p;
+        _FREE(mem.p);
+    }
+
     if (!errmsg.empty())
         throw FetchException(errmsg);
 
-    return mem.content;
+    return content;
 }
 
 void
@@ -351,7 +377,7 @@ const std::string&
 CurlMgr::unescape(std::string& url) const {
     char *p = curl_easy_unescape(curl, url.c_str(), 0, 0);
     url     = p;
-    _FREE(p);
+    curl_free(p);
     return url;
 }
 
@@ -384,10 +410,12 @@ CurlMgr::logIntoYoutube() {
     curl_easy_setopt(curl, CURLOPT_URL, req.str().c_str());
     curl_easy_setopt(curl, CURLOPT_COOKIEFILE, "");
     curl_easy_setopt(curl, CURLOPT_ENCODING, "");
-    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, callback_writemem);
 
     mem_s mem;
+    memset(&mem, 0, sizeof(mem));
+
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &mem);
+    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, callback_writemem);
 
     curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT,
                      opts.connect_timeout_arg);
@@ -404,21 +432,28 @@ CurlMgr::logIntoYoutube() {
 
     curl_easy_setopt(curl, CURLOPT_TIMEOUT, 0L);
 
+    std::string content;
+
+    if (NULL != mem.p) {
+        content = mem.p;
+        _FREE(mem.p);
+    }
+
     if (CURLE_OK == rc) {
         long    httpcode;
         curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpcode);
         if (httpcode == 200) {
-            if (mem.content.find(
+            if (content.find(
                 "your log-in was incorrect") != std::string::npos)
             {
                 throw RuntimeException("login was incorrect");
             }
-            else if(mem.content.find(
+            else if(content.find(
                 "check your password") != std::string::npos)
             {
                 throw RuntimeException("check your login password");
             }
-            else if (mem.content.find(
+            else if (content.find(
                 "too many login failures") != std::string::npos)
             {
                 throw RuntimeException("too many login failures, try later");
