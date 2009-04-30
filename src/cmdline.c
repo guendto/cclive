@@ -40,6 +40,7 @@ const char *gengetopt_args_info_help[] = {
   "  -f, --download=FORMAT         download format  (possible values=\"flv\", \n                                  \"mp4\", \"mp4_hd\", \"3gpp\", \"xflv\", \n                                  \"spark\", \"spak-mini\", \"vp6-hq\", \n                                  \"vp6-hd\", \"vp6\", \"h264\" default=`flv')",
   "  -O, --output-video=FILE       write video to file",
   "  -N, --number-videos           number extracted videos",
+  "      --filename-format=STRING  use custom output filename format",
   "      --emit-csv                emit video details as csv to stdout",
   "      --limit-rate=AMOUNT       limit download speed to amount kb per second",
   "      --agent=STRING            identify as string  (default=`Mozilla/5.0')",
@@ -117,6 +118,7 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->download_given = 0 ;
   args_info->output_video_given = 0 ;
   args_info->number_videos_given = 0 ;
+  args_info->filename_format_given = 0 ;
   args_info->emit_csv_given = 0 ;
   args_info->limit_rate_given = 0 ;
   args_info->agent_given = 0 ;
@@ -141,6 +143,8 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->download_orig = NULL;
   args_info->output_video_arg = NULL;
   args_info->output_video_orig = NULL;
+  args_info->filename_format_arg = NULL;
+  args_info->filename_format_orig = NULL;
   args_info->limit_rate_orig = NULL;
   args_info->agent_arg = gengetopt_strdup ("Mozilla/5.0");
   args_info->agent_orig = NULL;
@@ -177,19 +181,20 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->download_help = gengetopt_args_info_help[9] ;
   args_info->output_video_help = gengetopt_args_info_help[10] ;
   args_info->number_videos_help = gengetopt_args_info_help[11] ;
-  args_info->emit_csv_help = gengetopt_args_info_help[12] ;
-  args_info->limit_rate_help = gengetopt_args_info_help[13] ;
-  args_info->agent_help = gengetopt_args_info_help[14] ;
-  args_info->proxy_help = gengetopt_args_info_help[15] ;
-  args_info->no_proxy_help = gengetopt_args_info_help[16] ;
-  args_info->connect_timeout_help = gengetopt_args_info_help[17] ;
-  args_info->connect_timeout_socks_help = gengetopt_args_info_help[18] ;
-  args_info->youtube_user_help = gengetopt_args_info_help[19] ;
-  args_info->youtube_pass_help = gengetopt_args_info_help[20] ;
-  args_info->exec_help = gengetopt_args_info_help[21] ;
-  args_info->stream_exec_help = gengetopt_args_info_help[22] ;
-  args_info->stream_help = gengetopt_args_info_help[23] ;
-  args_info->print_fname_help = gengetopt_args_info_help[24] ;
+  args_info->filename_format_help = gengetopt_args_info_help[12] ;
+  args_info->emit_csv_help = gengetopt_args_info_help[13] ;
+  args_info->limit_rate_help = gengetopt_args_info_help[14] ;
+  args_info->agent_help = gengetopt_args_info_help[15] ;
+  args_info->proxy_help = gengetopt_args_info_help[16] ;
+  args_info->no_proxy_help = gengetopt_args_info_help[17] ;
+  args_info->connect_timeout_help = gengetopt_args_info_help[18] ;
+  args_info->connect_timeout_socks_help = gengetopt_args_info_help[19] ;
+  args_info->youtube_user_help = gengetopt_args_info_help[20] ;
+  args_info->youtube_pass_help = gengetopt_args_info_help[21] ;
+  args_info->exec_help = gengetopt_args_info_help[22] ;
+  args_info->stream_exec_help = gengetopt_args_info_help[23] ;
+  args_info->stream_help = gengetopt_args_info_help[24] ;
+  args_info->print_fname_help = gengetopt_args_info_help[25] ;
   
 }
 
@@ -277,6 +282,8 @@ cmdline_parser_release (struct gengetopt_args_info *args_info)
   free_string_field (&(args_info->download_orig));
   free_string_field (&(args_info->output_video_arg));
   free_string_field (&(args_info->output_video_orig));
+  free_string_field (&(args_info->filename_format_arg));
+  free_string_field (&(args_info->filename_format_orig));
   free_string_field (&(args_info->limit_rate_orig));
   free_string_field (&(args_info->agent_arg));
   free_string_field (&(args_info->agent_orig));
@@ -393,6 +400,8 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "output-video", args_info->output_video_orig, 0);
   if (args_info->number_videos_given)
     write_into_file(outfile, "number-videos", 0, 0 );
+  if (args_info->filename_format_given)
+    write_into_file(outfile, "filename-format", args_info->filename_format_orig, 0);
   if (args_info->emit_csv_given)
     write_into_file(outfile, "emit-csv", 0, 0 );
   if (args_info->limit_rate_given)
@@ -725,6 +734,7 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
         { "download",	1, NULL, 'f' },
         { "output-video",	1, NULL, 'O' },
         { "number-videos",	0, NULL, 'N' },
+        { "filename-format",	1, NULL, 0 },
         { "emit-csv",	0, NULL, 0 },
         { "limit-rate",	1, NULL, 0 },
         { "agent",	1, NULL, 0 },
@@ -912,6 +922,20 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
                 &(local_args_info.title_cclass_given), optarg, 0, 0, ARG_STRING,
                 check_ambiguity, override, 0, 0,
                 "title-cclass", '-',
+                additional_error))
+              goto failure;
+          
+          }
+          /* use custom output filename format.  */
+          else if (strcmp (long_options[option_index].name, "filename-format") == 0)
+          {
+          
+          
+            if (update_arg( (void *)&(args_info->filename_format_arg), 
+                 &(args_info->filename_format_orig), &(args_info->filename_format_given),
+                &(local_args_info.filename_format_given), optarg, 0, 0, ARG_STRING,
+                check_ambiguity, override, 0, 0,
+                "filename-format", '-',
                 additional_error))
               goto failure;
           

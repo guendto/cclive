@@ -43,7 +43,9 @@ public:
     const std::string&  getSuffix       () const;
     const std::string&  getFilename     () const;
 private:
-    void formatOutputFilename();
+    void formatOutputFilename           ();
+    void defaultOutputFilenameFormatter (std::stringstream&);
+    void customOutputFilenameFormatter  (std::stringstream&);
 private:
     std::string id;
     std::string link;

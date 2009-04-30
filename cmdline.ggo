@@ -39,6 +39,10 @@ option "output-video"
 option "number-videos"
     N "number extracted videos"
     optional
+option "filename-format"
+    - "use custom output filename format"
+    string typestr="STRING"
+    no
 option "emit-csv"
     - "emit video details as csv to stdout"
     optional

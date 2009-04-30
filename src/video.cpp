@@ -15,6 +15,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "config.h"
+
 #include <string>
 #include <vector>
 #include <sstream>
@@ -138,7 +140,6 @@ static int video_num;
 
 void
 VideoProperties::formatOutputFilename() {
-    Util::subStrReplace(id, "-", "_");
 
     Options opts = optsmgr.getOptions();
 
@@ -152,12 +153,11 @@ VideoProperties::formatOutputFilename() {
               << "_";
         }
 
-        if (opts.title_given && title.length() > 0)
-            b << title;
+        if (!opts.filename_format_given)
+            defaultOutputFilenameFormatter(b);
         else
-            b << host << "_" << id;
+            customOutputFilenameFormatter(b);
 
-        b << "." << suffix;
         filename = b.str();
 
         for (register int i=1; i<INT_MAX; ++i) {
@@ -185,6 +185,40 @@ VideoProperties::formatOutputFilename() {
 
     if (!opts.continue_given)
         initial = 0;
+}
+
+void
+VideoProperties::defaultOutputFilenameFormatter(
+    std::stringstream& b)
+{
+    Options opts = optsmgr.getOptions();
+    if (opts.title_given && title.length() > 0)
+        b << title;
+    else {
+        Util::subStrReplace(id, "-", "_");
+        b << host << "_" << id;
+    }
+
+    b << "." << suffix;
+}
+
+void
+VideoProperties::customOutputFilenameFormatter(
+    std::stringstream& b)
+{
+    Options opts = optsmgr.getOptions();
+    std::string fmt = opts.filename_format_arg;
+    std::string _title = id;
+#ifdef WITH_PERL
+    if (opts.title_given && title.length() > 0)
+        _title = title;
+#endif
+    Util::subStrReplace(fmt, "%t", _title);
+    Util::subStrReplace(fmt, "%i", id);
+    Util::subStrReplace(fmt, "%h", host);
+    Util::subStrReplace(fmt, "%s", suffix);
+
+    b << fmt;
 }
 
 VideoProperties::
