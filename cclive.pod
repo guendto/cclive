@@ -79,8 +79,23 @@ Do I<not> use this when extracting multiple videos on one run.
 
 =item B<-N, --number-videos>
 
-Number extracted video files. Causes B<cclive> to add a numeric prefix to
-the file names.
+Add a numeric prefix to the video filenames.
+
+=item B<--filename-format=>I<STRING>
+
+Use I<string> to format the output video filename. If any of the following
+specifiers appear anywhere in the I<string>, they will be replaced accordingly:
+
+  %t = page title
+  %i = id
+  %h = host string
+  %s = file suffix
+
+Note that "%t" is replaced only if B<cclive> was built --with-perl and
+the B<--title> option was used. Otherwise "%t" equals to "%i".
+
+Example:
+  % cclive --filename-format="%i.%s" -n URL
 
 =item B<--emit-csv>
 
