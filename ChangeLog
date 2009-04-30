@@ -1,5 +1,8 @@
 0.4.1
 
+ User-visible changes:
+  * Add: --filename-format
+
  Developer-visible changes:
   * Add: src/log.cpp: missing unistd.h
 
