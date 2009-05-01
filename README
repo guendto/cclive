@@ -30,7 +30,6 @@ Q: What are the missing features?
 ---------------------------------
 
 * --paste (you can use "xclip -o | cclive" instead for example)
-* --filename-format
 * --background
 * --emit-xml
 * --progress=type
