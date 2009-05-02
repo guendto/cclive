@@ -1,6 +1,7 @@
 0.4.1
 
  User-visible changes:
+  * Fix: port title parsing fix from clive (issue #8)
   * Add: --filename-format
 
  Developer-visible changes:

@@ -40,7 +40,7 @@ static const char script[] =
 "$parser->get_tag('title');"
 "$title = $parser->get_trimmed_text;"
 "$title =~ s/(youtube|video|liveleak.com|sevenload|dailymotion)//gi;"
-"$title =~ s/^\\s+//;"
+"$title =~ s/^[-\\s]+//;"
 "$title =~ s/\\s+$//;"
 "$re = $cclass || qr|\\w|;"
 "$title = join('', $title =~ /$re/g);";
