@@ -46,8 +46,8 @@ const char *gengetopt_args_info_help[] = {
   "      --agent=STRING            identify as string  (default=`Mozilla/5.0')",
   "      --proxy=ADDRESS           use address for http proxy",
   "      --no-proxy                do not use proxy at all",
-  "      --connect-timeout=SECS    max time allowed connection to server take",
-  "      --connect-timeout-socks=S same as above but with SOCKS proxy workaround",
+  "      --connect-timeout=SECS    max time allowed connection to server take  \n                                  (default=`30')",
+  "      --connect-timeout-socks=S same as above but with SOCKS proxy workaround  \n                                  (default=`30')",
   "  -u, --youtube-user=USERNAME   login username for youtube",
   "  -p, --youtube-pass=PASSWORD   login password for youtube, prompt if undefined",
   "      --exec=COMMAND            execute subsequent command with extracted video",
@@ -150,7 +150,9 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->agent_orig = NULL;
   args_info->proxy_arg = NULL;
   args_info->proxy_orig = NULL;
+  args_info->connect_timeout_arg = 30;
   args_info->connect_timeout_orig = NULL;
+  args_info->connect_timeout_socks_arg = 30;
   args_info->connect_timeout_socks_orig = NULL;
   args_info->youtube_user_arg = NULL;
   args_info->youtube_user_orig = NULL;
@@ -1017,7 +1019,7 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
           
             if (update_arg( (void *)&(args_info->connect_timeout_arg), 
                  &(args_info->connect_timeout_orig), &(args_info->connect_timeout_given),
-                &(local_args_info.connect_timeout_given), optarg, 0, 0, ARG_INT,
+                &(local_args_info.connect_timeout_given), optarg, 0, "30", ARG_INT,
                 check_ambiguity, override, 0, 0,
                 "connect-timeout", '-',
                 additional_error))
@@ -1031,7 +1033,7 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
           
             if (update_arg( (void *)&(args_info->connect_timeout_socks_arg), 
                  &(args_info->connect_timeout_socks_orig), &(args_info->connect_timeout_socks_given),
-                &(local_args_info.connect_timeout_socks_given), optarg, 0, 0, ARG_INT,
+                &(local_args_info.connect_timeout_socks_given), optarg, 0, "30", ARG_INT,
                 check_ambiguity, override, 0, 0,
                 "connect-timeout-socks", '-',
                 additional_error))

@@ -1,3 +1,9 @@
+0.4.2
+
+ User-visible changes:
+  * Change: --connect-timeout, --connect-timeout-socks default -> 30s
+
+
 0.4.1
 (May 4, 2009)
 

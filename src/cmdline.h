@@ -64,10 +64,10 @@ struct gengetopt_args_info
   char * proxy_orig;	/**< @brief use address for http proxy original value given at command line.  */
   const char *proxy_help; /**< @brief use address for http proxy help description.  */
   const char *no_proxy_help; /**< @brief do not use proxy at all help description.  */
-  int connect_timeout_arg;	/**< @brief max time allowed connection to server take.  */
+  int connect_timeout_arg;	/**< @brief max time allowed connection to server take (default='30').  */
   char * connect_timeout_orig;	/**< @brief max time allowed connection to server take original value given at command line.  */
   const char *connect_timeout_help; /**< @brief max time allowed connection to server take help description.  */
-  int connect_timeout_socks_arg;	/**< @brief same as above but with SOCKS proxy workaround.  */
+  int connect_timeout_socks_arg;	/**< @brief same as above but with SOCKS proxy workaround (default='30').  */
   char * connect_timeout_socks_orig;	/**< @brief same as above but with SOCKS proxy workaround original value given at command line.  */
   const char *connect_timeout_socks_help; /**< @brief same as above but with SOCKS proxy workaround help description.  */
   char * youtube_user_arg;	/**< @brief login username for youtube.  */

@@ -65,10 +65,12 @@ option "no-proxy"
 option "connect-timeout"
     - "max time allowed connection to server take"
     int typestr="SECS"
+    default="30"
     optional
 option "connect-timeout-socks"
     - "same as above but with SOCKS proxy workaround"
     int typestr="S"
+    default="30"
     optional
 option "youtube-user"
     u "login username for youtube"
