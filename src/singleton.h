@@ -26,8 +26,8 @@ private:
 public:
     Singleton() {
         assert(!instance);
-        int offset = (int)(T*)1 - (int)(Singleton <T>*)(T*)1;
-        instance = (T*)((int)this+offset);
+        ptrdiff_t offset = (ptrdiff_t)(T*)1 - (ptrdiff_t)(Singleton <T>*)(T*)1;
+        instance = (T*)(this+offset);
     }
     virtual ~Singleton() {
         assert(instance != 0);
