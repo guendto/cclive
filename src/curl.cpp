@@ -17,6 +17,10 @@
 
 #include "config.h"
 
+#ifndef HAVE_REALLOC
+#error Cannot compile without realloc() support
+#endif
+
 #include <iostream>
 #include <iomanip>
 #include <sstream>
@@ -27,10 +31,6 @@
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
-#endif
-
-#ifndef HAVE_REALLOC
-#error Cannot compile without realloc() support
 #endif
 
 #include "singleton.h"
