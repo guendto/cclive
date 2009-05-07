@@ -21,6 +21,9 @@
 #define _DELETE(p) \
     do { delete p; p = 0; } while(0)
 
+#define _DELETE_ARR(p) \
+    do { delete [] p; p = 0; } while(0)
+
 #define _FREE(p) \
     do { free(p); p = 0; } while(0)
 

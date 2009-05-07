@@ -37,6 +37,8 @@ public:
     public:
         FetchException(const std::string&);
     };
+private:
+    char *curlErrorBuffer;
 };
 
 #define curlmgr CurlMgr::getInstance()

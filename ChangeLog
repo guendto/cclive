@@ -4,6 +4,7 @@
   * Change: --connect-timeout, --connect-timeout-socks default -> 30s
 
  Developer-visible changes:
+  * src/curl.(cpp|h): make curlErrorBuffer a member variable
   * src/singleton.h: fix precision error reported on 64bit systems
     ** Thanks Martin Wilke for the patch
 

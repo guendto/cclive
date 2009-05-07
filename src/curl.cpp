@@ -45,22 +45,21 @@
 #include "curl.h"
 
 static CURL *curl;
-static char curlErrorBuffer[CURL_ERROR_SIZE];
 
 CurlMgr::CurlMgr()
+    : curlErrorBuffer(NULL) 
 {
     curl = NULL;
-    curlErrorBuffer[0] = '\0';
 }
 
-    // Keeps -Weffc++ happy.
+// Keeps -Weffc++ happy.
 CurlMgr::CurlMgr(const CurlMgr&)
+    : curlErrorBuffer(NULL) 
 {
     curl = NULL;
-    curlErrorBuffer[0] = '\0';
 }
 
-    // Ditto.
+// Ditto.
 CurlMgr&
 CurlMgr::operator=(const CurlMgr&) {
     return *this;
@@ -69,14 +68,20 @@ CurlMgr::operator=(const CurlMgr&) {
 CurlMgr::~CurlMgr() {
     curl_easy_cleanup(curl);
     curl = NULL;
+    _DELETE_ARR(curlErrorBuffer);
 }
 
 void
 CurlMgr::init() {
     curl = curl_easy_init();
     if (!curl)
-        throw RuntimeException("error: curl_easy_init returned NULL\n");
+        throw RuntimeException("curl_easy_init returned NULL");
 
+    curlErrorBuffer = new char[CURL_ERROR_SIZE];
+    if (!curlErrorBuffer)
+        throw RuntimeException("memory allocation failed");
+
+    memset(curlErrorBuffer, 0, CURL_ERROR_SIZE);
     Options opts = optsmgr.getOptions();
 
     curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1L);
@@ -152,7 +157,6 @@ CurlMgr::fetchToMem(const std::string& url, const std::string &what) {
     curl_easy_setopt(curl, CURLOPT_TIMEOUT,
         opts.connect_timeout_socks_arg);
 
-    curlErrorBuffer[0] = '\0';
     CURLcode rc = curl_easy_perform(curl);
 
     curl_easy_setopt(curl, CURLOPT_TIMEOUT, 0L);
@@ -169,8 +173,6 @@ CurlMgr::fetchToMem(const std::string& url, const std::string &what) {
     }
     else
         errmsg = curlErrorBuffer;
-
-    curlErrorBuffer[0] = '\0';
 
     std::string content;
 
@@ -190,7 +192,7 @@ CurlMgr::queryFileLength(VideoProperties& props) {
     FILE *f = tmpfile();
     if (!f) {
         perror("tmpfile");
-        throw RuntimeException("error: tmpfile(3) failed");
+        throw RuntimeException("tmpfile(3) failed");
     }
     logmgr.cout() << "verify video link ..." << std::flush;
 
@@ -205,7 +207,6 @@ CurlMgr::queryFileLength(VideoProperties& props) {
     curl_easy_setopt(curl, CURLOPT_TIMEOUT,
                      opts.connect_timeout_socks_arg);
 
-    curlErrorBuffer[0] = '\0';
     CURLcode rc = curl_easy_perform(curl);
 
     curl_easy_setopt(curl, CURLOPT_TIMEOUT, 0L);
@@ -244,8 +245,6 @@ CurlMgr::queryFileLength(VideoProperties& props) {
         else
             errmsg = "server returned http/"+httpcode;
     }
-
-    curlErrorBuffer[0] = '\0';
 
     if (!errmsg.empty())
         throw FetchException(errmsg);
@@ -338,7 +337,6 @@ CurlMgr::fetchToFile(VideoProperties& props) {
     curl_off_t limit_rate = opts.limit_rate_arg * 1024;
     curl_easy_setopt(curl, CURLOPT_MAX_RECV_SPEED_LARGE, limit_rate);
 
-    curlErrorBuffer[0] = '\0';
     CURLcode rc = curl_easy_perform(curl);
 
     curl_easy_setopt(curl, CURLOPT_HEADER, 1L);
@@ -357,8 +355,6 @@ CurlMgr::fetchToFile(VideoProperties& props) {
         else
             errmsg = "server closed with http/"+httpcode;
     }
-
-    curlErrorBuffer[0] = '\0';
 
     if (NULL != write.file) {
         fflush(write.file);
