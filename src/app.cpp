@@ -17,6 +17,10 @@
 
 #include "config.h"
 
+#ifndef HAVE_PTRDIFF_T
+#error Cannot compile without ptrdiff_t support
+#endif
+
 #include <iostream>
 #include <vector>
 #include <iterator>

@@ -18,12 +18,6 @@
 #ifndef singleton_h
 #define singleton_h
 
-#include "config.h"
-
-#ifndef HAVE_PTRDIFF_T
-#error Cannot compile without ptrdiff_t support
-#endif
-
 #include <cassert>
 
 template <typename T> class Singleton {
