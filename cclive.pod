@@ -262,17 +262,15 @@ reaches 20%:
 
 =over 4
 
-=item B<$HOME/.ccliverc>, for example:
+=item B<$HOME/.ccliverc>
 
  agent      = Furball/1.0       # --agent=...
  proxy      = http://foo:1234   # --proxy=...
  limit-rate = 50                # --limit-rate=...
  title                          # --title
  no-extract                     # --no-extract
- # ...
 
-Usually all command-line options can be defined in the config file. Note
-that command-line options override the config file definitions.
+Most of the program options can be defined in the ~/.ccliverc config file.
 
 =back
 

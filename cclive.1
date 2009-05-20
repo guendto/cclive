@@ -132,7 +132,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2009-04-30" "0.4.1" "cclive manual"
+.TH cclive 1 "2009-05-20" "0.4.2" "cclive manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -365,20 +365,18 @@ reaches 20%:
 .Ve
 .SH "FILES"
 .IX Header "FILES"
-.ie n .IP "\fB\fB$HOME\fB/.ccliverc\fR, for example:" 4
-.el .IP "\fB\f(CB$HOME\fB/.ccliverc\fR, for example:" 4
-.IX Item "$HOME/.ccliverc, for example:"
-.Vb 6
+.ie n .IP "\fB\fB$HOME\fB/.ccliverc\fR" 4
+.el .IP "\fB\f(CB$HOME\fB/.ccliverc\fR" 4
+.IX Item "$HOME/.ccliverc"
+.Vb 5
 \& agent      = Furball/1.0       # \-\-agent=...
 \& proxy      = http://foo:1234   # \-\-proxy=...
 \& limit\-rate = 50                # \-\-limit\-rate=...
 \& title                          # \-\-title
 \& no\-extract                     # \-\-no\-extract
-\& # ...
 .Ve
 .Sp
-Usually all command-line options can be defined in the config file. Note
-that command-line options override the config file definitions.
+Most of the program options can be defined in the ~/.ccliverc config file.
 .SH "EXIT STATUS"
 .IX Header "EXIT STATUS"
 cclive exits 0 on success, and >0 if an error occurs.
