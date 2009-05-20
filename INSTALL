@@ -1,16 +1,16 @@
 
-    Installation
+            Installation
 
  Typically "./configure && make install".
  
  See also:
-   <http://code.google.com/p/cclive/wiki/HowtoInstall>
+   http://code.google.com/p/cclive/wiki/HowtoInstall
 
 
-    Optional Packages
+            Optional Packages
 
  --with-man (default)
-    Whether the manual page should be installed. --without-man disables.
+    Whether the manual page should be installed. --without-man disables this.
 
  --enable-sigwinch
     If enabled, cclive handles SIGWINCH signal to resize progressbar to
@@ -21,19 +21,19 @@
 
  --with-perl
     Build cclive with embedded Perl interpreter. Used to parse
-    video page <title> tags. Enables --title* program options.
+    video page <title> tags. Enables the --title and --title-cclass
+    options.
     
     Note that you will also need the HTML::Tokenizer Perl module.
 
     Disabled by default.
 
 
-    Prerequisites
+            Prerequisites
 
  * libcurl (7.18.0+)
 
-    Optional
-
+ Optional:
  * Perl 5.8+ with HTML::TokeParser module. See --with-perl above.
 
 
@@ -41,3 +41,12 @@
 
  # ./configure --prefix=/usr/local --enable-sigwinch
  # make install
+
+
+            Getting started
+
+ Typical use:
+    % cclive "http://youtube.com/watch?v=3HD220e0bx4"
+
+ Be sure to read the manual page which contains also the EXAMPLES
+ section. For a configuration file example, see examples/config.
