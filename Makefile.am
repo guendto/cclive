@@ -1,5 +1,5 @@
 SUBDIRS = src tests
-EXTRA_DIST = cmdline.ggo cclive.pod HACKING
+EXTRA_DIST = cmdline.ggo cclive.pod HACKING examples/config
 
 if WITH_MAN
 dist_man_MANS = cclive.1
