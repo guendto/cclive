@@ -76,6 +76,13 @@ Util::subStrReplace(
 }
 
 std::string&
+Util::nocookieToYoutube(std::string& url) {
+    // Convert alternate domain youtube-nocookie.com
+    // to youtube.com domain.
+    Util::subStrReplace(url, "-nocookie", "");
+}
+
+std::string&
 Util::embedToPage(std::string& url) {
     typedef std::map<std::string, std::string> mapstr;
     mapstr m;

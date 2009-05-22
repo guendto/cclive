@@ -196,8 +196,14 @@ App::run() {
     for (std::vector<std::string>::iterator iter=tokens.begin();
         iter != tokens.end();
         ++iter)
-    {   // Convert any embed type URLs to video page links
+    {
+        // Convert alternate domain link to youtube.com page link.
+        Util::nocookieToYoutube(*iter);
+
+        // Convert any embed type URLs to video page links.
         Util::embedToPage(*iter);
+
+        // Convert last.fm video link to Youtube page link.
         if ((*iter).find("last.fm") != std::string::npos)
             Util::lastfmToYoutube(*iter);
     }

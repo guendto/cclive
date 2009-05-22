@@ -30,6 +30,7 @@ public:
                                         const std::string& what,
                                         const std::string& with);
     static std::string& embedToPage  (std::string& url);
+    static std::string& nocookieToYoutube (std::string& url);
     static std::string& lastfmToYoutube(std::string& url);
     static std::string& toLower      (std::string& src);
     static std::vector<std::string>
