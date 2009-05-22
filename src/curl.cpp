@@ -47,14 +47,14 @@
 static CURL *curl;
 
 CurlMgr::CurlMgr()
-    : curlErrorBuffer(NULL) 
+    : errorBuffer(NULL) 
 {
     curl = NULL;
 }
 
 // Keeps -Weffc++ happy.
 CurlMgr::CurlMgr(const CurlMgr&)
-    : curlErrorBuffer(NULL) 
+    : errorBuffer(NULL) 
 {
     curl = NULL;
 }
@@ -68,7 +68,7 @@ CurlMgr::operator=(const CurlMgr&) {
 CurlMgr::~CurlMgr() {
     curl_easy_cleanup(curl);
     curl = NULL;
-    _DELETE_ARR(curlErrorBuffer);
+    _DELETE_ARR(errorBuffer);
 }
 
 void
@@ -77,11 +77,11 @@ CurlMgr::init() {
     if (!curl)
         throw RuntimeException("curl_easy_init returned NULL");
 
-    curlErrorBuffer = new char[CURL_ERROR_SIZE];
-    if (!curlErrorBuffer)
+    errorBuffer = new char[CURL_ERROR_SIZE+1];
+    if (!errorBuffer)
         throw RuntimeException("memory allocation failed");
 
-    memset(curlErrorBuffer, 0, CURL_ERROR_SIZE);
+    memset(errorBuffer, 0, CURL_ERROR_SIZE);
     Options opts = optsmgr.getOptions();
 
     curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1L);
@@ -90,7 +90,7 @@ CurlMgr::init() {
     curl_easy_setopt(curl, CURLOPT_AUTOREFERER, 1L);
     curl_easy_setopt(curl, CURLOPT_NOBODY, 0L);
     curl_easy_setopt(curl, CURLOPT_VERBOSE, opts.debug_given);
-    curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, curlErrorBuffer);
+    curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, errorBuffer);
 
     char *proxy = opts.proxy_arg;
     if (opts.no_proxy_given)
@@ -165,14 +165,14 @@ CurlMgr::fetchToMem(const std::string& url, const std::string &what) {
 
     if (CURLE_OK == rc) {
         long httpcode = 0;
-        curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpcode);
-        if (httpcode == 200)
+        rc = curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpcode);
+        if (CURLE_OK == rc && 200 == httpcode)
             logmgr.cout() << "done." << std::endl;
         else
             errmsg = "server returned http/"+httpcode;
     }
     else
-        errmsg = curlErrorBuffer;
+        errmsg = errorBuffer;
 
     std::string content;
 
@@ -223,28 +223,28 @@ CurlMgr::queryFileLength(VideoProperties& props) {
 
     std::string errmsg;
 
-    if (rc == CURLE_OK && httpcode == 200) {
-        rc = curl_easy_getinfo(curl, CURLINFO_CONTENT_TYPE, &ct);
-
-        if (CURLE_OK == rc && NULL != ct)
-            curl_easy_getinfo(curl, CURLINFO_CONTENT_LENGTH_DOWNLOAD, &len);
-
-        if (CURLE_OK == rc && NULL != ct && len > 0) {
-            props.setLength(len);
-            props.setContentType(ct);
-            logmgr.cout() << "done." << std::endl;
+    if (CURLE_OK == rc) {
+        if (200 == httpcode) {
+            rc = curl_easy_getinfo(curl, CURLINFO_CONTENT_TYPE, &ct);
+            if (CURLE_OK == rc && NULL != ct) {
+                rc = curl_easy_getinfo(curl,
+                    CURLINFO_CONTENT_LENGTH_DOWNLOAD, &len);
+                if (CURLE_OK == rc && len > 0) {
+                    props.setLength(len);
+                    props.setContentType(ct);
+                    logmgr.cout() << "done." << std::endl;
+                }
+                else
+                    errmsg = "curl_easy_getinfo: "+rc;
+            }
+            else
+                errmsg = "curl_easy_getinfo: "+rc;
         }
-        else {
-            curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpcode);
-            errmsg = "server returned http/"+httpcode;
-        }
-    }
-    else {
-        if (strlen(curlErrorBuffer) > 0)
-            errmsg = curlErrorBuffer;
         else
             errmsg = "server returned http/"+httpcode;
     }
+    else
+        errmsg = errorBuffer;
 
     if (!errmsg.empty())
         throw FetchException(errmsg);
@@ -344,25 +344,13 @@ CurlMgr::fetchToFile(VideoProperties& props) {
     curl_easy_setopt(curl, CURLOPT_RESUME_FROM, 0L);
     curl_easy_setopt(curl, CURLOPT_MAX_RECV_SPEED_LARGE, (curl_off_t) 0);
 
-    std::string errmsg;
-
-    if (CURLE_OK != rc) {
-        long httpcode = 0;
-        curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpcode);
-
-        if (strlen(curlErrorBuffer) > 0)
-            errmsg = curlErrorBuffer;
-        else
-            errmsg = "server closed with http/"+httpcode;
-    }
-
     if (NULL != write.file) {
         fflush(write.file);
         fclose(write.file);
     }
 
-    if (!errmsg.empty())
-        throw FetchException(errmsg);
+    if (CURLE_OK != rc)
+        throw FetchException(errorBuffer);
 
     pb.finish();
 
