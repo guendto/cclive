@@ -8,4 +8,5 @@ EXTRA_DIST =	\
 	lleak.url	\
 	multi.lst	\
 	youtube-hd.url	\
+	youtube-nocookies.url	\
 	youtube.url
