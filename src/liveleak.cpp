@@ -36,7 +36,7 @@ LiveleakHandler::isHost(std::string url) {
 void
 LiveleakHandler::parseId() {
     const char *begin = "token=";
-    const char *end   = "&";
+    const char *end   = "'";
 
     props.setId( Util::subStr(pageContent, begin, end) );
 }
