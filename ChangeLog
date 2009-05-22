@@ -1,10 +1,12 @@
 0.4.3
 
  User-visible changes:
+  * Add: support for youtube-nocookie.com
   * Fix: liveleak id parsing
   * Fix: random garbled error strings -- rewrote curl error buffer handling
 
  Developer-visible changes:
+  * Add: tests/youtube-nocookies.url
   * Add: examples/config file
   * Update: INSTALL
 
