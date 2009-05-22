@@ -1,5 +1,9 @@
 0.4.3
 
+ User-visible changes:
+  * Fix: liveleak id parsing
+  * Fix: random garbled error strings -- rewrote curl error buffer handling
+
  Developer-visible changes:
   * Add: examples/config file
   * Update: INSTALL
