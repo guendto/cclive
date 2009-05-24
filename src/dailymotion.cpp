@@ -75,7 +75,7 @@ DailymotionHandler::parseLink() {
                 link = prefix + v[0]; // This is "flv". Set it as the default.
                 continue;
             }
-            if (v[1] == opts.download_arg) {
+            if (v[1] == opts.format_arg) {
                 link = prefix + v[0];
                 break;
             }

@@ -37,7 +37,7 @@ const char *gengetopt_args_info_help[] = {
   "      --title-cclass=CCLASS     character class for filtering page titles",
   "  -n, --no-extract              do not extract video",
   "  -c, --continue                resume partially downloaded file",
-  "  -f, --download=FORMAT         download format  (possible values=\"flv\", \n                                  \"mp4\", \"fmt35\", \"fmt22\", \"fmt17\", \n                                  \"fmt6\", \"spark\", \"spak-mini\", \n                                  \"vp6-hq\", \"vp6-hd\", \"vp6\", \"h264\" \n                                  default=`flv')",
+  "  -f, --format=FORMAT           format format  (possible values=\"flv\", \n                                  \"mp4\", \"fmt35\", \"fmt22\", \"fmt17\", \n                                  \"fmt6\", \"spark\", \"spak-mini\", \n                                  \"vp6-hq\", \"vp6-hd\", \"vp6\", \"h264\" \n                                  default=`flv')",
   "  -O, --output-video=FILE       write video to file",
   "  -N, --number-videos           number extracted videos",
   "      --filename-format=STRING  use custom output filename format",
@@ -98,7 +98,7 @@ free_cmd_list(void)
 }
 
 
-char *cmdline_parser_download_values[] = {"flv", "mp4", "fmt35", "fmt22", "fmt17", "fmt6", "spark", "spak-mini", "vp6-hq", "vp6-hd", "vp6", "h264", 0} ;	/* Possible values for download.  */
+char *cmdline_parser_format_values[] = {"flv", "mp4", "fmt35", "fmt22", "fmt17", "fmt6", "spark", "spak-mini", "vp6-hq", "vp6-hd", "vp6", "h264", 0} ;	/* Possible values for format.  */
 
 static char *
 gengetopt_strdup (const char *s);
@@ -115,7 +115,7 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->title_cclass_given = 0 ;
   args_info->no_extract_given = 0 ;
   args_info->continue_given = 0 ;
-  args_info->download_given = 0 ;
+  args_info->format_given = 0 ;
   args_info->output_video_given = 0 ;
   args_info->number_videos_given = 0 ;
   args_info->filename_format_given = 0 ;
@@ -139,8 +139,8 @@ void clear_args (struct gengetopt_args_info *args_info)
 {
   args_info->title_cclass_arg = NULL;
   args_info->title_cclass_orig = NULL;
-  args_info->download_arg = gengetopt_strdup ("flv");
-  args_info->download_orig = NULL;
+  args_info->format_arg = gengetopt_strdup ("flv");
+  args_info->format_orig = NULL;
   args_info->output_video_arg = NULL;
   args_info->output_video_orig = NULL;
   args_info->filename_format_arg = NULL;
@@ -180,7 +180,7 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->title_cclass_help = gengetopt_args_info_help[6] ;
   args_info->no_extract_help = gengetopt_args_info_help[7] ;
   args_info->continue_help = gengetopt_args_info_help[8] ;
-  args_info->download_help = gengetopt_args_info_help[9] ;
+  args_info->format_help = gengetopt_args_info_help[9] ;
   args_info->output_video_help = gengetopt_args_info_help[10] ;
   args_info->number_videos_help = gengetopt_args_info_help[11] ;
   args_info->filename_format_help = gengetopt_args_info_help[12] ;
@@ -280,8 +280,8 @@ cmdline_parser_release (struct gengetopt_args_info *args_info)
   unsigned int i;
   free_string_field (&(args_info->title_cclass_arg));
   free_string_field (&(args_info->title_cclass_orig));
-  free_string_field (&(args_info->download_arg));
-  free_string_field (&(args_info->download_orig));
+  free_string_field (&(args_info->format_arg));
+  free_string_field (&(args_info->format_orig));
   free_string_field (&(args_info->output_video_arg));
   free_string_field (&(args_info->output_video_orig));
   free_string_field (&(args_info->filename_format_arg));
@@ -396,8 +396,8 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "no-extract", 0, 0 );
   if (args_info->continue_given)
     write_into_file(outfile, "continue", 0, 0 );
-  if (args_info->download_given)
-    write_into_file(outfile, "download", args_info->download_orig, cmdline_parser_download_values);
+  if (args_info->format_given)
+    write_into_file(outfile, "format", args_info->format_orig, cmdline_parser_format_values);
   if (args_info->output_video_given)
     write_into_file(outfile, "output-video", args_info->output_video_orig, 0);
   if (args_info->number_videos_given)
@@ -733,7 +733,7 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
         { "title-cclass",	1, NULL, 0 },
         { "no-extract",	0, NULL, 'n' },
         { "continue",	0, NULL, 'c' },
-        { "download",	1, NULL, 'f' },
+        { "format",	1, NULL, 'f' },
         { "output-video",	1, NULL, 'O' },
         { "number-videos",	0, NULL, 'N' },
         { "filename-format",	1, NULL, 0 },
@@ -824,14 +824,14 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
             goto failure;
         
           break;
-        case 'f':	/* download format.  */
+        case 'f':	/* format format.  */
         
         
-          if (update_arg( (void *)&(args_info->download_arg), 
-               &(args_info->download_orig), &(args_info->download_given),
-              &(local_args_info.download_given), optarg, cmdline_parser_download_values, "flv", ARG_STRING,
+          if (update_arg( (void *)&(args_info->format_arg), 
+               &(args_info->format_orig), &(args_info->format_given),
+              &(local_args_info.format_given), optarg, cmdline_parser_format_values, "flv", ARG_STRING,
               check_ambiguity, override, 0, 0,
-              "download", 'f',
+              "format", 'f',
               additional_error))
             goto failure;
         

@@ -24,8 +24,8 @@ option "no-extract"
 option "continue"
     c "resume partially downloaded file"
     optional
-option "download"
-    f "download format"
+option "format"
+    f "format format"
     values="flv","mp4","fmt35","fmt22","fmt17","fmt6",
         # dmotion:
         "spark","spak-mini","vp6-hq","vp6-hd","vp6","h264"

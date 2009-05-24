@@ -48,7 +48,7 @@ GoogleHandler::parseLink() {
     const char *end   = "\\x26";
     props.setLink( Util::subStr(pageContent, begin, end) );
 
-    if (!strcmp(optsmgr.getOptions().download_arg, "mp4")) {
+    if (!strcmp(optsmgr.getOptions().format_arg, "mp4")) {
         const char *beginMp4 = "href=\"http://vp.";
         const char *endMp4   = "\"";
         try   {

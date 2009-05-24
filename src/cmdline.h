@@ -43,9 +43,9 @@ struct gengetopt_args_info
   const char *title_cclass_help; /**< @brief character class for filtering page titles help description.  */
   const char *no_extract_help; /**< @brief do not extract video help description.  */
   const char *continue_help; /**< @brief resume partially downloaded file help description.  */
-  char * download_arg;	/**< @brief download format (default='flv').  */
-  char * download_orig;	/**< @brief download format original value given at command line.  */
-  const char *download_help; /**< @brief download format help description.  */
+  char * format_arg;	/**< @brief format format (default='flv').  */
+  char * format_orig;	/**< @brief format format original value given at command line.  */
+  const char *format_help; /**< @brief format format help description.  */
   char * output_video_arg;	/**< @brief write video to file.  */
   char * output_video_orig;	/**< @brief write video to file original value given at command line.  */
   const char *output_video_help; /**< @brief write video to file help description.  */
@@ -96,7 +96,7 @@ struct gengetopt_args_info
   unsigned int title_cclass_given ;	/**< @brief Whether title-cclass was given.  */
   unsigned int no_extract_given ;	/**< @brief Whether no-extract was given.  */
   unsigned int continue_given ;	/**< @brief Whether continue was given.  */
-  unsigned int download_given ;	/**< @brief Whether download was given.  */
+  unsigned int format_given ;	/**< @brief Whether format was given.  */
   unsigned int output_video_given ;	/**< @brief Whether output-video was given.  */
   unsigned int number_videos_given ;	/**< @brief Whether number-videos was given.  */
   unsigned int filename_format_given ;	/**< @brief Whether filename-format was given.  */
@@ -262,7 +262,7 @@ int cmdline_parser_config_file (char * const filename,
 int cmdline_parser_required (struct gengetopt_args_info *args_info,
   const char *prog_name);
 
-extern char *cmdline_parser_download_values[] ;	/**< @brief Possible values for download.  */
+extern char *cmdline_parser_format_values[] ;	/**< @brief Possible values for format.  */
 
 
 #ifdef __cplusplus

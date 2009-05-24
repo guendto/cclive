@@ -58,15 +58,15 @@ YoutubeHandler::parseLink() {
 
     Options opts = optsmgr.getOptions();
 
-    if (!strcmp(opts.download_arg, "mp4"))
+    if (!strcmp(opts.format_arg, "mp4"))
         b << "&fmt=18";
-    else if (!strcmp(opts.download_arg, "fmt35"))
+    else if (!strcmp(opts.format_arg, "fmt35"))
         b << "&fmt=35";
-    else if (!strcmp(opts.download_arg, "fmt22"))
+    else if (!strcmp(opts.format_arg, "fmt22"))
         b << "&fmt=22";
-    else if (!strcmp(opts.download_arg, "fmt17"))
+    else if (!strcmp(opts.format_arg, "fmt17"))
         b << "&fmt=17";
-    else if (!strcmp(opts.download_arg, "fmt6"))
+    else if (!strcmp(opts.format_arg, "fmt6"))
         b << "&fmt=6";
 
     props.setLink( b.str() );
