@@ -4,6 +4,8 @@
   * Add: support for youtube-nocookie.com
   * Fix: liveleak id parsing
   * Fix: random garbled error strings -- rewrote curl error buffer handling
+  * Add: --download=fmt35 for Youtube
+  * Rename: --download -> --format
 
  Developer-visible changes:
   * Add: tests/youtube-nocookies.url
