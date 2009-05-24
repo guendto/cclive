@@ -60,11 +60,13 @@ YoutubeHandler::parseLink() {
 
     if (!strcmp(opts.download_arg, "mp4"))
         b << "&fmt=18";
-    else if (!strcmp(opts.download_arg, "mp4_hd"))
+    else if (!strcmp(opts.download_arg, "fmt35"))
+        b << "&fmt=35";
+    else if (!strcmp(opts.download_arg, "fmt22"))
         b << "&fmt=22";
-    else if (!strcmp(opts.download_arg, "3gpp"))
+    else if (!strcmp(opts.download_arg, "fmt17"))
         b << "&fmt=17";
-    else if (!strcmp(opts.download_arg, "xflv"))
+    else if (!strcmp(opts.download_arg, "fmt6"))
         b << "&fmt=6";
 
     props.setLink( b.str() );
