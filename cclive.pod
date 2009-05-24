@@ -61,12 +61,9 @@ Do not extract any videos.
 Resume a partially downloaded video file. May not work with some of the HTTP
 servers. Be sure to read the L</FORMATS> section.
 
-=item B<-f, --download=>I<FORMAT>
+=item B<-f, --format=>I<FORMAT>
 
 Extract I<format> instead of the default "flv".
-
-Possible values are "flv", "mp4", "mp4_hd", "3gpp", "xflv", "spark", "vp6-hq",
-"vp6-hd", "vp6", "h264", "spak-mini".
 
 Note that the I<format> is host specific. See the L</FORMATS> section.
 
@@ -232,31 +229,64 @@ reaches 20%:
 
 =head1 FORMATS
 
-  youtube.com
-    * flv/mp4/mp4_hd/3gpp/xflv
-    * Resuming flv with --continue does not work
-    * 3gpp and xflv formats may not always be available
-    * mp4_hd format is currently available for a limited
-      number of videos, which are usually explicitly marked
-      as "HD" or "720p"
+cclive defaults to extract the flv format unless the B<--format> option is
+used. The requested format may not always be available. The server typically
+returns one of the HTTP/40x errors if the requested format is not available.
 
-  video.google.com
-    * flv/mp4
-    * Resuming flv with --continue does not work
-    * mp4 format may not always be available
-    * mp4 != youtube-mp4
+The quality of the video depends on the uploaded video quality. Each website
+typically recompresses the uploaded videos to 320x240 resolution (sometimes
+higher). Because this varies per video and website, you should treat the
+list below only as a rough reference of what formats should be available.
 
-  break.com | evisor.tv | sevenload.com | liveleak.com
-    * flv
+=over 4
 
-  dailymotion.com
-    * spark | spak-mini | vp6-hq | vp6-hd | vp6 | h264
-    * spark is the "regular" 320x240 flv
-    * cclive defaults to spark if format is not available
+=item B<www.youtube.com>
 
-  last.fm
-    * cclive can extract the videos marked as youtube videos
-    * see "youtube.com" above for format info
+=item B<www.last.fm>
+
+Formats: (flv|mp4|fmt35|fmt22|fmt17|fmt6)  Continue: Yes (except flv)
+
+flv and mp4 are typically available, whereas others may or may not be
+vailable. For example the high-definition (HD) formats (35, 22) are
+currently available for a limited number of videos, which are usually
+explicitly as "HD" or "720p".
+
+last.fm is known to wrap Youtube videos. B<clive> can handle such
+last.fm video links.
+
+=item B<video.google.com>
+
+Formats: (flv|mp4)  Continue: Only mp4
+
+The mp4 may not always be available. GoogleVideo mp4 are encoded using a
+different codec than Youtube mp4 videos. You can typically B<--stream-exec>
+Youtube mp4 videos but this is not case with GoogleVideo mp4 videos. If you
+find a way, drop an email.
+
+=item B<www.sevenload.com>
+
+Formats: flv  Continue: Yes
+
+=item B<www.break.com>
+
+Formats: flv  Continue: Yes
+
+=item B<www.liveleak.com>
+
+Formats: flv  Continue: Yes
+
+=item B<www.evisor.tv>
+
+Formats: flv  Continue: Yes
+
+=item B<www.dailymotion.com>
+
+Formats: (spark|spak-mini|vp6-hq|vp6-hd|vp6|h264)  Continue: Yes
+
+spark is the "regular" 320x240 flv. B<clive> defaults to spark
+if requested format is not available.
+
+=back
 
 =head1 FILES
 

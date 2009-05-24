@@ -132,7 +132,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2009-05-20" "0.4.2" "cclive manual"
+.TH cclive 1 "2009-05-24" "0.4.3" "cclive manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -183,12 +183,9 @@ Do not extract any videos.
 .IX Item "-c, --continue"
 Resume a partially downloaded video file. May not work with some of the \s-1HTTP\s0
 servers. Be sure to read the \*(L"\s-1FORMATS\s0\*(R" section.
-.IP "\fB\-f, \-\-download=\fR\fI\s-1FORMAT\s0\fR" 4
-.IX Item "-f, --download=FORMAT"
+.IP "\fB\-f, \-\-format=\fR\fI\s-1FORMAT\s0\fR" 4
+.IX Item "-f, --format=FORMAT"
 Extract \fIformat\fR instead of the default \*(L"flv\*(R".
-.Sp
-Possible values are \*(L"flv\*(R", \*(L"mp4\*(R", \*(L"mp4_hd\*(R", \*(L"3gpp\*(R", \*(L"xflv\*(R", \*(L"spark\*(R", \*(L"vp6\-hq\*(R",
-\&\*(L"vp6\-hd\*(R", \*(L"vp6\*(R", \*(L"h264\*(R", \*(L"spak-mini\*(R".
 .Sp
 Note that the \fIformat\fR is host specific. See the \*(L"\s-1FORMATS\s0\*(R" section.
 .IP "\fB\-O, \-\-output\-video=\fR\fI\s-1FILE\s0\fR" 4
@@ -336,33 +333,55 @@ reaches 20%:
   % cclive \-\-stream\-exec=\*(L"mplayer \-really\-quiet \f(CW%i\fR\*(R" \-\-stream=20 \s-1URL\s0
 .SH "FORMATS"
 .IX Header "FORMATS"
-.Vb 7
-\&  youtube.com
-\&    * flv/mp4/mp4_hd/3gpp/xflv
-\&    * Resuming flv with \-\-continue does not work
-\&    * 3gpp and xflv formats may not always be available
-\&    * mp4_hd format is currently available for a limited
-\&      number of videos, which are usually explicitly marked
-\&      as "HD" or "720p"
-\&
-\&  video.google.com
-\&    * flv/mp4
-\&    * Resuming flv with \-\-continue does not work
-\&    * mp4 format may not always be available
-\&    * mp4 != youtube\-mp4
-\&
-\&  break.com | evisor.tv | sevenload.com | liveleak.com
-\&    * flv
-\&
-\&  dailymotion.com
-\&    * spark | spak\-mini | vp6\-hq | vp6\-hd | vp6 | h264
-\&    * spark is the "regular" 320x240 flv
-\&    * cclive defaults to spark if format is not available
-\&
-\&  last.fm
-\&    * cclive can extract the videos marked as youtube videos
-\&    * see "youtube.com" above for format info
-.Ve
+cclive defaults to extract the flv format unless the \fB\-\-format\fR option is
+used. The requested format may not always be available. The server typically
+returns one of the HTTP/40x errors if the requested format is not available.
+.PP
+The quality of the video depends on the uploaded video quality. Each website
+typically recompresses the uploaded videos to 320x240 resolution (sometimes
+higher). Because this varies per video and website, you should treat the
+list below only as a rough reference of what formats should be available.
+.IP "\fBwww.youtube.com\fR" 4
+.IX Item "www.youtube.com"
+.PD 0
+.IP "\fBwww.last.fm\fR" 4
+.IX Item "www.last.fm"
+.PD
+Formats: (flv|mp4|fmt35|fmt22|fmt17|fmt6)  Continue: Yes (except flv)
+.Sp
+flv and mp4 are typically available, whereas others may or may not be
+vailable. For example the high-definition (\s-1HD\s0) formats (35, 22) are
+currently available for a limited number of videos, which are usually
+explicitly as \*(L"\s-1HD\s0\*(R" or \*(L"720p\*(R".
+.Sp
+last.fm is known to wrap Youtube videos. \fBclive\fR can handle such
+last.fm video links.
+.IP "\fBvideo.google.com\fR" 4
+.IX Item "video.google.com"
+Formats: (flv|mp4)  Continue: Only mp4
+.Sp
+The mp4 may not always be available. GoogleVideo mp4 are encoded using a
+different codec than Youtube mp4 videos. You can typically \fB\-\-stream\-exec\fR
+Youtube mp4 videos but this is not case with GoogleVideo mp4 videos. If you
+find a way, drop an email.
+.IP "\fBwww.sevenload.com\fR" 4
+.IX Item "www.sevenload.com"
+Formats: flv  Continue: Yes
+.IP "\fBwww.break.com\fR" 4
+.IX Item "www.break.com"
+Formats: flv  Continue: Yes
+.IP "\fBwww.liveleak.com\fR" 4
+.IX Item "www.liveleak.com"
+Formats: flv  Continue: Yes
+.IP "\fBwww.evisor.tv\fR" 4
+.IX Item "www.evisor.tv"
+Formats: flv  Continue: Yes
+.IP "\fBwww.dailymotion.com\fR" 4
+.IX Item "www.dailymotion.com"
+Formats: (spark|spak\-mini|vp6\-hq|vp6\-hd|vp6|h264)  Continue: Yes
+.Sp
+spark is the \*(L"regular\*(R" 320x240 flv. \fBclive\fR defaults to spark
+if requested format is not available.
 .SH "FILES"
 .IX Header "FILES"
 .ie n .IP "\fB\fB$HOME\fB/.ccliverc\fR" 4
