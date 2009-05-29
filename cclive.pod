@@ -188,7 +188,7 @@ B<cclive> will not continue to download another file before the child process
 terminates.
 
 Some players and formats may not work properly with this feature.
-L<mplayer(1)> is known to work properly with most flv videos.
+C<mplayer(1)> is known to work properly with most flv videos.
 
 =item B<--stream=>I<PERCENT>
 
@@ -217,13 +217,13 @@ Typical use:
 Download mp4 format of the video from the URL:
   % cclive -f mp4 URL
 
-Play the downloaded video with L<mplayer(1)> subsequently:
+Play the downloaded video with C<mplayer(1)> subsequently:
   % cclive --exec="mplayer -really-quiet %i;" URL
 
-Extract audio to an mp3 file from the downloaded video with L<ffmpeg(1)>:
+Extract audio to an mp3 file from the downloaded video with C<ffmpeg(1)>:
   % cclive --exec="ffmpeg -i %i %i.mp3;" URL
 
-Start playing the video being downloaded with L<mplayer(1)> when the transfer
+Start playing the video being downloaded with C<mplayer(1)> when the transfer
 reaches 20%:
   % cclive --stream-exec="mplayer -really-quiet %i" --stream=20 URL
 
@@ -329,7 +329,7 @@ It was originally written in C but was later rewritten in C++.
 
 =head1 SEE ALSO
 
-L<clive(1)>
+C<clive(1)>
 
 =head1 AUTHOR
 
