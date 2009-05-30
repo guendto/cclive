@@ -26,7 +26,7 @@ option "continue"
     optional
 option "format"
     f "format format"
-    values="flv","mp4","fmt35","fmt22","fmt17","fmt6",
+    values="flv","mp4","fmt35","fmt22","fmt17",
         # dmotion:
         "spark","spak-mini","vp6-hq","vp6-hd","vp6","h264"
     default="flv"

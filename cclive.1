@@ -132,7 +132,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2009-05-24" "0.4.3" "cclive manual"
+.TH cclive 1 "2009-05-30" "0.4.3" "cclive manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -298,7 +298,7 @@ expression, it will be replaced with video pathname.
 terminates.
 .Sp
 Some players and formats may not work properly with this feature.
-\&\fImplayer\fR\|(1) is known to work properly with most flv videos.
+\&\f(CWmplayer(1)\fR is known to work properly with most flv videos.
 .IP "\fB\-\-stream=\fR\fI\s-1PERCENT\s0\fR" 4
 .IX Item "--stream=PERCENT"
 Execute the \fIcommand\fR defined with the \fB\-\-stream\-exec\fR option when the
@@ -322,13 +322,13 @@ Typical use:
 Download mp4 format of the video from the \s-1URL:\s0
   % cclive \-f mp4 \s-1URL\s0
 .PP
-Play the downloaded video with \fImplayer\fR\|(1) subsequently:
+Play the downloaded video with \f(CWmplayer(1)\fR subsequently:
   % cclive \-\-exec=\*(L"mplayer \-really\-quiet \f(CW%i\fR;\*(R" \s-1URL\s0
 .PP
-Extract audio to an mp3 file from the downloaded video with \fIffmpeg\fR\|(1):
+Extract audio to an mp3 file from the downloaded video with \f(CWffmpeg(1)\fR:
   % cclive \-\-exec=\*(L"ffmpeg \-i \f(CW%i\fR \f(CW%i\fR.mp3;\*(R" \s-1URL\s0
 .PP
-Start playing the video being downloaded with \fImplayer\fR\|(1) when the transfer
+Start playing the video being downloaded with \f(CWmplayer(1)\fR when the transfer
 reaches 20%:
   % cclive \-\-stream\-exec=\*(L"mplayer \-really\-quiet \f(CW%i\fR\*(R" \-\-stream=20 \s-1URL\s0
 .SH "FORMATS"
@@ -347,7 +347,7 @@ list below only as a rough reference of what formats should be available.
 .IP "\fBwww.last.fm\fR" 4
 .IX Item "www.last.fm"
 .PD
-Formats: (flv|mp4|fmt35|fmt22|fmt17|fmt6)  Continue: Yes (except flv)
+Formats: (flv|mp4|fmt17|fmt22|fmt35)  Continue: Yes (except flv)
 .Sp
 flv and mp4 are typically available, whereas others may or may not be
 vailable. For example the high-definition (\s-1HD\s0) formats (35, 22) are
@@ -418,7 +418,7 @@ cclive first appeared early 2009 following the release of clive2.
 It was originally written in C but was later rewritten in \*(C+.
 .SH "SEE ALSO"
 .IX Header "SEE ALSO"
-\&\fIclive\fR\|(1)
+\&\f(CWclive(1)\fR
 .SH "AUTHOR"
 .IX Header "AUTHOR"
 Toni Gundogdu <legatvs@gmail.com>

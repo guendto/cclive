@@ -244,7 +244,7 @@ list below only as a rough reference of what formats should be available.
 
 =item B<www.last.fm>
 
-Formats: (flv|mp4|fmt35|fmt22|fmt17|fmt6)  Continue: Yes (except flv)
+Formats: (flv|mp4|fmt17|fmt22|fmt35)  Continue: Yes (except flv)
 
 flv and mp4 are typically available, whereas others may or may not be
 vailable. For example the high-definition (HD) formats (35, 22) are

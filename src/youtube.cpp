@@ -66,8 +66,6 @@ YoutubeHandler::parseLink() {
         b << "&fmt=22";
     else if (!strcmp(opts.format_arg, "fmt17"))
         b << "&fmt=17";
-    else if (!strcmp(opts.format_arg, "fmt6"))
-        b << "&fmt=6";
 
     props.setLink( b.str() );
 }
