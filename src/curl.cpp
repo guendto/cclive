@@ -168,11 +168,13 @@ CurlMgr::fetchToMem(const std::string& url, const std::string &what) {
         rc = curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpcode);
         if (CURLE_OK == rc && 200 == httpcode)
             logmgr.cout() << "done." << std::endl;
-        else
-            errmsg = "server returned http/"+httpcode;
+        else {
+            errmsg = errorBuffer;
+        }
     }
-    else
-        errmsg = errorBuffer;
+    else {
+        errmsg = curl_easy_strerror(rc);
+    }
 
     std::string content;
 
@@ -215,36 +217,41 @@ CurlMgr::queryFileLength(VideoProperties& props) {
     fflush(f);
     fclose(f);
 
-    long httpcode = 0;
-    curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpcode);
-
-    double len = 0;
-    char *ct = NULL;
-
     std::string errmsg;
 
     if (CURLE_OK == rc) {
+
+        long httpcode = 0;
+        curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpcode);
+
         if (200 == httpcode) {
+
+            char *ct = NULL;
             rc = curl_easy_getinfo(curl, CURLINFO_CONTENT_TYPE, &ct);
+
             if (CURLE_OK == rc && NULL != ct) {
+
+                double len = 0;
+
                 rc = curl_easy_getinfo(curl,
                     CURLINFO_CONTENT_LENGTH_DOWNLOAD, &len);
+
                 if (CURLE_OK == rc && len > 0) {
                     props.setLength(len);
                     props.setContentType(ct);
                     logmgr.cout() << "done." << std::endl;
                 }
                 else
-                    errmsg = "curl_easy_getinfo: "+rc;
+                    errmsg = curl_easy_strerror(rc);
             }
             else
-                errmsg = "curl_easy_getinfo: "+rc;
+                errmsg = curl_easy_strerror(rc);
         }
         else
-            errmsg = "server returned http/"+httpcode;
+            errmsg = errorBuffer;
     }
     else
-        errmsg = errorBuffer;
+        errmsg = curl_easy_strerror(rc);
 
     if (!errmsg.empty())
         throw FetchException(errmsg);
@@ -260,16 +267,14 @@ struct write_s {
 
 static size_t
 callback_writefile(void *data, size_t size, size_t nmemb, void *p) {
-    write_s *write = reinterpret_cast<write_s*>(p);
-    if (NULL != write && !write->file) {
-        const char *mode = write->initial ? "ab" : "wb";
-        write->file = fopen(write->filename, mode);
-        if (!write->file) {
-            perror("fopen");
+    write_s *w = reinterpret_cast<write_s*>(p);
+    if (NULL != w && !w->file && NULL != w->filename) {
+        const char *mode = w->initial > 0 ? "ab" : "wb";
+        w->file = fopen(w->filename, mode);
+        if (!w->file)
             return -1;
-        }
     }
-    return fwrite(data, size, nmemb, write->file);
+    return fwrite(data, size, nmemb, w->file);
 }
 
 int
@@ -349,8 +354,12 @@ CurlMgr::fetchToFile(VideoProperties& props) {
         fclose(write.file);
     }
 
-    if (CURLE_OK != rc)
-        throw FetchException(errorBuffer);
+    if (CURLE_OK != rc) {
+        std::string errmsg = curl_easy_strerror(rc);
+        if (errmsg.length() == 0)
+            errmsg = errorBuffer;
+        throw FetchException(errmsg);
+    }
 
     pb.finish();
 
