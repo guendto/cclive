@@ -2,14 +2,16 @@
 
  User-visible changes:
   * Add: support for youtube-nocookie.com
+  * Add: --download=fmt35 for Youtube
   * Fix: liveleak id parsing
   * Fix: random garbled error strings -- rewrote curl error buffer handling
-  * Add: --download=fmt35 for Youtube
   * Rename: --download -> --format
+  * Remove: --format=fmt6 (youtube)
 
  Developer-visible changes:
   * Add: tests/youtube-nocookies.url
   * Add: examples/config file
+  * Fix: cclive.pod (*** WARNING: (section) in ... deprecated at line ...)
   * Update: INSTALL
 
 
