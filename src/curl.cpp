@@ -49,7 +49,7 @@ static CURL *curl;
 static std::string
 formatError (const long &httpcode) {
     std::stringstream s;
-    s << "server returned httpcode/" << httpcode << ")";
+    s << "server returned httpcode/" << httpcode << "";
     return s.str();
 }
 
