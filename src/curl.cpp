@@ -46,15 +46,27 @@
 
 static CURL *curl;
 
+static std::string
+formatError (const long &httpcode) {
+    std::stringstream s;
+    s << "server returned httpcode/" << httpcode << ")";
+    return s.str();
+}
+
+static std::string
+formatError (const CURLcode &code) {
+    std::stringstream s;
+    s << curl_easy_strerror(code) << " (rc=" << code << ")";
+    return s.str();
+}
+
 CurlMgr::CurlMgr()
-    : errorBuffer(NULL) 
 {
     curl = NULL;
 }
 
 // Keeps -Weffc++ happy.
 CurlMgr::CurlMgr(const CurlMgr&)
-    : errorBuffer(NULL) 
 {
     curl = NULL;
 }
@@ -68,7 +80,6 @@ CurlMgr::operator=(const CurlMgr&) {
 CurlMgr::~CurlMgr() {
     curl_easy_cleanup(curl);
     curl = NULL;
-    _DELETE_ARR(errorBuffer);
 }
 
 void
@@ -77,11 +88,6 @@ CurlMgr::init() {
     if (!curl)
         throw RuntimeException("curl_easy_init returned NULL");
 
-    errorBuffer = new char[CURL_ERROR_SIZE+1];
-    if (!errorBuffer)
-        throw RuntimeException("memory allocation failed");
-
-    memset(errorBuffer, 0, CURL_ERROR_SIZE);
     Options opts = optsmgr.getOptions();
 
     curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1L);
@@ -90,7 +96,6 @@ CurlMgr::init() {
     curl_easy_setopt(curl, CURLOPT_AUTOREFERER, 1L);
     curl_easy_setopt(curl, CURLOPT_NOBODY, 0L);
     curl_easy_setopt(curl, CURLOPT_VERBOSE, opts.debug_given);
-    curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, errorBuffer);
 
     char *proxy = opts.proxy_arg;
     if (opts.no_proxy_given)
@@ -165,16 +170,14 @@ CurlMgr::fetchToMem(const std::string& url, const std::string &what) {
 
     if (CURLE_OK == rc) {
         long httpcode = 0;
-        rc = curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpcode);
-        if (CURLE_OK == rc && 200 == httpcode)
+        curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpcode);
+        if (200 == httpcode)
             logmgr.cout() << "done." << std::endl;
-        else {
-            errmsg = errorBuffer;
-        }
+        else
+            errmsg = formatError(httpcode);
     }
-    else {
-        errmsg = curl_easy_strerror(rc);
-    }
+    else
+        errmsg = formatError(rc);
 
     std::string content;
 
@@ -219,39 +222,30 @@ CurlMgr::queryFileLength(VideoProperties& props) {
 
     std::string errmsg;
 
-    if (CURLE_OK == rc) {
-
+    if (CURLE_OK == rc)
+    {
         long httpcode = 0;
         curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpcode);
 
-        if (200 == httpcode) {
-
+        if (200 == httpcode || 206 == httpcode)
+        {
             char *ct = NULL;
-            rc = curl_easy_getinfo(curl, CURLINFO_CONTENT_TYPE, &ct);
+            curl_easy_getinfo(curl, CURLINFO_CONTENT_TYPE, &ct);
 
-            if (CURLE_OK == rc && NULL != ct) {
+            double len = 0;
+            curl_easy_getinfo(curl,
+                CURLINFO_CONTENT_LENGTH_DOWNLOAD, &len);
 
-                double len = 0;
-
-                rc = curl_easy_getinfo(curl,
-                    CURLINFO_CONTENT_LENGTH_DOWNLOAD, &len);
-
-                if (CURLE_OK == rc && len > 0) {
-                    props.setLength(len);
-                    props.setContentType(ct);
-                    logmgr.cout() << "done." << std::endl;
-                }
-                else
-                    errmsg = curl_easy_strerror(rc);
-            }
-            else
-                errmsg = curl_easy_strerror(rc);
+            props.setLength(len);
+            props.setContentType(ct);
+            logmgr.cout() << "done." << std::endl;
         }
-        else
-            errmsg = errorBuffer;
+        else {
+            errmsg = formatError(httpcode);
+        }
     }
     else
-        errmsg = curl_easy_strerror(rc);
+        errmsg = formatError(rc);
 
     if (!errmsg.empty())
         throw FetchException(errmsg);
@@ -354,12 +348,8 @@ CurlMgr::fetchToFile(VideoProperties& props) {
         fclose(write.file);
     }
 
-    if (CURLE_OK != rc) {
-        std::string errmsg = curl_easy_strerror(rc);
-        if (errmsg.length() == 0)
-            errmsg = errorBuffer;
-        throw FetchException(errmsg);
-    }
+    if (CURLE_OK != rc)
+        throw FetchException(curl_easy_strerror(rc));
 
     pb.finish();
 
