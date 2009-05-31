@@ -6,7 +6,8 @@
   * Fix: liveleak id parsing
   * Fix: random garbled error strings -- rewrote curl error buffer handling
   * Rename: --download -> --format
-  * Remove: --format=fmt6 (youtube)
+  * Remove: --format=fmt6 (Youtube does not seem to support it anymore?)
+  * Remove: --format=spark (Dailymotion, use "flv" instead)
 
  Developer-visible changes:
   * Add: tests/youtube-nocookies.url

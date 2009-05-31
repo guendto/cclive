@@ -60,8 +60,10 @@ DailymotionHandler::parseLink() {
     if (tokens.size() == 0)
         throw ParseException("paths parsing failed for \"||\"");
 
-    const char *prefix = "http://dailymotion.com";
-    Options opts = optsmgr.getOptions();
+    std::string format = optsmgr.getOptions().format_arg;
+
+    if (format == "flv")
+        format = "spark";
 
     std::string link;
 
@@ -70,15 +72,9 @@ DailymotionHandler::parseLink() {
         ++iter)
     {
         std::vector<std::string> v = Util::tokenize(*iter, "@@");
-        if (v.size() > 0) {
-            if (v[1] == "spark") {
-                link = prefix + v[0]; // This is "flv". Set it as the default.
-                continue;
-            }
-            if (v[1] == opts.format_arg) {
-                link = prefix + v[0];
-                break;
-            }
+        if (v.size() > 0 && v[1] == format) {
+            link = "http://dailymotion.com" + v[0];
+            break;
         }
     }
 
