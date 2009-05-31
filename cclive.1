@@ -132,7 +132,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2009-05-30" "0.4.3" "cclive manual"
+.TH cclive 1 "2009-05-31" "0.4.3" "cclive manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -239,33 +239,11 @@ if it is defined.
 Do not use proxy, even if http_proxy environment variable is defined.
 .IP "\fB\-\-connect\-timeout=\fR\fI\s-1SECONDS\s0\fR" 4
 .IX Item "--connect-timeout=SECONDS"
-Maximum time in \fIseconds\fR allowed the connection to the server to take.
-This limits only the connection phase. \fBcclive\fR will only timeout
-on the system's internal timeouts by default.
-.Sp
-http://curl.haxx.se/docs/knownbugs.html:
-.Sp
-.Vb 4
-\&  "34. The SOCKS4 connection codes don\*(Aqt properly acknowledge
-\&       (connect) timeouts. Also see #12. According to bug #1556528,
-\&       even the SOCKS5 connect code does not do it right:
-\&       http://curl.haxx.se/bug/view.cgi?id=1556528"
-\&
-\&  "12. When connecting to a SOCKS proxy, the (connect) timeout
-\&       is not properly acknowledged after the actual TCP connect
-\&       (during the SOCKS \*(Aqnegotiate\*(Aq phase)."
-.Ve
-.Sp
-See also \fB\-\-connect\-timeout\-socks\fR.
+Maximum time in \fIseconds\fR allowed for connection to take. Defaults to 30.
 .IP "\fB\-\-connect\-timeout\-socks=\fR\fI\s-1SECONDS\s0\fR" 4
 .IX Item "--connect-timeout-socks=SECONDS"
-Same as \fB\-\-connect\-timeout\fR but works around the \s-1SOCKS\s0 proxy bug by using
-\&\s-1CURLOPT_TIMEOUT\s0 instead of \s-1CURLOPT_CONNECTIMEOUT\s0.
-.Sp
-Ignored for file transfers, otherwise curl could interrupt started transfers.
-.Sp
-More about these curl options:
-  http://curl.haxx.se/libcurl/c/curl_easy_setopt.html
+Same as above but tries to workaround the \s-1SOCKS\s0 proxy bug in cURL. Defaults
+to 30.
 .IP "\fB\-u, \-\-youtube\-user=\fR\fI\s-1USERNAME\s0\fR" 4
 .IX Item "-u, --youtube-user=USERNAME"
 Causes \fBcclive\fR to log into Youtube as \fIusername\fR. This is done \fIbefore\fR
@@ -333,55 +311,42 @@ reaches 20%:
   % cclive \-\-stream\-exec=\*(L"mplayer \-really\-quiet \f(CW%i\fR\*(R" \-\-stream=20 \s-1URL\s0
 .SH "FORMATS"
 .IX Header "FORMATS"
-cclive defaults to extract the flv format unless the \fB\-\-format\fR option is
-used. The requested format may not always be available. The server typically
-returns one of the HTTP/40x errors if the requested format is not available.
-.PP
-The quality of the video depends on the uploaded video quality. Each website
-typically recompresses the uploaded videos to 320x240 resolution (sometimes
-higher). Because this varies per video and website, you should treat the
-list below only as a rough reference of what formats should be available.
+clive extracts flv (typically 320x240) by default from all
+supported websites. Some of them support also other formats.
 .IP "\fBwww.youtube.com\fR" 4
 .IX Item "www.youtube.com"
 .PD 0
 .IP "\fBwww.last.fm\fR" 4
 .IX Item "www.last.fm"
 .PD
-Formats: (flv|mp4|fmt17|fmt22|fmt35)  Continue: Yes (except flv)
+Format: (flv|mp4|fmt17|fmt22|fmt35)
 .Sp
-flv and mp4 are typically available, whereas others may or may not be
-vailable. For example the high-definition (\s-1HD\s0) formats (35, 22) are
-currently available for a limited number of videos, which are usually
-explicitly as \*(L"\s-1HD\s0\*(R" or \*(L"720p\*(R".
+Apart from flv and mp4, other formats are known to be fairly rare.
+For example, the high-definition formats (32, 22) are currently
+available for a limited number of videos, which are usually
+explicitly marked as \*(L"\s-1HD\s0\*(R" or \*(L"720p\*(R".
 .Sp
-last.fm is known to wrap Youtube videos. \fBclive\fR can handle such
-last.fm video links.
+Some of the videos available at last.fm are actually Youtube
+videos. clive can handle such video links.
 .IP "\fBvideo.google.com\fR" 4
 .IX Item "video.google.com"
-Formats: (flv|mp4)  Continue: Only mp4
+Format: (flv|mp4)
 .Sp
-The mp4 may not always be available. GoogleVideo mp4 are encoded using a
-different codec than Youtube mp4 videos. You can typically \fB\-\-stream\-exec\fR
-Youtube mp4 videos but this is not case with GoogleVideo mp4 videos. If you
-find a way, drop an email.
-.IP "\fBwww.sevenload.com\fR" 4
-.IX Item "www.sevenload.com"
-Formats: flv  Continue: Yes
-.IP "\fBwww.break.com\fR" 4
-.IX Item "www.break.com"
-Formats: flv  Continue: Yes
-.IP "\fBwww.liveleak.com\fR" 4
-.IX Item "www.liveleak.com"
-Formats: flv  Continue: Yes
-.IP "\fBwww.evisor.tv\fR" 4
-.IX Item "www.evisor.tv"
-Formats: flv  Continue: Yes
+mp4 format is available for a limited number of videos.
 .IP "\fBwww.dailymotion.com\fR" 4
 .IX Item "www.dailymotion.com"
-Formats: (spark|spak\-mini|vp6\-hq|vp6\-hd|vp6|h264)  Continue: Yes
-.Sp
-spark is the \*(L"regular\*(R" 320x240 flv. \fBclive\fR defaults to spark
-if requested format is not available.
+Format: (flv|spak\-mini|vp6\-hq|vp6\-hd|vp6|h264)
+.IP "\fBwww.sevenload.com\fR" 4
+.IX Item "www.sevenload.com"
+.PD 0
+.IP "\fBwww.break.com\fR" 4
+.IX Item "www.break.com"
+.IP "\fBwww.liveleak.com\fR" 4
+.IX Item "www.liveleak.com"
+.IP "\fBwww.evisor.tv\fR" 4
+.IX Item "www.evisor.tv"
+.PD
+Format: flv
 .SH "FILES"
 .IX Header "FILES"
 .ie n .IP "\fB\fB$HOME\fB/.ccliverc\fR" 4

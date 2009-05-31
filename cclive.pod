@@ -125,32 +125,12 @@ Do not use proxy, even if http_proxy environment variable is defined.
 
 =item B<--connect-timeout=>I<SECONDS>
 
-Maximum time in I<seconds> allowed the connection to the server to take.
-This limits only the connection phase. B<cclive> will only timeout
-on the system's internal timeouts by default.
-
-http://curl.haxx.se/docs/knownbugs.html:
-
-  "34. The SOCKS4 connection codes don't properly acknowledge
-       (connect) timeouts. Also see #12. According to bug #1556528,
-       even the SOCKS5 connect code does not do it right:
-       http://curl.haxx.se/bug/view.cgi?id=1556528"
-
-  "12. When connecting to a SOCKS proxy, the (connect) timeout
-       is not properly acknowledged after the actual TCP connect
-       (during the SOCKS 'negotiate' phase)."
-
-See also B<--connect-timeout-socks>.
+Maximum time in I<seconds> allowed for connection to take. Defaults to 30.
 
 =item B<--connect-timeout-socks=>I<SECONDS>
 
-Same as B<--connect-timeout> but works around the SOCKS proxy bug by using
-CURLOPT_TIMEOUT instead of CURLOPT_CONNECTIMEOUT.
-
-Ignored for file transfers, otherwise curl could interrupt started transfers.
-
-More about these curl options:
-  http://curl.haxx.se/libcurl/c/curl_easy_setopt.html
+Same as above but tries to workaround the SOCKS proxy bug in cURL. Defaults
+to 30.
 
 =item B<-u, --youtube-user=>I<USERNAME>
 
@@ -229,14 +209,8 @@ reaches 20%:
 
 =head1 FORMATS
 
-cclive defaults to extract the flv format unless the B<--format> option is
-used. The requested format may not always be available. The server typically
-returns one of the HTTP/40x errors if the requested format is not available.
-
-The quality of the video depends on the uploaded video quality. Each website
-typically recompresses the uploaded videos to 320x240 resolution (sometimes
-higher). Because this varies per video and website, you should treat the
-list below only as a rough reference of what formats should be available.
+clive extracts flv (typically 320x240) by default from all
+supported websites. Some of them support also other formats.
 
 =over 4
 
@@ -244,47 +218,35 @@ list below only as a rough reference of what formats should be available.
 
 =item B<www.last.fm>
 
-Formats: (flv|mp4|fmt17|fmt22|fmt35)  Continue: Yes (except flv)
+Format: (flv|mp4|fmt17|fmt22|fmt35)
 
-flv and mp4 are typically available, whereas others may or may not be
-vailable. For example the high-definition (HD) formats (35, 22) are
-currently available for a limited number of videos, which are usually
-explicitly as "HD" or "720p".
+Apart from flv and mp4, other formats are known to be fairly rare.
+For example, the high-definition formats (32, 22) are currently
+available for a limited number of videos, which are usually
+explicitly marked as "HD" or "720p".
 
-last.fm is known to wrap Youtube videos. B<clive> can handle such
-last.fm video links.
+Some of the videos available at last.fm are actually Youtube
+videos. clive can handle such video links.
 
 =item B<video.google.com>
 
-Formats: (flv|mp4)  Continue: Only mp4
+Format: (flv|mp4)
 
-The mp4 may not always be available. GoogleVideo mp4 are encoded using a
-different codec than Youtube mp4 videos. You can typically B<--stream-exec>
-Youtube mp4 videos but this is not case with GoogleVideo mp4 videos. If you
-find a way, drop an email.
-
-=item B<www.sevenload.com>
-
-Formats: flv  Continue: Yes
-
-=item B<www.break.com>
-
-Formats: flv  Continue: Yes
-
-=item B<www.liveleak.com>
-
-Formats: flv  Continue: Yes
-
-=item B<www.evisor.tv>
-
-Formats: flv  Continue: Yes
+mp4 format is available for a limited number of videos.
 
 =item B<www.dailymotion.com>
 
-Formats: (spark|spak-mini|vp6-hq|vp6-hd|vp6|h264)  Continue: Yes
+Format: (flv|spak-mini|vp6-hq|vp6-hd|vp6|h264)
 
-spark is the "regular" 320x240 flv. B<clive> defaults to spark
-if requested format is not available.
+=item B<www.sevenload.com>
+
+=item B<www.break.com>
+
+=item B<www.liveleak.com>
+
+=item B<www.evisor.tv>
+
+Format: flv
 
 =back
 
