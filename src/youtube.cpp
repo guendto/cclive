@@ -58,7 +58,7 @@ YoutubeHandler::parseLink() {
 
     Options opts = optsmgr.getOptions();
 
-    if (!strcmp(opts.format_arg, "mp4"))
+    if (!strcmp(opts.format_arg, "fmt18"))
         b << "&fmt=18";
     else if (!strcmp(opts.format_arg, "fmt35"))
         b << "&fmt=35";

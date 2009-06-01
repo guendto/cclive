@@ -37,7 +37,7 @@ const char *gengetopt_args_info_help[] = {
   "      --title-cclass=CCLASS     character class for filtering page titles",
   "  -n, --no-extract              do not extract video",
   "  -c, --continue                resume partially downloaded file",
-  "  -f, --format=FORMAT           format format  (possible values=\"flv\", \n                                  \"mp4\", \"fmt35\", \"fmt22\", \"fmt17\", \n                                  \"spak-mini\", \"vp6-hq\", \"vp6-hd\", \n                                  \"vp6\", \"h264\" default=`flv')",
+  "  -f, --format=FORMAT           format format  (possible values=\"flv\", \n                                  \"mp4\", \"fmt17\", \"fmt18\", \"fmt22\", \n                                  \"fmt35\", \"spak-mini\", \"vp6-hq\", \n                                  \"vp6-hd\", \"vp6\", \"h264\" default=`flv')",
   "  -O, --output-video=FILE       write video to file",
   "  -N, --number-videos           number extracted videos",
   "      --filename-format=STRING  use custom output filename format",
@@ -98,7 +98,7 @@ free_cmd_list(void)
 }
 
 
-char *cmdline_parser_format_values[] = {"flv", "mp4", "fmt35", "fmt22", "fmt17", "spak-mini", "vp6-hq", "vp6-hd", "vp6", "h264", 0} ;	/* Possible values for format.  */
+char *cmdline_parser_format_values[] = {"flv", "mp4", "fmt17", "fmt18", "fmt22", "fmt35", "spak-mini", "vp6-hq", "vp6-hd", "vp6", "h264", 0} ;	/* Possible values for format.  */
 
 static char *
 gengetopt_strdup (const char *s);
