@@ -58,14 +58,19 @@ YoutubeHandler::parseLink() {
 
     Options opts = optsmgr.getOptions();
 
-    if (!strcmp(opts.format_arg, "fmt18"))
-        b << "&fmt=18";
-    else if (!strcmp(opts.format_arg, "fmt35"))
-        b << "&fmt=35";
-    else if (!strcmp(opts.format_arg, "fmt22"))
-        b << "&fmt=22";
-    else if (!strcmp(opts.format_arg, "fmt17"))
-        b << "&fmt=17";
-
+    if (!strcmp(opts.format_arg, "best")) {
+        b << "&fmt="
+          <<  Util::subStr(pageContent, "\"fmt_map\": \"", "/");
+    }
+    else {
+        if (!strcmp(opts.format_arg, "fmt18"))
+            b << "&fmt=18";
+        else if (!strcmp(opts.format_arg, "fmt35"))
+            b << "&fmt=35";
+        else if (!strcmp(opts.format_arg, "fmt22"))
+            b << "&fmt=22";
+        else if (!strcmp(opts.format_arg, "fmt17"))
+            b << "&fmt=17";
+    }
     props.setLink( b.str() );
 }

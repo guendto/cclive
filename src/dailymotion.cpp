@@ -17,6 +17,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 
 #include "except.h"
 #include "video.h"
@@ -43,7 +44,6 @@ DailymotionHandler::parseId() {
     props.setId( Util::subStr(pageContent, begin, end) );
 }
 
-#include <iostream>
 void
 DailymotionHandler::parseLink() {
     const char *pathsBegin = "\"video\", \"";
@@ -65,18 +65,31 @@ DailymotionHandler::parseLink() {
     if (format == "flv")
         format = "spark";
 
-    std::string link;
+    std::string link = "http://dailymotion.com";
+    std::map<std::string, std::string> width;
 
     for (std::vector<std::string>::iterator iter = tokens.begin();
         iter != tokens.end();
         ++iter)
     {
         std::vector<std::string> v = Util::tokenize(*iter, "@@");
-        if (v.size() > 0 && v[1] == format) {
-            link = "http://dailymotion.com" + v[0];
+
+        if (v.size() == 0)
+            continue;
+
+        std::string w = Util::subStr(v[0], "-", "x");
+        width[w] = v[0];
+
+        if (v[1] == format && format != "best") {
+            link += v[0];
             break;
         }
     }
+
+    // std::map sorts by key (width) in descending order
+    // automatically. Assume first element to be the best.
+    if (format == "best")
+        link += (width.begin())->second;
 
     if (link.empty())
         throw ParseException("failed to construct link from paths");
