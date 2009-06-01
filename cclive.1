@@ -132,7 +132,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2009-05-31" "0.4.3" "cclive manual"
+.TH cclive 1 "2009-06-02" "0.4.3" "cclive manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -185,9 +185,11 @@ Resume a partially downloaded video file. May not work with some of the \s-1HTTP
 servers. Be sure to read the \*(L"\s-1FORMATS\s0\*(R" section.
 .IP "\fB\-f, \-\-format=\fR\fI\s-1FORMAT\s0\fR" 4
 .IX Item "-f, --format=FORMAT"
-Extract \fIformat\fR instead of the default \*(L"flv\*(R".
+Extract \fIformat\fR of the video. If \fIformat\fR is set to \fIbest\fR, cclive
+will attempt to extract the best video quality.
 .Sp
-Note that the \fIformat\fR is host specific. See the \*(L"\s-1FORMATS\s0\*(R" section.
+Note that the \fIformat\fR is strictly host specific. See the \*(L"\s-1FORMATS\s0\*(R"
+section for more on this.
 .IP "\fB\-O, \-\-output\-video=\fR\fI\s-1FILE\s0\fR" 4
 .IX Item "-O, --output-video=FILE"
 Write extracted video to \fIfile\fR. Causes \fBcclive\fR to overwrite the existing
@@ -319,26 +321,41 @@ supported websites. Some of them support also other formats.
 .IP "\fBwww.last.fm\fR" 4
 .IX Item "www.last.fm"
 .PD
-Format: (flv|mp4|fmt17|fmt22|fmt35)
+Format: (flv|fmt17|fmt18|fmt22|fmt35)
 .Sp
-Apart from flv and mp4, other formats are known to be fairly rare.
-For example, the high-definition formats (32, 22) are currently
-available for a limited number of videos, which are usually
-explicitly marked as \*(L"\s-1HD\s0\*(R" or \*(L"720p\*(R".
+flv (fmt34) and fmt18 (mp4) are usually available. Others may be
+available. At the time of writing this, the following formats
+are recognized by both clive and Youtube:
+.Sp
+.Vb 5
+\&  fmt22 .. mp4    (1280x720) (HD)
+\&  fmt35 .. flv     (640x380) (HQ)
+\&  fmt18 .. mp4     (480x360)
+\&  flv   .. fmt34   (320x180)
+\&  fmt17 .. 3gp     (176x144)
+.Ve
 .Sp
 Some of the videos available at last.fm are actually Youtube
 videos. clive can handle such video links.
-.IP "\fBvideo.google.com\fR" 4
-.IX Item "video.google.com"
-Format: (flv|mp4)
-.Sp
-mp4 format is available for a limited number of videos.
 .IP "\fBwww.dailymotion.com\fR" 4
 .IX Item "www.dailymotion.com"
 Format: (flv|spak\-mini|vp6\-hq|vp6\-hd|vp6|h264)
+.Sp
+The \s-1HD\s0 and \s-1HQ\s0 videos may not always be available.
+.Sp
+.Vb 6
+\&  ON2\-1280x720 (vp6\-hd)
+\&  ON2\-848x480  (vp6\-hq)
+\&  H264\-512x384 (h264)
+\&  ON2\-320x240  (vp6)
+\&  FLV\-320x240  (flv/spark)
+\&  FLV\-80x60    (spak\-mini)
+.Ve
+.IP "\fBvideo.google.com\fR" 4
+.IX Item "video.google.com"
+.PD 0
 .IP "\fBwww.sevenload.com\fR" 4
 .IX Item "www.sevenload.com"
-.PD 0
 .IP "\fBwww.break.com\fR" 4
 .IX Item "www.break.com"
 .IP "\fBwww.liveleak.com\fR" 4
