@@ -98,9 +98,8 @@ Example:
 
 =item B<--emit-csv>
 
-Emit video details as CSV to stdout. Implies B<--no-extract>.
-
-Can be used together with B<--quiet>.
+Emit video details in CSV to stdout. Implies B<--no-extract>.
+Ignores B<--quiet>.
 
 =item B<--limit-rate=>I<AMOUNT>
 
