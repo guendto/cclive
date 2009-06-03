@@ -83,6 +83,7 @@ printVideo(const VideoProperties& props) {
 
 static void
 printCSV(const VideoProperties& props) {
+    std::cout.setf(std::ios::fixed);
     std::cout.unsetf(std::ios::showpoint);
     std::cout
         << "csv:\""
@@ -90,9 +91,6 @@ printCSV(const VideoProperties& props) {
         << "\",\""
         << std::setprecision(0)
         << props.getLength()
-        << "\",\""
-        << std::setprecision(0)
-        << props.getInitial()
         << "\",\""
         << props.getLink()
         << "\""
