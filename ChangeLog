@@ -1,10 +1,14 @@
 0.4.3
 
  User-visible changes:
-  * Add: support for youtube-nocookie.com
-  * Add: --download=fmt35 for Youtube
-  * Fix: liveleak id parsing
-  * Fix: random garbled error strings -- rewrote curl error buffer handling
+  * Add: --format=best support
+  * Add: --format=fmt35 for Youtube
+  * Add: Support for youtube-nocookie.com
+  * Fix: --emit-csv: file length: std::ios::fixed
+  * Fix: Dailymotion ID parsing
+  * Fix: Liveleak ID parsing
+  * Fix: garbled error messages: rewrite curl error buffer handling
+  * Change: --emit-csv: remove initial length
   * Rename: --download -> --format
   * Remove: --format=fmt6 (Youtube does not seem to support it anymore?)
   * Remove: --format=spark (Dailymotion, use "flv" instead)
@@ -14,6 +18,9 @@
   * Add: examples/config file
   * Fix: cclive.pod (*** WARNING: (section) in ... deprecated at line ...)
   * Update: INSTALL
+
+ Known-issues:
+  * mp4 extraction fails (Google)
 
 
 0.4.2
