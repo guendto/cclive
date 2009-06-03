@@ -38,8 +38,8 @@ DailymotionHandler::isHost(std::string url) {
 
 void
 DailymotionHandler::parseId() {
-    const char *begin = "swf%2F";
-    const char *end   = "\"";
+    const char *begin = "swf/";
+    const char *end   = "?";
 
     props.setId( Util::subStr(pageContent, begin, end) );
 }
