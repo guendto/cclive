@@ -44,13 +44,13 @@ Ignored if cclive was built --without-perl.
 
 =item B<--title-cclass=>I<CCLASS>  [req. --with-perl]
 
-The I<character-class> is used to cleanup the video page <title>.
-Default is B<\w>. The cleaned up title is then used to name the
-output file.
+Use character-I<class> to filter video page titles. Defaults to "\w".
+Refer to the Perl regular expressions (character classes) for more on
+this.
 
-The default I<class> is usually enough for most users. You can learn
-more about character classes here:
-  http://perldoc.perl.org/perlrequick.html
+=item B<-C, --no-cclass>
+
+Negates the use of the character-class.
 
 =item B<-n, --no-extract>
 

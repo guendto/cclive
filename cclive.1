@@ -132,7 +132,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2009-06-03" "0.4.3" "cclive manual"
+.TH cclive 1 "2009-06-06" "0.4.3" "cclive manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -169,13 +169,12 @@ Causes \fBcclive\fR to use video page title for output video filename.
 Ignored if cclive was built \-\-without\-perl.
 .IP "\fB\-\-title\-cclass=\fR\fI\s-1CCLASS\s0\fR  [req. \-\-with\-perl]" 4
 .IX Item "--title-cclass=CCLASS  [req. --with-perl]"
-The \fIcharacter-class\fR is used to cleanup the video page <title>.
-Default is \fB\ew\fR. The cleaned up title is then used to name the
-output file.
-.Sp
-The default \fIclass\fR is usually enough for most users. You can learn
-more about character classes here:
-  http://perldoc.perl.org/perlrequick.html
+Use character\-\fIclass\fR to filter video page titles. Defaults to \*(L"\ew\*(R".
+Refer to the Perl regular expressions (character classes) for more on
+this.
+.IP "\fB\-C, \-\-no\-cclass\fR" 4
+.IX Item "-C, --no-cclass"
+Negates the use of the character-class.
 .IP "\fB\-n, \-\-no\-extract\fR" 4
 .IX Item "-n, --no-extract"
 Do not extract any videos.
