@@ -32,30 +32,42 @@
 #include <XSUB.h>
 
 EXTERN_C void xs_init(pTHX);
+
 static PerlInterpreter *perl;
 
 static const char script[] =
-"use HTML::TokeParser;"
-"$parser = HTML::TokeParser->new(\\$html);"
-"$parser->get_tag('title');"
-"$title = $parser->get_trimmed_text;"
-"$title =~ s/(youtube|video|liveleak.com|sevenload|dailymotion)//gi;"
-"$title =~ s/^[-\\s]+//;"
-"$title =~ s/\\s+$//;"
-"$re = $cclass || qr|\\w|;"
-"$title = join('', $title =~ /$re/g);";
+"                                                                   \
+use HTML::TokeParser;                                               \
+$parser = HTML::TokeParser->new(\\$html);                           \
+$parser->get_tag('title');                                          \
+$title = $parser->get_trimmed_text;                                 \
+$title =~ s/(youtube|video|liveleak.com|sevenload|dailymotion)//gi; \
+$title =~ s/^[-\\s]+//;                                             \
+$title =~ s/\\s+$//;                                                \
+if (!$no_cclass) {                                                  \
+    $re = $cclass || qr|\\w|;                                       \
+    $title = join('', $title =~ /$re/g);                            \
+}                                                                   \
+";
 
 static std::string
 extractTitle(const std::string &html)
 {
     SV *sv_html = perl_get_sv("html", TRUE);
+    sv_setpv(sv_html, html.c_str());
+
     Options opts = optsmgr.getOptions();
 
     if (opts.title_cclass_given) {
         SV     *sv_cclass = perl_get_sv("cclass", TRUE);
         sv_setpv(sv_cclass, opts.title_cclass_arg);
     }
-    sv_setpv(sv_html, html.c_str());
+
+    if (opts.no_cclass_given) {
+        SV *sv_nocclass = perl_get_sv("no_cclass", TRUE);
+        sv_setiv(sv_nocclass, 1);
+    }
+
     perl_eval_pv(script, TRUE);
 
     return SvPV(perl_get_sv("title", FALSE), PL_na);

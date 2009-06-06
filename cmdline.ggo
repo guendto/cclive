@@ -15,8 +15,11 @@ option "title"
     t "use video page title for naming video files"
     optional
 option "title-cclass"
-    - "character class for filtering page titles"
+    - "character class to filter titles (--title)"
     string typestr="CCLASS"
+    optional
+option "no-cclass"
+    C "do not apply character class (--title)"
     optional
 option "no-extract"
     n "do not extract video"

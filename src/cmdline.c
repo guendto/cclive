@@ -34,7 +34,8 @@ const char *gengetopt_args_info_help[] = {
   "  -q, --quiet                   turn off all output",
   "      --debug                   show curl debug messages",
   "  -t, --title                   use video page title for naming video files",
-  "      --title-cclass=CCLASS     character class for filtering page titles",
+  "      --title-cclass=CCLASS     character class to filter titles (--title)",
+  "  -C, --no-cclass               do not apply character class (--title)",
   "  -n, --no-extract              do not extract video",
   "  -c, --continue                resume partially downloaded file",
   "  -f, --format=FORMAT           format format  (possible values=\"flv\", \n                                  \"best\", \"mp4\", \"fmt17\", \"fmt18\", \n                                  \"fmt22\", \"fmt35\", \"spak-mini\", \n                                  \"vp6-hq\", \"vp6-hd\", \"vp6\", \"h264\" \n                                  default=`flv')",
@@ -113,6 +114,7 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->debug_given = 0 ;
   args_info->title_given = 0 ;
   args_info->title_cclass_given = 0 ;
+  args_info->no_cclass_given = 0 ;
   args_info->no_extract_given = 0 ;
   args_info->continue_given = 0 ;
   args_info->format_given = 0 ;
@@ -178,25 +180,26 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->debug_help = gengetopt_args_info_help[4] ;
   args_info->title_help = gengetopt_args_info_help[5] ;
   args_info->title_cclass_help = gengetopt_args_info_help[6] ;
-  args_info->no_extract_help = gengetopt_args_info_help[7] ;
-  args_info->continue_help = gengetopt_args_info_help[8] ;
-  args_info->format_help = gengetopt_args_info_help[9] ;
-  args_info->output_video_help = gengetopt_args_info_help[10] ;
-  args_info->number_videos_help = gengetopt_args_info_help[11] ;
-  args_info->filename_format_help = gengetopt_args_info_help[12] ;
-  args_info->emit_csv_help = gengetopt_args_info_help[13] ;
-  args_info->limit_rate_help = gengetopt_args_info_help[14] ;
-  args_info->agent_help = gengetopt_args_info_help[15] ;
-  args_info->proxy_help = gengetopt_args_info_help[16] ;
-  args_info->no_proxy_help = gengetopt_args_info_help[17] ;
-  args_info->connect_timeout_help = gengetopt_args_info_help[18] ;
-  args_info->connect_timeout_socks_help = gengetopt_args_info_help[19] ;
-  args_info->youtube_user_help = gengetopt_args_info_help[20] ;
-  args_info->youtube_pass_help = gengetopt_args_info_help[21] ;
-  args_info->exec_help = gengetopt_args_info_help[22] ;
-  args_info->stream_exec_help = gengetopt_args_info_help[23] ;
-  args_info->stream_help = gengetopt_args_info_help[24] ;
-  args_info->print_fname_help = gengetopt_args_info_help[25] ;
+  args_info->no_cclass_help = gengetopt_args_info_help[7] ;
+  args_info->no_extract_help = gengetopt_args_info_help[8] ;
+  args_info->continue_help = gengetopt_args_info_help[9] ;
+  args_info->format_help = gengetopt_args_info_help[10] ;
+  args_info->output_video_help = gengetopt_args_info_help[11] ;
+  args_info->number_videos_help = gengetopt_args_info_help[12] ;
+  args_info->filename_format_help = gengetopt_args_info_help[13] ;
+  args_info->emit_csv_help = gengetopt_args_info_help[14] ;
+  args_info->limit_rate_help = gengetopt_args_info_help[15] ;
+  args_info->agent_help = gengetopt_args_info_help[16] ;
+  args_info->proxy_help = gengetopt_args_info_help[17] ;
+  args_info->no_proxy_help = gengetopt_args_info_help[18] ;
+  args_info->connect_timeout_help = gengetopt_args_info_help[19] ;
+  args_info->connect_timeout_socks_help = gengetopt_args_info_help[20] ;
+  args_info->youtube_user_help = gengetopt_args_info_help[21] ;
+  args_info->youtube_pass_help = gengetopt_args_info_help[22] ;
+  args_info->exec_help = gengetopt_args_info_help[23] ;
+  args_info->stream_exec_help = gengetopt_args_info_help[24] ;
+  args_info->stream_help = gengetopt_args_info_help[25] ;
+  args_info->print_fname_help = gengetopt_args_info_help[26] ;
   
 }
 
@@ -392,6 +395,8 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "title", 0, 0 );
   if (args_info->title_cclass_given)
     write_into_file(outfile, "title-cclass", args_info->title_cclass_orig, 0);
+  if (args_info->no_cclass_given)
+    write_into_file(outfile, "no-cclass", 0, 0 );
   if (args_info->no_extract_given)
     write_into_file(outfile, "no-extract", 0, 0 );
   if (args_info->continue_given)
@@ -731,6 +736,7 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
         { "debug",	0, NULL, 0 },
         { "title",	0, NULL, 't' },
         { "title-cclass",	1, NULL, 0 },
+        { "no-cclass",	0, NULL, 'C' },
         { "no-extract",	0, NULL, 'n' },
         { "continue",	0, NULL, 'c' },
         { "format",	1, NULL, 'f' },
@@ -753,7 +759,7 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
         { NULL,	0, NULL, 0 }
       };
 
-      c = getopt_long (argc, argv, "hvqtncf:O:Nu:p:", long_options, &option_index);
+      c = getopt_long (argc, argv, "hvqtCncf:O:Nu:p:", long_options, &option_index);
 
       if (c == -1) break;	/* Exit from `while (1)' loop.  */
 
@@ -796,6 +802,18 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
               &(local_args_info.title_given), optarg, 0, 0, ARG_NO,
               check_ambiguity, override, 0, 0,
               "title", 't',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 'C':	/* do not apply character class (--title).  */
+        
+        
+          if (update_arg( 0 , 
+               0 , &(args_info->no_cclass_given),
+              &(local_args_info.no_cclass_given), optarg, 0, 0, ARG_NO,
+              check_ambiguity, override, 0, 0,
+              "no-cclass", 'C',
               additional_error))
             goto failure;
         
@@ -914,7 +932,7 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
               goto failure;
           
           }
-          /* character class for filtering page titles.  */
+          /* character class to filter titles (--title).  */
           else if (strcmp (long_options[option_index].name, "title-cclass") == 0)
           {
           

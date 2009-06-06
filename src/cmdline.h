@@ -38,9 +38,10 @@ struct gengetopt_args_info
   const char *quiet_help; /**< @brief turn off all output help description.  */
   const char *debug_help; /**< @brief show curl debug messages help description.  */
   const char *title_help; /**< @brief use video page title for naming video files help description.  */
-  char * title_cclass_arg;	/**< @brief character class for filtering page titles.  */
-  char * title_cclass_orig;	/**< @brief character class for filtering page titles original value given at command line.  */
-  const char *title_cclass_help; /**< @brief character class for filtering page titles help description.  */
+  char * title_cclass_arg;	/**< @brief character class to filter titles (--title).  */
+  char * title_cclass_orig;	/**< @brief character class to filter titles (--title) original value given at command line.  */
+  const char *title_cclass_help; /**< @brief character class to filter titles (--title) help description.  */
+  const char *no_cclass_help; /**< @brief do not apply character class (--title) help description.  */
   const char *no_extract_help; /**< @brief do not extract video help description.  */
   const char *continue_help; /**< @brief resume partially downloaded file help description.  */
   char * format_arg;	/**< @brief format format (default='flv').  */
@@ -94,6 +95,7 @@ struct gengetopt_args_info
   unsigned int debug_given ;	/**< @brief Whether debug was given.  */
   unsigned int title_given ;	/**< @brief Whether title was given.  */
   unsigned int title_cclass_given ;	/**< @brief Whether title-cclass was given.  */
+  unsigned int no_cclass_given ;	/**< @brief Whether no-cclass was given.  */
   unsigned int no_extract_given ;	/**< @brief Whether no-extract was given.  */
   unsigned int continue_given ;	/**< @brief Whether continue was given.  */
   unsigned int format_given ;	/**< @brief Whether format was given.  */
