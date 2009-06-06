@@ -18,9 +18,11 @@ option "cclass"
     - "character class to filter titles (--title)"
     string typestr="CCLASS"
     optional
+    dependon="title"
 option "no-cclass"
     C "do not apply character class (--title)"
     optional
+    dependon="title"
 option "no-extract"
     n "do not extract video"
     optional

@@ -552,6 +552,16 @@ cmdline_parser_required2 (struct gengetopt_args_info *args_info, const char *pro
   /* checks for required options */
   
   /* checks for dependences among options */
+  if (args_info->cclass_given && ! args_info->title_given)
+    {
+      fprintf (stderr, "%s: '--cclass' option depends on option 'title'%s\n", prog_name, (additional_error ? additional_error : ""));
+      error = 1;
+    }
+  if (args_info->no_cclass_given && ! args_info->title_given)
+    {
+      fprintf (stderr, "%s: '--no-cclass' ('-C') option depends on option 'title'%s\n", prog_name, (additional_error ? additional_error : ""));
+      error = 1;
+    }
   if (args_info->youtube_pass_given && ! args_info->youtube_user_given)
     {
       fprintf (stderr, "%s: '--youtube-pass' ('-p') option depends on option 'youtube-user'%s\n", prog_name, (additional_error ? additional_error : ""));
