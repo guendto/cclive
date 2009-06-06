@@ -3,13 +3,16 @@
  User-visible changes:
   * Add: --format=best support
   * Add: --format=fmt35 for Youtube
+  * Add: --no-cclass
   * Add: Support for youtube-nocookie.com
   * Fix: --emit-csv: file length: add missing std::ios::fixed
   * Fix: Dailymotion ID parsing
   * Fix: Liveleak ID parsing
-  * Fix: garbled error messages: rewrite curl error handling
+  * Fix: mangled error messages: rewrite curl error handling
   * Change: --emit-csv: remove initial length
+  * Change: make --cclass, --no-cclass depend on --title
   * Rename: --download -> --format
+  * Rename: --title-cclass -> --cclass
   * Remove: --format=fmt6 (Youtube no longer appears to support it)
   * Remove: --format=spark (Dailymotion, use "flv" instead)
 
