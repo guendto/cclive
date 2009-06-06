@@ -237,12 +237,12 @@ App::parseInput() {
 
 void
 App::printVersion() {
-    static const char copyr_notice[] =
-      "Copyright (C) 2009 Toni Gundogdu <legatvs@gmail.com>.\n\n"
-      "This program is free software: you can redistribute it and/or modify\n"
-      "it under the terms of the GNU General Public License as published by\n"
-      "the Free Software Foundation, either version 3 of the License, or\n"
-      "(at your option) any later version <http://www.gnu.org/licenses/>.";
+static const char copyr_notice[] =
+"Copyright (C) 2009 Toni Gundogdu.\n\n\
+License GPLv3+: GNU GPL version 3 or later\n\
+  <http://www.gnu.org/licenses/>\n\n\
+This is free software: you are free to change and redistribute it.\n\
+There is NO WARRANTY, to the extent permitted by law.";
 
     curl_version_info_data *c =
         curl_version_info(CURLVERSION_NOW);
@@ -261,6 +261,6 @@ App::printVersion() {
     std::cout << "--with-perl ";
 #endif
     std::cout
-        << "\n\tReport bugs: <http://code.google.com/p/cclive/issues/>"
+        << "\n\nReport bugs: <http://code.google.com/p/cclive/issues/>"
         << std::endl;
 }
