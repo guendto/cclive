@@ -58,9 +58,9 @@ extractTitle(const std::string &html)
 
     Options opts = optsmgr.getOptions();
 
-    if (opts.title_cclass_given) {
+    if (opts.cclass_given) {
         SV     *sv_cclass = perl_get_sv("cclass", TRUE);
-        sv_setpv(sv_cclass, opts.title_cclass_arg);
+        sv_setpv(sv_cclass, opts.cclass_arg);
     }
 
     if (opts.no_cclass_given) {

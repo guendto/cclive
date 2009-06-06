@@ -34,7 +34,7 @@ const char *gengetopt_args_info_help[] = {
   "  -q, --quiet                   turn off all output",
   "      --debug                   show curl debug messages",
   "  -t, --title                   use video page title for naming video files",
-  "      --title-cclass=CCLASS     character class to filter titles (--title)",
+  "      --cclass=CCLASS           character class to filter titles (--title)",
   "  -C, --no-cclass               do not apply character class (--title)",
   "  -n, --no-extract              do not extract video",
   "  -c, --continue                resume partially downloaded file",
@@ -113,7 +113,7 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->quiet_given = 0 ;
   args_info->debug_given = 0 ;
   args_info->title_given = 0 ;
-  args_info->title_cclass_given = 0 ;
+  args_info->cclass_given = 0 ;
   args_info->no_cclass_given = 0 ;
   args_info->no_extract_given = 0 ;
   args_info->continue_given = 0 ;
@@ -139,8 +139,8 @@ void clear_given (struct gengetopt_args_info *args_info)
 static
 void clear_args (struct gengetopt_args_info *args_info)
 {
-  args_info->title_cclass_arg = NULL;
-  args_info->title_cclass_orig = NULL;
+  args_info->cclass_arg = NULL;
+  args_info->cclass_orig = NULL;
   args_info->format_arg = gengetopt_strdup ("flv");
   args_info->format_orig = NULL;
   args_info->output_video_arg = NULL;
@@ -179,7 +179,7 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->quiet_help = gengetopt_args_info_help[3] ;
   args_info->debug_help = gengetopt_args_info_help[4] ;
   args_info->title_help = gengetopt_args_info_help[5] ;
-  args_info->title_cclass_help = gengetopt_args_info_help[6] ;
+  args_info->cclass_help = gengetopt_args_info_help[6] ;
   args_info->no_cclass_help = gengetopt_args_info_help[7] ;
   args_info->no_extract_help = gengetopt_args_info_help[8] ;
   args_info->continue_help = gengetopt_args_info_help[9] ;
@@ -281,8 +281,8 @@ static void
 cmdline_parser_release (struct gengetopt_args_info *args_info)
 {
   unsigned int i;
-  free_string_field (&(args_info->title_cclass_arg));
-  free_string_field (&(args_info->title_cclass_orig));
+  free_string_field (&(args_info->cclass_arg));
+  free_string_field (&(args_info->cclass_orig));
   free_string_field (&(args_info->format_arg));
   free_string_field (&(args_info->format_orig));
   free_string_field (&(args_info->output_video_arg));
@@ -393,8 +393,8 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "debug", 0, 0 );
   if (args_info->title_given)
     write_into_file(outfile, "title", 0, 0 );
-  if (args_info->title_cclass_given)
-    write_into_file(outfile, "title-cclass", args_info->title_cclass_orig, 0);
+  if (args_info->cclass_given)
+    write_into_file(outfile, "cclass", args_info->cclass_orig, 0);
   if (args_info->no_cclass_given)
     write_into_file(outfile, "no-cclass", 0, 0 );
   if (args_info->no_extract_given)
@@ -735,7 +735,7 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
         { "quiet",	0, NULL, 'q' },
         { "debug",	0, NULL, 0 },
         { "title",	0, NULL, 't' },
-        { "title-cclass",	1, NULL, 0 },
+        { "cclass",	1, NULL, 0 },
         { "no-cclass",	0, NULL, 'C' },
         { "no-extract",	0, NULL, 'n' },
         { "continue",	0, NULL, 'c' },
@@ -933,15 +933,15 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
           
           }
           /* character class to filter titles (--title).  */
-          else if (strcmp (long_options[option_index].name, "title-cclass") == 0)
+          else if (strcmp (long_options[option_index].name, "cclass") == 0)
           {
           
           
-            if (update_arg( (void *)&(args_info->title_cclass_arg), 
-                 &(args_info->title_cclass_orig), &(args_info->title_cclass_given),
-                &(local_args_info.title_cclass_given), optarg, 0, 0, ARG_STRING,
+            if (update_arg( (void *)&(args_info->cclass_arg), 
+                 &(args_info->cclass_orig), &(args_info->cclass_given),
+                &(local_args_info.cclass_given), optarg, 0, 0, ARG_STRING,
                 check_ambiguity, override, 0, 0,
-                "title-cclass", '-',
+                "cclass", '-',
                 additional_error))
               goto failure;
           
