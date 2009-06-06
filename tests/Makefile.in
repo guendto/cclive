@@ -154,16 +154,16 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 EXTRA_DIST = \
-	7load.url	\
-	break.url	\
-	dmotion.url	\
-	evisor.url	\
-	gvideo.url	\
-	lastfm.url	\
-	lleak.url	\
-	multi.lst	\
-	youtube-hd.url	\
-	youtube-nocookies.url	\
+	7load.url		\
+	break.url		\
+	dmotion.url		\
+	evisor.url		\
+	gvideo.url		\
+	lastfm.url		\
+	lleak.url		\
+	multi.lst		\
+	youtube-hd.url		\
+	youtube-nocookie.url	\
 	youtube.url
 
 all: all-am

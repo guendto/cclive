@@ -160,9 +160,9 @@ docdir = @docdir@
 dvidir = @dvidir@
 exec_prefix = @exec_prefix@
 host = \
-	youtube.cpp		\
-	break.cpp		\
-	evisor.cpp		\
+	youtube.cpp	\
+	break.cpp	\
+	evisor.cpp	\
 	sevenload.cpp	\
 	liveleak.cpp	\
 	dailymotion.cpp	\
@@ -207,19 +207,19 @@ src = main.cpp app.cpp except.cpp util.cpp hosthandler.cpp opts.cpp \
 	video.cpp curl.cpp progressbar.cpp exec.cpp log.cpp cmdline.c \
 	hostfactory.cpp $(am__append_1)
 hdr = \
-	app.h			\
-	except.h		\
-	util.h			\
-	opts.h			\
-	hosthandler.h		\
-	video.h			\
-	singleton.h		\
-	macros.h		\
-	curl.h			\
+	app.h		\
+	except.h	\
+	util.h		\
+	opts.h		\
+	hosthandler.h	\
+	video.h		\
+	singleton.h	\
+	macros.h	\
+	curl.h		\
 	progressbar.h	\
-	exec.h	\
-	log.h			\
-	cmdline.h		\
+	exec.h		\
+	log.h		\
+	cmdline.h	\
 	hostfactory.h
 
 INCLUDES = $(libcurl_CFLAGS) $(am__append_2)
