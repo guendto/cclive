@@ -133,15 +133,6 @@ Maximum time in I<seconds> allowed for connection to take. Defaults to 30.
 Same as above but tries to workaround the SOCKS proxy bug in cURL. Defaults
 to 30.
 
-=item B<-u, --youtube-user=>I<USERNAME>
-
-Causes B<cclive> to log into Youtube as I<username>. This is done I<before>
-extraction, even if the batch does not contain any Youtube video links.
-
-=item B<-p, --youtube-pass=>I<PASSWORD>
-
-Use I<password> for Youtube login.  If undefined, B<cclive> prompts for it.
-
 =item B<--exec=>I<COMMAND>B<;>
 
 Execute I<command> after each file transfer. Optional arguments may be passed

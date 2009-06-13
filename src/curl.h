@@ -30,7 +30,6 @@ public:
                                     const std::string& what="");
     void         queryFileLength(VideoProperties&);
     void         fetchToFile    (VideoProperties&);
-    void         logIntoYoutube ();
     const std::string& unescape (std::string& url) const;
 public:
     class FetchException : public RuntimeException {

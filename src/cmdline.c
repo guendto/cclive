@@ -49,8 +49,6 @@ const char *gengetopt_args_info_help[] = {
   "      --no-proxy                do not use proxy at all",
   "      --connect-timeout=SECS    max time allowed connection to server take  \n                                  (default=`30')",
   "      --connect-timeout-socks=S same as above but with SOCKS proxy workaround  \n                                  (default=`30')",
-  "  -u, --youtube-user=USERNAME   login username for youtube",
-  "  -p, --youtube-pass=PASSWORD   login password for youtube, prompt if undefined",
   "      --exec=COMMAND            execute subsequent command with extracted video",
   "      --stream-exec=COMMAND     stream command to be executed",
   "      --stream=PERCENT          execute stream command when transfer reaches %",
@@ -128,8 +126,6 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->no_proxy_given = 0 ;
   args_info->connect_timeout_given = 0 ;
   args_info->connect_timeout_socks_given = 0 ;
-  args_info->youtube_user_given = 0 ;
-  args_info->youtube_pass_given = 0 ;
   args_info->exec_given = 0 ;
   args_info->stream_exec_given = 0 ;
   args_info->stream_given = 0 ;
@@ -156,10 +152,6 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->connect_timeout_orig = NULL;
   args_info->connect_timeout_socks_arg = 30;
   args_info->connect_timeout_socks_orig = NULL;
-  args_info->youtube_user_arg = NULL;
-  args_info->youtube_user_orig = NULL;
-  args_info->youtube_pass_arg = NULL;
-  args_info->youtube_pass_orig = NULL;
   args_info->exec_arg = NULL;
   args_info->exec_orig = NULL;
   args_info->stream_exec_arg = NULL;
@@ -194,12 +186,10 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->no_proxy_help = gengetopt_args_info_help[18] ;
   args_info->connect_timeout_help = gengetopt_args_info_help[19] ;
   args_info->connect_timeout_socks_help = gengetopt_args_info_help[20] ;
-  args_info->youtube_user_help = gengetopt_args_info_help[21] ;
-  args_info->youtube_pass_help = gengetopt_args_info_help[22] ;
-  args_info->exec_help = gengetopt_args_info_help[23] ;
-  args_info->stream_exec_help = gengetopt_args_info_help[24] ;
-  args_info->stream_help = gengetopt_args_info_help[25] ;
-  args_info->print_fname_help = gengetopt_args_info_help[26] ;
+  args_info->exec_help = gengetopt_args_info_help[21] ;
+  args_info->stream_exec_help = gengetopt_args_info_help[22] ;
+  args_info->stream_help = gengetopt_args_info_help[23] ;
+  args_info->print_fname_help = gengetopt_args_info_help[24] ;
   
 }
 
@@ -296,10 +286,6 @@ cmdline_parser_release (struct gengetopt_args_info *args_info)
   free_string_field (&(args_info->proxy_orig));
   free_string_field (&(args_info->connect_timeout_orig));
   free_string_field (&(args_info->connect_timeout_socks_orig));
-  free_string_field (&(args_info->youtube_user_arg));
-  free_string_field (&(args_info->youtube_user_orig));
-  free_string_field (&(args_info->youtube_pass_arg));
-  free_string_field (&(args_info->youtube_pass_orig));
   free_string_field (&(args_info->exec_arg));
   free_string_field (&(args_info->exec_orig));
   free_string_field (&(args_info->stream_exec_arg));
@@ -423,10 +409,6 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "connect-timeout", args_info->connect_timeout_orig, 0);
   if (args_info->connect_timeout_socks_given)
     write_into_file(outfile, "connect-timeout-socks", args_info->connect_timeout_socks_orig, 0);
-  if (args_info->youtube_user_given)
-    write_into_file(outfile, "youtube-user", args_info->youtube_user_orig, 0);
-  if (args_info->youtube_pass_given)
-    write_into_file(outfile, "youtube-pass", args_info->youtube_pass_orig, 0);
   if (args_info->exec_given)
     write_into_file(outfile, "exec", args_info->exec_orig, 0);
   if (args_info->stream_exec_given)
@@ -560,11 +542,6 @@ cmdline_parser_required2 (struct gengetopt_args_info *args_info, const char *pro
   if (args_info->no_cclass_given && ! args_info->title_given)
     {
       fprintf (stderr, "%s: '--no-cclass' ('-C') option depends on option 'title'%s\n", prog_name, (additional_error ? additional_error : ""));
-      error = 1;
-    }
-  if (args_info->youtube_pass_given && ! args_info->youtube_user_given)
-    {
-      fprintf (stderr, "%s: '--youtube-pass' ('-p') option depends on option 'youtube-user'%s\n", prog_name, (additional_error ? additional_error : ""));
       error = 1;
     }
   if (args_info->stream_exec_given && ! args_info->stream_given)
@@ -760,8 +737,6 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
         { "no-proxy",	0, NULL, 0 },
         { "connect-timeout",	1, NULL, 0 },
         { "connect-timeout-socks",	1, NULL, 0 },
-        { "youtube-user",	1, NULL, 'u' },
-        { "youtube-pass",	1, NULL, 'p' },
         { "exec",	1, NULL, 0 },
         { "stream-exec",	1, NULL, 0 },
         { "stream",	1, NULL, 0 },
@@ -769,7 +744,7 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
         { NULL,	0, NULL, 0 }
       };
 
-      c = getopt_long (argc, argv, "hvqtCncf:O:Nu:p:", long_options, &option_index);
+      c = getopt_long (argc, argv, "hvqtCncf:O:N", long_options, &option_index);
 
       if (c == -1) break;	/* Exit from `while (1)' loop.  */
 
@@ -884,30 +859,6 @@ cmdline_parser_internal (int argc, char * const *argv, struct gengetopt_args_inf
               &(local_args_info.number_videos_given), optarg, 0, 0, ARG_NO,
               check_ambiguity, override, 0, 0,
               "number-videos", 'N',
-              additional_error))
-            goto failure;
-        
-          break;
-        case 'u':	/* login username for youtube.  */
-        
-        
-          if (update_arg( (void *)&(args_info->youtube_user_arg), 
-               &(args_info->youtube_user_orig), &(args_info->youtube_user_given),
-              &(local_args_info.youtube_user_given), optarg, 0, 0, ARG_STRING,
-              check_ambiguity, override, 0, 0,
-              "youtube-user", 'u',
-              additional_error))
-            goto failure;
-        
-          break;
-        case 'p':	/* login password for youtube, prompt if undefined.  */
-        
-        
-          if (update_arg( (void *)&(args_info->youtube_pass_arg), 
-               &(args_info->youtube_pass_orig), &(args_info->youtube_pass_given),
-              &(local_args_info.youtube_pass_given), optarg, 0, 0, ARG_STRING,
-              check_ambiguity, override, 0, 0,
-              "youtube-pass", 'p',
               additional_error))
             goto failure;
         

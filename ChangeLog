@@ -15,6 +15,7 @@
   * Rename: --title-cclass -> --cclass
   * Remove: --format=fmt6 (Youtube no longer appears to support it)
   * Remove: --format=spark (Dailymotion, use "flv" instead)
+  * Remove: --youtube-user, --youtube-pass (at least until login fix is found)
 
  Developer-visible changes:
   * Add: tests/youtube-nocookies.url

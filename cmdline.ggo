@@ -77,15 +77,6 @@ option "connect-timeout-socks"
     int typestr="S"
     default="30"
     optional
-option "youtube-user"
-    u "login username for youtube"
-    string typestr="USERNAME"
-    optional
-option "youtube-pass"
-    p "login password for youtube, prompt if undefined"
-    string typestr="PASSWORD"
-    optional
-    dependon="youtube-user"
 option "exec"
     - "execute subsequent command with extracted video"
     string typestr="COMMAND"

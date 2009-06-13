@@ -176,11 +176,6 @@ App::run() {
     }
 #endif
 
-    if (opts.youtube_user_given) {
-        throw RuntimeException("FIXME: youtube login: patches welcome");
-        //curlmgr.logIntoYoutube();
-    }
-
     std::vector<std::string> tokens;
 
     if (!opts.inputs_num) {

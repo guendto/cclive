@@ -51,7 +51,7 @@ AC_PROG_GCC_TRADITIONAL
 AC_FUNC_MALLOC
 AC_FUNC_REALLOC
 AC_TYPE_SIGNAL
-AC_CHECK_FUNCS([getpass memset strchr strcspn strspn strtol])
+AC_CHECK_FUNCS([memset strchr strcspn strspn strtol])
 
 # --with-man
 AC_ARG_WITH([man],

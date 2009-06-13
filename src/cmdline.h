@@ -71,12 +71,6 @@ struct gengetopt_args_info
   int connect_timeout_socks_arg;	/**< @brief same as above but with SOCKS proxy workaround (default='30').  */
   char * connect_timeout_socks_orig;	/**< @brief same as above but with SOCKS proxy workaround original value given at command line.  */
   const char *connect_timeout_socks_help; /**< @brief same as above but with SOCKS proxy workaround help description.  */
-  char * youtube_user_arg;	/**< @brief login username for youtube.  */
-  char * youtube_user_orig;	/**< @brief login username for youtube original value given at command line.  */
-  const char *youtube_user_help; /**< @brief login username for youtube help description.  */
-  char * youtube_pass_arg;	/**< @brief login password for youtube, prompt if undefined.  */
-  char * youtube_pass_orig;	/**< @brief login password for youtube, prompt if undefined original value given at command line.  */
-  const char *youtube_pass_help; /**< @brief login password for youtube, prompt if undefined help description.  */
   char * exec_arg;	/**< @brief execute subsequent command with extracted video.  */
   char * exec_orig;	/**< @brief execute subsequent command with extracted video original value given at command line.  */
   const char *exec_help; /**< @brief execute subsequent command with extracted video help description.  */
@@ -109,8 +103,6 @@ struct gengetopt_args_info
   unsigned int no_proxy_given ;	/**< @brief Whether no-proxy was given.  */
   unsigned int connect_timeout_given ;	/**< @brief Whether connect-timeout was given.  */
   unsigned int connect_timeout_socks_given ;	/**< @brief Whether connect-timeout-socks was given.  */
-  unsigned int youtube_user_given ;	/**< @brief Whether youtube-user was given.  */
-  unsigned int youtube_pass_given ;	/**< @brief Whether youtube-pass was given.  */
   unsigned int exec_given ;	/**< @brief Whether exec was given.  */
   unsigned int stream_exec_given ;	/**< @brief Whether stream-exec was given.  */
   unsigned int stream_given ;	/**< @brief Whether stream was given.  */
