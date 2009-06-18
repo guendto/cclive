@@ -42,6 +42,7 @@ $parser = HTML::TokeParser->new(\\$html);                           \
 $parser->get_tag('title');                                          \
 $title = $parser->get_trimmed_text;                                 \
 $title =~ s/(youtube|video|liveleak.com|sevenload|dailymotion)//gi; \
+$title =~ s/(on vimeo)//gi;                                         \
 $title =~ s/^[-\\s]+//;                                             \
 $title =~ s/\\s+$//;                                                \
 if (!$no_cclass) {                                                  \

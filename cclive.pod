@@ -238,6 +238,18 @@ The HD and HQ videos may not always be available.
   FLV-320x240  (flv/spark)
   FLV-80x60    (spak-mini)
 
+=item B<vimeo.com>
+
+Format: (flv|hd)
+
+HD should be available for the vimeo.com/hd channel videos at least.
+Note that "flv" only means "default" here, as some of the hosted
+videos are encoded (as default) in other video formats such as
+"mp4" rather than "flv".
+
+For further reading:
+  http://vimeo.com/help/hd
+
 =item B<video.google.com>
 
 =item B<www.sevenload.com>

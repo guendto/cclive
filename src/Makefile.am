@@ -24,6 +24,7 @@ host =			\
 	sevenload.cpp	\
 	liveleak.cpp	\
 	dailymotion.cpp	\
+	vimeo.cpp	\
 	google.cpp
 
 hdr =			\

@@ -97,4 +97,12 @@ class DailymotionHandler : public HostHandler {
     virtual void        parseLink();
 };
 
+// Vimeo
+
+class VimeoHandler : public HostHandler {
+    virtual const bool  isHost   (std::string url);
+    virtual void        parseId  ();
+    virtual void        parseLink();
+};
+
 #endif

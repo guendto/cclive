@@ -44,16 +44,17 @@ Util::fileExists(const std::string& path) {
 const std::string
 Util::subStr(const std::string& src,
              const std::string& begin,
-             const std::string& end)
+             const std::string& end,
+             const bool& croak_if_not_found /*=true*/)
 {
     std::string::size_type begin_pos = src.find(begin);
-    if (begin_pos == std::string::npos)
+    if (begin_pos == std::string::npos && croak_if_not_found)
         throw HostHandler::ParseException("not found: "+begin);
 
     std::string::size_type end_pos =
         src.find(end, begin_pos + begin.length());
 
-    if (end_pos == std::string::npos)
+    if (end_pos == std::string::npos && croak_if_not_found)
         throw HostHandler::ParseException("not found: "+end);
 
     std::string::size_type from = begin_pos + begin.length();

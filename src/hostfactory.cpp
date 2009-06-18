@@ -75,6 +75,10 @@ HostHandlerFactory::createHandler(const HandlerType& type) {
             std::tr1::shared_ptr<DailymotionHandler> p(new DailymotionHandler);
             return p;
         }
+        case Vimeo: {
+            std::tr1::shared_ptr<VimeoHandler> p(new VimeoHandler);
+            return p;
+        }
         default:
             break;
     }

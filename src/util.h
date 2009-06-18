@@ -25,7 +25,8 @@ public:
     static const double fileExists   (const std::string& path);
     static const std::string   subStr(const std::string& src,
                                         const std::string& begin,
-                                        const std::string& end);
+                                        const std::string& end,
+                                        const bool& croak_if_not_found=true);
     static std::string& subStrReplace(std::string& src,
                                         const std::string& what,
                                         const std::string& with);

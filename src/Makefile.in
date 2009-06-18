@@ -53,8 +53,8 @@ am__cclive_SOURCES_DIST = main.cpp app.cpp except.cpp util.cpp \
 	hosthandler.cpp opts.cpp video.cpp curl.cpp progressbar.cpp \
 	exec.cpp log.cpp cmdline.c hostfactory.cpp xsinit.c \
 	youtube.cpp break.cpp evisor.cpp sevenload.cpp liveleak.cpp \
-	dailymotion.cpp google.cpp app.h except.h util.h opts.h \
-	hosthandler.h video.h singleton.h macros.h curl.h \
+	dailymotion.cpp vimeo.cpp google.cpp app.h except.h util.h \
+	opts.h hosthandler.h video.h singleton.h macros.h curl.h \
 	progressbar.h exec.h log.h cmdline.h hostfactory.h
 @WITH_PERL_TRUE@am__objects_1 = xsinit.$(OBJEXT)
 am__objects_2 = main.$(OBJEXT) app.$(OBJEXT) except.$(OBJEXT) \
@@ -64,7 +64,7 @@ am__objects_2 = main.$(OBJEXT) app.$(OBJEXT) except.$(OBJEXT) \
 	hostfactory.$(OBJEXT) $(am__objects_1)
 am__objects_3 = youtube.$(OBJEXT) break.$(OBJEXT) evisor.$(OBJEXT) \
 	sevenload.$(OBJEXT) liveleak.$(OBJEXT) dailymotion.$(OBJEXT) \
-	google.$(OBJEXT)
+	vimeo.$(OBJEXT) google.$(OBJEXT)
 am__objects_4 =
 am_cclive_OBJECTS = $(am__objects_2) $(am__objects_3) $(am__objects_4)
 cclive_OBJECTS = $(am_cclive_OBJECTS)
@@ -166,6 +166,7 @@ host = \
 	sevenload.cpp	\
 	liveleak.cpp	\
 	dailymotion.cpp	\
+	vimeo.cpp	\
 	google.cpp
 
 host_alias = @host_alias@
@@ -309,6 +310,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sevenload.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/util.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/video.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/vimeo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xsinit.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/youtube.Po@am__quote@
 

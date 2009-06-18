@@ -6,6 +6,7 @@ EXTRA_DIST =			\
 	gvideo.url		\
 	lastfm.url		\
 	lleak.url		\
+	vimeo.url		\
 	multi.lst		\
 	youtube-hd.url		\
 	youtube-nocookie.url	\
