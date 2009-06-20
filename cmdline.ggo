@@ -31,7 +31,7 @@ option "continue"
     optional
 option "format"
     f "format format"
-    values="flv","best","mp4","fmt17","fmt18","fmt22","fmt35",
+    values="flv","best","fmt17","fmt18","fmt22","fmt35",
         # dmotion:
         "spak-mini","vp6-hq","vp6-hd","vp6","h264",
         # vimeo:

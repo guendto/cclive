@@ -2,6 +2,7 @@
 
  User-visible changes:
   * Add: Vimeo support
+  * Change: --format=mp4 is no longer accepted (see 0.4.3 known-issues)
 
 
 0.4.3
