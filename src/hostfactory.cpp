@@ -24,10 +24,12 @@
 #include "hosthandler.h"
 #include "hostfactory.h"
 
-std::tr1::shared_ptr<HostHandler>
+#define SHP std::tr1::shared_ptr
+
+SHP<HostHandler>
 HostHandlerFactory::createHandler(const std::string& url) {
     for (register int type=Youtube; type < _last_type; ++type) {
-        std::tr1::shared_ptr<HostHandler> p = createHandler((HandlerType)type);
+        SHP<HostHandler> p = createHandler((HandlerType)type);
         if (p->isHost(url))
             return p;
     }
@@ -37,50 +39,24 @@ HostHandlerFactory::createHandler(const std::string& url) {
 void
 HostHandlerFactory::printHosts() {
     for (register int type=Youtube; type < _last_type; ++type) {
-        std::tr1::shared_ptr<HostHandler> p = createHandler((HandlerType)type);
+        SHP<HostHandler> p = createHandler((HandlerType)type);
         p->isHost(""); // Sets the domain string
         std::cout << p->getVideoProperties().getDomain() << "\n";
     }
     std::cout << std::flush;
 }
 
-std::tr1::shared_ptr<HostHandler>
+SHP<HostHandler>
 HostHandlerFactory::createHandler(const HandlerType& type) {
     switch (type) {
-        case Youtube: {
-            std::tr1::shared_ptr<YoutubeHandler> p(new YoutubeHandler);
-            return p;
-        }
-        case Google: {
-            std::tr1::shared_ptr<GoogleHandler> p(new GoogleHandler);
-            return p;
-        }
-        case Break: {
-            std::tr1::shared_ptr<BreakHandler> p(new BreakHandler);
-            return p;
-        }
-        case Evisor: {
-            std::tr1::shared_ptr<EvisorHandler> p(new EvisorHandler);
-            return p;
-        }
-        case Sevenload: {
-            std::tr1::shared_ptr<SevenloadHandler> p(new SevenloadHandler);
-            return p;
-        }
-        case Liveleak: {
-            std::tr1::shared_ptr<LiveleakHandler> p(new LiveleakHandler);
-            return p;
-        }
-        case Dailymotion: {
-            std::tr1::shared_ptr<DailymotionHandler> p(new DailymotionHandler);
-            return p;
-        }
-        case Vimeo: {
-            std::tr1::shared_ptr<VimeoHandler> p(new VimeoHandler);
-            return p;
-        }
-        default:
-            break;
+        case Youtube:    return SHP<YoutubeHandler>    (new YoutubeHandler);
+        case Google:     return SHP<GoogleHandler>     (new GoogleHandler);
+        case Break:      return SHP<BreakHandler>      (new BreakHandler);
+        case Evisor:     return SHP<EvisorHandler>     (new EvisorHandler);
+        case Sevenload:  return SHP<SevenloadHandler>  (new SevenloadHandler);
+        case Liveleak:   return SHP<LiveleakHandler>   (new LiveleakHandler);
+        case Dailymotion:return SHP<DailymotionHandler>(new DailymotionHandler);
+        case Vimeo:      return SHP<VimeoHandler>      (new VimeoHandler);
     }
     throw UnsupportedHostException();
 }
