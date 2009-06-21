@@ -4,6 +4,9 @@
   * Add: Vimeo support
   * Change: --format=mp4 is no longer accepted (see 0.4.3 known-issues)
 
+ Developer-visible changes:
+  * hostfactory.cpp: tidy up switch-case
+
 
 0.4.3
 (June 14, 2009)
