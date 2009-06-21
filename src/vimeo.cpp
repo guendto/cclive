@@ -17,6 +17,7 @@
 
 #include <string>
 #include <vector>
+#include <cstring>
 
 #include "except.h"
 #include "video.h"
