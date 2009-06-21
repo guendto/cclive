@@ -80,7 +80,7 @@ std::string&
 Util::nocookieToYoutube(std::string& url) {
     // Convert alternate domain youtube-nocookie.com
     // to youtube.com domain.
-    Util::subStrReplace(url, "-nocookie", "");
+    return Util::subStrReplace(url, "-nocookie", "");
 }
 
 std::string&
