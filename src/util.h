@@ -27,6 +27,10 @@ public:
                                         const std::string& begin,
                                         const std::string& end,
                                         const bool& croak_if_not_found=true);
+    static const std::string  rsubStr(const std::string& src,
+                                        const std::string& begin,
+                                        const std::string& end,
+                                        const bool& croak_if_not_found=true);
     static std::string& subStrReplace(std::string& src,
                                         const std::string& what,
                                         const std::string& with);

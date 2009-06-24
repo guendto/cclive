@@ -1,3 +1,10 @@
+0.4.5
+
+ User-visible changes:
+  * Fix: Google mp4 support
+    1. Re-enable --format=mp4
+
+
 0.4.4
 (June 21, 2009)
 

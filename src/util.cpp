@@ -63,6 +63,28 @@ Util::subStr(const std::string& src,
     return src.substr(from, len);
 }
 
+const std::string
+Util::rsubStr(const std::string& src,
+        const std::string& begin,
+        const std::string& end,
+        const bool& croak_if_not_found /*=true*/)
+{
+    std::string::size_type end_pos = src.rfind(end);
+    if (end_pos == std::string::npos && croak_if_not_found)
+        throw HostHandler::ParseException("not found: "+end);
+
+    std::string::size_type begin_pos =
+        src.rfind(begin, end_pos - end.length());
+
+    if (begin_pos == std::string::npos && croak_if_not_found)
+        throw HostHandler::ParseException("not found: "+begin);
+
+    std::string::size_type from = begin_pos + begin.length();
+    std::string::size_type  len = end_pos - begin_pos - begin.length();
+
+    return src.substr(from, len);
+}
+
 std::string&
 Util::subStrReplace(
     std::string& src,

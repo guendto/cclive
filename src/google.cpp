@@ -48,18 +48,18 @@ GoogleHandler::parseLink() {
     const char *end   = "\\x26";
     props.setLink( Util::subStr(pageContent, begin, end) );
 
-#ifdef _1_
     // See clive project for Google mp4 video link extraction.
     // Once the same can be done without regexp, update the
     // code below. Implement --format=best also.
-    if (!strcmp(optsmgr.getOptions().format_arg, "mp4")) {
-        const char *beginMp4 = "href=\"http://vp.";
-        const char *endMp4   = "\"";
+    if (!strcmp(optsmgr.getOptions().format_arg, "mp4")
+        || !strcmp(optsmgr.getOptions().format_arg, "best"))
+    {
+        const char *begin_mp4 = "href=";
+        const char *end_mp4   = "=ck1";
         try   {
-            props.setLink("http://vp."
-                + Util::subStr(pageContent, beginMp4, endMp4));
+            props.setLink(
+                Util::rsubStr(pageContent, begin_mp4, end_mp4) +end_mp4);
         }
         catch (ParseException x) { /* default to flv */ }
     }
-#endif
 }

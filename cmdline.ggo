@@ -35,7 +35,9 @@ option "format"
         # dmotion:
         "spak-mini","vp6-hq","vp6-hd","vp6","h264",
         # vimeo:
-        "hd"
+        "hd",
+        # google:
+        "mp4"
     default="flv"
     typestr="FORMAT"
     optional
