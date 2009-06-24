@@ -186,8 +186,8 @@ Print output filename on a dedicated line before each file transfer.
 Typical use:
   % cclive URL
 
-Download mp4 format of the video from the URL:
-  % cclive -f mp4 URL
+Download fmt18 (Youtube) format of the video from the URL:
+  % cclive -f fmt18 URL
 
 Play the downloaded video with C<mplayer(1)> subsequently:
   % cclive --exec="mplayer -really-quiet %i;" URL
