@@ -16,35 +16,28 @@ Absolutely, please see the HACKING file to get started.
 Q: How is cclive different from clive?
 --------------------------------------
 
-Apart from being written in C++, some of the less used features
-are not implemented in cclive. Please see the next question for
-more on this.
+Apart from being written in C++, some of the less used features are not
+implemented in cclive. clive currently supports a slightly wider array
+of video hosts, although cclive has been catching up with it. clive also
+supports the use of a video page cache which is not available in cclive.
 
-clive requires that Perl is installed along with a number of modules
-that clive depends on. cclive on the other hand is designed to
-build (by default) with only a C++ compiler and libcurl. This means
-also that the runtime dependencies are fewer and the system footprint
-is much less for cclive than it is for clive.
+clive requires that Perl is installed along with a number of modules that
+clive depends on. cclive on the other hand is designed to build (by default)
+with only a C++ compiler and libcurl. This means also that the runtime
+dependencies are fewer and the system footprint is much less for cclive
+than it is for clive.
 
-Although Perl is very portable, cclive appears to have gained many
-ports to different platforms in a fairly short period of time. Some
-examples are the BSD, various Linux distros, Solaris, OS/2 and Mac.
-In theory at least, cclive should build and run on MSWindows with
-the help of the mingw or the cygwin projects, although we have not
-received any confirmation on this.
+Although Perl is very portable, cclive appears to have gained many ports
+to different platforms in a fairly short period of time. Some examples are
+the BSD, various Linux distros, Solaris, OS/2 and Mac. In theory at least,
+cclive should build and run on MSWindows with the help of the mingw or the
+cygwin projects, although we have not received any confirmation on this.
 
-Both projects benefit from the existence of one another. clive,
-has attracted developers familiar with the Perl programming
-language to contribute to the project, whereas those more familiar
-with C++ have contributed to the cclive project. This has then
-often lead to porting the changes from one project to another.
-
-Q: What are the missing features?
----------------------------------
-
-clive currently supports a slightly wider array of video hosts,
-although cclive has been catching up with it. clive also supports
-the use of a video page cache which is not available in cclive.
+Both projects benefit from the existence of one another. clive has attracted
+developers familiar with the Perl programming language to contribute to the
+project, whereas those more familiar with C++ have contributed to the cclive
+project. This has then often lead to porting the changes from one project to
+another. 
 
 Q: Can I use clive-utils with cclive?
 -------------------------------------
