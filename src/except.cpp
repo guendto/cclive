@@ -46,20 +46,31 @@ RuntimeException::what() const {
     errorStrings[_CCLIVE_MAX_RETURNCODES][48] = {
         "no error",
         "(reserved)", // gengetopt uses this (1)
+        "invalid option argument",
         "curl_easy_init returned null",
         "file already fully retrieved; nothing to do",
-        "invalid option argument",
-        "no support", // string unused
         "system call failed",
-        "network error", // string unused
-        "fetch failed", // string unused
-        "parse failed", // string unused
+        "no support",
+        "network error",
+        "fetch failed",
+        "parse failed",
+        "unknown error",
     };
-    std::string msg = errorStrings[rc];
+
+    ReturnCode _rc = rc;
+    if (_rc >= _CCLIVE_MAX_RETURNCODES)
+        _rc = CCLIVE_UNKNOWN;
+
+    std::string msg = errorStrings[_rc];
+
     if (error.length() > 0) {
         if (msg.length() > 0)
             msg += ": ";
+
         msg += error;
+
+        if (_rc == CCLIVE_UNKNOWN)
+            msg += ": " + static_cast<int>(rc);
     }
     return msg;
 }
