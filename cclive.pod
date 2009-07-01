@@ -289,15 +289,16 @@ Most of the program options can be defined in the ~/.ccliverc config file.
 cclive exits 0 on success, and >0 if an error occurs.
 
   CCLIVE_OK           = 0
-  CCLIVE_OPT          = 1 // cmdline option parsing failed
-  CCLIVE_OPTARG       = 2
-  CCLIVE_CURLINIT     = 3 // 
-  CCLIVE_NOTHINGTODO  = 4
-  CCLIVE_NOSUPPORT    = 5
-  CCLIVE_SYSTEM       = 6
-  CCLIVE_NET          = 7
-  CCLIVE_FETCH        = 8
-  CCLIVE_PARSE        = 9
+  CCLIVE_OPT          = 1  // cmdline option parsing error
+  CCLIVE_OPTARG       = 2  // cmdline option arg error
+  CCLIVE_CURLINIT     = 3  // curl init error
+  CCLIVE_NOTHINGTODO  = 4  // file already retrieved
+  CCLIVE_SYSTEM       = 5  // system call failed
+  CCLIVE_NOSUPPORT    = 6  // host not supported
+  CCLIVE_NET          = 7  // network error
+  CCLIVE_FETCH        = 8  // fetch error
+  CCLIVE_PARSE        = 9  // parse error
+  CCLIVE_UNKNOWN      = 10 // unknown error (see return code)
 
 =head1 OTHER
 
@@ -316,7 +317,7 @@ Front-end:
 =head1 HISTORY
 
 cclive first appeared early 2009 following the release of clive2.
-It was originally written in C but was later rewritten in C++.
+It was originally written in C but later rewritten in C++.
 
 =head1 SEE ALSO
 
