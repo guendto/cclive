@@ -28,6 +28,11 @@
 
     Disabled by default.
 
+ --enable-tests
+    Enable tests that can be run by typing "make check". Note that
+    cclive will use any settings defined in ~/.cclive while running
+    the tests.
+
 
             Prerequisites
 

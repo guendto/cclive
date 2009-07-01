@@ -744,6 +744,8 @@ libcurl_LIBS
 LIBOBJS
 WITH_MAN_TRUE
 WITH_MAN_FALSE
+ENABLE_TESTS_TRUE
+ENABLE_TESTS_FALSE
 PERL
 perl_CCOPTS
 perl_LDOPTS
@@ -756,6 +758,7 @@ enable_option_checking
 enable_dependency_tracking
 with_man
 enable_sigwinch
+enable_tests
 with_perl
 '
       ac_precious_vars='build_alias
@@ -1407,6 +1410,7 @@ Optional Features:
   --disable-dependency-tracking  speeds up one-time build
   --enable-dependency-tracking   do not reject slow dependency extractors
   --enable-sigwinch       enable SIGWINCH handling [default=no]
+  --enable-tests          enable "make check" tests [default=no]
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
@@ -7616,6 +7620,23 @@ _ACEOF
 
 fi
 
+# --enable-tests
+# Check whether --enable-tests was given.
+if test "${enable_tests+set}" = set; then
+  enableval=$enable_tests;
+else
+  enable_tests=no
+fi
+
+ if test x"$enable_tests" != "xno"; then
+  ENABLE_TESTS_TRUE=
+  ENABLE_TESTS_FALSE='#'
+else
+  ENABLE_TESTS_TRUE='#'
+  ENABLE_TESTS_FALSE=
+fi
+
+
 # --with-perl
 
 # Check whether --with-perl was given.
@@ -7839,6 +7860,13 @@ if test -z "${WITH_MAN_TRUE}" && test -z "${WITH_MAN_FALSE}"; then
   { { $as_echo "$as_me:$LINENO: error: conditional \"WITH_MAN\" was never defined.
 Usually this means the macro was only invoked conditionally." >&5
 $as_echo "$as_me: error: conditional \"WITH_MAN\" was never defined.
+Usually this means the macro was only invoked conditionally." >&2;}
+   { (exit 1); exit 1; }; }
+fi
+if test -z "${ENABLE_TESTS_TRUE}" && test -z "${ENABLE_TESTS_FALSE}"; then
+  { { $as_echo "$as_me:$LINENO: error: conditional \"ENABLE_TESTS\" was never defined.
+Usually this means the macro was only invoked conditionally." >&5
+$as_echo "$as_me: error: conditional \"ENABLE_TESTS\" was never defined.
 Usually this means the macro was only invoked conditionally." >&2;}
    { (exit 1); exit 1; }; }
 fi

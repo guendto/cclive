@@ -5,6 +5,10 @@
   * Fix: Google mp4 support
     1. Re-enable --format=mp4
 
+ Developer-visible changes:
+  * Add: --enable-tests (configure)
+    1. Enables tests run by "make check"
+
 
 0.4.4
 (June 21, 2009)

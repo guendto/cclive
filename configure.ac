@@ -71,6 +71,14 @@ if [ test x"$enable_sigwinch" = "xyes" ]; then
     AC_DEFINE([USE_SIGWINCH], [1], [Define to enable SIGWINCH handling])
 fi
 
+# --enable-tests
+AC_ARG_ENABLE([tests],
+    [AS_HELP_STRING([--enable-tests],
+        [enable "make check" tests @<:@default=no@:>@])],
+    [],
+    [enable_tests=no])
+AM_CONDITIONAL([ENABLE_TESTS], [test x"$enable_tests" != "xno"])
+
 # --with-perl
 AC_ARG_WITH([perl],
     [AS_HELP_STRING([--with-perl],
