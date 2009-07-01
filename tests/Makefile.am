@@ -1,3 +1,6 @@
+
+EXTRA_DIST= pod.pl
+
 check_PROGRAMS=	\
 youtube			\
 break			\

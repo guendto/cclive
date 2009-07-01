@@ -195,6 +195,7 @@ target_vendor = @target_vendor@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
+EXTRA_DIST = pod.pl
 TESTS = $(check_PROGRAMS) $(am__append_1)
 common = test.c test.h
 youtube_SOURCES = youtube.c $(common)
