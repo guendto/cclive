@@ -132,7 +132,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2009-06-24" "0.4.5" "cclive manual"
+.TH cclive 1 "2009-07-01" "0.4.5" "cclive manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -386,6 +386,19 @@ Most of the program options can be defined in the ~/.ccliverc config file.
 .SH "EXIT STATUS"
 .IX Header "EXIT STATUS"
 cclive exits 0 on success, and >0 if an error occurs.
+.PP
+.Vb 10
+\&  CCLIVE_OK           = 0
+\&  CCLIVE_OPT          = 1 // cmdline option parsing failed
+\&  CCLIVE_OPTARG       = 2
+\&  CCLIVE_CURLINIT     = 3 // 
+\&  CCLIVE_NOTHINGTODO  = 4
+\&  CCLIVE_NOSUPPORT    = 5
+\&  CCLIVE_SYSTEM       = 6
+\&  CCLIVE_NET          = 7
+\&  CCLIVE_FETCH        = 8
+\&  CCLIVE_PARSE        = 9
+.Ve
 .SH "OTHER"
 .IX Header "OTHER"
 Project page:

@@ -288,6 +288,17 @@ Most of the program options can be defined in the ~/.ccliverc config file.
 
 cclive exits 0 on success, and >0 if an error occurs.
 
+  CCLIVE_OK           = 0
+  CCLIVE_OPT          = 1 // cmdline option parsing failed
+  CCLIVE_OPTARG       = 2
+  CCLIVE_CURLINIT     = 3 // 
+  CCLIVE_NOTHINGTODO  = 4
+  CCLIVE_NOSUPPORT    = 5
+  CCLIVE_SYSTEM       = 6
+  CCLIVE_NET          = 7
+  CCLIVE_FETCH        = 8
+  CCLIVE_PARSE        = 9
+
 =head1 OTHER
 
 Project page:
