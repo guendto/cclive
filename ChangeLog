@@ -1,6 +1,7 @@
 0.4.5
 
  User-visible changes:
+  * Add: Return codes (see also manual page)
   * Fix: Google mp4 support
     1. Re-enable --format=mp4
 
