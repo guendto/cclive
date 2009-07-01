@@ -28,15 +28,12 @@
 int
 main (int argc, char *argv[]) {
     App app;
-
-    int rc = EXIT_SUCCESS;
     try {
         app.main(argc, argv);
         app.run();
     }
     catch (const RuntimeException& x) {
         logmgr.cerr(x, false);
-        rc = EXIT_FAILURE;
     }
     return logmgr.getRC();
 }
