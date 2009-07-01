@@ -22,6 +22,7 @@
 #include <iterator>
 #include <tr1/memory>
 
+#include "error.h"
 #include "except.h"
 #include "video.h"
 #include "singleton.h"
@@ -42,7 +43,7 @@ ExecMgr::verifyExecArgument() {
         const int l = strlen(opts.exec_arg);
         const char c = opts.exec_arg[l - 1];
         if (c != ';' && c != '+') {
-            throw RuntimeException(
+            throw RuntimeException(CCLIVE_OPTARG,
                 "--exec expression must be terminated "
                 "by either ';' or '+'");
         }

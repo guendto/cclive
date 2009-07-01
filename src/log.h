@@ -47,14 +47,18 @@ public:
     LogMgr& operator= (const LogMgr&);
     virtual ~LogMgr   ();
 public:
-    void            init();
-    std::ostream&   cout()  const;
-    std::ostream&   cerr()  const;
+    void               init();
+    std::ostream&      cout()  const;
+    std::ostream&      cerr()  const;
+    std::ostream&      cerr(const RuntimeException& except,
+                            const bool& newline=true);
+    const ReturnCode&  getRC() const;
 protected:
     void            _init();
 private:
     LogBuffer *_out, *_err;
     std::ostream *_cout, *_cerr;
+    ReturnCode rc;
 };
 
 #define logmgr LogMgr::getInstance()

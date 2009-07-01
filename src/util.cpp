@@ -21,6 +21,7 @@
 #include <algorithm>
 #include <vector>
 
+#include "error.h"
 #include "except.h"
 #include "video.h"
 #include "hosthandler.h"

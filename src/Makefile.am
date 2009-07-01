@@ -39,6 +39,7 @@ hdr =			\
 	curl.h		\
 	progressbar.h	\
 	exec.h		\
+	error.h		\
 	log.h		\
 	cmdline.h	\
 	hostfactory.h

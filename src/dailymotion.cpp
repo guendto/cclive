@@ -19,6 +19,7 @@
 #include <vector>
 #include <map>
 
+#include "error.h"
 #include "except.h"
 #include "video.h"
 #include "util.h"

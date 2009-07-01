@@ -19,6 +19,7 @@
 #include <string>
 #include <tr1/memory>
 
+#include "error.h"
 #include "except.h"
 #include "video.h"
 #include "hosthandler.h"
@@ -33,7 +34,7 @@ HostHandlerFactory::createHandler(const std::string& url) {
         if (p->isHost(url))
             return p;
     }
-    throw UnsupportedHostException();
+    throw UnsupportedHostException(url);
 }
 
 void
@@ -58,5 +59,10 @@ HostHandlerFactory::createHandler(const HandlerType& type) {
         case Dailymotion:return SHP<DailymotionHandler>(new DailymotionHandler);
         case Vimeo:      return SHP<VimeoHandler>      (new VimeoHandler);
     }
-    throw UnsupportedHostException();
+}
+
+HostHandlerFactory::
+    UnsupportedHostException::UnsupportedHostException(const std::string& url)
+        : RuntimeException(CCLIVE_NOSUPPORT, url)
+{
 }

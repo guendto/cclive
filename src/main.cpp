@@ -19,6 +19,7 @@
 #include <cstdlib>
 #include <vector>
 
+#include "error.h"
 #include "except.h"
 #include "singleton.h"
 #include "log.h"
@@ -34,8 +35,8 @@ main (int argc, char *argv[]) {
         app.run();
     }
     catch (const RuntimeException& x) {
-        logmgr.cerr() << "error: " << x.getError() << std::endl;
+        logmgr.cerr(x, false);
         rc = EXIT_FAILURE;
     }
-    return rc;
+    return logmgr.getRC();
 }

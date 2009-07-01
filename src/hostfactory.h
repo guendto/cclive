@@ -34,7 +34,10 @@ protected:
     static std::tr1::shared_ptr<HostHandler>
         createHandler(const HandlerType& type);
 public:
-    class UnsupportedHostException { };
+    class UnsupportedHostException : public RuntimeException {
+    public:
+        UnsupportedHostException(const std::string& url);
+    };
 };
 
 #endif

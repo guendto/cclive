@@ -24,11 +24,12 @@
 #include <climits>
 #include <iomanip>
 
+#include "error.h"
+#include "except.h"
 #include "util.h"
 #include "singleton.h"
 #include "cmdline.h"
 #include "opts.h"
-#include "except.h"
 #include "curl.h"
 #include "video.h"
 
@@ -223,6 +224,6 @@ VideoProperties::customOutputFilenameFormatter(
 
 VideoProperties::
     NothingToDoException::NothingToDoException()
-    : RuntimeException()
+    : RuntimeException(CCLIVE_NOTHINGTODO)
 {
 }

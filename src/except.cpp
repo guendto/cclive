@@ -17,23 +17,54 @@
 
 #include <string>
 
-#include "macros.h"
+#include "error.h"
 #include "except.h"
 
 RuntimeException::RuntimeException()
-    : error("")
+    : rc(CCLIVE_OK)
 {
 }
 
-RuntimeException::RuntimeException(const std::string& error)
-    : error(error)
+RuntimeException::RuntimeException(const ReturnCode& rc)
+    : rc(rc)
+{
+}
+
+RuntimeException::RuntimeException(
+    const ReturnCode& rc,
+    const std::string& error)
+    : rc(rc), error(error)
 {
 }
 
 RuntimeException::~RuntimeException() {
 }
 
-const std::string&
-RuntimeException::getError() const {
-    return error;
+std::string
+RuntimeException::what() const {
+    static const char
+    errorStrings[_CCLIVE_MAX_RETURNCODES][48] = {
+        "no error",
+        "(reserved)", // gengetopt uses this (1)
+        "curl_easy_init returned null",
+        "file already fully retrieved; nothing to do",
+        "invalid option argument",
+        "no support", // string unused
+        "system call failed",
+        "network error", // string unused
+        "fetch failed", // string unused
+        "parse failed", // string unused
+    };
+    std::string msg = errorStrings[rc];
+    if (error.length() > 0) {
+        if (msg.length() > 0)
+            msg += ": ";
+        msg += error;
+    }
+    return msg;
+}
+
+const ReturnCode&
+RuntimeException::getRC() const {
+    return rc;
 }

@@ -43,6 +43,7 @@
 #include <sys/types.h>
 #endif
 
+#include "error.h"
 #include "except.h"
 #include "video.h"
 #include "singleton.h"

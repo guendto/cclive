@@ -22,9 +22,10 @@
 #include <string>
 #include <vector>
 
+#include "error.h"
+#include "except.h"
 #include "cmdline.h"
 #include "util.h"
-#include "except.h"
 #include "singleton.h"
 #include "macros.h"
 #include "log.h"

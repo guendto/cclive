@@ -15,33 +15,21 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <string>
-#include <vector>
+#ifndef error_h
+#define error_h
 
-#include "error.h"
-#include "except.h"
-#include "video.h"
-#include "util.h"
-#include "hosthandler.h"
+enum ReturnCode {
+CCLIVE_OK           = 0,
+CCLIVE_GENGETOPT,
+CCLIVE_OPTARG,
+CCLIVE_CURLINIT,
+CCLIVE_NOTHINGTODO,
+CCLIVE_NOSUPPORT,
+CCLIVE_SYSTEM,
+CCLIVE_NET,
+CCLIVE_FETCH,
+CCLIVE_PARSE,
+_CCLIVE_MAX_RETURNCODES
+};
 
-const bool
-EvisorHandler::isHost(std::string url) {
-    props.setHost   ("evisor");
-    props.setDomain ("evisor.tv");
-    return Util::toLower(url).find(props.getDomain())
-        != std::string::npos;
-}
-
-void
-EvisorHandler::parseId() {
-    const char *begin = "unit_long";
-    const char *end   = "\"";
-    props.setId( Util::subStr(pageContent, begin, end) );
-}
-
-void
-EvisorHandler::parseLink() {
-    const char *begin = "file=";
-    const char *end   = "\"";
-    props.setLink( Util::subStr(pageContent, begin, end) );
-}
+#endif

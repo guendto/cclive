@@ -21,12 +21,15 @@
 class RuntimeException {
 public:
     RuntimeException();
-    RuntimeException(const std::string& error);
+    RuntimeException(const ReturnCode& rc);
+    RuntimeException(const ReturnCode& rc, const std::string& error);
     virtual ~RuntimeException();
 public:
-    const std::string& getError() const;
+    std::string         what()  const;
+    const ReturnCode&   getRC() const;
 private:
     std::string error;
+    ReturnCode rc;
 };
 
 #endif

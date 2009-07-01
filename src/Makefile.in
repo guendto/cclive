@@ -55,7 +55,7 @@ am__cclive_SOURCES_DIST = main.cpp app.cpp except.cpp util.cpp \
 	youtube.cpp break.cpp evisor.cpp sevenload.cpp liveleak.cpp \
 	dailymotion.cpp vimeo.cpp google.cpp app.h except.h util.h \
 	opts.h hosthandler.h video.h singleton.h macros.h curl.h \
-	progressbar.h exec.h log.h cmdline.h hostfactory.h
+	progressbar.h exec.h error.h log.h cmdline.h hostfactory.h
 @WITH_PERL_TRUE@am__objects_1 = xsinit.$(OBJEXT)
 am__objects_2 = main.$(OBJEXT) app.$(OBJEXT) except.$(OBJEXT) \
 	util.$(OBJEXT) hosthandler.$(OBJEXT) opts.$(OBJEXT) \
@@ -219,6 +219,7 @@ hdr = \
 	curl.h		\
 	progressbar.h	\
 	exec.h		\
+	error.h		\
 	log.h		\
 	cmdline.h	\
 	hostfactory.h

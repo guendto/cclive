@@ -33,10 +33,11 @@
 #include <unistd.h>
 #endif
 
+#include "error.h"
+#include "except.h"
 #include "singleton.h"
 #include "cmdline.h"
 #include "opts.h"
-#include "except.h"
 #include "macros.h"
 #include "video.h"
 #include "progressbar.h"
@@ -86,7 +87,7 @@ void
 CurlMgr::init() {
     curl = curl_easy_init();
     if (!curl)
-        throw RuntimeException("curl_easy_init returned NULL");
+        throw RuntimeException(CCLIVE_CURLINIT);
 
     Options opts = optsmgr.getOptions();
 
@@ -197,7 +198,7 @@ CurlMgr::queryFileLength(VideoProperties& props) {
     FILE *f = tmpfile();
     if (!f) {
         perror("tmpfile");
-        throw RuntimeException("tmpfile(3) failed");
+        throw RuntimeException(CCLIVE_SYSTEM);
     }
     logmgr.cout() << "verify video link ..." << std::flush;
 
@@ -365,6 +366,6 @@ CurlMgr::unescape(std::string& url) const {
 }
 
 CurlMgr::FetchException::FetchException(const std::string& error)
-    : RuntimeException(error)
+    : RuntimeException(CCLIVE_FETCH, error)
 {
 }

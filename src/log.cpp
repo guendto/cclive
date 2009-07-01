@@ -24,6 +24,8 @@
 #include <unistd.h>
 #endif
 
+#include "error.h"
+#include "except.h"
 #include "singleton.h"
 #include "macros.h"
 #include "cmdline.h"
@@ -79,14 +81,14 @@ LogBuffer::sync() {
 // LogMgr
 
 LogMgr::LogMgr()
-    : _out(NULL), _err(NULL), _cout(NULL), _cerr(NULL)
+    : _out(NULL), _err(NULL), _cout(NULL), _cerr(NULL), rc(CCLIVE_OK)
 {
     _init();
 }
 
     // Keeps -Weffc++ happy.
 LogMgr::LogMgr(const LogMgr&)
-    : _out(NULL), _err(NULL), _cout(NULL), _cerr(NULL)
+    : _out(NULL), _err(NULL), _cout(NULL), _cerr(NULL), rc(CCLIVE_OK)
 {
     _init();
 }
@@ -128,4 +130,23 @@ LogMgr::cout() const {
 std::ostream&
 LogMgr::cerr() const {
     return *_cerr;
+}
+
+std::ostream&
+LogMgr::cerr(const RuntimeException& except,
+             const bool& newline /*=true*/)
+{
+    if (newline)
+        *_cerr << "\n";
+
+    *_cerr << "error: " << except.what() << std::endl;
+
+    rc = except.getRC();
+
+    return *_cerr;
+}
+
+const ReturnCode&
+LogMgr::getRC() const {
+    return rc;
 }

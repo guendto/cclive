@@ -35,6 +35,7 @@
 
 #include <curl/curl.h>
 
+#include "error.h"
 #include "except.h"
 #include "singleton.h"
 #include "cmdline.h"
@@ -131,24 +132,22 @@ handleURL(const std::string& url) {
                     }
                 }
                 catch (const VideoProperties::NothingToDoException& x) {
-                    logmgr.cerr()
-                        << "\nerror: file is already fully retrieved; "
-                        << "nothing to do" << std::endl;
+                    logmgr.cerr(x);
                 }
 
                 if (opts.exec_given)
                     execmgr.append(props);
             }
             catch (const CurlMgr::FetchException& x) {
-                logmgr.cerr() << "\nerror: " << x.getError() << std::endl;
+                logmgr.cerr(x);
             }
             catch (const HostHandler::ParseException& x) {
-                logmgr.cerr() << "error: " << x.getError() << std::endl;
+                logmgr.cerr(x, false);
             }
         }
     }
     catch (const HostHandlerFactory::UnsupportedHostException& x) {
-        logmgr.cerr() << "error: no support: " << url << std::endl;
+        logmgr.cerr(x, false);
     }
 }
 

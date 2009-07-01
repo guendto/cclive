@@ -19,6 +19,7 @@
 
 #include <string>
 
+#include "error.h"
 #include "except.h"
 #include "video.h"
 #include "singleton.h"
@@ -125,6 +126,6 @@ HostHandler::getVideoProperties() const {
 
 HostHandler::
     ParseException::ParseException(const std::string& error)
-        : RuntimeException(error)
+        : RuntimeException(CCLIVE_PARSE, error)
 {
 }
