@@ -58,7 +58,10 @@ HostHandlerFactory::createHandler(const HandlerType& type) {
         case Liveleak:   return SHP<LiveleakHandler>   (new LiveleakHandler);
         case Dailymotion:return SHP<DailymotionHandler>(new DailymotionHandler);
         case Vimeo:      return SHP<VimeoHandler>      (new VimeoHandler);
+        // Keeps -Weffc++ quiet.
+        case _last_type: break;
     }
+    throw RuntimeException(CCLIVE_INTERNAL);
 }
 
 HostHandlerFactory::

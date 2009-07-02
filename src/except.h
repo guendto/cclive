@@ -28,8 +28,8 @@ public:
     std::string         what()  const;
     const ReturnCode&   getRC() const;
 private:
-    std::string error;
     ReturnCode rc;
+    std::string error;
 };
 
 #endif

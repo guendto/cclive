@@ -21,12 +21,12 @@
 #include "except.h"
 
 RuntimeException::RuntimeException()
-    : rc(CCLIVE_OK)
+    : rc(CCLIVE_OK), error("")
 {
 }
 
 RuntimeException::RuntimeException(const ReturnCode& rc)
-    : rc(rc)
+    : rc(rc), error("")
 {
 }
 
@@ -54,12 +54,12 @@ RuntimeException::what() const {
         "network error",
         "fetch failed",
         "parse failed",
-        "unknown error",
+        "internal error",
     };
 
     ReturnCode _rc = rc;
     if (_rc >= _CCLIVE_MAX_RETURNCODES)
-        _rc = CCLIVE_UNKNOWN;
+        _rc = CCLIVE_INTERNAL;
 
     std::string msg = errorStrings[_rc];
 
@@ -69,7 +69,7 @@ RuntimeException::what() const {
 
         msg += error;
 
-        if (_rc == CCLIVE_UNKNOWN)
+        if (_rc == CCLIVE_INTERNAL)
             msg += ": " + static_cast<int>(rc);
     }
     return msg;
