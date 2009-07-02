@@ -22,7 +22,7 @@ main (int argc, char *argv[]) {
         asprintf(&cmd, "../src/cclive -nf %s", formats[i]);
         rc = runtest_host(cmd, TEST_URL);
         free(cmd);
-        if (rc > 0)
+        if (rc != 0)
             break;
     }
 
