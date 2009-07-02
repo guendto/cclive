@@ -3,7 +3,7 @@ Howto: Contribute to the project
 --------------------------------
 
 Send patches to:
-* cclive@googlegroups.com
+* cclive@googlegroups.com or legatvs@gmail.com (author)
 * please use diff -u (unified format)
 
 
@@ -16,7 +16,7 @@ Howto: Add support for a new website
   cclive fetches the video page from the specified link, parses it
   looking for specific strings and constructs the video extraction
   link from these details. Additionally cclive parses video ID
-  for identifying and file naming purposes.
+  for file naming purposes.
 
   If the parsing returns the expected results, cclive then proceeds
   to download the video from the constructed video link.
@@ -32,18 +32,18 @@ Howto: Add support for a new website
   The easiest ones have their links visible in the video page HTML.
   See src/evisor.cpp for an example of this.
 
-  Often, most of the hard ones can be figured out by analyzing the
+  Often the difficult ones can be figured out by analyzing the
   flash generated TCP traffic. See:
     http://code.google.com/p/clive/issues/detail?id=6
 
   The above obviously requires that you have access to a system
-  capable of running flash.
+  capable of running flash which is not always possible.
 
   Whatever the case is, the following info summarizes how to add
   the support to the program once the details have been sorted out.
 
-  Adding support to the program
-  -----------------------------
+  Adding support to cclive
+  ------------------------
 
   * src/hosthandler.h
     - add new $host specific class derived from the HostHandler class
@@ -61,22 +61,20 @@ Howto: Add support for a new website
   * src/Makefile.am
     - append $host.cpp to "host"
 
-  * tests/$host.url
-    - add a test link for the $host
-
-  * tests/multi.lst (optional, recommended)
-    - append the above link to this file
+  * tests/$host.c
+    - implement, see others for examples
 
   * tests/Makefile.am
-    - append $host.url to "EXTRA_DIST"
+    - append tests/$host.c to check_PROGRAMS
+    - add $host_SOURCES
 
-  Test and development
-  --------------------
+  Testing
+  -------
 
-  * autoreconf && ./configure
-    - needed after modifying the *.am files above
-  
-  * make && ./src/cclive < tests/$host.url -n
-    - build and test
+  * make && ./src/cclive $test_link -n
+    - you may need to run "autoreconf && ./configure" first
+
+  * make check
+    - to make sure the tests/$host.c works OK
 
   * see "howto: contribute" at the top of this file
