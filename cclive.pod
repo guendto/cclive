@@ -298,7 +298,7 @@ cclive exits 0 on success, and >0 if an error occurs.
   CCLIVE_NET          = 7  // network error
   CCLIVE_FETCH        = 8  // fetch error
   CCLIVE_PARSE        = 9  // parse error
-  CCLIVE_UNKNOWN      = 10 // unknown error (see return code)
+  CCLIVE_INTERNAL     = 10 // internal error (see return code)
 
 =head1 OTHER
 
