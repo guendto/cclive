@@ -29,10 +29,15 @@
 #include "opts.h"
 #include "hosthandler.h"
 
-const bool
-VimeoHandler::isHost(std::string url) {
+VimeoHandler::VimeoHandler()
+    : HostHandler()
+{
     props.setHost   ("vimeo");
     props.setDomain ("vimeo.com");
+}
+
+const bool
+VimeoHandler::isHost(std::string url) {
     return Util::toLower(url).find(props.getDomain())
         != std::string::npos;
 }

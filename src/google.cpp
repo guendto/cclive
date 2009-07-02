@@ -28,10 +28,15 @@
 #include "opts.h"
 #include "hosthandler.h"
 
-const bool
-GoogleHandler::isHost(std::string url) {
+GoogleHandler::GoogleHandler()
+    : HostHandler()
+{
     props.setHost   ("google");
     props.setDomain ("video.google.");
+}
+
+const bool
+GoogleHandler::isHost(std::string url) {
     return Util::toLower(url).find(props.getDomain())
         != std::string::npos;
 }

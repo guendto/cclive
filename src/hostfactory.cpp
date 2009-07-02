@@ -41,7 +41,6 @@ void
 HostHandlerFactory::printHosts() {
     for (register int type=Youtube; type < _last_type; ++type) {
         SHP<HostHandler> p = createHandler((HandlerType)type);
-        p->isHost(""); // Sets the domain string
         std::cout << p->getVideoProperties().getDomain() << "\n";
     }
     std::cout << std::flush;
@@ -50,16 +49,16 @@ HostHandlerFactory::printHosts() {
 SHP<HostHandler>
 HostHandlerFactory::createHandler(const HandlerType& type) {
     switch (type) {
-        case Youtube:    return SHP<YoutubeHandler>    (new YoutubeHandler);
-        case Google:     return SHP<GoogleHandler>     (new GoogleHandler);
-        case Break:      return SHP<BreakHandler>      (new BreakHandler);
-        case Evisor:     return SHP<EvisorHandler>     (new EvisorHandler);
-        case Sevenload:  return SHP<SevenloadHandler>  (new SevenloadHandler);
-        case Liveleak:   return SHP<LiveleakHandler>   (new LiveleakHandler);
-        case Dailymotion:return SHP<DailymotionHandler>(new DailymotionHandler);
-        case Vimeo:      return SHP<VimeoHandler>      (new VimeoHandler);
-        // Keeps -Weffc++ quiet.
-        case _last_type: break;
+    case Youtube:    return SHP<YoutubeHandler>    (new YoutubeHandler);
+    case Google:     return SHP<GoogleHandler>     (new GoogleHandler);
+    case Break:      return SHP<BreakHandler>      (new BreakHandler);
+    case Evisor:     return SHP<EvisorHandler>     (new EvisorHandler);
+    case Sevenload:  return SHP<SevenloadHandler>  (new SevenloadHandler);
+    case Liveleak:   return SHP<LiveleakHandler>   (new LiveleakHandler);
+    case Dailymotion:return SHP<DailymotionHandler>(new DailymotionHandler);
+    case Vimeo:      return SHP<VimeoHandler>      (new VimeoHandler);
+    // Keeps -Weffc++ quiet.
+    case _last_type: break;
     }
     throw RuntimeException(CCLIVE_INTERNAL);
 }

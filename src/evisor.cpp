@@ -24,10 +24,15 @@
 #include "util.h"
 #include "hosthandler.h"
 
-const bool
-EvisorHandler::isHost(std::string url) {
+EvisorHandler::EvisorHandler()
+    : HostHandler()
+{
     props.setHost   ("evisor");
     props.setDomain ("evisor.tv");
+}
+
+const bool
+EvisorHandler::isHost(std::string url) {
     return Util::toLower(url).find(props.getDomain())
         != std::string::npos;
 }

@@ -26,10 +26,15 @@
 #include "curl.h"
 #include "hosthandler.h"
 
-const bool
-LiveleakHandler::isHost(std::string url) {
+LiveleakHandler::LiveleakHandler()
+    : HostHandler()
+{
     props.setHost   ("lleak");
     props.setDomain ("liveleak.com");
+}
+
+const bool
+LiveleakHandler::isHost(std::string url) {
     return Util::toLower(url).find(props.getDomain())
         != std::string::npos;
 }

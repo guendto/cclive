@@ -29,10 +29,15 @@
 #include "opts.h"
 #include "hosthandler.h"
 
-const bool
-DailymotionHandler::isHost(std::string url) {
+DailymotionHandler::DailymotionHandler()
+    : HostHandler()
+{
     props.setHost   ("dmotion");
     props.setDomain ("dailymotion.com");
+}
+
+const bool
+DailymotionHandler::isHost(std::string url) {
     return Util::toLower(url).find(props.getDomain())
         != std::string::npos;
 }

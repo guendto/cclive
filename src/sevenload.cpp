@@ -26,10 +26,15 @@
 #include "curl.h"
 #include "hosthandler.h"
 
-const bool
-SevenloadHandler::isHost(std::string url) {
+SevenloadHandler::SevenloadHandler()
+    : HostHandler()
+{
     props.setHost   ("7load");
     props.setDomain ("sevenload.com");
+}
+
+const bool
+SevenloadHandler::isHost(std::string url) {
     return Util::toLower(url).find(props.getDomain())
         != std::string::npos;
 }

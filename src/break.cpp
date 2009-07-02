@@ -25,10 +25,15 @@
 #include "util.h"
 #include "hosthandler.h"
 
-const bool
-BreakHandler::isHost(std::string url) {
+BreakHandler::BreakHandler()
+    : HostHandler()
+{
     props.setHost   ("break");
     props.setDomain ("break.com");
+}
+
+const bool
+BreakHandler::isHost(std::string url) {
     return Util::toLower(url).find(props.getDomain())
         != std::string::npos;
 }

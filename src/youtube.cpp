@@ -29,10 +29,15 @@
 #include "opts.h"
 #include "hosthandler.h"
 
-const bool
-YoutubeHandler::isHost(std::string url) {
+YoutubeHandler::YoutubeHandler()
+    : HostHandler()
+{
     props.setHost   ("youtube");
     props.setDomain ("youtube.com");
+}
+
+const bool
+YoutubeHandler::isHost(std::string url) {
     return Util::toLower(url).find(props.getDomain())
         != std::string::npos;
 }

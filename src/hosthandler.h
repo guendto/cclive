@@ -43,6 +43,7 @@ public:
 
 class YoutubeHandler : public HostHandler {
 public:
+    YoutubeHandler               ();
     virtual const bool  isHost   (std::string url);
     virtual void        parseId  ();
     virtual void        parseLink();
@@ -52,6 +53,7 @@ public:
 
 class GoogleHandler : public HostHandler {
 public:
+    GoogleHandler                ();
     virtual const bool  isHost   (std::string url);
     virtual void        parseId  ();
     virtual void        parseLink();
@@ -60,6 +62,8 @@ public:
 // Break
 
 class BreakHandler : public HostHandler {
+public:
+    BreakHandler                 ();
     virtual const bool  isHost   (std::string url);
     virtual void        parseId  ();
     virtual void        parseLink();
@@ -68,6 +72,8 @@ class BreakHandler : public HostHandler {
 // EvisorTv
 
 class EvisorHandler : public HostHandler {
+public:
+    EvisorHandler                ();
     virtual const bool  isHost   (std::string url);
     virtual void        parseId  ();
     virtual void        parseLink();
@@ -76,6 +82,8 @@ class EvisorHandler : public HostHandler {
 // Sevenload
 
 class SevenloadHandler : public HostHandler {
+public:
+    SevenloadHandler             ();
     virtual const bool  isHost   (std::string url);
     virtual void        parseId  ();
     virtual void        parseLink();
@@ -84,6 +92,8 @@ class SevenloadHandler : public HostHandler {
 // Liveleak
 
 class LiveleakHandler : public HostHandler {
+public:
+    LiveleakHandler              ();
     virtual const bool  isHost   (std::string url);
     virtual void        parseId  ();
     virtual void        parseLink();
@@ -92,6 +102,8 @@ class LiveleakHandler : public HostHandler {
 // Dailymotion
 
 class DailymotionHandler : public HostHandler {
+public:
+    DailymotionHandler           ();
     virtual const bool  isHost   (std::string url);
     virtual void        parseId  ();
     virtual void        parseLink();
@@ -100,6 +112,8 @@ class DailymotionHandler : public HostHandler {
 // Vimeo
 
 class VimeoHandler : public HostHandler {
+public:
+    VimeoHandler                 ();
     virtual const bool  isHost   (std::string url);
     virtual void        parseId  ();
     virtual void        parseLink();
