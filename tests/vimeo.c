@@ -15,7 +15,7 @@ main (int argc, char *argv[]) {
     char *opts;
 
     for (i=0,rc=0,opts=0; formats[i] && !rc; ++i) {
-        asprintf(&opts, "-nf %s", formats[i]);
+        asprintf(&opts, "--format=%s", formats[i]);
         rc = runtest_host(opts, "http://vimeo.com/1485507");
         free(opts);
     }

@@ -1,43 +1,22 @@
+#include "config.h"
+
 #include <stdio.h>
-#include <stdlib.h>
-#include <assert.h>
+
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 
 #include "test.h"
 
 int
 runtest_host (const char *opts, const char *url) {
-    char *cclive, *cmd;
-    int rc;
+    const char *args[] = { CCLIVE_PATH, url, "-n", opts, (char *)0 };
+    register int i = 0;
 
-    cclive  = 0;
-    cmd     = 0;
-    rc      = 0;
+    printf("# ");
+    for (i=0; args[i]; ++i)
+        printf("%s ", args[i]);
+    printf("\n");
 
-    assert(opts);
-    assert(url);
-
-    asprintf(&cclive,
-        "%s %s", CCLIVE_PATH, opts);
-
-    if (!cclive) {
-        perror("asprintf");
-        return(-1);
-    }
-
-    asprintf(&cmd, "%s \"%s\"", cclive, url);
-
-    if (!cmd) {
-        free(cclive);
-        perror("asprintf");
-        return(-1);
-    }
-
-    printf("# %s\n", cmd);
-
-    rc = system(cmd) >> 8;
-
-    free(cclive);
-    free(cmd);
-
-    return(rc);
+    return (execv(CCLIVE_PATH, args));
 }

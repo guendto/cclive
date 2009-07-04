@@ -22,13 +22,13 @@ main (int argc, char *argv[]) {
     char *opts;
 
     for (i=0,rc=0,opts=0; formats[i] && !rc; ++i) {
-        asprintf(&opts, "-nf %s", formats[i]);
+        asprintf(&opts, "--format=%s", formats[i]);
         rc = runtest_host(opts, TEST_URL);
         free(opts);
     }
 
     if (rc == 0)
-        rc = runtest_host("-n", TEST_EMBED_URL);
+        rc = runtest_host(NULL, TEST_EMBED_URL);
 
     return (rc);
 }

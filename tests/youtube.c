@@ -28,13 +28,13 @@ main (int argc, char *argv[]) {
     char *opts;
 
     for (i=0,rc=0,opts=0; formats[i] && !rc; ++i) {
-        asprintf(&opts, "-nf %s", formats[i]);
+        asprintf(&opts, "--format=%s", formats[i]);
         rc = runtest_host(opts, urls[0]);
         free(opts);
     }
 
-    for (i=0,opts=0; i<urls[i] && !rc; ++i)
-        rc = runtest_host("-n", urls[i]);
+    for (i=0,opts=0; urls[i] && !rc; ++i)
+        rc = runtest_host(NULL, urls[i]);
 
     return(rc);
 }
