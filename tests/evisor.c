@@ -6,7 +6,7 @@ int
 main (int argc, char *argv[]) {
     int rc;
     
-    rc = runtest_host("../src/cclive -n",
+    rc = runtest_host("-n",
         "http://www.evisor.tv/tv/rennstrecken/"
         "1-runde-oschersleben-14082008--6985.htm");
 

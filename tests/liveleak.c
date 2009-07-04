@@ -14,7 +14,7 @@ main (int argc, char *argv[]) {
     register int i,rc;
 
     for (i=0,rc=0; urls[i] && !rc; ++i)
-        rc = runtest_host("../src/cclive -n", urls[i]);
+        rc = runtest_host("-n", urls[i]);
 
     return(rc);
 }

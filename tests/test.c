@@ -5,15 +5,38 @@
 #include "test.h"
 
 int
-runtest_host (const char *cclive, const char *url) {
-    char *cmd;
+runtest_host (const char *opts, const char *url) {
+    char *cclive, *cmd;
     int rc;
 
+    cclive  = 0;
+    cmd     = 0;
+    rc      = 0;
+
+    assert(opts);
     assert(url);
 
+    asprintf(&cclive,
+        "../src/cclive %s", opts);
+
+    if (!cclive) {
+        perror("asprintf");
+        return(-1);
+    }
+
     asprintf(&cmd, "%s \"%s\"", cclive, url);
-    printf("RUN: %s\n", cmd);
+
+    if (!cmd) {
+        free(cclive);
+        perror("asprintf");
+        return(-1);
+    }
+
+    printf("# %s\n", cmd);
+
     rc = system(cmd) >> 8;
+
+    free(cclive);
     free(cmd);
 
     return(rc);

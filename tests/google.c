@@ -19,16 +19,16 @@ static const char
 int
 main (int argc, char *argv[]) {
     register int i,rc;
-    char *cmd;
+    char *opts;
 
-    for (i=0,rc=0,cmd=0; formats[i] && !rc; ++i) {
-        asprintf(&cmd, "../src/cclive -nf %s", formats[i]);
-        rc = runtest_host(cmd, TEST_URL);
-        free(cmd);
+    for (i=0,rc=0,opts=0; formats[i] && !rc; ++i) {
+        asprintf(&opts, "-nf %s", formats[i]);
+        rc = runtest_host(opts, TEST_URL);
+        free(opts);
     }
 
     if (rc == 0)
-        rc = runtest_host("../src/cclive -n", TEST_EMBED_URL);
+        rc = runtest_host("-n", TEST_EMBED_URL);
 
     return (rc);
 }

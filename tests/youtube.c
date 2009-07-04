@@ -25,19 +25,16 @@ urls[] = {
 int
 main (int argc, char *argv[]) {
     register int i, rc;
-    char *cmd;
+    char *opts;
 
-    for (i=0,rc=0,cmd=0; formats[i] && !rc; ++i) {
-        asprintf(&cmd, "../src/cclive -nf %s", formats[i]);
-        rc = runtest_host(cmd, urls[0]);
-        free(cmd);
+    for (i=0,rc=0,opts=0; formats[i] && !rc; ++i) {
+        asprintf(&opts, "-nf %s", formats[i]);
+        rc = runtest_host(opts, urls[0]);
+        free(opts);
     }
 
-    for (i=0,cmd=0; i<urls[i] && !rc; ++i) {
-        asprintf(&cmd, "../src/cclive -n %s", urls[i]);
-        rc = runtest_host(cmd, urls[i]);
-        free(cmd);
-    }
+    for (i=0,opts=0; i<urls[i] && !rc; ++i)
+        rc = runtest_host("-n", urls[i]);
 
     return(rc);
 }
