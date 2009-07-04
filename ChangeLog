@@ -4,6 +4,8 @@
   * Add: Return codes (see also manual page)
   * Fix: Google mp4 support
     1. Re-enable --format=mp4
+  * Fix: Misc. typos in the manual page
+  * Fix: help string for --format
 
  Developer-visible changes:
   * Add: --enable-tests (configure)
