@@ -30,7 +30,7 @@ option "continue"
     c "resume partially downloaded file"
     optional
 option "format"
-    f "format format"
+    f "download video format"
     values="flv","best","fmt17","fmt18","fmt22","fmt35",
         # dmotion:
         "spak-mini","vp6-hq","vp6-hd","vp6","h264",
