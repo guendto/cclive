@@ -12,12 +12,11 @@ NULL
 
 int
 main (int argc, char *argv[]) {
-    register int i,rc=0;
-    for (i=0; urls[i]; ++i) {
+    register int i,rc;
+
+    for (i=0,rc=0; urls[i] && !rc; ++i)
         rc = runtest_host("../src/cclive -n", urls[i]);
-        if (rc != 0)
-            break;
-    }
+
     return(rc);
 }
 
