@@ -19,6 +19,7 @@ urls[] = {
     "http://www.youtube.com/v/d0j_ONmVcXA",
     "http://www.youtube-nocookie.com/v/3PuHGKnboNY",
     "http://www.last.fm/music/Rammstein/+videos/+1-3jwXQFFLSHo",
+    NULL
 };
 
 int
