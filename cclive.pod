@@ -42,7 +42,7 @@ Print libcurl debug messages to stderr.
 Causes B<cclive> to use video page title for output video filename.
 Ignored if cclive was built --without-perl.
 
-=item B<--title-cclass=>I<CCLASS>  [req. --with-perl]
+=item B<--cclass=>I<CCLASS>  [req. --with-perl]
 
 Use character-I<class> to filter video page titles. Defaults to "\w".
 Refer to the Perl regular expressions (character classes) for more on
