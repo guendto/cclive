@@ -198,6 +198,7 @@ top_srcdir = @top_srcdir@
 EXTRA_DIST = pod.pl
 TESTS = $(check_PROGRAMS) $(am__append_1)
 common = test.c test.h
+AM_CFLAGS = -DCCLIVE_PATH="\"$(top_srcdir)/src/cclive\""
 youtube_SOURCES = youtube.c $(common)
 break_SOURCES = break.c $(common)
 liveleak_SOURCES = liveleak.c $(common)

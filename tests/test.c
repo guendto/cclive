@@ -17,7 +17,7 @@ runtest_host (const char *opts, const char *url) {
     assert(url);
 
     asprintf(&cclive,
-        "../src/cclive %s", opts);
+        "%s %s", CCLIVE_PATH, opts);
 
     if (!cclive) {
         perror("asprintf");

@@ -19,6 +19,8 @@ endif
 
 common= test.c test.h
 
+AM_CFLAGS= -DCCLIVE_PATH="\"$(top_srcdir)/src/cclive\""
+
 youtube_SOURCES=	youtube.c $(common)
 break_SOURCES=		break.c $(common)
 liveleak_SOURCES=	liveleak.c $(common)
