@@ -1,12 +1,18 @@
-SUBDIRS = src
+SUBDIRS= src
 if ENABLE_TESTS
 SUBDIRS+= tests
 endif
 
-EXTRA_DIST = cmdline.ggo cclive.pod HACKING examples/config
+EXTRA_DIST=\
+cmdline.ggo\
+cclive.pod\
+HACKING\
+examples/config\
+README.w32\
+mingw32-build.sh
 
 if WITH_MAN
-dist_man_MANS = cclive.1
+dist_man_MANS= cclive.1
 endif
 
 .PHONY: cmdline man

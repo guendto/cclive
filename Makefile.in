@@ -187,7 +187,14 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 SUBDIRS = src $(am__append_1)
-EXTRA_DIST = cmdline.ggo cclive.pod HACKING examples/config
+EXTRA_DIST = \
+cmdline.ggo\
+cclive.pod\
+HACKING\
+examples/config\
+README.w32\
+mingw32-build.sh
+
 @WITH_MAN_TRUE@dist_man_MANS = cclive.1
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
