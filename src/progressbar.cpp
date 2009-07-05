@@ -29,18 +29,23 @@
 #include <unistd.h>
 #endif
 
+#ifdef HAVE_SYS_TYPES_H
+#include <sys/types.h>
+#endif
+
+#ifdef HAVE_SYS_WAIT_H
 #include <sys/wait.h>
+#endif
+
 #include <time.h>
 
 #ifdef USE_SIGWINCH
- #include <signal.h>
+ #ifdef HAVE_SIGNAL_H
+  #include <signal.h>
+ #endif
  #ifdef HAVE_SYS_IOCTL_H
   #include <sys/ioctl.h>
  #endif
-#endif
-
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
 #endif
 
 #include "error.h"
@@ -166,6 +171,7 @@ ProgressBar::update(double now) {
           << _TOMB(total)
           << "M";
 
+#if defined(HAVE_FORK) && defined(HAVE_WORKING_FORK)
         Options opts = optsmgr.getOptions();
         if (opts.stream_given
             && opts.stream_exec_given
@@ -174,6 +180,7 @@ ProgressBar::update(double now) {
             if (percent >= opts.stream_arg)
                 forkStreamer();
         }
+#endif
     }
 
     std::stringstream tmp;
@@ -222,11 +229,13 @@ ProgressBar::finish() {
     done = true;
     update(-1);
 
+#ifdef HAVE_SYS_WAIT_H
     if (streamFlag) {
         if (waitpid(streamPid, 0, 0) != streamPid)
             perror("waitpid");
         streamFlag = false;
     }
+#endif
 }
 
 const std::string
@@ -267,8 +276,8 @@ ProgressBar::getUnit(double& rate) const {
 
 void
 ProgressBar::forkStreamer() {
-    streamFlag = true;
 #if defined(HAVE_FORK) && defined(HAVE_WORKING_FORK)
+    streamFlag = true;
     if ((streamPid = fork()) < 0)
         perror("fork");
     else if (streamPid == 0) {

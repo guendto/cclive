@@ -132,7 +132,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2009-07-02" "0.4.5" "cclive manual"
+.TH cclive 1 "2009-07-06" "0.4.5" "cclive manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -167,8 +167,8 @@ Print libcurl debug messages to stderr.
 .IX Item "-t, --title  [req. --with-perl]"
 Causes \fBcclive\fR to use video page title for output video filename.
 Ignored if cclive was built \-\-without\-perl.
-.IP "\fB\-\-title\-cclass=\fR\fI\s-1CCLASS\s0\fR  [req. \-\-with\-perl]" 4
-.IX Item "--title-cclass=CCLASS  [req. --with-perl]"
+.IP "\fB\-\-cclass=\fR\fI\s-1CCLASS\s0\fR  [req. \-\-with\-perl]" 4
+.IX Item "--cclass=CCLASS  [req. --with-perl]"
 Use character\-\fIclass\fR to filter video page titles. Defaults to \*(L"\ew\*(R".
 Refer to the Perl regular expressions (character classes) for more on
 this.
@@ -371,9 +371,9 @@ mp4 may not always be available.
 Format: flv
 .SH "FILES"
 .IX Header "FILES"
-.ie n .IP "\fB\fB$HOME\fB/.ccliverc\fR" 4
-.el .IP "\fB\f(CB$HOME\fB/.ccliverc\fR" 4
-.IX Item "$HOME/.ccliverc"
+.ie n .IP "\fB\fB$CCLIVE_HOME\fB|$HOME/.ccliverc\fR" 4
+.el .IP "\fB\f(CB$CCLIVE_HOME\fB|$HOME/.ccliverc\fR" 4
+.IX Item "$CCLIVE_HOME|$HOME/.ccliverc"
 .Vb 5
 \& agent      = Furball/1.0       # \-\-agent=...
 \& proxy      = http://foo:1234   # \-\-proxy=...

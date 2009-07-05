@@ -15,11 +15,15 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// A peculiar thing this one. If commented out or included *after* "config.h",
+// mingw32-g++ returns: error: '::malloc' has not been declared
+#include <cstdlib>
+
 #include "config.h"
 
-#ifndef HAVE_REALLOC
-#error Cannot compile without realloc() support
-#endif
+//#ifndef HAVE_REALLOC
+//#error Cannot compile without realloc() support
+//#endif
 
 #include <iostream>
 #include <iomanip>

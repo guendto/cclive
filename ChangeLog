@@ -8,6 +8,8 @@
   * Fix: help string for --format
 
  Developer-visible changes:
+  * Add: mingw32-build.sh
+    1. Covers the steps on FreeBSD although should port easily
   * Add: --enable-tests (configure)
     1. Enables tests run by "make check"
 

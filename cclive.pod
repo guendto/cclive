@@ -272,7 +272,7 @@ Format: flv
 
 =over 4
 
-=item B<$HOME/.ccliverc>
+=item B<$CCLIVE_HOME|$HOME/.ccliverc>
 
  agent      = Furball/1.0       # --agent=...
  proxy      = http://foo:1234   # --proxy=...

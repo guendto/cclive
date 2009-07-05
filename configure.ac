@@ -35,7 +35,7 @@ PKG_CHECK_MODULES(libcurl, libcurl >= 7.18.0)
 # Checks for header files.
 AC_HEADER_STDC
 AC_HEADER_SYS_WAIT
-AC_CHECK_HEADERS([stdlib.h string.h sys/ioctl.h unistd.h])
+AC_CHECK_HEADERS([stdlib.h string.h sys/ioctl.h unistd.h sys/wait.h signal.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_HEADER_STDBOOL
@@ -48,8 +48,8 @@ AC_CHECK_TYPES([ptrdiff_t])
 AC_FUNC_ERROR_AT_LINE
 AC_FUNC_FORK
 AC_PROG_GCC_TRADITIONAL
-AC_FUNC_MALLOC
-AC_FUNC_REALLOC
+#AC_FUNC_MALLOC
+#AC_FUNC_REALLOC
 AC_TYPE_SIGNAL
 AC_CHECK_FUNCS([memset strchr strcspn strspn strtol])
 
@@ -103,6 +103,14 @@ if [ test x"$with_perl" = "xyes" ]; then
     AC_DEFINE([WITH_PERL], [1], [Whether Perl is embedded])
 fi
 AM_CONDITIONAL([WITH_PERL], [test x"$with_perl" != "xno"])
+
+# Check host.
+case "$host" in
+    *-*-mingw32*)
+        AC_DEFINE([HOST_W32], [1], [...])
+        host_w32=true
+    ;;
+esac
 
 AC_CONFIG_FILES([Makefile
                  src/Makefile

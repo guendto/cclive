@@ -15,6 +15,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifdef HOST_W32
+// A peculiar thing this one. If commented out or included *after* "config.h",
+// mingw32-g++ returns: error: '::malloc' has not been declared
+#include <cstdlib>
+#endif
+
 #include "config.h"
 
 #include <string>

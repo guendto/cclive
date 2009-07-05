@@ -6,6 +6,9 @@
  See also:
    http://code.google.com/p/cclive/wiki/HowtoInstall
 
+ cclive is confirmed to cross-compile on FreeBSD for MSWindows using
+ mingw32. See the mingw32-build.sh for tips.
+
 
             Optional Packages
 

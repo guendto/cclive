@@ -15,10 +15,15 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifdef HOST_W32
+// A peculiar thing this one. If commented out or included *after* "config.h",
+// mingw32-g++ returns: error: '::malloc' has not been declared
+#include <cstdlib>
+#endif
+
 #include "config.h"
 
 #include <iostream>
-#include <cstdlib>
 #include <string>
 #include <vector>
 
@@ -42,11 +47,20 @@ OptionsMgr::~OptionsMgr() {
 
 void
 OptionsMgr::init(int argc, char **argv) {
-    bool noconf = true;
-    char *home  = NULL;
 
-    if ((home = getenv("HOME")) != NULL) {
-        std::string path = std::string(home) + "/.ccliverc";
+    char *home = getenv("CCLIVE_HOME");
+    if (!home)
+        home = getenv("HOME");
+
+    std::string fname = "/.ccliverc";
+#ifdef HOST_W32
+    fname = "\\ccliverc";
+#endif
+
+    bool no_conf = true;
+
+    if (home) {
+        path = std::string(home) + fname;
 
         if (Util::fileExists(path) > 0) {
             cmdline_parser_params *pp =
@@ -61,18 +75,13 @@ OptionsMgr::init(int argc, char **argv) {
                 pp->override        = 1;
                 pp->check_required  = 1;
                 if (cmdline_parser_ext(argc, argv, &opts, pp) == 0)
-                    noconf = false;
+                    no_conf = false;
             }
             _FREE(pp);
         }
     }
-    else {
-        logmgr.cerr() << "warn: HOME environment variable not defined\n"
-            << "warn: config file will not be parsed"
-            << std::endl;
-    }
 
-    if (noconf) {
+    if (no_conf) {
         if (cmdline_parser(argc, argv, &opts) != 0)
             throw RuntimeException();
     }
@@ -81,4 +90,9 @@ OptionsMgr::init(int argc, char **argv) {
 const Options&
 OptionsMgr::getOptions() const {
     return opts;
+}
+
+const std::string&
+OptionsMgr::getPath() const {
+    return path;
 }

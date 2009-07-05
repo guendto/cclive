@@ -15,6 +15,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifdef HOST_W32
+// A peculiar thing this one. If commented out or included *after* "config.h",
+// mingw32-g++ returns: error: '::malloc' has not been declared
+#include <cstdlib>
+#endif
+
 #include "config.h"
 
 #ifndef HAVE_PTRDIFF_T
@@ -170,7 +176,16 @@ App::run() {
 #ifndef WITH_PERL
     if (opts.title_given) {
         logmgr.cerr()
-            << "warn: built --without-perl; ignoring --title*"
+            << "warn: built without perl: ignoring --title"
+            << std::endl;
+    }
+#endif
+
+#ifdef HOST_W32
+    if (opts.stream_exec_given) {
+        logmgr.cerr()
+            << "warn: system does not support fork/waitpid: "
+            << "ignoring --stream-exec"
             << std::endl;
     }
 #endif
@@ -255,6 +270,7 @@ There is NO WARRANTY, to the extent permitted by law.";
     std::cout << "--with-perl ";
 #endif
     std::cout
+        << "\n\tConfig: " << optsmgr.getPath()
         << "\n\nReport bugs: <http://code.google.com/p/cclive/issues/>"
         << std::endl;
 }

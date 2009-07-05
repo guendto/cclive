@@ -1,0 +1,26 @@
+
+README for MSWindows users
+--------------------------
+
+* due to the limitations of mingw32 and mswindows, some of the
+features are not available on this platform -- cclive will spew
+out warnings for those features
+
+* cclive checks for CCLIVE_HOME and HOME environment variable,
+if neither is defined, cclive ignores config file parsing
+
+* cclive looks for a "ccliverc" file, not .ccliverc as it
+does on unix-like systems
+
+* For example:
+
+  set CCLIVE_HOME c:\cclive
+
+  type c:\cclive\ccliverc
+  proxy = http://foo:1234
+  debug
+
+  c:\cclive\cclive.exe --version
+  ... (should print)
+  Config: c:\cclive\ccliverc
+  ...

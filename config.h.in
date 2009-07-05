@@ -12,10 +12,6 @@
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
 
-/* Define to 1 if your system has a GNU libc compatible `malloc' function, and
-   to 0 otherwise. */
-#undef HAVE_MALLOC
-
 /* Define to 1 if you have the <memory.h> header file. */
 #undef HAVE_MEMORY_H
 
@@ -25,9 +21,8 @@
 /* Define to 1 if the system has the type `ptrdiff_t'. */
 #undef HAVE_PTRDIFF_T
 
-/* Define to 1 if your system has a GNU libc compatible `realloc' function,
-   and to 0 otherwise. */
-#undef HAVE_REALLOC
+/* Define to 1 if you have the <signal.h> header file. */
+#undef HAVE_SIGNAL_H
 
 /* Define to 1 if stdbool.h conforms to C99. */
 #undef HAVE_STDBOOL_H
@@ -65,7 +60,7 @@
 /* Define to 1 if you have the <sys/types.h> header file. */
 #undef HAVE_SYS_TYPES_H
 
-/* Define to 1 if you have <sys/wait.h> that is POSIX.1 compatible. */
+/* Define to 1 if you have the <sys/wait.h> header file. */
 #undef HAVE_SYS_WAIT_H
 
 /* Define to 1 if you have the <unistd.h> header file. */
@@ -85,6 +80,9 @@
 
 /* Define to 1 if the system has the type `_Bool'. */
 #undef HAVE__BOOL
+
+/* ... */
+#undef HOST_W32
 
 /* Name of package */
 #undef PACKAGE
@@ -154,14 +152,8 @@
 /* Define to empty if `const' does not conform to ANSI C. */
 #undef const
 
-/* Define to rpl_malloc if the replacement function should be used. */
-#undef malloc
-
 /* Define to `int' if <sys/types.h> does not define. */
 #undef pid_t
-
-/* Define to rpl_realloc if the replacement function should be used. */
-#undef realloc
 
 /* Define to `unsigned int' if <sys/types.h> does not define. */
 #undef size_t
