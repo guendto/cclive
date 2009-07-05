@@ -44,9 +44,9 @@ struct gengetopt_args_info
   const char *no_cclass_help; /**< @brief do not apply character class (--title) help description.  */
   const char *no_extract_help; /**< @brief do not extract video help description.  */
   const char *continue_help; /**< @brief resume partially downloaded file help description.  */
-  char * format_arg;	/**< @brief format format (default='flv').  */
-  char * format_orig;	/**< @brief format format original value given at command line.  */
-  const char *format_help; /**< @brief format format help description.  */
+  char * format_arg;	/**< @brief download video format (default='flv').  */
+  char * format_orig;	/**< @brief download video format original value given at command line.  */
+  const char *format_help; /**< @brief download video format help description.  */
   char * output_video_arg;	/**< @brief write video to file.  */
   char * output_video_orig;	/**< @brief write video to file original value given at command line.  */
   const char *output_video_help; /**< @brief write video to file help description.  */
