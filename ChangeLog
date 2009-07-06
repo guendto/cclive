@@ -8,7 +8,8 @@
   * Fix: help string for --format
 
  Developer-visible changes:
-  * Add: mingw32-build.sh
+  * Add: pod2html check: make man now generates also html if pod2html is found
+  * Add: mingw32-build.sh, mingw32-package.sh
     1. Covers the steps on FreeBSD although should port easily
   * Add: --enable-tests (configure)
     1. Enables tests run by "make check"
