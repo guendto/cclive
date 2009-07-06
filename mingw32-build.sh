@@ -12,7 +12,7 @@
 # 5) Run this script.
 
 # Edit as needed:
-curl_config="/usr/home/legatvs/src/curl-7.19.4/dist/bin/curl-config"
+curl_config="/usr/home/legatvs/src/curl-7.19.5/dist/bin/curl-config"
 
 export libcurl_CFLAGS="`$curl_config --cflags`"
 export libcurl_LIBS="`$curl_config --libs`"
