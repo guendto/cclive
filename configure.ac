@@ -29,6 +29,10 @@ AC_PATH_PROG(POD2MAN, pod2man, no)
 AM_CONDITIONAL([HAVE_POD2MAN], [test x"$POD2MAN" != "xno"])
 AC_SUBST(POD2MAN)
 
+AC_PATH_PROG(POD2HTML, pod2html, no)
+AM_CONDITIONAL([HAVE_POD2HTML], [test x"$POD2HTML" != "xno"])
+AC_SUBST(POD2HTML)
+
 # Checks for libraries.
 PKG_CHECK_MODULES(libcurl, libcurl >= 7.18.0)
 

@@ -9,7 +9,8 @@ cclive.pod\
 HACKING\
 examples/config\
 README.w32\
-mingw32-build.sh
+mingw32-build.sh\
+mingw32-package.sh
 
 if WITH_MAN
 dist_man_MANS= cclive.1
@@ -29,4 +30,10 @@ if HAVE_POD2MAN
 		 -s 1 -r @VERSION@ cclive.pod cclive.1
 else
 	@echo "error: configure did not find 'pod2man' command'
+endif
+if HAVE_POD2HTML
+	@POD2HTML@ --title="cclive manual" \
+		--infile=cclive.pod --outfile=cclive.1.html
+else
+	@echo "error: configure did not find 'pod2html' command'
 endif

@@ -122,6 +122,7 @@ PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
 PERL = @PERL@
 PKG_CONFIG = @PKG_CONFIG@
+POD2HTML = @POD2HTML@
 POD2MAN = @POD2MAN@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -193,7 +194,8 @@ cclive.pod\
 HACKING\
 examples/config\
 README.w32\
-mingw32-build.sh
+mingw32-build.sh\
+mingw32-package.sh
 
 @WITH_MAN_TRUE@dist_man_MANS = cclive.1
 all: config.h
@@ -694,6 +696,9 @@ man:
 @HAVE_POD2MAN_TRUE@	@POD2MAN@ -c "cclive manual" -n cclive \
 @HAVE_POD2MAN_TRUE@		 -s 1 -r @VERSION@ cclive.pod cclive.1
 @HAVE_POD2MAN_FALSE@	@echo "error: configure did not find 'pod2man' command'
+@HAVE_POD2HTML_TRUE@	@POD2HTML@ --title="cclive manual" \
+@HAVE_POD2HTML_TRUE@		--infile=cclive.pod --outfile=cclive.1.html
+@HAVE_POD2HTML_FALSE@	@echo "error: configure did not find 'pod2html' command'
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
