@@ -94,6 +94,7 @@ Note that "%t" is replaced only if B<cclive> was built --with-perl and
 the B<--title> option was used. Otherwise "%t" equals to "%i".
 
 Example:
+
   % cclive --filename-format="%i.%s" -n URL
 
 =item B<--emit-csv>
@@ -114,6 +115,7 @@ Identify B<cclive> as I<string> to the HTTP servers.
 Use I<address> for HTTP proxy.
 
 Example:
+
   --proxy=http://foo:1234
 
 B<cclive> uses the value of the http_proxy environment variable by default
@@ -142,6 +144,7 @@ If the specifier "%i" appears anywhere in I<command> name or the arguments
 it is replaced by the pathname of the extracted video file.
 
 Example:
+
   % cclive --exec="mplayer -really-quiet %i;" URL
 
 =item B<--exec=>I<COMMAND>B<+>
@@ -168,6 +171,7 @@ Execute the I<command> defined with the B<--stream-exec> option when the
 file transfer progress reaches I<percent>.
 
 Example:
+
   % cclive --stream-exec="mplayer -really-quiet %i" --stream=20 URL
 
 Note that B<cclive> does nothing to check if there is enough data buffered
@@ -184,19 +188,24 @@ Print output filename on a dedicated line before each file transfer.
 =head1 EXAMPLES
 
 Typical use:
+
   % cclive URL
 
 Download fmt18 (Youtube) format of the video from the URL:
+
   % cclive -f fmt18 URL
 
 Play the downloaded video with C<mplayer(1)> subsequently:
+
   % cclive --exec="mplayer -really-quiet %i;" URL
 
 Extract audio to an mp3 file from the downloaded video with C<ffmpeg(1)>:
+
   % cclive --exec="ffmpeg -i %i %i.mp3;" URL
 
 Start playing the video being downloaded with C<mplayer(1)> when the transfer
 reaches 20%:
+
   % cclive --stream-exec="mplayer -really-quiet %i" --stream=20 URL
 
 =head1 FORMATS
@@ -248,6 +257,7 @@ videos are encoded (as default) in other video formats such as
 "mp4" rather than "flv".
 
 For further reading:
+
   http://vimeo.com/help/hd
 
 =item B<video.google.com>
@@ -303,15 +313,19 @@ cclive exits 0 on success, and >0 if an error occurs.
 =head1 OTHER
 
 Project page:
+
   http://code.google.com/p/cclive/
 
 Development code:
+
   % git clone git://repo.or.cz/cclive.git
 
 Release announcements:
+
   http://freshmeat.net/projects/cclive/
 
 Front-end:
+
   http://code.google.com/p/abby/
 
 =head1 HISTORY

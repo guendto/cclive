@@ -1,0 +1,480 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>cclive manual</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:legatvs@tbird.nonet" />
+</head>
+
+<body style="background-color: white">
+
+
+<!-- INDEX BEGIN -->
+<div name="index">
+<p><a name="__index__"></a></p>
+
+<ul>
+
+	<li><a href="#name">NAME</a></li>
+	<li><a href="#synopsis">SYNOPSIS</a></li>
+	<li><a href="#description">DESCRIPTION</a></li>
+	<li><a href="#options">OPTIONS</a></li>
+	<li><a href="#examples">EXAMPLES</a></li>
+	<li><a href="#formats">FORMATS</a></li>
+	<li><a href="#files">FILES</a></li>
+	<li><a href="#exit_status">EXIT STATUS</a></li>
+	<li><a href="#other">OTHER</a></li>
+	<li><a href="#history">HISTORY</a></li>
+	<li><a href="#see_also">SEE ALSO</a></li>
+	<li><a href="#author">AUTHOR</a></li>
+</ul>
+
+<hr name="index" />
+</div>
+<!-- INDEX END -->
+
+<p>
+</p>
+<hr />
+<h1><a name="name">NAME</a></h1>
+<p>cclive - video extraction utility for the flash dismissing hordes</p>
+<p>
+</p>
+<hr />
+<h1><a name="synopsis">SYNOPSIS</a></h1>
+<p>cclive [options] [url...]</p>
+<p>
+</p>
+<hr />
+<h1><a name="description">DESCRIPTION</a></h1>
+<p>cclive is command line video extraction utility similar to clive but with
+lower requirements.</p>
+<p>
+</p>
+<hr />
+<h1><a name="options">OPTIONS</a></h1>
+<dl>
+<dt><strong><a name="h_help" class="item"><strong>-h, --help</strong></a></strong>
+
+<dd>
+<p>Print help and exit.</p>
+</dd>
+</li>
+<dt><strong><a name="v_version" class="item"><strong>-v, --version</strong></a></strong>
+
+<dd>
+<p>Print version and exit.</p>
+</dd>
+</li>
+<dt><strong><a name="hosts" class="item"><strong>--hosts</strong></a></strong>
+
+<dd>
+<p>Print a list of supported hosts to stdout and exit.</p>
+</dd>
+</li>
+<dt><strong><a name="q_quiet" class="item"><strong>-q, --quiet</strong></a></strong>
+
+<dd>
+<p>Turn off all output.</p>
+</dd>
+</li>
+<dt><strong><a name="debug" class="item"><strong>--debug</strong></a></strong>
+
+<dd>
+<p>Print libcurl debug messages to stderr.</p>
+</dd>
+</li>
+<dt><strong><a name="t_title_req_with_perl" class="item"><strong>-t, --title</strong>  [req. --with-perl]</a></strong>
+
+<dd>
+<p>Causes <strong>cclive</strong> to use video page title for output video filename.
+Ignored if cclive was built --without-perl.</p>
+</dd>
+</li>
+<dt><strong><a name="cclass_cclass_req_with_perl" class="item"><strong>--cclass=</strong><em>CCLASS</em>  [req. --with-perl]</a></strong>
+
+<dd>
+<p>Use character-<em>class</em> to filter video page titles. Defaults to &quot;\w&quot;.
+Refer to the Perl regular expressions (character classes) for more on
+this.</p>
+</dd>
+</li>
+<dt><strong><a name="c_no_cclass" class="item"><strong>-C, --no-cclass</strong></a></strong>
+
+<dd>
+<p>Negates the use of the character-class.</p>
+</dd>
+</li>
+<dt><strong><a name="n_no_extract" class="item"><strong>-n, --no-extract</strong></a></strong>
+
+<dd>
+<p>Do not extract any videos.</p>
+</dd>
+</li>
+<dt><strong><a name="c_continue" class="item"><strong>-c, --continue</strong></a></strong>
+
+<dd>
+<p>Resume a partially downloaded video file. May not work with some of the HTTP
+servers. Be sure to read the <a href="#formats">FORMATS</a> section.</p>
+</dd>
+</li>
+<dt><strong><a name="f_format_format" class="item"><strong>-f, --format=</strong><em>FORMAT</em></a></strong>
+
+<dd>
+<p>Extract <em>format</em> of the video. If <em>format</em> is set to <em>best</em>, cclive
+will attempt to extract the best video quality.</p>
+</dd>
+<dd>
+<p>Note that the <em>format</em> is strictly host specific. See the <a href="#formats">FORMATS</a>
+section for more on this.</p>
+</dd>
+</li>
+<dt><strong><a name="o_output_video_file" class="item"><strong>-O, --output-video=</strong><em>FILE</em></a></strong>
+
+<dd>
+<p>Write extracted video to <em>file</em>. Causes <strong>cclive</strong> to overwrite the existing
+file unless the file is fully retrieved already.</p>
+</dd>
+<dd>
+<p>Do <em>not</em> use this when extracting multiple videos on one run.</p>
+</dd>
+</li>
+<dt><strong><a name="n_number_videos" class="item"><strong>-N, --number-videos</strong></a></strong>
+
+<dd>
+<p>Add a numeric prefix to the video filenames.</p>
+</dd>
+</li>
+<dt><strong><a name="filename_format_string" class="item"><strong>--filename-format=</strong><em>STRING</em></a></strong>
+
+<dd>
+<p>Use <em>string</em> to format the output video filename. If any of the following
+specifiers appear anywhere in the <em>string</em>, they will be replaced accordingly:</p>
+</dd>
+<dd>
+<pre>
+  %t = page title
+  %i = id
+  %h = host string
+  %s = file suffix</pre>
+</dd>
+<dd>
+<p>Note that &quot;%t&quot; is replaced only if <strong>cclive</strong> was built --with-perl and
+the <strong>--title</strong> option was used. Otherwise &quot;%t&quot; equals to &quot;%i&quot;.</p>
+</dd>
+<dd>
+<p>Example:</p>
+</dd>
+<dd>
+<pre>
+  % cclive --filename-format=&quot;%i.%s&quot; -n URL</pre>
+</dd>
+</li>
+<dt><strong><a name="emit_csv" class="item"><strong>--emit-csv</strong></a></strong>
+
+<dd>
+<p>Emit video details in CSV to stdout. Implies <strong>--no-extract</strong>.
+Ignores <strong>--quiet</strong>.</p>
+</dd>
+</li>
+<dt><strong><a name="limit_rate_amount" class="item"><strong>--limit-rate=</strong><em>AMOUNT</em></a></strong>
+
+<dd>
+<p>Limit download speed to <em>amount</em> (KB/s). Does not limit video page fetches.</p>
+</dd>
+</li>
+<dt><strong><a name="agent_string" class="item"><strong>--agent=</strong><em>STRING</em></a></strong>
+
+<dd>
+<p>Identify <strong>cclive</strong> as <em>string</em> to the HTTP servers.</p>
+</dd>
+</li>
+<dt><strong><a name="proxy_address" class="item"><strong>--proxy=</strong><em>ADDRESS</em></a></strong>
+
+<dd>
+<p>Use <em>address</em> for HTTP proxy.</p>
+</dd>
+<dd>
+<p>Example:</p>
+</dd>
+<dd>
+<pre>
+  --proxy=<a href="http://foo:1234">http://foo:1234</a></pre>
+</dd>
+<dd>
+<p><strong>cclive</strong> uses the value of the http_proxy environment variable by default
+if it is defined.</p>
+</dd>
+</li>
+<dt><strong><a name="no_proxy" class="item"><strong>--no-proxy</strong></a></strong>
+
+<dd>
+<p>Do not use proxy, even if http_proxy environment variable is defined.</p>
+</dd>
+</li>
+<dt><strong><a name="connect_timeout_seconds" class="item"><strong>--connect-timeout=</strong><em>SECONDS</em></a></strong>
+
+<dd>
+<p>Maximum time in <em>seconds</em> allowed for connection to take. Defaults to 30.</p>
+</dd>
+</li>
+<dt><strong><a name="connect_timeout_socks_seconds" class="item"><strong>--connect-timeout-socks=</strong><em>SECONDS</em></a></strong>
+
+<dd>
+<p>Same as above but tries to workaround the SOCKS proxy bug in cURL. Defaults
+to 30.</p>
+</dd>
+</li>
+<dt><strong><a name="exec_command" class="item"><strong>--exec=</strong><em>COMMAND</em><strong>;</strong></a></strong>
+
+<dd>
+<p>Execute <em>command</em> after each file transfer. Optional arguments may be passed
+to the command. The expression must be terminated by a semicolon (&quot;;&quot;).</p>
+</dd>
+<dd>
+<p>If the specifier &quot;%i&quot; appears anywhere in <em>command</em> name or the arguments
+it is replaced by the pathname of the extracted video file.</p>
+</dd>
+<dd>
+<p>Example:</p>
+</dd>
+<dd>
+<pre>
+  % cclive --exec=&quot;mplayer -really-quiet %i;&quot; URL</pre>
+</dd>
+</li>
+<dt><strong><a name="exec_command2" class="item"><strong>--exec=</strong><em>COMMAND</em><strong>+</strong></a></strong>
+
+<dd>
+<p>Same as <strong>--exec</strong>, except that &quot;%i&quot; is replaced with as many pathnames
+as possible for the invocation of <em>command</em>.</p>
+</dd>
+</li>
+<dt><strong><a name="stream_exec_command" class="item"><strong>--stream-exec=</strong><em>COMMAND</em></a></strong>
+
+<dd>
+<p>Execute <em>command</em> when file transfer progress reaches <em>percent</em> as defined
+with the <strong>--stream</strong> option. If a &quot;%i&quot; specifier is used in the <em>command</em>
+expression, it will be replaced with video pathname.</p>
+</dd>
+<dd>
+<p><strong>cclive</strong> forks the <em>command</em> and continues with the transfer. Note that
+<strong>cclive</strong> will not continue to download another file before the child process
+terminates.</p>
+</dd>
+<dd>
+<p>Some players and formats may not work properly with this feature.
+<code>mplayer(1)</code> is known to work properly with most flv videos.</p>
+</dd>
+</li>
+<dt><strong><a name="stream_percent" class="item"><strong>--stream=</strong><em>PERCENT</em></a></strong>
+
+<dd>
+<p>Execute the <em>command</em> defined with the <strong>--stream-exec</strong> option when the
+file transfer progress reaches <em>percent</em>.</p>
+</dd>
+<dd>
+<p>Example:</p>
+</dd>
+<dd>
+<pre>
+  % cclive --stream-exec=&quot;mplayer -really-quiet %i&quot; --stream=20 URL</pre>
+</dd>
+<dd>
+<p>Note that <strong>cclive</strong> does nothing to check if there is enough data buffered
+before forking the stream process. If the transfer rate drops significantly
+after starting the process and it runs out of data, <strong>cclive</strong> does nothing
+to fix this.</p>
+</dd>
+</li>
+<dt><strong><a name="print_fname" class="item"><strong>--print-fname</strong></a></strong>
+
+<dd>
+<p>Print output filename on a dedicated line before each file transfer.</p>
+</dd>
+</li>
+</dl>
+<p>
+</p>
+<hr />
+<h1><a name="examples">EXAMPLES</a></h1>
+<p>Typical use:</p>
+<pre>
+  % cclive URL</pre>
+<p>Download fmt18 (Youtube) format of the video from the URL:</p>
+<pre>
+  % cclive -f fmt18 URL</pre>
+<p>Play the downloaded video with <code>mplayer(1)</code> subsequently:</p>
+<pre>
+  % cclive --exec=&quot;mplayer -really-quiet %i;&quot; URL</pre>
+<p>Extract audio to an mp3 file from the downloaded video with <code>ffmpeg(1)</code>:</p>
+<pre>
+  % cclive --exec=&quot;ffmpeg -i %i %i.mp3;&quot; URL</pre>
+<p>Start playing the video being downloaded with <code>mplayer(1)</code> when the transfer
+reaches 20%:</p>
+<pre>
+  % cclive --stream-exec=&quot;mplayer -really-quiet %i&quot; --stream=20 URL</pre>
+<p>
+</p>
+<hr />
+<h1><a name="formats">FORMATS</a></h1>
+<p>clive extracts flv (typically 320x240) by default from all
+supported websites. Some of them support also other formats.</p>
+<dl>
+<dt><strong><a name="www_youtube_com" class="item"><strong>www.youtube.com</strong></a></strong>
+
+<dt><strong><a name="www_last_fm" class="item"><strong>www.last.fm</strong></a></strong>
+
+<dd>
+<p>Format: (flv|fmt17|fmt18|fmt22|fmt35)</p>
+</dd>
+<dd>
+<p>flv (fmt34) and fmt18 (mp4) are usually available. Others may be
+available. At the time of writing this, the following formats
+are recognized by both clive and Youtube:</p>
+</dd>
+<dd>
+<pre>
+  fmt22 .. mp4    (1280x720) (HD)
+  fmt35 .. flv     (640x380) (HQ)
+  fmt18 .. mp4     (480x360)
+  flv   .. fmt34   (320x180)
+  fmt17 .. 3gp     (176x144)</pre>
+</dd>
+<dd>
+<p>Some of the videos available at last.fm are actually Youtube
+videos. clive can handle such video links.</p>
+</dd>
+</li>
+<dt><strong><a name="www_dailymotion_com" class="item"><strong>www.dailymotion.com</strong></a></strong>
+
+<dd>
+<p>Format: (flv|spak-mini|vp6-hq|vp6-hd|vp6|h264)</p>
+</dd>
+<dd>
+<p>The HD and HQ videos may not always be available.</p>
+</dd>
+<dd>
+<pre>
+  ON2-1280x720 (vp6-hd)
+  ON2-848x480  (vp6-hq)
+  H264-512x384 (h264)
+  ON2-320x240  (vp6)
+  FLV-320x240  (flv/spark)
+  FLV-80x60    (spak-mini)</pre>
+</dd>
+</li>
+<dt><strong><a name="vimeo_com" class="item"><strong>vimeo.com</strong></a></strong>
+
+<dd>
+<p>Format: (flv|hd)</p>
+</dd>
+<dd>
+<p>HD should be available for the vimeo.com/hd channel videos at least.
+Note that &quot;flv&quot; only means &quot;default&quot; here, as some of the hosted
+videos are encoded (as default) in other video formats such as
+&quot;mp4&quot; rather than &quot;flv&quot;.</p>
+</dd>
+<dd>
+<p>For further reading:</p>
+</dd>
+<dd>
+<pre>
+  <a href="http://vimeo.com/help/hd">http://vimeo.com/help/hd</a></pre>
+</dd>
+</li>
+<dt><strong><a name="video_google_com" class="item"><strong>video.google.com</strong></a></strong>
+
+<dd>
+<p>Format: (flv|mp4)</p>
+</dd>
+<dd>
+<p>mp4 may not always be available.</p>
+</dd>
+</li>
+<dt><strong><a name="www_sevenload_com" class="item"><strong>www.sevenload.com</strong></a></strong>
+
+<dt><strong><a name="www_break_com" class="item"><strong>www.break.com</strong></a></strong>
+
+<dt><strong><a name="www_liveleak_com" class="item"><strong>www.liveleak.com</strong></a></strong>
+
+<dt><strong><a name="www_evisor_tv" class="item"><strong>www.evisor.tv</strong></a></strong>
+
+<dd>
+<p>Format: flv</p>
+</dd>
+</li>
+</dl>
+<p>
+</p>
+<hr />
+<h1><a name="files">FILES</a></h1>
+<dl>
+<dt><strong><a name="_cclive_home__home__ccliverc" class="item"><strong>$CCLIVE_HOME|$HOME/.ccliverc</strong></a></strong>
+
+<dd>
+<pre>
+ agent      = Furball/1.0       # --agent=...
+ proxy      = <a href="http://foo:1234">http://foo:1234</a>   # --proxy=...
+ limit-rate = 50                # --limit-rate=...
+ title                          # --title
+ no-extract                     # --no-extract</pre>
+</dd>
+<dd>
+<p>Most of the program options can be defined in the ~/.ccliverc config file.</p>
+</dd>
+</dl>
+<p>
+</p>
+<hr />
+<h1><a name="exit_status">EXIT STATUS</a></h1>
+<p>cclive exits 0 on success, and &gt;0 if an error occurs.</p>
+<pre>
+  CCLIVE_OK           = 0
+  CCLIVE_OPT          = 1  // cmdline option parsing error
+  CCLIVE_OPTARG       = 2  // cmdline option arg error
+  CCLIVE_CURLINIT     = 3  // curl init error
+  CCLIVE_NOTHINGTODO  = 4  // file already retrieved
+  CCLIVE_SYSTEM       = 5  // system call failed
+  CCLIVE_NOSUPPORT    = 6  // host not supported
+  CCLIVE_NET          = 7  // network error
+  CCLIVE_FETCH        = 8  // fetch error
+  CCLIVE_PARSE        = 9  // parse error
+  CCLIVE_INTERNAL     = 10 // internal error (see return code)</pre>
+<p>
+</p>
+<hr />
+<h1><a name="other">OTHER</a></h1>
+<p>Project page:</p>
+<pre>
+  <a href="http://code.google.com/p/cclive/">http://code.google.com/p/cclive/</a></pre>
+<p>Development code:</p>
+<pre>
+  % git clone git://repo.or.cz/cclive.git</pre>
+<p>Release announcements:</p>
+<pre>
+  <a href="http://freshmeat.net/projects/cclive/">http://freshmeat.net/projects/cclive/</a></pre>
+<p>Front-end:</p>
+<pre>
+  <a href="http://code.google.com/p/abby/">http://code.google.com/p/abby/</a></pre>
+<p>
+</p>
+<hr />
+<h1><a name="history">HISTORY</a></h1>
+<p>cclive first appeared early 2009 following the release of clive2.
+It was originally written in C but later rewritten in C++.</p>
+<p>
+</p>
+<hr />
+<h1><a name="see_also">SEE ALSO</a></h1>
+<p><code>clive(1)</code></p>
+<p>
+</p>
+<hr />
+<h1><a name="author">AUTHOR</a></h1>
+<p>Toni Gundogdu &lt;<a href="mailto:legatvs@gmail.com">legatvs@gmail.com</a>&gt;</p>
+
+</body>
+
+</html>

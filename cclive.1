@@ -214,7 +214,10 @@ Note that \*(L"%t\*(R" is replaced only if \fBcclive\fR was built \-\-with\-perl
 the \fB\-\-title\fR option was used. Otherwise \*(L"%t\*(R" equals to \*(L"%i\*(R".
 .Sp
 Example:
-  % cclive \-\-filename\-format=\*(L"%i.%s\*(R" \-n \s-1URL\s0
+.Sp
+.Vb 1
+\&  % cclive \-\-filename\-format="%i.%s" \-n URL
+.Ve
 .IP "\fB\-\-emit\-csv\fR" 4
 .IX Item "--emit-csv"
 Emit video details in \s-1CSV\s0 to stdout. Implies \fB\-\-no\-extract\fR.
@@ -230,7 +233,10 @@ Identify \fBcclive\fR as \fIstring\fR to the \s-1HTTP\s0 servers.
 Use \fIaddress\fR for \s-1HTTP\s0 proxy.
 .Sp
 Example:
-  \-\-proxy=http://foo:1234
+.Sp
+.Vb 1
+\&  \-\-proxy=http://foo:1234
+.Ve
 .Sp
 \&\fBcclive\fR uses the value of the http_proxy environment variable by default
 if it is defined.
@@ -253,7 +259,10 @@ If the specifier \*(L"%i\*(R" appears anywhere in \fIcommand\fR name or the argu
 it is replaced by the pathname of the extracted video file.
 .Sp
 Example:
-  % cclive \-\-exec=\*(L"mplayer \-really\-quiet \f(CW%i\fR;\*(R" \s-1URL\s0
+.Sp
+.Vb 1
+\&  % cclive \-\-exec="mplayer \-really\-quiet %i;" URL
+.Ve
 .IP "\fB\-\-exec=\fR\fI\s-1COMMAND\s0\fR\fB+\fR" 4
 .IX Item "--exec=COMMAND+"
 Same as \fB\-\-exec\fR, except that \*(L"%i\*(R" is replaced with as many pathnames
@@ -276,7 +285,10 @@ Execute the \fIcommand\fR defined with the \fB\-\-stream\-exec\fR option when th
 file transfer progress reaches \fIpercent\fR.
 .Sp
 Example:
-  % cclive \-\-stream\-exec=\*(L"mplayer \-really\-quiet \f(CW%i\fR\*(R" \-\-stream=20 \s-1URL\s0
+.Sp
+.Vb 1
+\&  % cclive \-\-stream\-exec="mplayer \-really\-quiet %i" \-\-stream=20 URL
+.Ve
 .Sp
 Note that \fBcclive\fR does nothing to check if there is enough data buffered
 before forking the stream process. If the transfer rate drops significantly
@@ -288,20 +300,35 @@ Print output filename on a dedicated line before each file transfer.
 .SH "EXAMPLES"
 .IX Header "EXAMPLES"
 Typical use:
-  % cclive \s-1URL\s0
+.PP
+.Vb 1
+\&  % cclive URL
+.Ve
 .PP
 Download fmt18 (Youtube) format of the video from the \s-1URL:\s0
-  % cclive \-f fmt18 \s-1URL\s0
+.PP
+.Vb 1
+\&  % cclive \-f fmt18 URL
+.Ve
 .PP
 Play the downloaded video with \f(CWmplayer(1)\fR subsequently:
-  % cclive \-\-exec=\*(L"mplayer \-really\-quiet \f(CW%i\fR;\*(R" \s-1URL\s0
+.PP
+.Vb 1
+\&  % cclive \-\-exec="mplayer \-really\-quiet %i;" URL
+.Ve
 .PP
 Extract audio to an mp3 file from the downloaded video with \f(CWffmpeg(1)\fR:
-  % cclive \-\-exec=\*(L"ffmpeg \-i \f(CW%i\fR \f(CW%i\fR.mp3;\*(R" \s-1URL\s0
+.PP
+.Vb 1
+\&  % cclive \-\-exec="ffmpeg \-i %i %i.mp3;" URL
+.Ve
 .PP
 Start playing the video being downloaded with \f(CWmplayer(1)\fR when the transfer
 reaches 20%:
-  % cclive \-\-stream\-exec=\*(L"mplayer \-really\-quiet \f(CW%i\fR\*(R" \-\-stream=20 \s-1URL\s0
+.PP
+.Vb 1
+\&  % cclive \-\-stream\-exec="mplayer \-really\-quiet %i" \-\-stream=20 URL
+.Ve
 .SH "FORMATS"
 .IX Header "FORMATS"
 clive extracts flv (typically 320x240) by default from all
@@ -352,7 +379,10 @@ videos are encoded (as default) in other video formats such as
 \&\*(L"mp4\*(R" rather than \*(L"flv\*(R".
 .Sp
 For further reading:
-  http://vimeo.com/help/hd
+.Sp
+.Vb 1
+\&  http://vimeo.com/help/hd
+.Ve
 .IP "\fBvideo.google.com\fR" 4
 .IX Item "video.google.com"
 Format: (flv|mp4)
@@ -403,16 +433,28 @@ cclive exits 0 on success, and >0 if an error occurs.
 .SH "OTHER"
 .IX Header "OTHER"
 Project page:
-  http://code.google.com/p/cclive/
+.PP
+.Vb 1
+\&  http://code.google.com/p/cclive/
+.Ve
 .PP
 Development code:
-  % git clone git://repo.or.cz/cclive.git
+.PP
+.Vb 1
+\&  % git clone git://repo.or.cz/cclive.git
+.Ve
 .PP
 Release announcements:
-  http://freshmeat.net/projects/cclive/
+.PP
+.Vb 1
+\&  http://freshmeat.net/projects/cclive/
+.Ve
 .PP
 Front-end:
-  http://code.google.com/p/abby/
+.PP
+.Vb 1
+\&  http://code.google.com/p/abby/
+.Ve
 .SH "HISTORY"
 .IX Header "HISTORY"
 cclive first appeared early 2009 following the release of clive2.
