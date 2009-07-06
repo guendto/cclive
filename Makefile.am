@@ -37,3 +37,8 @@ if HAVE_POD2HTML
 else
 	@echo "error: configure did not find 'pod2html' command'
 endif
+
+local-clean:
+	@rm -rf *.tmp *.core *.html
+
+distclean-local: local-clean
