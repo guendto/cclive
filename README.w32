@@ -24,3 +24,6 @@ does on unix-like systems
   ... (should print)
   Config: c:\cclive\ccliverc
   ...
+
+* See also cclive.1.html which is a HTML conversion of the
+cclive.1 manual page file.
