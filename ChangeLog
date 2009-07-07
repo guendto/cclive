@@ -1,3 +1,10 @@
+Version 0.4.6
+
+ Developer-visible changes:
+  * Fix: src/opts.cpp: missing #include <cstdlib>
+    1. Detected on Ubuntu (gcc 4.3.3)
+
+
 0.4.5
 (July 6, 2009)
 
