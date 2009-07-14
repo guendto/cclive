@@ -316,17 +316,13 @@ Project page:
 
   http://code.google.com/p/cclive/
 
-Development code:
-
-  % git clone git://repo.or.cz/cclive.git
-
-Release announcements:
-
-  http://freshmeat.net/projects/cclive/
-
 Front-end:
 
   http://code.google.com/p/abby/
+
+Development code:
+
+  % git clone git://repo.or.cz/cclive.git
 
 =head1 HISTORY
 
