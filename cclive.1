@@ -309,7 +309,7 @@ Typical use:
 \&  % cclive URL
 .Ve
 .PP
-Download fmt18 (Youtube) format of the video from the \s-1URL:\s0
+Download fmt18/mp4 (Youtube) format of the video from the \s-1URL:\s0
 .PP
 .Vb 1
 \&  % cclive \-f fmt18 URL
@@ -318,13 +318,13 @@ Download fmt18 (Youtube) format of the video from the \s-1URL:\s0
 Play the downloaded video with \f(CWmplayer(1)\fR subsequently:
 .PP
 .Vb 1
-\&  % cclive \-\-exec="mplayer \-really\-quiet %i;" URL
+\&  % cclive \-\-exec="mplayer \-really\-quiet %i;" \-e URL
 .Ve
 .PP
 Extract audio to an mp3 file from the downloaded video with \f(CWffmpeg(1)\fR:
 .PP
 .Vb 1
-\&  % cclive \-\-exec="ffmpeg \-i %i %i.mp3;" URL
+\&  % cclive \-\-exec="ffmpeg \-i %i %i.mp3;" \-e URL
 .Ve
 .PP
 Start playing the video being downloaded with \f(CWmplayer(1)\fR when the transfer
@@ -335,8 +335,8 @@ reaches 20%:
 .Ve
 .SH "FORMATS"
 .IX Header "FORMATS"
-clive extracts flv (typically 320x240) by default from all
-supported websites. Some of them support also other formats.
+cclive extracts flv (typically 320x240) by default from all supported
+websites. Some of the websites support additional formats.
 .IP "\fBwww.youtube.com\fR" 4
 .IX Item "www.youtube.com"
 .PD 0
@@ -432,6 +432,36 @@ Format: flv
 .Ve
 .Sp
 Most of the program options can be defined in the ~/.ccliverc config file.
+.SH "UNICODE"
+.IX Header "UNICODE"
+Q: Why am I seeing mangled video filenames?
+.PP
+A: Make sure you have set appropriate locale. For example (in csh/urxvt terms):
+  % setenv \s-1LANG\s0 en_US.UTF\-8
+  % urxvt &
+.PP
+You can get a list of supported locales on your typical Unix-like system with:
+  % locale \-a
+.SH "DEBUGGING"
+.IX Header "DEBUGGING"
+Some tips that we have found useful:
+.PP
+.Vb 3
+\&  % clive \-\-debug URL
+\&  Causes I<libcurl> to dump log messages to stderr.
+\&  This data includes HTTP headers etc.
+\&
+\&  % clive \-n URL
+\&  Do not actually download the video. Causes clive
+\&  to fetch, parse and verify video link. It will not
+\&  proceed to download it.
+.Ve
+.SH "BUGS"
+.IX Header "BUGS"
+Sure to be some.
+.PP
+Please report them to the issue tracker at:
+  <http://code.google.com/p/cclive/issues/>
 .SH "EXIT STATUS"
 .IX Header "EXIT STATUS"
 cclive exits 0 on success, and >0 if an error occurs.

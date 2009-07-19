@@ -196,17 +196,17 @@ Typical use:
 
   % cclive URL
 
-Download fmt18 (Youtube) format of the video from the URL:
+Download fmt18/mp4 (Youtube) format of the video from the URL:
 
   % cclive -f fmt18 URL
 
 Play the downloaded video with C<mplayer(1)> subsequently:
 
-  % cclive --exec="mplayer -really-quiet %i;" URL
+  % cclive --exec="mplayer -really-quiet %i;" -e URL
 
 Extract audio to an mp3 file from the downloaded video with C<ffmpeg(1)>:
 
-  % cclive --exec="ffmpeg -i %i %i.mp3;" URL
+  % cclive --exec="ffmpeg -i %i %i.mp3;" -e URL
 
 Start playing the video being downloaded with C<mplayer(1)> when the transfer
 reaches 20%:
@@ -215,8 +215,8 @@ reaches 20%:
 
 =head1 FORMATS
 
-clive extracts flv (typically 320x240) by default from all
-supported websites. Some of them support also other formats.
+cclive extracts flv (typically 320x240) by default from all supported
+websites. Some of the websites support additional formats.
 
 =over 4
 
@@ -311,6 +311,37 @@ Format: flv
 Most of the program options can be defined in the ~/.ccliverc config file.
 
 =back
+
+=head1 UNICODE
+
+Q: Why am I seeing mangled video filenames?
+
+A: Make sure you have set appropriate locale. For example (in csh/urxvt terms):
+  % setenv LANG en_US.UTF-8
+  % urxvt &
+
+You can get a list of supported locales on your typical Unix-like system with:
+  % locale -a
+
+=head1 DEBUGGING
+
+Some tips that we have found useful:
+
+  % clive --debug URL
+  Causes I<libcurl> to dump log messages to stderr.
+  This data includes HTTP headers etc.
+
+  % clive -n URL
+  Do not actually download the video. Causes clive
+  to fetch, parse and verify video link. It will not
+  proceed to download it.
+
+=head1 BUGS
+
+Sure to be some.
+
+Please report them to the issue tracker at:
+  <http://code.google.com/p/cclive/issues/>
 
 =head1 EXIT STATUS
 
