@@ -82,9 +82,13 @@ option "connect-timeout-socks"
     default="30"
     optional
 option "exec"
-    - "execute subsequent command with extracted video"
+    - "command to run when transfer finishes"
     string typestr="COMMAND"
     optional
+option "exec-run"
+    e "invoke command defined with --exec"
+    optional
+    dependon="exec"
 option "stream-exec"
     - "stream command to be executed"
     string typestr="COMMAND"

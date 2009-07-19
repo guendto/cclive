@@ -145,12 +145,17 @@ it is replaced by the pathname of the extracted video file.
 
 Example:
 
-  % cclive --exec="mplayer -really-quiet %i;" URL
+  % cclive --exec="mplayer -really-quiet %i;" -e URL
 
 =item B<--exec=>I<COMMAND>B<+>
 
 Same as B<--exec>, except that "%i" is replaced with as many pathnames
 as possible for the invocation of I<command>.
+
+=item B<-e, --exec-run>
+
+Causes cclive to invoke the command defined with B<--exec> when
+transfer finishes.
 
 =item B<--stream-exec=>I<COMMAND>
 

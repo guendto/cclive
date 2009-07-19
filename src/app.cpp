@@ -141,7 +141,7 @@ handleURL(const std::string& url) {
                     logmgr.cerr(x);
                 }
 
-                if (opts.exec_given)
+                if (opts.exec_run_given) 
                     execmgr.append(props);
             }
             catch (const CurlMgr::FetchException& x) {
@@ -221,7 +221,7 @@ App::run() {
 #endif
     std::for_each(tokens.begin(), tokens.end(), handleURL);
 
-    if (opts.exec_given)
+    if (opts.exec_run_given)
         execmgr.playQueue();
 }
 
