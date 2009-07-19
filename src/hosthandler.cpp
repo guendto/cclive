@@ -44,14 +44,25 @@ static PerlInterpreter *perl;
 
 static const char script[] =
 "                                                                   \
+binmode(STDOUT, \":utf8\");                                         \
+\
+use Encode qw(from_to decode_utf8 FB_CROAK);                        \
 use HTML::TokeParser;                                               \
+\
+from_to($html, $1, \"utf8\")                                        \
+    if ($html =~ /charset=(.*?)\"/);                                \
+\
+$html = Encode::decode_utf8($html, Encode::FB_CROAK);               \
+\
 $parser = HTML::TokeParser->new(\\$html);                           \
 $parser->get_tag('title');                                          \
+\
 $title = $parser->get_trimmed_text;                                 \
 $title =~ s/(youtube|video|liveleak.com|sevenload|dailymotion)//gi; \
 $title =~ s/(on vimeo)//gi;                                         \
 $title =~ s/^[-\\s]+//;                                             \
 $title =~ s/\\s+$//;                                                \
+\
 if (!$no_cclass) {                                                  \
     $re = $cclass || qr|\\w|;                                       \
     $title = join('', $title =~ /$re/g);                            \

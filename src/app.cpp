@@ -256,6 +256,8 @@ There is NO WARRANTY, to the extent permitted by law.";
     curl_version_info_data *c =
         curl_version_info(CURLVERSION_NOW);
 
+    char *locale = getenv("LANG");
+
     std::cout
         << CMDLINE_PARSER_PACKAGE   << " version "
         << CMDLINE_PARSER_VERSION   << " with libcurl version "
@@ -271,6 +273,7 @@ There is NO WARRANTY, to the extent permitted by law.";
 #endif
     std::cout
         << "\n\tConfig: " << optsmgr.getPath()
+        << "\n\tLocale: " << locale
         << "\n\nReport bugs: <http://code.google.com/p/cclive/issues/>"
         << std::endl;
 }
