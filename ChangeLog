@@ -1,6 +1,7 @@
 Version 0.4.6
 
  User-visible changes:
+  * Change: --format=(mp4|hd|hq|3gp) for youtube
   * Change:  pair --exec with --exec-run, the latter now triggers the former
 
  Developer-visible changes:

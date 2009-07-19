@@ -236,6 +236,19 @@ are recognized by both clive and Youtube:
   flv   .. fmt34   (320x180)
   fmt17 .. 3gp     (176x144)
 
+Note that you can use alternative format IDs for Youtube:
+
+  fmt22 .. hd
+  fmt35 .. hq
+  fmt18 .. mp4
+  fmt17 .. 3gp
+
+For example:
+  % cclive -f hd URL
+
+Which is equivalent to:
+  % cclive -f fmt22 URL
+
 Some of the videos available at last.fm are actually Youtube
 videos. clive can handle such video links.
 

@@ -69,13 +69,22 @@ YoutubeHandler::parseLink() {
           <<  Util::subStr(pageContent, "\"fmt_map\": \"", "/");
     }
     else {
-        if (!strcmp(opts.format_arg, "fmt18"))
+
+        /*
+        fmt22 = HD[1280x720]
+        fmt35 = HQ [640x380]
+        fmt17 = 3gp[176x144]
+        fmt18 = mp4[480x360]
+        fmt34 = flv[320x180] */
+
+        std::string fmt = opts.format_arg;
+        if (fmt == "fmt18" || fmt == "mp4")
             b << "&fmt=18";
-        else if (!strcmp(opts.format_arg, "fmt35"))
+        else if (fmt == "fmt35" || fmt == "hq")
             b << "&fmt=35";
-        else if (!strcmp(opts.format_arg, "fmt22"))
+        else if (fmt == "fmt22" || fmt == "hd")
             b << "&fmt=22";
-        else if (!strcmp(opts.format_arg, "fmt17"))
+        else if (fmt == "fmt17" || fmt == "3gp")
             b << "&fmt=17";
     }
     props.setLink( b.str() );
