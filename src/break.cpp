@@ -30,6 +30,7 @@ BreakHandler::BreakHandler()
 {
     props.setHost   ("break");
     props.setDomain ("break.com");
+    props.setFormats("flv");
 }
 
 const bool

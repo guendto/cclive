@@ -34,6 +34,7 @@ VimeoHandler::VimeoHandler()
 {
     props.setHost   ("vimeo");
     props.setDomain ("vimeo.com");
+    props.setFormats("flv|hd");
 }
 
 const bool

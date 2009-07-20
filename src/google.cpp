@@ -33,6 +33,7 @@ GoogleHandler::GoogleHandler()
 {
     props.setHost   ("google");
     props.setDomain ("video.google.");
+    props.setFormats("flv|mp4");
 }
 
 const bool

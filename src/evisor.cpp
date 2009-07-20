@@ -29,6 +29,7 @@ EvisorHandler::EvisorHandler()
 {
     props.setHost   ("evisor");
     props.setDomain ("evisor.tv");
+    props.setFormats("flv");
 }
 
 const bool

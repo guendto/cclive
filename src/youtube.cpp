@@ -34,6 +34,7 @@ YoutubeHandler::YoutubeHandler()
 {
     props.setHost   ("youtube");
     props.setDomain ("youtube.com");
+    props.setFormats("flv|3gp|mp4|hq|hd");
 }
 
 const bool

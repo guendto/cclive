@@ -41,7 +41,11 @@ void
 HostHandlerFactory::printHosts() {
     for (register int type=Youtube; type < _last_type; ++type) {
         SHP<HostHandler> p = createHandler((HandlerType)type);
-        std::cout << p->getVideoProperties().getDomain() << "\n";
+        VideoProperties props = p->getVideoProperties();
+        std::cout << props.getDomain()
+                  << "\t"
+                  << props.getFormats()
+                  << "\n";
     }
     std::cout << std::flush;
 }

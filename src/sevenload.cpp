@@ -31,6 +31,7 @@ SevenloadHandler::SevenloadHandler()
 {
     props.setHost   ("7load");
     props.setDomain ("sevenload.com");
+    props.setFormats("flv");
 }
 
 const bool

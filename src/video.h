@@ -28,6 +28,7 @@ public:
     void setLink        (std::string);
     void setHost        (const std::string&);
     void setDomain      (const std::string&);
+    void setFormats     (const std::string&);
     void setTitle       (const std::string&);
     void setLength      (const double);
     void setContentType (const std::string&);
@@ -37,6 +38,7 @@ public:
     const std::string&  getLink         () const;
     const std::string&  getHost         () const;
     const std::string&  getDomain       () const;
+    const std::string&  getFormats      () const;
     const double        getLength       () const;
     const double        getInitial      () const;
     const std::string&  getContentType  () const;
@@ -51,6 +53,7 @@ private:
     std::string link;
     std::string host;
     std::string domain;
+    std::string formats;
     std::string title;
     double      length;
     double      initial;
