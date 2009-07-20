@@ -22,7 +22,7 @@ main (int argc, char *argv[]) {
     char *opts;
 
     for (i=0,rc=0,opts=0; formats[i] && !rc; ++i) {
-        asprintf(&opts, "--format=%s", formats[i]);
+        asprintf(&opts, "-f %s", formats[i]);
         rc = runtest_host(opts, TEST_URL);
         free(opts);
     }
