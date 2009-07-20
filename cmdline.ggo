@@ -41,7 +41,7 @@ option "format"
         # google:
         "mp4",
         # golem:
-        "ipod"
+        "high", "ipod"
     default="flv"
     typestr="FORMAT"
     optional
