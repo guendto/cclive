@@ -33,7 +33,7 @@
 #include "opts.h"
 
 OptionsMgr::OptionsMgr()
-    : opts(Options())
+    : opts(Options()), path("")
 {
 }
 

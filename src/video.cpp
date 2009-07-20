@@ -40,10 +40,9 @@
 #include "video.h"
 
 VideoProperties::VideoProperties()
-    : id(""),         link(""),     host(""),    domain(""),
-      title(""),      length(0),    initial(0),  contentType(""),
-      suffix("flv"),  filename("")
-      
+    : id(""),          link(""),      host(""),    domain(""),
+      formats("flv"),  title(""),     length(0),   initial(0),
+      contentType(""), suffix("flv"), filename("")
 {
 }
 
