@@ -19,10 +19,11 @@ rm -rf dist cclive-$VERSION $ARCHIVE
 make install-strip \
 && make man \
 && cp $CURL_DLL dist/bin \
-&& cp ChangeLog dist/ \
-&& cp COPYING dist/COPYING \
-&& cp $CURL_COPYING dist/COPYING.curl \
-&& cp README README.w32 dist \
+&& cp ChangeLog dist/ChangeLog.txt \
+&& cp COPYING dist/COPYING.txt \
+&& cp $CURL_COPYING dist/COPYING.curl.txt \
+&& cp README dist/README.txt \
+&& cp README.w32 dist/README.w32.txt \
 && cp cclive.1.html dist \
 && rm -r dist/share \
 && mv dist $DISTDIR \
