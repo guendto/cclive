@@ -25,6 +25,7 @@ host =			\
 	liveleak.cpp	\
 	dailymotion.cpp	\
 	vimeo.cpp	\
+	golem.cpp	\
 	google.cpp
 
 hdr =			\

@@ -119,4 +119,14 @@ public:
     virtual void        parseLink();
 };
 
+// Golem
+
+class GolemHandler : public HostHandler {
+public:
+    GolemHandler                 ();
+    virtual const bool  isHost   (std::string url);
+    virtual void        parseId  ();
+    virtual void        parseLink();
+};
+
 #endif

@@ -86,11 +86,11 @@ VideoProperties::setContentType(const std::string& contentType) {
         suffix = contentType.substr(pos+1);
         // set to "flv" for these:
         if (suffix.find("octet") != std::string::npos
-            || suffix.find("x-flv") != std::string::npos
             || suffix.find("plain") != std::string::npos)
         {
             suffix = "flv";
         }
+        Util::subStrReplace(suffix, "x-", "");
     }
 
     // We have all needed info now.

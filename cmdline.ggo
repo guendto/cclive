@@ -39,7 +39,9 @@ option "format"
         # vimeo:
         "hd",
         # google:
-        "mp4"
+        "mp4",
+        # golem:
+        "ipod"
     default="flv"
     typestr="FORMAT"
     optional

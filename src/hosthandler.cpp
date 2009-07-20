@@ -58,7 +58,7 @@ static const char script[] =
 
 "$title = $parser->get_trimmed_text;"
 "$title =~ s/(youtube|video|liveleak.com|sevenload|dailymotion)//gi;"
-"$title =~ s/(on vimeo)//gi;"
+"$title =~ s/(on vimeo|.golem.de)//gi;"
 "$title =~ s/^[-\\s]+//;"
 "$title =~ s/\\s+$//;"
 

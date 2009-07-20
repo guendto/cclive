@@ -29,7 +29,7 @@ protected:
     enum HandlerType {
         Youtube,    Google,    Break,        Evisor,
         Sevenload,  Liveleak,  Dailymotion,  Vimeo,
-        _last_type };
+        Golem,      _last_type };
 protected:
     static std::tr1::shared_ptr<HostHandler>
         createHandler(const HandlerType& type);
