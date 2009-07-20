@@ -1,6 +1,7 @@
 Version 0.4.6
 
  User-visible changes:
+  * Change: --hosts: print supported formats
   * Change: --version: print current locale setting
   * Fix/improve: unicode support
     1. --cclass now works as expected with unicode as well
