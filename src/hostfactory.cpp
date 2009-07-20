@@ -47,7 +47,9 @@ HostHandlerFactory::printHosts() {
                   << props.getFormats()
                   << "\n";
     }
-    std::cout << std::flush;
+    std::cout
+      << "\nNote: Some videos may have limited number of formats available.\n"
+      << std::flush;
 }
 
 SHP<HostHandler>
