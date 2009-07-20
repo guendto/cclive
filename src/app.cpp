@@ -257,6 +257,8 @@ There is NO WARRANTY, to the extent permitted by law.";
         curl_version_info(CURLVERSION_NOW);
 
     char *locale = getenv("LANG");
+    if (!locale)
+        locale = const_cast<char *>("");
 
     std::cout
         << CMDLINE_PARSER_PACKAGE   << " version "
