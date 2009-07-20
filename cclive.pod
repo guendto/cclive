@@ -265,6 +265,10 @@ The HD and HQ videos may not always be available.
   FLV-320x240  (flv/spark)
   FLV-80x60    (spak-mini)
 
+=item B<golem.de>
+
+Format: (flv|high|ipod)
+
 =item B<vimeo.com>
 
 Format: (flv|hd)

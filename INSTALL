@@ -36,6 +36,9 @@
     cclive will use any settings defined in ~/.cclive while running
     the tests.
 
+    To disable the internet based tests, define NO_INTERNET environment
+    variable.
+
 
             Prerequisites
 

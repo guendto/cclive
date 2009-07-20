@@ -1,14 +1,15 @@
 
 EXTRA_DIST= pod.pl
 
-check_PROGRAMS=	\
-youtube			\
-break			\
-liveleak		\
-dailymotion		\
-evisor			\
-google			\
-sevenload		\
+check_PROGRAMS=\
+youtube\
+break\
+liveleak\
+dailymotion\
+evisor\
+google\
+sevenload\
+golem\
 vimeo
 
 TESTS= $(check_PROGRAMS)
@@ -29,3 +30,4 @@ evisor_SOURCES=		evisor.c $(common)
 google_SOURCES=		google.c $(common)
 vimeo_SOURCES=		vimeo.c $(common)
 sevenload_SOURCES=	sevenload.c $(common)
+golem_SOURCES=		golem.c $(common)
