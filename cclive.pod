@@ -367,11 +367,11 @@ cclive exits 0 on success, and >0 if an error occurs.
 
 Project page:
 
-  http://code.google.com/p/cclive/
+  http://cclive.googlecode.com/
 
 Front-end:
 
-  http://code.google.com/p/abby/
+  http://abby.googlecode.com/
 
 Development code:
 
