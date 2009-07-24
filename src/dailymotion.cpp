@@ -51,6 +51,7 @@ DailymotionHandler::parseId() {
     props.setId( Util::subStr(pageContent, begin, end) );
 }
 
+#include <iostream>
 void
 DailymotionHandler::parseLink() {
     const char *pathsBegin = "\"video\", \"";
@@ -72,7 +73,7 @@ DailymotionHandler::parseLink() {
     if (format == "flv")
         format = "spark";
 
-    std::string link = "http://dailymotion.com";
+    std::string link;
     std::map<std::string, std::string> width;
 
     for (std::vector<std::string>::iterator iter = tokens.begin();
@@ -88,7 +89,7 @@ DailymotionHandler::parseLink() {
         width[w] = v[0];
 
         if (v[1] == format && format != "best") {
-            link += v[0];
+            link = v[0];
             break;
         }
     }
@@ -96,7 +97,7 @@ DailymotionHandler::parseLink() {
     // std::map sorts by key (width) in descending order
     // automatically. Assume first element to be the best.
     if (format == "best")
-        link += (width.begin())->second;
+        link = (width.begin())->second;
 
     if (link.empty())
         throw ParseException("failed to construct link from paths");
