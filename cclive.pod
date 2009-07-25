@@ -10,8 +10,8 @@ cclive [options] [url...]
 
 =head1 DESCRIPTION
 
-cclive is command line video extraction utility similar to clive but with
-lower requirements.
+cclive is command line video extraction utility for Youtube and other
+video-sharing websites. It is similar to clive but has lower requirements.
 
 =head1 OPTIONS
 
@@ -215,8 +215,12 @@ reaches 20%:
 
 =head1 FORMATS
 
-cclive extracts flv (typically 320x240) by default from all supported
-websites. Some of the websites support additional formats.
+flv format which is typically ~320x240 resolution video on all supported
+websites, is downloaded by default if --format option is not defined.
+
+Some of the supported websites support additional formats which are
+listed below with any known details. Note that --hosts option lists
+available formats as well as the supported hosts.
 
 =over 4
 
@@ -228,29 +232,18 @@ Format: (flv|fmt17|fmt18|fmt22|fmt35)
 
 flv (fmt34) and fmt18 (mp4) are usually available. Others may be
 available. At the time of writing this, the following formats
-are recognized by both clive and Youtube:
+are recognized by both cclive and Youtube:
 
-  fmt22 .. mp4    (1280x720) (HD)
-  fmt35 .. flv     (640x380) (HQ)
-  fmt18 .. mp4     (480x360)
-  flv   .. fmt34   (320x180)
-  fmt17 .. 3gp     (176x144)
+  hd  .. fmt22 .. mp4  (1280x720)
+  hq  .. fmt35 .. flv   (640x380)
+  mp4 .. fmt18 .. mp4   (480x360)
+  flv .. fmt34 .. flv   (320x180)
+  3gp .. fmt17 .. 3gp   (176x144)
 
-Note that you can use alternative format IDs for Youtube:
+Note that you can use either format ID, e.g. fmt22 or hd.
 
-  fmt22 .. hd
-  fmt35 .. hq
-  fmt18 .. mp4
-  fmt17 .. 3gp
-
-For example:
-  % cclive -f hd URL
-
-Which is equivalent to:
-  % cclive -f fmt22 URL
-
-Some of the videos available at last.fm are actually Youtube
-videos. clive can handle such video links.
+Some of the last.fm videos are actually hosted by Youtube.
+clive can be used to download such videos.
 
 =item B<www.dailymotion.com>
 
@@ -258,12 +251,12 @@ Format: (flv|spak-mini|vp6-hq|vp6-hd|vp6|h264)
 
 The HD and HQ videos may not always be available.
 
-  ON2-1280x720 (vp6-hd)
-  ON2-848x480  (vp6-hq)
-  H264-512x384 (h264)
-  ON2-320x240  (vp6)
-  FLV-320x240  (flv/spark)
-  FLV-80x60    (spak-mini)
+  vp6-hd    .. on2   (1280x720)
+  vp6-hq    .. on2     (848x480)
+  h264      .. h264    (512x384)
+  vp6       .. on2     (320x240)
+  flv       .. flv     (320x240)
+  spak-mini .. flv       (80x60)
 
 =item B<golem.de>
 
@@ -274,9 +267,8 @@ Format: (flv|high|ipod)
 Format: (flv|hd)
 
 HD should be available for the vimeo.com/hd channel videos at least.
-Note that "flv" only means "default" here, as some of the hosted
-videos are encoded (as default) in other video formats such as
-"mp4" rather than "flv".
+Note that "flv" only means the "default flv". Some of the hosted
+"default" videos are actually "mp4", not "flv".
 
 For further reading:
 
@@ -331,14 +323,15 @@ You can get a list of supported locales on your typical Unix-like system with:
 
 Some tips that we have found useful:
 
-  % clive --debug URL
-  Causes I<libcurl> to dump log messages to stderr.
-  This data includes HTTP headers etc.
+  % cclive --debug URL
 
-  % clive -n URL
-  Do not actually download the video. Causes clive
-  to fetch, parse and verify video link. It will not
-  proceed to download it.
+Causes I<libcurl> to dump log messages to stderr. This data includes HTTP
+headers etc.
+
+  % cclive -n URL
+
+Causes cclive to do the usual fetch, parse and verify video link
+approach but exits after that without downloading the video file.
 
 =head1 BUGS
 
@@ -379,8 +372,8 @@ Development code:
 
 =head1 HISTORY
 
-cclive first appeared early 2009 following the release of clive2.
-It was originally written in C but later rewritten in C++.
+cclive appeared following the release of clive2. It was
+originally written in C but later rewritten in C++.
 
 =head1 SEE ALSO
 
@@ -389,5 +382,9 @@ C<clive(1)>
 =head1 AUTHOR
 
 Toni Gundogdu <legatvs@gmail.com>
+
+Thanks to all those who have contributed to the project
+by sending patches, reporting bugs and writing feedback.
+You know who you are.
 
 =cut

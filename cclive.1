@@ -132,7 +132,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2009-07-21" "0.4.6" "cclive manual"
+.TH cclive 1 "2009-07-25" "0.4.6" "cclive manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -144,8 +144,8 @@ cclive \- video extraction utility for the flash dismissing hordes
 cclive [options] [url...]
 .SH "DESCRIPTION"
 .IX Header "DESCRIPTION"
-cclive is command line video extraction utility similar to clive but with
-lower requirements.
+cclive is command line video extraction utility for Youtube and other
+video-sharing websites. It is similar to clive but has lower requirements.
 .SH "OPTIONS"
 .IX Header "OPTIONS"
 .IP "\fB\-h, \-\-help\fR" 4
@@ -335,8 +335,12 @@ reaches 20%:
 .Ve
 .SH "FORMATS"
 .IX Header "FORMATS"
-cclive extracts flv (typically 320x240) by default from all supported
-websites. Some of the websites support additional formats.
+flv format which is typically ~320x240 resolution video on all supported
+websites, is downloaded by default if \-\-format option is not defined.
+.PP
+Some of the supported websites support additional formats which are
+listed below with any known details. Note that \-\-hosts option lists
+available formats as well as the supported hosts.
 .IP "\fBwww.youtube.com\fR" 4
 .IX Item "www.youtube.com"
 .PD 0
@@ -347,33 +351,20 @@ Format: (flv|fmt17|fmt18|fmt22|fmt35)
 .Sp
 flv (fmt34) and fmt18 (mp4) are usually available. Others may be
 available. At the time of writing this, the following formats
-are recognized by both clive and Youtube:
+are recognized by both cclive and Youtube:
 .Sp
 .Vb 5
-\&  fmt22 .. mp4    (1280x720) (HD)
-\&  fmt35 .. flv     (640x380) (HQ)
-\&  fmt18 .. mp4     (480x360)
-\&  flv   .. fmt34   (320x180)
-\&  fmt17 .. 3gp     (176x144)
+\&  hd  .. fmt22 .. mp4  (1280x720)
+\&  hq  .. fmt35 .. flv   (640x380)
+\&  mp4 .. fmt18 .. mp4   (480x360)
+\&  flv .. fmt34 .. flv   (320x180)
+\&  3gp .. fmt17 .. 3gp   (176x144)
 .Ve
 .Sp
-Note that you can use alternative format IDs for Youtube:
+Note that you can use either format \s-1ID\s0, e.g. fmt22 or hd.
 .Sp
-.Vb 4
-\&  fmt22 .. hd
-\&  fmt35 .. hq
-\&  fmt18 .. mp4
-\&  fmt17 .. 3gp
-.Ve
-.Sp
-For example:
-  % cclive \-f hd \s-1URL\s0
-.Sp
-Which is equivalent to:
-  % cclive \-f fmt22 \s-1URL\s0
-.Sp
-Some of the videos available at last.fm are actually Youtube
-videos. clive can handle such video links.
+Some of the last.fm videos are actually hosted by Youtube.
+clive can be used to download such videos.
 .IP "\fBwww.dailymotion.com\fR" 4
 .IX Item "www.dailymotion.com"
 Format: (flv|spak\-mini|vp6\-hq|vp6\-hd|vp6|h264)
@@ -381,12 +372,12 @@ Format: (flv|spak\-mini|vp6\-hq|vp6\-hd|vp6|h264)
 The \s-1HD\s0 and \s-1HQ\s0 videos may not always be available.
 .Sp
 .Vb 6
-\&  ON2\-1280x720 (vp6\-hd)
-\&  ON2\-848x480  (vp6\-hq)
-\&  H264\-512x384 (h264)
-\&  ON2\-320x240  (vp6)
-\&  FLV\-320x240  (flv/spark)
-\&  FLV\-80x60    (spak\-mini)
+\&  vp6\-hd    .. on2   (1280x720)
+\&  vp6\-hq    .. on2     (848x480)
+\&  h264      .. h264    (512x384)
+\&  vp6       .. on2     (320x240)
+\&  flv       .. flv     (320x240)
+\&  spak\-mini .. flv       (80x60)
 .Ve
 .IP "\fBgolem.de\fR" 4
 .IX Item "golem.de"
@@ -396,9 +387,8 @@ Format: (flv|high|ipod)
 Format: (flv|hd)
 .Sp
 \&\s-1HD\s0 should be available for the vimeo.com/hd channel videos at least.
-Note that \*(L"flv\*(R" only means \*(L"default\*(R" here, as some of the hosted
-videos are encoded (as default) in other video formats such as
-\&\*(L"mp4\*(R" rather than \*(L"flv\*(R".
+Note that \*(L"flv\*(R" only means the \*(L"default flv\*(R". Some of the hosted
+\&\*(L"default\*(R" videos are actually \*(L"mp4\*(R", not \*(L"flv\*(R".
 .Sp
 For further reading:
 .Sp
@@ -449,16 +439,19 @@ You can get a list of supported locales on your typical Unix-like system with:
 .IX Header "DEBUGGING"
 Some tips that we have found useful:
 .PP
-.Vb 3
-\&  % clive \-\-debug URL
-\&  Causes I<libcurl> to dump log messages to stderr.
-\&  This data includes HTTP headers etc.
-\&
-\&  % clive \-n URL
-\&  Do not actually download the video. Causes clive
-\&  to fetch, parse and verify video link. It will not
-\&  proceed to download it.
+.Vb 1
+\&  % cclive \-\-debug URL
 .Ve
+.PP
+Causes \fIlibcurl\fR to dump log messages to stderr. This data includes \s-1HTTP\s0
+headers etc.
+.PP
+.Vb 1
+\&  % cclive \-n URL
+.Ve
+.PP
+Causes cclive to do the usual fetch, parse and verify video link
+approach but exits after that without downloading the video file.
 .SH "BUGS"
 .IX Header "BUGS"
 Sure to be some.
@@ -503,11 +496,15 @@ Development code:
 .Ve
 .SH "HISTORY"
 .IX Header "HISTORY"
-cclive first appeared early 2009 following the release of clive2.
-It was originally written in C but later rewritten in \*(C+.
+cclive appeared following the release of clive2. It was
+originally written in C but later rewritten in \*(C+.
 .SH "SEE ALSO"
 .IX Header "SEE ALSO"
 \&\f(CWclive(1)\fR
 .SH "AUTHOR"
 .IX Header "AUTHOR"
 Toni Gundogdu <legatvs@gmail.com>
+.PP
+Thanks to all those who have contributed to the project
+by sending patches, reporting bugs and writing feedback.
+You know who you are.
