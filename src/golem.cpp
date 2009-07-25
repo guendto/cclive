@@ -33,7 +33,7 @@ GolemHandler::GolemHandler()
 {
     props.setHost   ("golem");
     props.setDomain ("golem.de");
-    props.setFormats("flv|high|ipod");
+    props.setFormats("flv|ipod|high");
 }
 
 const bool
