@@ -4,6 +4,7 @@ Version 0.4.6
   * Add:
     1. golem.de support (port from clive)
     2. --format=(mp4|hd|hq|3gp) for youtube
+    3. --stream-pass option
   * Fix:
     1. [unicode support] --cclass now works as expected with unicode as well
     2. Dailymotion support
