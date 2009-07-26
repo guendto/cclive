@@ -19,6 +19,11 @@ export libcurl_LIBS="`$curl_config --libs`"
 #echo $libcurl_CFLAGS
 #echo $libcurl_LIBS
 
+export CXXFLAGS="-Wall -O2 -march=i586 -fno-strict-aliasing -pipe"
+export CFLAGS="$CXXFLAGS"
+#echo $CXXFLAGS
+#echo $CFLAGS
+
 # Tested only on FreeBSD. Edit prefix as needed.
 ./configure --host=mingw32 --prefix=`pwd`/dist --without-man \
     && make \
