@@ -97,12 +97,15 @@ option "stream-exec"
     - "stream command to be executed"
     string typestr="COMMAND"
     optional
-    dependon="stream"
 option "stream"
-    - "execute stream command when transfer reaches %"
+    - "invoke --stream-exec when transfer reaches %"
     int typestr="PERCENT"
     optional
     dependon="stream-exec"
+option  "stream-pass"
+    s "pass video link to --stream-exec command"
+    optional
+    dependon="stream-exec"
 option "print-fname"
-    - "print output filename on a dedicated line"
+    - "print output filename on a single line"
     optional

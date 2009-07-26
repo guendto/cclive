@@ -56,7 +56,8 @@ const char *gengetopt_args_info_help[] = {
   "      --exec=COMMAND            command to run when transfer finishes",
   "  -e, --exec-run                invoke command defined with --exec",
   "      --stream-exec=COMMAND     stream command to be executed",
-  "      --stream=PERCENT          execute stream command when transfer reaches %",
+  "      --stream=PERCENT          invoke --stream-exec when transfer reaches %",
+  "  -s, --stream-pass             pass video link to --stream-exec command",
   "      --print-fname             print output filename on a dedicated line",
     0
 };
@@ -135,6 +136,7 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->exec_run_given = 0 ;
   args_info->stream_exec_given = 0 ;
   args_info->stream_given = 0 ;
+  args_info->stream_pass_given = 0 ;
   args_info->print_fname_given = 0 ;
 }
 
@@ -197,7 +199,8 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->exec_run_help = gengetopt_args_info_help[22] ;
   args_info->stream_exec_help = gengetopt_args_info_help[23] ;
   args_info->stream_help = gengetopt_args_info_help[24] ;
-  args_info->print_fname_help = gengetopt_args_info_help[25] ;
+  args_info->stream_pass_help = gengetopt_args_info_help[25] ;
+  args_info->print_fname_help = gengetopt_args_info_help[26] ;
   
 }
 
@@ -427,6 +430,8 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "stream-exec", args_info->stream_exec_orig, 0);
   if (args_info->stream_given)
     write_into_file(outfile, "stream", args_info->stream_orig, 0);
+  if (args_info->stream_pass_given)
+    write_into_file(outfile, "stream-pass", 0, 0 );
   if (args_info->print_fname_given)
     write_into_file(outfile, "print-fname", 0, 0 );
   
@@ -562,14 +567,14 @@ cmdline_parser_required2 (struct gengetopt_args_info *args_info, const char *pro
       fprintf (stderr, "%s: '--exec-run' ('-e') option depends on option 'exec'%s\n", prog_name, (additional_error ? additional_error : ""));
       error = 1;
     }
-  if (args_info->stream_exec_given && ! args_info->stream_given)
-    {
-      fprintf (stderr, "%s: '--stream-exec' option depends on option 'stream'%s\n", prog_name, (additional_error ? additional_error : ""));
-      error = 1;
-    }
   if (args_info->stream_given && ! args_info->stream_exec_given)
     {
       fprintf (stderr, "%s: '--stream' option depends on option 'stream-exec'%s\n", prog_name, (additional_error ? additional_error : ""));
+      error = 1;
+    }
+  if (args_info->stream_pass_given && ! args_info->stream_exec_given)
+    {
+      fprintf (stderr, "%s: '--stream-pass' ('-s') option depends on option 'stream-exec'%s\n", prog_name, (additional_error ? additional_error : ""));
       error = 1;
     }
 
@@ -762,11 +767,12 @@ cmdline_parser_internal (
         { "exec-run",	0, NULL, 'e' },
         { "stream-exec",	1, NULL, 0 },
         { "stream",	1, NULL, 0 },
+        { "stream-pass",	0, NULL, 's' },
         { "print-fname",	0, NULL, 0 },
         { 0,  0, 0, 0 }
       };
 
-      c = getopt_long (argc, argv, "hvqtCncf:O:Ne", long_options, &option_index);
+      c = getopt_long (argc, argv, "hvqtCncf:O:Nes", long_options, &option_index);
 
       if (c == -1) break;	/* Exit from `while (1)' loop.  */
 
@@ -893,6 +899,18 @@ cmdline_parser_internal (
               &(local_args_info.exec_run_given), optarg, 0, 0, ARG_NO,
               check_ambiguity, override, 0, 0,
               "exec-run", 'e',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 's':	/* pass video link to --stream-exec command.  */
+        
+        
+          if (update_arg( 0 , 
+               0 , &(args_info->stream_pass_given),
+              &(local_args_info.stream_pass_given), optarg, 0, 0, ARG_NO,
+              check_ambiguity, override, 0, 0,
+              "stream-pass", 's',
               additional_error))
             goto failure;
         
@@ -1081,7 +1099,7 @@ cmdline_parser_internal (
               goto failure;
           
           }
-          /* execute stream command when transfer reaches %.  */
+          /* invoke --stream-exec when transfer reaches %.  */
           else if (strcmp (long_options[option_index].name, "stream") == 0)
           {
           

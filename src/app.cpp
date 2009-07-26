@@ -129,6 +129,8 @@ handleURL(const std::string& url) {
                         printVideo(props);
                     else if (opts.emit_csv_given)
                         printCSV(props);
+                    else if (opts.stream_pass_given)
+                        execmgr.passStream(props);
                     else
                     {
                         if (opts.print_fname_given)

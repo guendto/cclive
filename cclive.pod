@@ -40,13 +40,11 @@ Print libcurl debug messages to stderr.
 =item B<-t, --title>  [req. --with-perl]
 
 Causes B<cclive> to use video page title for output video filename.
-Ignored if cclive was built --without-perl.
+Ignored if B<cclive> was built --without-perl.
 
 =item B<--cclass=>I<CCLASS>  [req. --with-perl]
 
 Use character-I<class> to filter video page titles. Defaults to "\w".
-Refer to the Perl regular expressions (character classes) for more on
-this.
 
 =item B<-C, --no-cclass>
 
@@ -58,21 +56,23 @@ Do not extract any videos.
 
 =item B<-c, --continue>
 
-Resume a partially downloaded video file. May not work with some of the HTTP
-servers. Be sure to read the L</FORMATS> section.
+Continue a partially downloaded video file.
+
+Note that, by default, B<cclive> appends a numeric suffix to the filename
+if the file exists already. That is unless:
+
+  * file is already completely retrieved, or:
+  * -c or -O is used
 
 =item B<-f, --format=>I<FORMAT>
 
-Extract I<format> of the video. If I<format> is set to I<best>, cclive
-will attempt to extract the best video quality.
-
-Note that the I<format> is strictly host specific. See the L</FORMATS>
-section for more on this.
+Extract I<format> of the video. If set to I<best>, B<cclive> will
+attempt to download the best video quality. See also L</FORMATS>.
 
 =item B<-O, --output-video=>I<FILE>
 
-Write extracted video to I<file>. Causes B<cclive> to overwrite the existing
-file unless the file is fully retrieved already.
+Write extracted video to I<file>. Overwrites any already existing
+files without a warning.
 
 Do I<not> use this when extracting multiple videos on one run.
 
@@ -100,11 +100,11 @@ Example:
 =item B<--emit-csv>
 
 Emit video details in CSV to stdout. Implies B<--no-extract>.
-Ignores B<--quiet>.
+Use of B<--quiet> will be ignored for the CSV.
 
 =item B<--limit-rate=>I<AMOUNT>
 
-Limit download speed to I<amount> (KB/s). Does not limit video page fetches.
+Limit download speed to I<amount> (KB/s). Ignored for video page fetch.
 
 =item B<--agent=>I<STRING>
 
@@ -154,73 +154,85 @@ as possible for the invocation of I<command>.
 
 =item B<-e, --exec-run>
 
-Causes cclive to invoke the command defined with B<--exec> when
+Causes B<cclive> to invoke the command defined with B<--exec> when
 transfer finishes.
 
 =item B<--stream-exec=>I<COMMAND>
 
-Execute I<command> when file transfer progress reaches I<percent> as defined
-with the B<--stream> option. If a "%i" specifier is used in the I<command>
-expression, it will be replaced with video pathname.
-
-B<cclive> forks the I<command> and continues with the transfer. Note that
-B<cclive> will not continue to download another file before the child process
-terminates.
-
-Some players and formats may not work properly with this feature.
-C<mplayer(1)> is known to work properly with most flv videos.
+Define the command to be invoked with B<--stream> and B<--stream-pass>.
+If a "%i" specifier is used in the I<command>, it will be replaced with
+either video file path name (B<--stream>) or parsed video link
+(B<--stream-pass>).
 
 =item B<--stream=>I<PERCENT>
 
-Execute the I<command> defined with the B<--stream-exec> option when the
-file transfer progress reaches I<percent>.
-
-Example:
-
-  % cclive --stream-exec="mplayer -really-quiet %i" --stream=20 URL
+Causes B<cclive> to fetch, parse, start download and eventually invoke
+the command defined with B<--stream-exec> when the transfer reaches
+the percentage defined with this option. See also L</EXAMPLES>.
 
 Note that B<cclive> does nothing to check if there is enough data buffered
-before forking the stream process. If the transfer rate drops significantly
-after starting the process and it runs out of data, B<cclive> does nothing
-to fix this.
+before invoking the B<--stream-exec> defined I<command>. If the transfer
+rate drops significantly after starting the process and it runs out of data,
+B<cclive> does nothing to fix this.
+
+Also note that B<cclive> will not continue to download another file before the
+child process exits.
+
+This mode is supported for historical reasons. Consider using
+B<--stream-pass> instead.
+
+=item B<-s, --stream-pass>
+
+Otherwise the same as above but B<instead of> starting the download,
+B<cclive> passes the parsed video link to the command defined with
+B<--stream-exec>. See also L</EXAMPLES>.
+
+The concept of this option is based on a simple C<clive(1)> wrapper
+script contributed by Bill Squire.
 
 =item B<--print-fname>
 
-Print output filename on a dedicated line before each file transfer.
+Print output filename on a single line before each file transfer.
 
 =back
 
 =head1 EXAMPLES
 
-Typical use:
+=over 4
 
-  % cclive URL
+=item cclive URL
 
-Download fmt18/mp4 (Youtube) format of the video from the URL:
+Download video from URL.
 
-  % cclive -f fmt18 URL
+=item cclive -f fmt18 URL
 
-Play the downloaded video with C<mplayer(1)> subsequently:
+Download fmt18/mp4 (Youtube) format of the video from the URL.
 
-  % cclive --exec="mplayer -really-quiet %i;" -e URL
+=item cclive --exec="mplayer -really-quiet %i;" -e URL
 
-Extract audio to an mp3 file from the downloaded video with C<ffmpeg(1)>:
+Play the downloaded video with C<mplayer(1)> subsequently.
 
-  % cclive --exec="ffmpeg -i %i %i.mp3;" -e URL
+=item cclive --exec="ffmpeg -i %i -acodec libvorbis %i.ogg;" -e URL
+
+Copy audio from downloaded video to ogg with C<ffmpeg(1)>.
+
+=item cclive --stream-exec="mplayer -really-quiet %i" --stream=20 URL
 
 Start playing the video being downloaded with C<mplayer(1)> when the transfer
-reaches 20%:
+reaches 20%.
 
-  % cclive --stream-exec="mplayer -really-quiet %i" --stream=20 URL
+=item echo 'stream-exec = "mplayer -really-quiet %i"' >> ~/.ccliverc
+
+=item cclive -s URL
+
+Alternate to Adobe Flash. C<vlc(1)> and C<totem(1)> have been reported
+to work also.
+
+=back
 
 =head1 FORMATS
 
-flv format which is typically ~320x240 resolution video on all supported
-websites, is downloaded by default if --format option is not defined.
-
-Some of the supported websites support additional formats which are
-listed below with any known details. Note that --hosts option lists
-available formats as well as the supported hosts.
+B<cclive> downloads "flv" by default from all of the supported websites.
 
 =over 4
 
@@ -313,10 +325,12 @@ Most of the program options can be defined in the ~/.ccliverc config file.
 Q: Why am I seeing mangled video filenames?
 
 A: Make sure you have set appropriate locale. For example (in csh/urxvt terms):
+
   % setenv LANG en_US.UTF-8
   % urxvt &
 
 You can get a list of supported locales on your typical Unix-like system with:
+
   % locale -a
 
 =head1 DEBUGGING
@@ -325,24 +339,22 @@ Some tips that we have found useful:
 
   % cclive --debug URL
 
-Causes I<libcurl> to dump log messages to stderr. This data includes HTTP
-headers etc.
+Causes I<libcurl> to be I<verbose>.
 
   % cclive -n URL
 
-Causes cclive to do the usual fetch, parse and verify video link
-approach but exits after that without downloading the video file.
+Simulates video extraction only.
 
 =head1 BUGS
 
 Sure to be some.
 
-Please report them to the issue tracker at:
+Please report them:
   <http://code.google.com/p/cclive/issues/>
 
 =head1 EXIT STATUS
 
-cclive exits 0 on success, and >0 if an error occurs.
+cclive exits 0 on success, and E<gt>0 if an error occurs.
 
   CCLIVE_OK           = 0
   CCLIVE_OPT          = 1  // cmdline option parsing error
@@ -360,11 +372,11 @@ cclive exits 0 on success, and >0 if an error occurs.
 
 Project page:
 
-  http://cclive.googlecode.com/
+  <http://cclive.googlecode.com/>
 
 Front-end:
 
-  http://abby.googlecode.com/
+  <http://abby.googlecode.com/>
 
 Development code:
 
@@ -372,8 +384,18 @@ Development code:
 
 =head1 HISTORY
 
-cclive appeared following the release of clive2. It was
-originally written in C but later rewritten in C++.
+=over 4
+
+=item cclive appeared following the release of clive2
+
+clive2 introduced quite a few prerequisites and is written in Perl.
+
+=item It was originally written in C but was later rewritten in C++
+
+B<cclive> aims to keep the prerequisites low for both hardware and
+software. Its features are few and essential.
+
+=back
 
 =head1 SEE ALSO
 

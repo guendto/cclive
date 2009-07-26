@@ -21,11 +21,13 @@
 #include <vector>
 #include <iterator>
 #include <tr1/memory>
+#include <sstream>
 
 #include "error.h"
 #include "except.h"
 #include "video.h"
 #include "singleton.h"
+#include "log.h"
 #include "cmdline.h"
 #include "opts.h"
 #include "util.h"
@@ -108,6 +110,33 @@ ExecMgr::playSemi() {
         if (n != 0) {
             // TODO:
         }
+    }
+}
+
+void
+ExecMgr::passStream(const VideoProperties& props) {
+
+    std::string cmd = optsmgr.getOptions().stream_exec_arg;
+
+    std::stringstream lnk;
+    lnk << "\"" << props.getLink() << "\"";
+
+    Util::subStrReplace(cmd, "%i", lnk.str());
+
+    logmgr.cout() << "pass video link ..." << std::flush;
+
+    int n = system(cmd.c_str());
+
+    switch (n) {
+    case 0:
+        logmgr.cout() << "done." << std::endl;
+        break;
+    case -1:
+        logmgr.cerr() << "failed to execute: `" << cmd << "'" << std::endl;
+        break;
+    default:
+        logmgr.cerr() << "child exited with: " << (n >> 8) << std::endl;
+        break;
     }
 }
 

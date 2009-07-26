@@ -26,6 +26,7 @@ public:
     void append(const VideoProperties&); 
     void playQueue();
     void playStream(const VideoProperties&);
+    void passStream(const VideoProperties&);
 private:
     void playPlus();
     void playSemi();

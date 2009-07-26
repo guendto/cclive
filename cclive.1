@@ -132,7 +132,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2009-07-26" "0.4.6" "cclive manual"
+.TH cclive 1 "2009-07-27" "0.4.6" "cclive manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -166,12 +166,10 @@ Print libcurl debug messages to stderr.
 .IP "\fB\-t, \-\-title\fR  [req. \-\-with\-perl]" 4
 .IX Item "-t, --title  [req. --with-perl]"
 Causes \fBcclive\fR to use video page title for output video filename.
-Ignored if cclive was built \-\-without\-perl.
+Ignored if \fBcclive\fR was built \-\-without\-perl.
 .IP "\fB\-\-cclass=\fR\fI\s-1CCLASS\s0\fR  [req. \-\-with\-perl]" 4
 .IX Item "--cclass=CCLASS  [req. --with-perl]"
 Use character\-\fIclass\fR to filter video page titles. Defaults to \*(L"\ew\*(R".
-Refer to the Perl regular expressions (character classes) for more on
-this.
 .IP "\fB\-C, \-\-no\-cclass\fR" 4
 .IX Item "-C, --no-cclass"
 Negates the use of the character-class.
@@ -180,19 +178,23 @@ Negates the use of the character-class.
 Do not extract any videos.
 .IP "\fB\-c, \-\-continue\fR" 4
 .IX Item "-c, --continue"
-Resume a partially downloaded video file. May not work with some of the \s-1HTTP\s0
-servers. Be sure to read the \*(L"\s-1FORMATS\s0\*(R" section.
+Continue a partially downloaded video file.
+.Sp
+Note that, by default, \fBcclive\fR appends a numeric suffix to the filename
+if the file exists already. That is unless:
+.Sp
+.Vb 2
+\&  * file is already completely retrieved, or:
+\&  * \-c or \-O is used
+.Ve
 .IP "\fB\-f, \-\-format=\fR\fI\s-1FORMAT\s0\fR" 4
 .IX Item "-f, --format=FORMAT"
-Extract \fIformat\fR of the video. If \fIformat\fR is set to \fIbest\fR, cclive
-will attempt to extract the best video quality.
-.Sp
-Note that the \fIformat\fR is strictly host specific. See the \*(L"\s-1FORMATS\s0\*(R"
-section for more on this.
+Extract \fIformat\fR of the video. If set to \fIbest\fR, \fBcclive\fR will
+attempt to download the best video quality. See also \*(L"\s-1FORMATS\s0\*(R".
 .IP "\fB\-O, \-\-output\-video=\fR\fI\s-1FILE\s0\fR" 4
 .IX Item "-O, --output-video=FILE"
-Write extracted video to \fIfile\fR. Causes \fBcclive\fR to overwrite the existing
-file unless the file is fully retrieved already.
+Write extracted video to \fIfile\fR. Overwrites any already existing
+files without a warning.
 .Sp
 Do \fInot\fR use this when extracting multiple videos on one run.
 .IP "\fB\-N, \-\-number\-videos\fR" 4
@@ -221,10 +223,10 @@ Example:
 .IP "\fB\-\-emit\-csv\fR" 4
 .IX Item "--emit-csv"
 Emit video details in \s-1CSV\s0 to stdout. Implies \fB\-\-no\-extract\fR.
-Ignores \fB\-\-quiet\fR.
+Use of \fB\-\-quiet\fR will be ignored for the \s-1CSV\s0.
 .IP "\fB\-\-limit\-rate=\fR\fI\s-1AMOUNT\s0\fR" 4
 .IX Item "--limit-rate=AMOUNT"
-Limit download speed to \fIamount\fR (KB/s). Does not limit video page fetches.
+Limit download speed to \fIamount\fR (KB/s). Ignored for video page fetch.
 .IP "\fB\-\-agent=\fR\fI\s-1STRING\s0\fR" 4
 .IX Item "--agent=STRING"
 Identify \fBcclive\fR as \fIstring\fR to the \s-1HTTP\s0 servers.
@@ -269,78 +271,74 @@ Same as \fB\-\-exec\fR, except that \*(L"%i\*(R" is replaced with as many pathna
 as possible for the invocation of \fIcommand\fR.
 .IP "\fB\-e, \-\-exec\-run\fR" 4
 .IX Item "-e, --exec-run"
-Causes cclive to invoke the command defined with \fB\-\-exec\fR when
+Causes \fBcclive\fR to invoke the command defined with \fB\-\-exec\fR when
 transfer finishes.
 .IP "\fB\-\-stream\-exec=\fR\fI\s-1COMMAND\s0\fR" 4
 .IX Item "--stream-exec=COMMAND"
-Execute \fIcommand\fR when file transfer progress reaches \fIpercent\fR as defined
-with the \fB\-\-stream\fR option. If a \*(L"%i\*(R" specifier is used in the \fIcommand\fR
-expression, it will be replaced with video pathname.
-.Sp
-\&\fBcclive\fR forks the \fIcommand\fR and continues with the transfer. Note that
-\&\fBcclive\fR will not continue to download another file before the child process
-terminates.
-.Sp
-Some players and formats may not work properly with this feature.
-\&\f(CWmplayer(1)\fR is known to work properly with most flv videos.
+Define the command to be invoked with \fB\-\-stream\fR and \fB\-\-stream\-pass\fR.
+If a \*(L"%i\*(R" specifier is used in the \fIcommand\fR, it will be replaced with
+either video file path name (\fB\-\-stream\fR) or parsed video link
+(\fB\-\-stream\-pass\fR).
 .IP "\fB\-\-stream=\fR\fI\s-1PERCENT\s0\fR" 4
 .IX Item "--stream=PERCENT"
-Execute the \fIcommand\fR defined with the \fB\-\-stream\-exec\fR option when the
-file transfer progress reaches \fIpercent\fR.
-.Sp
-Example:
-.Sp
-.Vb 1
-\&  % cclive \-\-stream\-exec="mplayer \-really\-quiet %i" \-\-stream=20 URL
-.Ve
+Causes \fBcclive\fR to fetch, parse, start download and eventually invoke
+the command defined with \fB\-\-stream\-exec\fR when the transfer reaches
+the percentage defined with this option. See also \*(L"\s-1EXAMPLES\s0\*(R".
 .Sp
 Note that \fBcclive\fR does nothing to check if there is enough data buffered
-before forking the stream process. If the transfer rate drops significantly
-after starting the process and it runs out of data, \fBcclive\fR does nothing
-to fix this.
+before invoking the \fB\-\-stream\-exec\fR defined \fIcommand\fR. If the transfer
+rate drops significantly after starting the process and it runs out of data,
+\&\fBcclive\fR does nothing to fix this.
+.Sp
+Also note that \fBcclive\fR will not continue to download another file before the
+child process exits.
+.Sp
+This mode is supported for historical reasons. Consider using
+\&\fB\-\-stream\-pass\fR instead.
+.IP "\fB\-s, \-\-stream\-pass\fR" 4
+.IX Item "-s, --stream-pass"
+Otherwise the same as above but \fBinstead of\fR starting the download,
+\&\fBcclive\fR passes the parsed video link to the command defined with
+\&\fB\-\-stream\-exec\fR. See also \*(L"\s-1EXAMPLES\s0\*(R".
+.Sp
+The concept of this option is based on a simple \f(CWclive(1)\fR wrapper
+script contributed by Bill Squire.
 .IP "\fB\-\-print\-fname\fR" 4
 .IX Item "--print-fname"
-Print output filename on a dedicated line before each file transfer.
+Print output filename on a single line before each file transfer.
 .SH "EXAMPLES"
 .IX Header "EXAMPLES"
-Typical use:
-.PP
-.Vb 1
-\&  % cclive URL
-.Ve
-.PP
-Download fmt18/mp4 (Youtube) format of the video from the \s-1URL:\s0
-.PP
-.Vb 1
-\&  % cclive \-f fmt18 URL
-.Ve
-.PP
-Play the downloaded video with \f(CWmplayer(1)\fR subsequently:
-.PP
-.Vb 1
-\&  % cclive \-\-exec="mplayer \-really\-quiet %i;" \-e URL
-.Ve
-.PP
-Extract audio to an mp3 file from the downloaded video with \f(CWffmpeg(1)\fR:
-.PP
-.Vb 1
-\&  % cclive \-\-exec="ffmpeg \-i %i %i.mp3;" \-e URL
-.Ve
-.PP
+.IP "cclive \s-1URL\s0" 4
+.IX Item "cclive URL"
+Download video from \s-1URL\s0.
+.IP "cclive \-f fmt18 \s-1URL\s0" 4
+.IX Item "cclive -f fmt18 URL"
+Download fmt18/mp4 (Youtube) format of the video from the \s-1URL\s0.
+.ie n .IP "cclive \-\-exec=""mplayer \-really\-quiet %i;"" \-e \s-1URL\s0" 4
+.el .IP "cclive \-\-exec=``mplayer \-really\-quiet \f(CW%i\fR;'' \-e \s-1URL\s0" 4
+.IX Item "cclive --exec=mplayer -really-quiet %i; -e URL"
+Play the downloaded video with \f(CWmplayer(1)\fR subsequently.
+.ie n .IP "cclive \-\-exec=""ffmpeg \-i %i\fR \-acodec libvorbis \f(CW%i.ogg;"" \-e \s-1URL\s0" 4
+.el .IP "cclive \-\-exec=``ffmpeg \-i \f(CW%i\fR \-acodec libvorbis \f(CW%i\fR.ogg;'' \-e \s-1URL\s0" 4
+.IX Item "cclive --exec=ffmpeg -i %i -acodec libvorbis %i.ogg; -e URL"
+Copy audio from downloaded video to ogg with \f(CWffmpeg(1)\fR.
+.ie n .IP "cclive \-\-stream\-exec=""mplayer \-really\-quiet %i"" \-\-stream=20 \s-1URL\s0" 4
+.el .IP "cclive \-\-stream\-exec=``mplayer \-really\-quiet \f(CW%i\fR'' \-\-stream=20 \s-1URL\s0" 4
+.IX Item "cclive --stream-exec=mplayer -really-quiet %i --stream=20 URL"
 Start playing the video being downloaded with \f(CWmplayer(1)\fR when the transfer
-reaches 20%:
-.PP
-.Vb 1
-\&  % cclive \-\-stream\-exec="mplayer \-really\-quiet %i" \-\-stream=20 URL
-.Ve
+reaches 20%.
+.ie n .IP "echo 'stream\-exec = ""mplayer \-really\-quiet %i""' >> ~/.ccliverc" 4
+.el .IP "echo 'stream\-exec = ``mplayer \-really\-quiet \f(CW%i\fR''' >> ~/.ccliverc" 4
+.IX Item "echo 'stream-exec = mplayer -really-quiet %i' >> ~/.ccliverc"
+.PD 0
+.IP "cclive \-s \s-1URL\s0" 4
+.IX Item "cclive -s URL"
+.PD
+Alternate to Adobe Flash. \f(CWvlc(1)\fR and \f(CWtotem(1)\fR have been reported
+to work also.
 .SH "FORMATS"
 .IX Header "FORMATS"
-flv format which is typically ~320x240 resolution video on all supported
-websites, is downloaded by default if \-\-format option is not defined.
-.PP
-Some of the supported websites support additional formats which are
-listed below with any known details. Note that \-\-hosts option lists
-available formats as well as the supported hosts.
+\&\fBcclive\fR downloads \*(L"flv\*(R" by default from all of the supported websites.
 .IP "\fBwww.youtube.com\fR" 4
 .IX Item "www.youtube.com"
 .PD 0
@@ -430,11 +428,17 @@ Most of the program options can be defined in the ~/.ccliverc config file.
 Q: Why am I seeing mangled video filenames?
 .PP
 A: Make sure you have set appropriate locale. For example (in csh/urxvt terms):
-  % setenv \s-1LANG\s0 en_US.UTF\-8
-  % urxvt &
+.PP
+.Vb 2
+\&  % setenv LANG en_US.UTF\-8
+\&  % urxvt &
+.Ve
 .PP
 You can get a list of supported locales on your typical Unix-like system with:
-  % locale \-a
+.PP
+.Vb 1
+\&  % locale \-a
+.Ve
 .SH "DEBUGGING"
 .IX Header "DEBUGGING"
 Some tips that we have found useful:
@@ -443,20 +447,18 @@ Some tips that we have found useful:
 \&  % cclive \-\-debug URL
 .Ve
 .PP
-Causes \fIlibcurl\fR to dump log messages to stderr. This data includes \s-1HTTP\s0
-headers etc.
+Causes \fIlibcurl\fR to be \fIverbose\fR.
 .PP
 .Vb 1
 \&  % cclive \-n URL
 .Ve
 .PP
-Causes cclive to do the usual fetch, parse and verify video link
-approach but exits after that without downloading the video file.
+Simulates video extraction only.
 .SH "BUGS"
 .IX Header "BUGS"
 Sure to be some.
 .PP
-Please report them to the issue tracker at:
+Please report them:
   <http://code.google.com/p/cclive/issues/>
 .SH "EXIT STATUS"
 .IX Header "EXIT STATUS"
@@ -480,13 +482,13 @@ cclive exits 0 on success, and >0 if an error occurs.
 Project page:
 .PP
 .Vb 1
-\&  http://cclive.googlecode.com/
+\&  <http://cclive.googlecode.com/>
 .Ve
 .PP
 Front-end:
 .PP
 .Vb 1
-\&  http://abby.googlecode.com/
+\&  <http://abby.googlecode.com/>
 .Ve
 .PP
 Development code:
@@ -496,8 +498,13 @@ Development code:
 .Ve
 .SH "HISTORY"
 .IX Header "HISTORY"
-cclive appeared following the release of clive2. It was
-originally written in C but later rewritten in \*(C+.
+.IP "cclive appeared following the release of clive2" 4
+.IX Item "cclive appeared following the release of clive2"
+clive2 introduced quite a few prerequisites and is written in Perl.
+.IP "It was originally written in C but was later rewritten in \*(C+" 4
+.IX Item "It was originally written in C but was later rewritten in "
+\&\fBcclive\fR aims to keep the prerequisites low for both hardware and
+software. Its features are few and essential.
 .SH "SEE ALSO"
 .IX Header "SEE ALSO"
 \&\f(CWclive(1)\fR
