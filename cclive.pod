@@ -11,7 +11,7 @@ cclive [options] [url...]
 =head1 DESCRIPTION
 
 cclive is command line video extraction utility for Youtube and other
-video-sharing websites. It is similar to clive but has lower requirements.
+video-sharing websites. It is similar to clive but with lower requirements.
 
 =head1 OPTIONS
 
@@ -243,7 +243,7 @@ are recognized by both cclive and Youtube:
 Note that you can use either format ID, e.g. fmt22 or hd.
 
 Some of the last.fm videos are actually hosted by Youtube.
-clive can be used to download such videos.
+cclive can be used to download such videos.
 
 =item B<www.dailymotion.com>
 
