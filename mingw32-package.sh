@@ -21,7 +21,7 @@ make install-strip \
 && cp $CURL_DLL dist/bin \
 && cp ChangeLog dist/ChangeLog.txt \
 && cp COPYING dist/COPYING.txt \
-&& cp $CURL_COPYING dist/COPYING.curl.txt \
+&& cp $CURL_COPYING dist/COPYING.cURL.txt \
 && cp README dist/README.txt \
 && cp README.w32 dist/README.w32.txt \
 && cp cclive.1.html dist \
