@@ -339,7 +339,7 @@ Some tips that we have found useful:
 
   % cclive --debug URL
 
-Causes I<libcurl> to be I<verbose>.
+Causes B<libcurl> to be verbose.
 
   % cclive -n URL
 
