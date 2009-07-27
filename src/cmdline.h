@@ -84,14 +84,14 @@ struct gengetopt_args_info
   char * exec_orig;	/**< @brief command to run when transfer finishes original value given at command line.  */
   const char *exec_help; /**< @brief command to run when transfer finishes help description.  */
   const char *exec_run_help; /**< @brief invoke command defined with --exec help description.  */
-  char * stream_exec_arg;	/**< @brief stream command to be executed.  */
-  char * stream_exec_orig;	/**< @brief stream command to be executed original value given at command line.  */
-  const char *stream_exec_help; /**< @brief stream command to be executed help description.  */
+  char * stream_exec_arg;	/**< @brief stream command to be invoked.  */
+  char * stream_exec_orig;	/**< @brief stream command to be invoked original value given at command line.  */
+  const char *stream_exec_help; /**< @brief stream command to be invoked help description.  */
   int stream_arg;	/**< @brief invoke --stream-exec when transfer reaches %.  */
   char * stream_orig;	/**< @brief invoke --stream-exec when transfer reaches % original value given at command line.  */
   const char *stream_help; /**< @brief invoke --stream-exec when transfer reaches % help description.  */
   const char *stream_pass_help; /**< @brief pass video link to --stream-exec command help description.  */
-  const char *print_fname_help; /**< @brief print output filename on a dedicated line help description.  */
+  const char *print_fname_help; /**< @brief print output filename on a single line help description.  */
   
   unsigned int help_given ;	/**< @brief Whether help was given.  */
   unsigned int version_given ;	/**< @brief Whether version was given.  */

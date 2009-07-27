@@ -55,10 +55,10 @@ const char *gengetopt_args_info_help[] = {
   "      --connect-timeout-socks=S same as above but with SOCKS proxy workaround  \n                                  (default=`30')",
   "      --exec=COMMAND            command to run when transfer finishes",
   "  -e, --exec-run                invoke command defined with --exec",
-  "      --stream-exec=COMMAND     stream command to be executed",
+  "      --stream-exec=COMMAND     stream command to be invoked",
   "      --stream=PERCENT          invoke --stream-exec when transfer reaches %",
   "  -s, --stream-pass             pass video link to --stream-exec command",
-  "      --print-fname             print output filename on a dedicated line",
+  "      --print-fname             print output filename on a single line",
     0
 };
 
@@ -1085,7 +1085,7 @@ cmdline_parser_internal (
               goto failure;
           
           }
-          /* stream command to be executed.  */
+          /* stream command to be invoked.  */
           else if (strcmp (long_options[option_index].name, "stream-exec") == 0)
           {
           
@@ -1113,7 +1113,7 @@ cmdline_parser_internal (
               goto failure;
           
           }
-          /* print output filename on a dedicated line.  */
+          /* print output filename on a single line.  */
           else if (strcmp (long_options[option_index].name, "print-fname") == 0)
           {
           

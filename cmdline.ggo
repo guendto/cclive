@@ -94,7 +94,7 @@ option "exec-run"
     optional
     dependon="exec"
 option "stream-exec"
-    - "stream command to be executed"
+    - "stream command to be invoked"
     string typestr="COMMAND"
     optional
 option "stream"
