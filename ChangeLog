@@ -14,6 +14,7 @@ Version 0.4.6
     3. --version: print current locale setting
 
  Developer-visible changes:
+  * configure.ac: add AC_FUNC_(RE)ALLOC (make cond.)
   * Change: tests/test.c: use system instead of execv
     1. Due to design of the latter, some tests (e.g. -f) were skipped quietly
   * Change: make check: respect NO_INTERNET env.var.
