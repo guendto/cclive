@@ -123,7 +123,7 @@ ExecMgr::passStream(const VideoProperties& props) {
 
     Util::subStrReplace(cmd, "%i", lnk.str());
 
-    logmgr.cout() << "pass video link ..." << std::flush;
+    logmgr.cout() << "stream ..." << std::flush;
 
     int n = system(cmd.c_str());
 
