@@ -8,7 +8,7 @@
 # 1) pkg-add -r mingw32-gcc mingw32-binutils mingw32-bin-msvcrt
 # 2) wget $curl_url
 # 3) tar xjf $curl_release.tar.bz2; cd $curl_release
-# 4) ./configure --host=mingw32 --prefix=`pwd`/dist --without-ssl --without-ipv6 --without-random
+# 4) CFLAGS="-O2 -pipe -march=i586" ./configure --host=mingw32 --prefix=`pwd`/dist --without-ssl --without-ipv6 --without-random --disable-ldap && make install-trip
 # 5) Run this script.
 
 # Edit as needed:
