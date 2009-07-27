@@ -124,19 +124,19 @@ ExecMgr::passStream(const VideoProperties& props) {
     Util::subStrReplace(cmd, "%i", lnk.str());
 
     logmgr.cout() << "stream ..." << std::flush;
-
     int n = system(cmd.c_str());
 
+    std::stringstream tmp;
     switch (n) {
     case 0:
         logmgr.cout() << "done." << std::endl;
         break;
     case -1:
-        logmgr.cerr() << "failed to execute: `" << cmd << "'" << std::endl;
-        break;
+        tmp << "failed to execute: `" << cmd << "'";
+        throw RuntimeException(CCLIVE_SYSTEM, tmp.str());
     default:
-        logmgr.cerr() << "child exited with: " << (n >> 8) << std::endl;
-        break;
+        tmp << "child exited with: " << (n >> 8);
+        throw RuntimeException(CCLIVE_SYSTEM, tmp.str());
     }
 }
 
