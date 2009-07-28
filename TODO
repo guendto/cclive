@@ -1,2 +1,4 @@
 repo: git://repo.or.cz/cclive.git
 web : http://repo.or.cz/w/cclive.git
+
+* port clipfish.de support from clive
