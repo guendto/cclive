@@ -58,7 +58,8 @@ static const char script[] =
 
 "$title = $parser->get_trimmed_text;"
 "$title =~ s/(youtube|video|liveleak.com|sevenload|dailymotion)//gi;"
-"$title =~ s/(on vimeo|.golem.de)//gi;"
+"$title =~ s/(on vimeo|.golem.de|clipfish)//gi;"
+"$title =~ s/video//gi;"
 "$title =~ s/^[-\\s]+//;"
 "$title =~ s/\\s+$//;"
 
@@ -120,8 +121,12 @@ HostHandler::~HostHandler()
 }
 
 void
-HostHandler::parsePage(const std::string& pageContent) {
+HostHandler::parsePage(
+    const std::string& pageContent,
+    const std::string& url)
+{
     this->pageContent = pageContent;
+    props.setPageLink(url);
 
     // call overloaded functions
     parseId         ();

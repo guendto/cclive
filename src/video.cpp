@@ -77,6 +77,11 @@ VideoProperties::setLength(const double length) {
 }
 
 void
+VideoProperties::setPageLink(const std::string& link) {
+    this->pageLink = link;
+}
+
+void
 VideoProperties::setContentType(const std::string& contentType) {
     this->contentType = contentType;
 
@@ -135,6 +140,11 @@ VideoProperties::getFormats() const {
 const double
 VideoProperties::getLength() const {
     return length;
+}
+
+const std::string&
+VideoProperties::getPageLink() const {
+    return pageLink;
 }
 
 const double

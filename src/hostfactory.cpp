@@ -64,6 +64,7 @@ HostHandlerFactory::createHandler(const HandlerType& type) {
     case Dailymotion:return SHP<DailymotionHandler>(new DailymotionHandler);
     case Vimeo:      return SHP<VimeoHandler>      (new VimeoHandler);
     case Golem:      return SHP<GolemHandler>      (new GolemHandler);
+    case Clipfish:   return SHP<ClipfishHandler>   (new ClipfishHandler);
     // Keeps -Weffc++ quiet.
     case _last_type: break;
     }

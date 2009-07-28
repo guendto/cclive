@@ -27,7 +27,8 @@ public:
     virtual void        parseId  ()                = 0;
     virtual void        parseLink()                = 0;
 public:
-    void                    parsePage          (const std::string& pageContent);
+    void                    parsePage          (const std::string& pageContent,
+                                                const std::string& url);
     const VideoProperties&  getVideoProperties () const;
 protected:
     std::string        pageContent;
@@ -124,6 +125,16 @@ public:
 class GolemHandler : public HostHandler {
 public:
     GolemHandler                 ();
+    virtual const bool  isHost   (std::string url);
+    virtual void        parseId  ();
+    virtual void        parseLink();
+};
+
+// Clipfish
+
+class ClipfishHandler : public HostHandler {
+public:
+    ClipfishHandler                 ();
     virtual const bool  isHost   (std::string url);
     virtual void        parseId  ();
     virtual void        parseLink();

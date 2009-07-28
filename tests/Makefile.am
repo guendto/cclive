@@ -10,6 +10,7 @@ evisor\
 google\
 sevenload\
 golem\
+clipfish\
 vimeo
 
 TESTS= $(check_PROGRAMS)
@@ -31,3 +32,4 @@ google_SOURCES=		google.c $(common)
 vimeo_SOURCES=		vimeo.c $(common)
 sevenload_SOURCES=	sevenload.c $(common)
 golem_SOURCES=		golem.c $(common)
+clipfish_SOURCES=	clipfish.c $(common)

@@ -33,6 +33,7 @@ public:
     void setLength      (const double);
     void setContentType (const std::string&);
     void setInitial     (const double);
+    void setPageLink    (const std::string&);
 public:
     const std::string&  getId           () const;
     const std::string&  getLink         () const;
@@ -44,6 +45,7 @@ public:
     const std::string&  getContentType  () const;
     const std::string&  getSuffix       () const;
     const std::string&  getFilename     () const;
+    const std::string&  getPageLink     () const;
 private:
     void formatOutputFilename           ();
     void defaultOutputFilenameFormatter (std::stringstream&);
@@ -60,6 +62,7 @@ private:
     std::string contentType;
     std::string suffix;
     std::string filename;
+    std::string pageLink;
 public:
     class NothingToDoException : public RuntimeException {
     public:

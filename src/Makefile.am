@@ -26,6 +26,7 @@ host =			\
 	dailymotion.cpp	\
 	vimeo.cpp	\
 	golem.cpp	\
+	clipfish.cpp	\
 	google.cpp
 
 hdr =			\
