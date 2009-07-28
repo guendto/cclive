@@ -66,6 +66,34 @@ ExecMgr::playQueue() {
         playSemi();
 }
 
+static void
+invokeCommand(const std::string& cmd, const char *what=0) {
+
+    if (what) {
+        logmgr.cout() << "invoke "
+                      << what
+                      << " ..."
+                      << std::flush;
+    }
+
+    int n = system(cmd.c_str());
+
+    std::stringstream tmp;
+
+    switch (n) {
+    case 0:
+        if (what)
+            logmgr.cout() << "done." << std::endl;
+        break;
+    case -1:
+        tmp << "failed to execute: `" << cmd << "'";
+        throw RuntimeException(CCLIVE_SYSTEM, tmp.str());
+    default:
+        tmp << "child exited with: " << (n >> 8);
+        throw RuntimeException(CCLIVE_SYSTEM, tmp.str());
+    }
+}
+
 void
 ExecMgr::playPlus() {
     Options opts = optsmgr.getOptions();
@@ -81,13 +109,12 @@ ExecMgr::playPlus() {
         iter != queue->end();
         ++iter)
     {
-        cmd += " ";
+        cmd += " \"";
         cmd += (*iter).getFilename();
+        cmd += "\"";
     }
-    int n = system(cmd.c_str());
-    if (n != 0) {
-        // TODO:
-    }
+
+    invokeCommand(cmd, "--exec");
 }
 
 void
@@ -95,58 +122,41 @@ ExecMgr::playSemi() {
     Options opts = optsmgr.getOptions();
 
     typedef std::vector<VideoProperties> vv;
-    int n;
 
     for (vv::iterator iter = queue->begin();
         iter != queue->end();
         ++iter)
     {
-        std::string cmd = opts.exec_arg;
+        std::stringstream fname;
+        fname << "\"" << (*iter).getFilename() << "\"";
 
-        Util::subStrReplace(cmd, "%i", (*iter).getFilename());
+        std::string cmd = opts.exec_arg;
+        Util::subStrReplace(cmd, "%i", fname.str());
         Util::subStrReplace(cmd, ";", "");
 
-        n = system(cmd.c_str());
-        if (n != 0) {
-            // TODO:
-        }
+        invokeCommand(cmd, "--exec");
     }
 }
 
 void
 ExecMgr::passStream(const VideoProperties& props) {
-
-    std::string cmd = optsmgr.getOptions().stream_exec_arg;
+    std::string cmd = 
+        optsmgr.getOptions().stream_exec_arg;
 
     std::stringstream lnk;
     lnk << "\"" << props.getLink() << "\"";
 
     Util::subStrReplace(cmd, "%i", lnk.str());
-
-    logmgr.cout() << "stream ..." << std::flush;
-    int n = system(cmd.c_str());
-
-    std::stringstream tmp;
-    switch (n) {
-    case 0:
-        logmgr.cout() << "done." << std::endl;
-        break;
-    case -1:
-        tmp << "failed to execute: `" << cmd << "'";
-        throw RuntimeException(CCLIVE_SYSTEM, tmp.str());
-    default:
-        tmp << "child exited with: " << (n >> 8);
-        throw RuntimeException(CCLIVE_SYSTEM, tmp.str());
-    }
+    invokeCommand(cmd, "--stream-exec");
 }
 
 void
 ExecMgr::playStream(const VideoProperties& props) {
-    Options opts = optsmgr.getOptions();
-    std::string cmd = opts.stream_exec_arg;
-    Util::subStrReplace(cmd, "%i", props.getFilename());
-    int n = system(cmd.c_str());
-    if (n != 0) {
-        // TODO:
-    }
+    std::string cmd = optsmgr.getOptions().stream_exec_arg;
+
+    std::stringstream fname;
+    fname << "\"" << props.getFilename() << "\"";
+
+    Util::subStrReplace(cmd, "%i", fname.str());
+    invokeCommand(cmd);
 }
