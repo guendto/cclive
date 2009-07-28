@@ -16,6 +16,7 @@ Version 0.4.6
     4. --stream-exec: remove depend on --stream
 
  Developer-visible changes:
+  * $host.cpp: Remove isHost overriding (obsoleted by HostHandler impl.)
   * exec.cpp:
     1. improve system return code handling
     2. quote %i replacement values
