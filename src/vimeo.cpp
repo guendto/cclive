@@ -37,12 +37,6 @@ VimeoHandler::VimeoHandler()
     props.setFormats("flv|hd");
 }
 
-const bool
-VimeoHandler::isHost(std::string url) {
-    return Util::toLower(url).find(props.getDomain())
-        != std::string::npos;
-}
-
 void
 VimeoHandler::parseId() {
     const char *begin = "clip_id=";

@@ -37,12 +37,6 @@ DailymotionHandler::DailymotionHandler()
     props.setFormats("flv|spak-mini|vp6-hq|vp6-hd|vp6|h264");
 }
 
-const bool
-DailymotionHandler::isHost(std::string url) {
-    return Util::toLower(url).find(props.getDomain())
-        != std::string::npos;
-}
-
 void
 DailymotionHandler::parseId() {
     const char *begin = "swf/";

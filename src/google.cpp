@@ -36,12 +36,6 @@ GoogleHandler::GoogleHandler()
     props.setFormats("flv|mp4");
 }
 
-const bool
-GoogleHandler::isHost(std::string url) {
-    return Util::toLower(url).find(props.getDomain())
-        != std::string::npos;
-}
-
 void
 GoogleHandler::parseId() {
     const char *begin = "docid:'";

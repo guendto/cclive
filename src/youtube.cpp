@@ -37,12 +37,6 @@ YoutubeHandler::YoutubeHandler()
     props.setFormats("flv|3gp|mp4|hq|hd");
 }
 
-const bool
-YoutubeHandler::isHost(std::string url) {
-    return Util::toLower(url).find(props.getDomain())
-        != std::string::npos;
-}
-
 void
 YoutubeHandler::parseId() {
     const char *begin = "\"video_id\": \"";

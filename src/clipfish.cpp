@@ -34,12 +34,6 @@ ClipfishHandler::ClipfishHandler()
     props.setFormats("flv");
 }
 
-const bool
-ClipfishHandler::isHost(std::string url) {
-    return Util::toLower(url).find(props.getDomain())
-        != std::string::npos;
-}
-
 void
 ClipfishHandler::parseId() {
     props.setId( Util::subStr(props.getPageLink(), "/video/", "/") );

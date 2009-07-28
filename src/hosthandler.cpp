@@ -22,6 +22,7 @@
 #endif
 
 #include <string>
+#include <vector>
 
 #include "config.h"
 
@@ -31,6 +32,7 @@
 #include "singleton.h"
 #include "cmdline.h"
 #include "opts.h"
+#include "util.h"
 #include "hosthandler.h"
 
 #ifdef WITH_PERL // -----------------------------
@@ -120,6 +122,12 @@ HostHandler::~HostHandler()
 {
 }
 
+const bool
+HostHandler::isHost(std::string url) {
+    return Util::toLower(url).find(props.getDomain())
+        != std::string::npos;
+}
+
 void
 HostHandler::parsePage(
     const std::string& pageContent,
@@ -128,7 +136,7 @@ HostHandler::parsePage(
     this->pageContent = pageContent;
     props.setPageLink(url);
 
-    // call overloaded functions
+    // call overridden functions
     parseId         ();
     parseLink       ();
 

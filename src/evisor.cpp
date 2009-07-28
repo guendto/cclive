@@ -32,12 +32,6 @@ EvisorHandler::EvisorHandler()
     props.setFormats("flv");
 }
 
-const bool
-EvisorHandler::isHost(std::string url) {
-    return Util::toLower(url).find(props.getDomain())
-        != std::string::npos;
-}
-
 void
 EvisorHandler::parseId() {
     const char *begin = "unit_long";

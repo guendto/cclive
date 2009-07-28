@@ -34,12 +34,6 @@ LiveleakHandler::LiveleakHandler()
     props.setFormats("flv");
 }
 
-const bool
-LiveleakHandler::isHost(std::string url) {
-    return Util::toLower(url).find(props.getDomain())
-        != std::string::npos;
-}
-
 void
 LiveleakHandler::parseId() {
     const char *begin = "token=";

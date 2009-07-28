@@ -36,12 +36,6 @@ GolemHandler::GolemHandler()
     props.setFormats("flv|ipod|high");
 }
 
-const bool
-GolemHandler::isHost(std::string url) {
-    return Util::toLower(url).find(props.getDomain())
-        != std::string::npos;
-}
-
 void
 GolemHandler::parseId() {
     const char *begin = "\"id\", \"";

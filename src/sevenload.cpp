@@ -34,12 +34,6 @@ SevenloadHandler::SevenloadHandler()
     props.setFormats("flv");
 }
 
-const bool
-SevenloadHandler::isHost(std::string url) {
-    return Util::toLower(url).find(props.getDomain())
-        != std::string::npos;
-}
-
 void
 SevenloadHandler::parseId() {
     // See parseLink below.

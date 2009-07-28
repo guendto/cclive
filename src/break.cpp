@@ -33,12 +33,6 @@ BreakHandler::BreakHandler()
     props.setFormats("flv");
 }
 
-const bool
-BreakHandler::isHost(std::string url) {
-    return Util::toLower(url).find(props.getDomain())
-        != std::string::npos;
-}
-
 void
 BreakHandler::parseId() {
     const char *begin = "ContentID='";
