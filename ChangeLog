@@ -2,30 +2,33 @@ Version 0.4.6
 
  User-visible changes:
   * Add:
-    1. golem.de support (port from clive)
-    2. --format=(mp4|hd|hq|3gp) for youtube
-    3. --stream-pass option
-    4. clipfish.de support (port from clive)
+    # golem.de support (port from clive)
+    # --format=(mp4|hd|hq|3gp) for youtube
+    # --stream-pass option
+    # clipfish.de support (port from clive)
   * Fix:
-    1. [unicode support] --cclass now works as expected with unicode as well
-    2. Dailymotion support
+    # [unicode support] --cclass now works as expected with unicode as well
+    # Dailymotion support
   * Change:
-    1. Pair --exec with --exec-run, the latter now triggers the former
-    2. --hosts: print supported formats
-    3. --version: print current locale setting
-    4. --stream-exec: remove depend on --stream
+    # Pair --exec with --exec-run, the latter now triggers the former
+    # --hosts: print supported formats
+    # --version: print current locale setting
+    # --stream-exec: remove depend on --stream
 
  Developer-visible changes:
-  * $host.cpp: Remove isHost overriding (obsoleted by HostHandler impl.)
+  * Reduce "header hell"
+    # $host.cpp includes are now cleaner
+    # Slightly faster compilation
+  * $host.cpp: Remove isHost overriding (HostHandler impl. obsoletes)
   * exec.cpp:
-    1. improve system return code handling
-    2. quote %i replacement values
+    # Improve system return code handling
+    # Quote %i replacement values
   * configure.ac: add AC_FUNC_(RE)ALLOC (make cond.)
   * Change: tests/test.c: use system instead of execv
-    1. Due to design of the latter, some tests (e.g. -f) were skipped quietly
+    # Some tests (e.g. -f) were skipped quietly
   * Change: make check: respect NO_INTERNET env.var.
   * Fix: src/opts.cpp: missing #include <cstdlib>
-    1. Detected on Ubuntu (gcc 4.3.3)
+    # Detected on Ubuntu (gcc 4.3.3)
 
 
 0.4.5
