@@ -15,13 +15,6 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <string>
-#include <vector>
-
-#include "error.h"
-#include "except.h"
-#include "video.h"
-#include "util.h"
 #include "hosthandler.h"
 
 EvisorHandler::EvisorHandler()
@@ -34,14 +27,10 @@ EvisorHandler::EvisorHandler()
 
 void
 EvisorHandler::parseId() {
-    const char *begin = "unit_long";
-    const char *end   = "\"";
-    props.setId( Util::subStr(pageContent, begin, end) );
+    props.setId( Util::subStr(pageContent, "unit_long", "\"") );
 }
 
 void
 EvisorHandler::parseLink() {
-    const char *begin = "file=";
-    const char *end   = "\"";
-    props.setLink( Util::subStr(pageContent, begin, end) );
+    props.setLink( Util::subStr(pageContent, "file=", "\"") );
 }

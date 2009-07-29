@@ -15,16 +15,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <string>
-#include <vector>
-
-#include "error.h"
-#include "except.h"
-#include "video.h"
-#include "util.h"
-#include "singleton.h"
-#include "curl.h"
 #include "hosthandler.h"
+#include "curl.h"
 
 LiveleakHandler::LiveleakHandler()
     : HostHandler()
@@ -36,38 +28,26 @@ LiveleakHandler::LiveleakHandler()
 
 void
 LiveleakHandler::parseId() {
-    const char *begin = "token=";
-    const char *end   = "'";
-
-    props.setId( Util::subStr(pageContent, begin, end) );
+    props.setId( Util::subStr(pageContent, "token=", "'") );
 }
 
 void
 LiveleakHandler::parseLink() {
-    const char *cpathBegin = "'config','";
-    const char *cpathEnd   = "'";
-
     std::string confPath =
-        Util::subStr(pageContent, cpathBegin, cpathEnd);
+        Util::subStr(pageContent, "'config','", "'");
 
     curlmgr.unescape(confPath);
 
     std::string config =
         curlmgr.fetchToMem(confPath, "config");
 
-    const char *plBegin = "<file>";
-    const char *plEnd   = "</file>";
-
     std::string plPath =
-        Util::subStr(config, plBegin, plEnd);
+        Util::subStr(config, "<file>", "</file>");
 
     curlmgr.unescape(plPath);
 
     std::string playlist =
         curlmgr.fetchToMem(plPath, "playlist");
 
-    const char *linkBegin = "<location>";
-    const char *linkEnd   = "</location>";
-
-    props.setLink( Util::subStr(playlist, linkBegin, linkEnd) );
+    props.setLink( Util::subStr(playlist, "<location>", "</location>") );
 }

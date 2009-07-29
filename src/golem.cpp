@@ -15,18 +15,9 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <string>
-#include <vector>
-
-#include "error.h"
-#include "except.h"
-#include "video.h"
-#include "util.h"
-#include "singleton.h"
-#include "cmdline.h"
+#include "hosthandler.h"
 #include "opts.h"
 #include "curl.h"
-#include "hosthandler.h"
 
 GolemHandler::GolemHandler()
     : HostHandler()
@@ -38,14 +29,13 @@ GolemHandler::GolemHandler()
 
 void
 GolemHandler::parseId() {
-    const char *begin = "\"id\", \"";
-    const char *end   = "\"";
-    props.setId( Util::subStr(pageContent, begin, end) );
+    props.setId( Util::subStr(pageContent, "\"id\", \"", "\"") );
 }
 
 void
 GolemHandler::parseLink() {
-    std::string config_url = "http://video.golem.de/xml/" + props.getId();
+    std::string config_url =
+        "http://video.golem.de/xml/" + props.getId();
 
     std::string config =
         curlmgr.fetchToMem(config_url, "config");

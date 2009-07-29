@@ -18,6 +18,8 @@
 #ifndef except_h
 #define except_h
 
+#include "error.h"
+
 class RuntimeException {
 public:
     RuntimeException();

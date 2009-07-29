@@ -15,19 +15,11 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <string>
-#include <vector>
 #include <map>
 
-#include "error.h"
-#include "except.h"
-#include "video.h"
-#include "util.h"
-#include "singleton.h"
-#include "curl.h"
-#include "cmdline.h"
-#include "opts.h"
 #include "hosthandler.h"
+#include "curl.h"
+#include "opts.h"
 
 DailymotionHandler::DailymotionHandler()
     : HostHandler()
@@ -39,20 +31,13 @@ DailymotionHandler::DailymotionHandler()
 
 void
 DailymotionHandler::parseId() {
-    const char *begin = "swf/";
-    const char *end   = "?";
-
-    props.setId( Util::subStr(pageContent, begin, end) );
+    props.setId( Util::subStr(pageContent, "swf/", "?") );
 }
 
-#include <iostream>
 void
 DailymotionHandler::parseLink() {
-    const char *pathsBegin = "\"video\", \"";
-    const char *pathsEnd   = "\"";
-
     std::string paths =
-        Util::subStr(pageContent, pathsBegin, pathsEnd);
+        Util::subStr(pageContent, "\"video\", \"", "\"");
 
     curlmgr.unescape(paths);
 

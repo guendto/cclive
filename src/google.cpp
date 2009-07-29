@@ -15,18 +15,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <cstring>
-#include <string>
-#include <vector>
-
-#include "error.h"
-#include "except.h"
-#include "video.h"
-#include "util.h"
-#include "singleton.h"
-#include "cmdline.h"
-#include "opts.h"
 #include "hosthandler.h"
+#include "opts.h"
 
 GoogleHandler::GoogleHandler()
     : HostHandler()
@@ -38,25 +28,20 @@ GoogleHandler::GoogleHandler()
 
 void
 GoogleHandler::parseId() {
-    const char *begin = "docid:'";
-    const char *end   = "'";
-    props.setId( Util::subStr(pageContent, begin, end) );
+    props.setId( Util::subStr(pageContent, "docid:'", "'") );
 }
 
 void
 GoogleHandler::parseLink() {
-    const char *begin = "videoUrl\\x3d";
-    const char *end   = "\\x26";
-    props.setLink( Util::subStr(pageContent, begin, end) );
+    props.setLink( Util::subStr(pageContent, "videoUrl\\x3d", "\\x26") );
 
-    if (!strcmp(optsmgr.getOptions().format_arg, "mp4")
-        || !strcmp(optsmgr.getOptions().format_arg, "best"))
-    {
-        const char *begin_mp4 = "href=";
-        const char *end_mp4   = "=ck1";
+    std::string fmt = optsmgr.getOptions().format_arg;
+
+    if (fmt == "mp4" || fmt == "best") {
+        const char *end_mp4 = "=ck1";
         try   {
             props.setLink(
-                Util::rsubStr(pageContent, begin_mp4, end_mp4) +end_mp4);
+                Util::rsubStr(pageContent, "href=", end_mp4) +end_mp4);
         }
         catch (ParseException x) { /* default to flv */ }
     }

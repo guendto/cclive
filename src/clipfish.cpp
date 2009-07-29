@@ -15,16 +15,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <string>
-#include <vector>
-
-#include "error.h"
-#include "except.h"
-#include "video.h"
-#include "util.h"
-#include "singleton.h"
-#include "curl.h"
 #include "hosthandler.h"
+#include "curl.h"
 
 ClipfishHandler::ClipfishHandler()
     : HostHandler()

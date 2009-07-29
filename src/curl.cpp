@@ -37,15 +37,11 @@
 #include <unistd.h>
 #endif
 
-#include "error.h"
 #include "except.h"
-#include "singleton.h"
-#include "cmdline.h"
 #include "opts.h"
 #include "macros.h"
 #include "video.h"
 #include "progressbar.h"
-#include "macros.h"
 #include "log.h"
 #include "curl.h"
 

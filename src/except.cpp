@@ -17,7 +17,6 @@
 
 #include <string>
 
-#include "error.h"
 #include "except.h"
 
 RuntimeException::RuntimeException()

@@ -24,11 +24,8 @@
 #include <unistd.h>
 #endif
 
-#include "error.h"
 #include "except.h"
-#include "singleton.h"
 #include "macros.h"
-#include "cmdline.h"
 #include "opts.h"
 #include "log.h"
 

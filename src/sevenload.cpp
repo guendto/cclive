@@ -15,16 +15,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <string>
-#include <vector>
-
-#include "error.h"
-#include "except.h"
-#include "video.h"
-#include "util.h"
-#include "singleton.h"
-#include "curl.h"
 #include "hosthandler.h"
+#include "curl.h"
 
 SevenloadHandler::SevenloadHandler()
     : HostHandler()
@@ -41,24 +33,16 @@ SevenloadHandler::parseId() {
 
 void
 SevenloadHandler::parseLink() {
-    const char *cpathBegin = "configPath=";
-    const char *cpathEnd   = "\"";
-
     std::string cpath =
-        Util::subStr(pageContent, cpathBegin, cpathEnd);
+        Util::subStr(pageContent, "configPath=", "\"");
 
     curlmgr.unescape(cpath);
 
     std::string config =
         curlmgr.fetchToMem(cpath, "config");
 
-    const char *idBegin    = "item id=\"";
-    const char *idEnd      = "\"";
+    props.setId( Util::subStr(config, "item id=\"", "\"") );
 
-    props.setId( Util::subStr(config, idBegin, idEnd) );
-
-    const char *linkBegin  = "<location seeking=\"yes\">";
-    const char *linkEnd    = "</location>";
-
-    props.setLink( Util::subStr(config, linkBegin, linkEnd) );
+    props.setLink(
+        Util::subStr(config, "<location seeking=\"yes\">", "</location>") );
 }

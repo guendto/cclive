@@ -18,6 +18,8 @@
 #ifndef exec_h
 #define exec_h
 
+#include "singleton.h"
+
 class ExecMgr : public Singleton<ExecMgr> {
 public:
     ExecMgr();

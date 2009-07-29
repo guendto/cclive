@@ -23,18 +23,15 @@
 
 #include "config.h"
 
-#include <string>
-#include <vector>
-#include <sstream>
 #include <iterator>
+#include <sstream>
 #include <climits>
 #include <iomanip>
+#include <string>
+#include <vector>
 
-#include "error.h"
 #include "except.h"
 #include "util.h"
-#include "singleton.h"
-#include "cmdline.h"
 #include "opts.h"
 #include "curl.h"
 #include "video.h"

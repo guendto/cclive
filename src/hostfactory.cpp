@@ -15,13 +15,10 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <tr1/memory>
 #include <iostream>
 #include <string>
-#include <tr1/memory>
 
-#include "error.h"
-#include "except.h"
-#include "video.h"
 #include "hosthandler.h"
 #include "hostfactory.h"
 

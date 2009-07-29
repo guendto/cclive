@@ -41,17 +41,11 @@
 
 #include <curl/curl.h>
 
-#include "error.h"
-#include "except.h"
-#include "singleton.h"
-#include "cmdline.h"
-#include "opts.h"
-#include "macros.h"
-#include "video.h"
 #include "hosthandler.h"
 #include "hostfactory.h"
+#include "macros.h"
+#include "opts.h"
 #include "curl.h"
-#include "util.h"
 #include "exec.h"
 #include "log.h"
 #include "app.h"

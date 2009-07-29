@@ -18,6 +18,13 @@
 #ifndef hosthandler_h
 #define hosthandler_h
 
+#include <string>
+#include <vector>
+
+#include "except.h"
+#include "video.h"
+#include "util.h"
+
 class HostHandler {
 public:
     HostHandler();

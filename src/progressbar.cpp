@@ -17,13 +17,13 @@
 
 #include "config.h"
 
+#include <tr1/memory>
 #include <iostream>
 #include <sstream>
-#include <string>
 #include <iomanip>
-#include <vector>
-#include <tr1/memory>
 #include <cstdlib>
+#include <string>
+#include <vector>
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
@@ -48,11 +48,8 @@
  #endif
 #endif
 
-#include "error.h"
 #include "except.h"
 #include "video.h"
-#include "singleton.h"
-#include "cmdline.h"
 #include "opts.h"
 #include "macros.h"
 #include "util.h"

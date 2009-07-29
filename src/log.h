@@ -18,6 +18,8 @@
 #ifndef log_h
 #define log_h
 
+#include "singleton.h"
+
 // LogBuffer
 
 class LogBuffer : public std::streambuf {

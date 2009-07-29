@@ -15,22 +15,19 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <tr1/memory>
+#include <iterator>
 #include <cstdlib>
 #include <cstring>
+#include <sstream>
 #include <string>
 #include <vector>
-#include <iterator>
-#include <tr1/memory>
-#include <sstream>
 
-#include "error.h"
 #include "except.h"
 #include "video.h"
-#include "singleton.h"
-#include "log.h"
-#include "cmdline.h"
 #include "opts.h"
 #include "util.h"
+#include "log.h"
 #include "exec.h"
 
 ExecMgr::ExecMgr()

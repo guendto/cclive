@@ -23,12 +23,9 @@
 #include <string>
 #include <vector>
 
-#include "error.h"
 #include "except.h"
-#include "cmdline.h"
-#include "util.h"
-#include "singleton.h"
 #include "macros.h"
+#include "util.h"
 #include "log.h"
 #include "opts.h"
 

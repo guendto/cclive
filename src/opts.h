@@ -18,6 +18,9 @@
 #ifndef opts_h
 #define opts_h
 
+#include "singleton.h"
+#include "cmdline.h"
+
 typedef gengetopt_args_info Options;
 
 class OptionsMgr : public Singleton<OptionsMgr> {

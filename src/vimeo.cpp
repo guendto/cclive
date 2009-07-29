@@ -15,19 +15,11 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <string>
-#include <vector>
 #include <cstring>
 
-#include "error.h"
-#include "except.h"
-#include "video.h"
-#include "util.h"
-#include "singleton.h"
-#include "curl.h"
-#include "cmdline.h"
-#include "opts.h"
 #include "hosthandler.h"
+#include "curl.h"
+#include "opts.h"
 
 VimeoHandler::VimeoHandler()
     : HostHandler()
@@ -39,10 +31,7 @@ VimeoHandler::VimeoHandler()
 
 void
 VimeoHandler::parseId() {
-    const char *begin = "clip_id=";
-    const char *end   = "\"";
-
-    props.setId( Util::subStr(pageContent, begin, end) );
+    props.setId( Util::subStr(pageContent, "clip_id=", "\"") );
 }
 
 void
@@ -56,24 +45,19 @@ VimeoHandler::parseLink() {
     std::string config = 
         curlmgr.fetchToMem(config_path, "config");
 
-    const char *sig_begin = "<request_signature>";
-    const char *sig_end   = "</request_signature>";
+    std::string sign =
+        Util::subStr( config, "<request_signature>", "</request_signature>" );
 
-    std::string sign = Util::subStr( config, sig_begin, sig_end );
+    std::string exp =
+        Util::subStr( config,
+            "<request_signature_expires>", "</request_signature_expires>" );
 
-    const char *exp_begin = "<request_signature_expires>";
-    const char *exp_end   = "</request_signature_expires>";
-
-    std::string exp = Util::subStr( config, exp_begin, exp_end );
-
-    const char *hd_begin = "<hd_button>";
-    const char *hd_end   = "</hd_button>";
-
-    std::string hd = Util::subStr( config, hd_begin, hd_end, false );
+    std::string hd =
+        Util::subStr( config, "<hd_button>", "</hd_button>", false );
 
     // video link
 
-    std::string xurl =
+    std::string lnk =
         "http://vimeo.com/moogaloop/play/clip:" +props.getId()+
         "/" +sign+ "/" +exp;
 
@@ -83,8 +67,8 @@ VimeoHandler::parseLink() {
         || !strcmp(opts.format_arg, "hd"))
     {
         if (hd == "1")
-            xurl += "/?q=hd";
+            lnk += "/?q=hd";
     }
 
-    props.setLink(xurl);
+    props.setLink(lnk);
 }

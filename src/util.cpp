@@ -15,17 +15,13 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <algorithm>
 #include <fstream>
 #include <string>
-#include <map>
-#include <algorithm>
 #include <vector>
+#include <map>
 
-#include "error.h"
-#include "except.h"
-#include "video.h"
 #include "hosthandler.h"
-#include "util.h"
 
 const double
 Util::fileExists(const std::string& path) {

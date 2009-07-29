@@ -19,9 +19,7 @@
 #include <cstdlib>
 #include <vector>
 
-#include "error.h"
 #include "except.h"
-#include "singleton.h"
 #include "log.h"
 #include "app.h"
 

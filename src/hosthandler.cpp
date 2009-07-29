@@ -26,14 +26,8 @@
 
 #include "config.h"
 
-#include "error.h"
-#include "except.h"
-#include "video.h"
-#include "singleton.h"
-#include "cmdline.h"
-#include "opts.h"
-#include "util.h"
 #include "hosthandler.h"
+#include "opts.h"
 
 #ifdef WITH_PERL // -----------------------------
 #include <EXTERN.h>

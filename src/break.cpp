@@ -15,14 +15,6 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <string>
-#include <sstream>
-#include <vector>
-
-#include "error.h"
-#include "except.h"
-#include "video.h"
-#include "util.h"
 #include "hosthandler.h"
 
 BreakHandler::BreakHandler()
@@ -35,29 +27,19 @@ BreakHandler::BreakHandler()
 
 void
 BreakHandler::parseId() {
-    const char *begin = "ContentID='";
-    const char *end   = "'";
-    props.setId( Util::subStr(pageContent, begin, end) );
+    props.setId( Util::subStr(pageContent, "ContentID='", "'") );
 }
 
 void
 BreakHandler::parseLink() {
-    const char *fpathBegin = "ContentFilePath='";
-    const char *fpathEnd   = "'";
+    std::string fpath =
+        Util::subStr(pageContent, "ContentFilePath='", "'");
 
-    std::string fpath = Util::subStr(pageContent, fpathBegin, fpathEnd);
+    std::string fname =
+        Util::subStr(pageContent, "FileName='", "'");
 
-    const char *fnBegin    = "FileName='";
-    const char *fnEnd      = "'";
+    std::string lnk =
+        "http://media1.break.com/dnet/media/" + fpath + "/" + fname + ".flv";
 
-    std::string fname = Util::subStr(pageContent, fnBegin, fnEnd);
-
-    std::stringstream b;
-    b   << "http://media1.break.com/dnet/media/"
-        << fpath
-        << "/"
-        << fname
-        << ".flv";
-
-    props.setLink( b.str() );
+    props.setLink( lnk );
 }

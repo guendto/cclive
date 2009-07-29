@@ -18,6 +18,8 @@
 #ifndef curl_h
 #define curl_h
 
+#include "singleton.h"
+
 class CurlMgr : public Singleton<CurlMgr> {
 public:
     CurlMgr           ();
