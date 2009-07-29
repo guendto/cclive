@@ -187,8 +187,8 @@ Otherwise the same as above but B<instead of> starting the download,
 B<cclive> passes the parsed video link to the command defined with
 B<--stream-exec>. See also L</EXAMPLES>.
 
-The concept of this option is based on a simple C<clive(1)> wrapper
-script contributed by Bill Squire.
+This option was inspired by a C<clive(1)> wrapper script contributed
+by Bill Squire.
 
 =item B<--print-fname>
 
