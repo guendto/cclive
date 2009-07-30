@@ -1,7 +1,13 @@
 Version 0.4.7
 
+ User-visible changes:
+  * Add:
+    # myubo.com support
+      * Thanks to Patrick Hoffmann <patrick@sobran.de> for the patch
  Developer-visible changes:
-  * Change: tests/youtube.c: new link
+  * src/hosthandler.cpp: rewrite --title handling
+    # allow overridden parseLink to set new page title
+  * tests/youtube.c: new link
 
 
 Version 0.4.6
