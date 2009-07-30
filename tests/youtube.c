@@ -15,8 +15,8 @@ formats[] = {
 
 static const char *
 urls[] = {
-    "http://www.youtube.com/watch?v=d0j_ONmVcXA",
-    "http://www.youtube.com/v/d0j_ONmVcXA",
+    "http://www.youtube.com/watch?v==DeWsZ2b_pK4",
+    "http://www.youtube.com/v/=DeWsZ2b_pK4",
     "http://www.youtube-nocookie.com/v/3PuHGKnboNY",
     "http://www.last.fm/music/Rammstein/+videos/+1-3jwXQFFLSHo",
     NULL
