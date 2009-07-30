@@ -57,9 +57,9 @@ static const char script_title[] =
 ;
 
 static const char script_filter[] =
-"$title =~ s/(youtube|video|liveleak.com|sevenload|dailymotion)//gi;"
+"$title =~ s/(youtube|liveleak.com|sevenload|dailymotion)//gi;"
 "$title =~ s/(on vimeo|.golem.de|clipfish|funny hub)//gi;"
-"$title =~ s/video//gi;"
+"$title =~ s/(video[s])//gi;"
 "$title =~ s/^[-\\s]+//;"
 "$title =~ s/\\s+$//;"
 
