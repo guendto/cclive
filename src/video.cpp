@@ -103,9 +103,11 @@ VideoProperties::setInitial(const double initial) {
     this->initial = initial;
 }
 
+#include <iostream>
 void
 VideoProperties::setTitle(const std::string& title) {
     this->title = title;
+    std::cout << __func__ << ": " << title << std::endl;
 }
 
 const std::string&
@@ -131,6 +133,11 @@ VideoProperties::getDomain() const {
 const std::string&
 VideoProperties::getFormats() const {
     return formats;
+}
+
+const std::string&
+VideoProperties::getTitle() const {
+    return title;
 }
 
 const double
@@ -162,6 +169,8 @@ static int video_num;
 
 void
 VideoProperties::formatOutputFilename() {
+
+    std::cout << __func__ << ": " << title << std::endl;
 
     Options opts = optsmgr.getOptions();
 

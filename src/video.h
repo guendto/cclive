@@ -42,6 +42,7 @@ public:
     const std::string&  getHost         () const;
     const std::string&  getDomain       () const;
     const std::string&  getFormats      () const;
+    const std::string&  getTitle        () const;
     const double        getLength       () const;
     const double        getInitial      () const;
     const std::string&  getContentType  () const;
