@@ -31,7 +31,8 @@ protected:
     enum HandlerType {
         Youtube,    Google,    Break,        Evisor,
         Sevenload,  Liveleak,  Dailymotion,  Vimeo,
-        Golem,      Clipfish,  Funnyhub,     _last_type };
+        Golem,      Clipfish,  Funnyhub,     Myubo,
+		_last_type };
 protected:
     static std::tr1::shared_ptr<HostHandler>
         createHandler(const HandlerType& type);

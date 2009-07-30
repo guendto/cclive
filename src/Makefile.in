@@ -54,9 +54,9 @@ am__cclive_SOURCES_DIST = main.cpp app.cpp except.cpp util.cpp \
 	exec.cpp log.cpp cmdline.c hostfactory.cpp xsinit.c \
 	youtube.cpp break.cpp evisor.cpp sevenload.cpp liveleak.cpp \
 	dailymotion.cpp vimeo.cpp golem.cpp clipfish.cpp funnyhub.cpp \
-	google.cpp app.h except.h util.h opts.h hosthandler.h video.h \
-	singleton.h macros.h curl.h progressbar.h exec.h error.h log.h \
-	cmdline.h hostfactory.h
+	myubo.cpp google.cpp app.h except.h util.h opts.h \
+	hosthandler.h video.h singleton.h macros.h curl.h \
+	progressbar.h exec.h error.h log.h cmdline.h hostfactory.h
 @WITH_PERL_TRUE@am__objects_1 = xsinit.$(OBJEXT)
 am__objects_2 = main.$(OBJEXT) app.$(OBJEXT) except.$(OBJEXT) \
 	util.$(OBJEXT) hosthandler.$(OBJEXT) opts.$(OBJEXT) \
@@ -66,7 +66,7 @@ am__objects_2 = main.$(OBJEXT) app.$(OBJEXT) except.$(OBJEXT) \
 am__objects_3 = youtube.$(OBJEXT) break.$(OBJEXT) evisor.$(OBJEXT) \
 	sevenload.$(OBJEXT) liveleak.$(OBJEXT) dailymotion.$(OBJEXT) \
 	vimeo.$(OBJEXT) golem.$(OBJEXT) clipfish.$(OBJEXT) \
-	funnyhub.$(OBJEXT) google.$(OBJEXT)
+	funnyhub.$(OBJEXT) myubo.$(OBJEXT) google.$(OBJEXT)
 am__objects_4 =
 am_cclive_OBJECTS = $(am__objects_2) $(am__objects_3) $(am__objects_4)
 cclive_OBJECTS = $(am_cclive_OBJECTS)
@@ -173,6 +173,7 @@ host = \
 	golem.cpp	\
 	clipfish.cpp	\
 	funnyhub.cpp    \
+	myubo.cpp	\
 	google.cpp
 
 host_alias = @host_alias@
@@ -315,6 +316,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liveleak.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/log.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/myubo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/opts.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/progressbar.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sevenload.Po@am__quote@

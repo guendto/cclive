@@ -28,6 +28,7 @@ host =			\
 	golem.cpp	\
 	clipfish.cpp	\
 	funnyhub.cpp    \
+	myubo.cpp	\
 	google.cpp
 
 hdr =			\

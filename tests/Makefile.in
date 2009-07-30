@@ -35,7 +35,7 @@ target_triplet = @target@
 check_PROGRAMS = youtube$(EXEEXT) break$(EXEEXT) liveleak$(EXEEXT) \
 	dailymotion$(EXEEXT) evisor$(EXEEXT) google$(EXEEXT) \
 	sevenload$(EXEEXT) golem$(EXEEXT) clipfish$(EXEEXT) \
-	funnyhub$(EXEEXT) vimeo$(EXEEXT)
+	funnyhub$(EXEEXT) myubo$(EXEEXT) vimeo$(EXEEXT)
 @WITH_PERL_TRUE@am__append_1 = pod.pl
 subdir = tests
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
@@ -71,6 +71,9 @@ google_LDADD = $(LDADD)
 am_liveleak_OBJECTS = liveleak.$(OBJEXT) $(am__objects_1)
 liveleak_OBJECTS = $(am_liveleak_OBJECTS)
 liveleak_LDADD = $(LDADD)
+am_myubo_OBJECTS = myubo.$(OBJEXT) $(am__objects_1)
+myubo_OBJECTS = $(am_myubo_OBJECTS)
+myubo_LDADD = $(LDADD)
 am_sevenload_OBJECTS = sevenload.$(OBJEXT) $(am__objects_1)
 sevenload_OBJECTS = $(am_sevenload_OBJECTS)
 sevenload_LDADD = $(LDADD)
@@ -89,12 +92,13 @@ CCLD = $(CC)
 LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 SOURCES = $(break_SOURCES) $(clipfish_SOURCES) $(dailymotion_SOURCES) \
 	$(evisor_SOURCES) $(funnyhub_SOURCES) $(golem_SOURCES) \
-	$(google_SOURCES) $(liveleak_SOURCES) $(sevenload_SOURCES) \
-	$(vimeo_SOURCES) $(youtube_SOURCES)
+	$(google_SOURCES) $(liveleak_SOURCES) $(myubo_SOURCES) \
+	$(sevenload_SOURCES) $(vimeo_SOURCES) $(youtube_SOURCES)
 DIST_SOURCES = $(break_SOURCES) $(clipfish_SOURCES) \
 	$(dailymotion_SOURCES) $(evisor_SOURCES) $(funnyhub_SOURCES) \
 	$(golem_SOURCES) $(google_SOURCES) $(liveleak_SOURCES) \
-	$(sevenload_SOURCES) $(vimeo_SOURCES) $(youtube_SOURCES)
+	$(myubo_SOURCES) $(sevenload_SOURCES) $(vimeo_SOURCES) \
+	$(youtube_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -223,6 +227,7 @@ sevenload_SOURCES = sevenload.c $(common)
 golem_SOURCES = golem.c $(common)
 clipfish_SOURCES = clipfish.c $(common)
 funnyhub_SOURCES = funnyhub.c $(common)
+myubo_SOURCES = myubo.c $(common)
 all: all-am
 
 .SUFFIXES:
@@ -283,6 +288,9 @@ google$(EXEEXT): $(google_OBJECTS) $(google_DEPENDENCIES)
 liveleak$(EXEEXT): $(liveleak_OBJECTS) $(liveleak_DEPENDENCIES) 
 	@rm -f liveleak$(EXEEXT)
 	$(LINK) $(liveleak_OBJECTS) $(liveleak_LDADD) $(LIBS)
+myubo$(EXEEXT): $(myubo_OBJECTS) $(myubo_DEPENDENCIES) 
+	@rm -f myubo$(EXEEXT)
+	$(LINK) $(myubo_OBJECTS) $(myubo_LDADD) $(LIBS)
 sevenload$(EXEEXT): $(sevenload_OBJECTS) $(sevenload_DEPENDENCIES) 
 	@rm -f sevenload$(EXEEXT)
 	$(LINK) $(sevenload_OBJECTS) $(sevenload_LDADD) $(LIBS)
@@ -307,6 +315,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/golem.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/google.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liveleak.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/myubo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sevenload.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/vimeo.Po@am__quote@
