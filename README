@@ -48,6 +48,5 @@ available in cclive.
 
 clive requires that Perl is installed along with a number of modules
 that clive depends on. cclive on the other hand is designed to build
-(by default) with only a C++ compiler and libcurl. This means also
-that the runtime dependencies are fewer and the system footprint
-is much less for cclive than it is for clive.
+(by default) with only a C++ compiler and libcurl. This means cclive
+has fewer runtime dependencies and a much lower system footprint.
