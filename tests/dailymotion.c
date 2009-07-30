@@ -9,7 +9,7 @@
 
 static const char *formats[] = {
     "flv",
-    "spak-mini",
+    "spark-mini",
     "vp6-hq",
     "vp6-hd",
     "vp6",

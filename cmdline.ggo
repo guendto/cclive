@@ -35,7 +35,7 @@ option "format"
         # youtube:
         "fmt17","fmt18","fmt22","fmt35","hq","3gp",
         # dmotion:
-        "spak-mini","vp6-hq","vp6-hd","vp6","h264",
+        "spark-mini","vp6-hq","vp6-hd","vp6","h264",
         # vimeo:
         "hd",
         # google:
