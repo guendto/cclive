@@ -4,6 +4,9 @@ Version 0.4.7
   * Add:
     # myubo.com support
       * Thanks to Patrick Hoffmann <patrick@sobran.de> for the patch
+  * Fix:
+    # Dailymotion: spak-mini -> spark-mini
+
  Developer-visible changes:
   * src/hosthandler.cpp: rewrite --title handling
     # allow overridden parseLink to set new page title
