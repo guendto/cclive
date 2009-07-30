@@ -11,6 +11,7 @@ google\
 sevenload\
 golem\
 clipfish\
+funnyhub\
 vimeo
 
 TESTS= $(check_PROGRAMS)
@@ -33,3 +34,4 @@ vimeo_SOURCES=		vimeo.c $(common)
 sevenload_SOURCES=	sevenload.c $(common)
 golem_SOURCES=		golem.c $(common)
 clipfish_SOURCES=	clipfish.c $(common)
+funnyhub_SOURCES=  funnyhub.c $(common)

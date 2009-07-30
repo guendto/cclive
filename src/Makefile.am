@@ -27,6 +27,7 @@ host =			\
 	vimeo.cpp	\
 	golem.cpp	\
 	clipfish.cpp	\
+	funnyhub.cpp    \
 	google.cpp
 
 hdr =			\

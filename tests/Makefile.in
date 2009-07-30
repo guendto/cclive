@@ -35,7 +35,7 @@ target_triplet = @target@
 check_PROGRAMS = youtube$(EXEEXT) break$(EXEEXT) liveleak$(EXEEXT) \
 	dailymotion$(EXEEXT) evisor$(EXEEXT) google$(EXEEXT) \
 	sevenload$(EXEEXT) golem$(EXEEXT) clipfish$(EXEEXT) \
-	vimeo$(EXEEXT)
+	funnyhub$(EXEEXT) vimeo$(EXEEXT)
 @WITH_PERL_TRUE@am__append_1 = pod.pl
 subdir = tests
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
@@ -59,6 +59,9 @@ dailymotion_LDADD = $(LDADD)
 am_evisor_OBJECTS = evisor.$(OBJEXT) $(am__objects_1)
 evisor_OBJECTS = $(am_evisor_OBJECTS)
 evisor_LDADD = $(LDADD)
+am_funnyhub_OBJECTS = funnyhub.$(OBJEXT) $(am__objects_1)
+funnyhub_OBJECTS = $(am_funnyhub_OBJECTS)
+funnyhub_LDADD = $(LDADD)
 am_golem_OBJECTS = golem.$(OBJEXT) $(am__objects_1)
 golem_OBJECTS = $(am_golem_OBJECTS)
 golem_LDADD = $(LDADD)
@@ -85,13 +88,13 @@ COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 CCLD = $(CC)
 LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 SOURCES = $(break_SOURCES) $(clipfish_SOURCES) $(dailymotion_SOURCES) \
-	$(evisor_SOURCES) $(golem_SOURCES) $(google_SOURCES) \
-	$(liveleak_SOURCES) $(sevenload_SOURCES) $(vimeo_SOURCES) \
-	$(youtube_SOURCES)
-DIST_SOURCES = $(break_SOURCES) $(clipfish_SOURCES) \
-	$(dailymotion_SOURCES) $(evisor_SOURCES) $(golem_SOURCES) \
+	$(evisor_SOURCES) $(funnyhub_SOURCES) $(golem_SOURCES) \
 	$(google_SOURCES) $(liveleak_SOURCES) $(sevenload_SOURCES) \
 	$(vimeo_SOURCES) $(youtube_SOURCES)
+DIST_SOURCES = $(break_SOURCES) $(clipfish_SOURCES) \
+	$(dailymotion_SOURCES) $(evisor_SOURCES) $(funnyhub_SOURCES) \
+	$(golem_SOURCES) $(google_SOURCES) $(liveleak_SOURCES) \
+	$(sevenload_SOURCES) $(vimeo_SOURCES) $(youtube_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -219,6 +222,7 @@ vimeo_SOURCES = vimeo.c $(common)
 sevenload_SOURCES = sevenload.c $(common)
 golem_SOURCES = golem.c $(common)
 clipfish_SOURCES = clipfish.c $(common)
+funnyhub_SOURCES = funnyhub.c $(common)
 all: all-am
 
 .SUFFIXES:
@@ -267,6 +271,9 @@ dailymotion$(EXEEXT): $(dailymotion_OBJECTS) $(dailymotion_DEPENDENCIES)
 evisor$(EXEEXT): $(evisor_OBJECTS) $(evisor_DEPENDENCIES) 
 	@rm -f evisor$(EXEEXT)
 	$(LINK) $(evisor_OBJECTS) $(evisor_LDADD) $(LIBS)
+funnyhub$(EXEEXT): $(funnyhub_OBJECTS) $(funnyhub_DEPENDENCIES)
+	@rm -f funnyhub$(EXEEXT)
+	$(LINK) $(funnyhub_OBJECTS) $(funnyhub_LDADD) $(LIBS)
 golem$(EXEEXT): $(golem_OBJECTS) $(golem_DEPENDENCIES) 
 	@rm -f golem$(EXEEXT)
 	$(LINK) $(golem_OBJECTS) $(golem_LDADD) $(LIBS)
@@ -296,6 +303,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/clipfish.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dailymotion.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/evisor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/funnyhub.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/golem.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/google.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liveleak.Po@am__quote@

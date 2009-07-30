@@ -137,4 +137,13 @@ public:
     virtual void        parseLink();
 };
 
+// Funnyhub
+
+class FunnyhubHandler : public HostHandler {
+public:
+    FunnyhubHandler              ();
+    virtual void        parseId  ();
+    virtual void        parseLink();
+};
+
 #endif
