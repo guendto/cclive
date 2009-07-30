@@ -148,4 +148,13 @@ public:
     virtual void        parseLink();
 };
 
+// Myubo
+
+class MyuboHandler : public HostHandler {
+public:
+	MyuboHandler				 ();
+	virtual void		parseId	 ();
+	virtual void		parseLink();
+};
+
 #endif
