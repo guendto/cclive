@@ -172,7 +172,7 @@ host = \
 	vimeo.cpp	\
 	golem.cpp	\
 	clipfish.cpp	\
-	funnyhub.cpp	\
+	funnyhub.cpp    \
 	google.cpp
 
 host_alias = @host_alias@
