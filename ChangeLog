@@ -6,6 +6,8 @@ Version 0.4.7
       * Thanks to Patrick Hoffmann <patrick@sobran.de> for the patch
   * Fix:
     # Dailymotion: spak-mini -> spark-mini
+    # Funnyhub: ID parsing
+    # Funnyhub: title cleanup
 
  Developer-visible changes:
   * src/hosthandler.cpp: rewrite --title handling
