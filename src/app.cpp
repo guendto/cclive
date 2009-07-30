@@ -245,35 +245,34 @@ App::parseInput() {
 void
 App::printVersion() {
 static const char copyr_notice[] =
-"Copyright (C) 2009 Toni Gundogdu.\n\n\
-License GPLv3+: GNU GPL version 3 or later\n\
-  <http://www.gnu.org/licenses/>\n\n\
-This is free software: you are free to change and redistribute it.\n\
-There is NO WARRANTY, to the extent permitted by law.";
+"Copyright (C) 2009 Toni Gundogdu.\n\n"
+"License GPLv3+: GNU GPL version 3 or later\n"
+"  <http://www.gnu.org/licenses/>\n\n"
+"This is free software: you are free to change and redistribute it.\n"
+"There is NO WARRANTY, to the extent permitted by law.";
 
     curl_version_info_data *c =
         curl_version_info(CURLVERSION_NOW);
 
     char *locale = getenv("LANG");
     if (!locale)
-        locale = const_cast<char *>("");
+        locale = const_cast<char *>("undefined");
 
     std::cout
         << CMDLINE_PARSER_PACKAGE   << " version "
         << CMDLINE_PARSER_VERSION   << " with libcurl version "
         << c->version               << "  ["
         << CANONICAL_TARGET         << "]\n"
-        << copyr_notice             << "\n\n\tFeatures: ";
-
+        << copyr_notice             << "\n"
+        << "\n  Config  : "         << optsmgr.getPath()
+        << "\n  Features: "
 #ifdef USE_SIGWINCH
-    std::cout << "--enable-sigwinch ";
+        << "--enable-sigwinch "
 #endif
 #ifdef WITH_PERL
-    std::cout << "--with-perl ";
+        << "--with-perl "
 #endif
-    std::cout
-        << "\n\tConfig: " << optsmgr.getPath()
-        << "\n\tLocale: " << locale
-        << "\n\nReport bugs: <http://code.google.com/p/cclive/issues/>"
+        << "\n  Locale  : "           << locale
+        << "\n  Home    : "           << "<http://cclive.googlecode.com/>"
         << std::endl;
 }
