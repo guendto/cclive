@@ -48,8 +48,9 @@ public:
     const std::string&  getSuffix       () const;
     const std::string&  getFilename     () const;
     const std::string&  getPageLink     () const;
-private:
+public:
     void formatOutputFilename           ();
+private:
     void defaultOutputFilenameFormatter (std::stringstream&);
     void customOutputFilenameFormatter  (std::stringstream&);
 private:

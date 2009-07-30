@@ -96,9 +96,6 @@ VideoProperties::setContentType(const std::string& contentType) {
         }
         Util::subStrReplace(suffix, "x-", "");
     }
-
-    // We have all needed info now.
-    formatOutputFilename();
 }
 
 void

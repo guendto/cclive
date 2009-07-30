@@ -118,6 +118,8 @@ handleURL(const std::string& url) {
                 VideoProperties props =
                     handler->getVideoProperties();
 
+                props.formatOutputFilename();
+
                 try {
                     curlmgr.queryFileLength(props);
 
