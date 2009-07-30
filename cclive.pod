@@ -304,6 +304,8 @@ mp4 may not always be available.
 
 =item B<www.funnyhub.com>
 
+=item B<www.myubo.com>
+
 Format: flv
 
 =back
