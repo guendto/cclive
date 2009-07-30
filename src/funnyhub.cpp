@@ -30,7 +30,7 @@ FunnyhubHandler::FunnyhubHandler()
 void
 FunnyhubHandler::parseId() {
     const char *begin = "/videofiles/";
-    const char *end   = ".flv\"";
+    const char *end   = "_";
     props.setId( Util::subStr(pageContent, begin, end) );
 }
 
