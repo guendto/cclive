@@ -103,11 +103,9 @@ VideoProperties::setInitial(const double initial) {
     this->initial = initial;
 }
 
-#include <iostream>
 void
 VideoProperties::setTitle(const std::string& title) {
     this->title = title;
-    std::cout << __func__ << ": " << title << std::endl;
 }
 
 const std::string&
@@ -169,8 +167,6 @@ static int video_num;
 
 void
 VideoProperties::formatOutputFilename() {
-
-    std::cout << __func__ << ": " << title << std::endl;
 
     Options opts = optsmgr.getOptions();
 
