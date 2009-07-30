@@ -27,7 +27,6 @@ MyuboHandler::MyuboHandler()
     props.setFormats("flv");
 }
 
-#include <iostream>
 void
 MyuboHandler::parseId() {
     const char *begin = "movieid=";
