@@ -55,7 +55,7 @@ public:
     std::ostream&      cout()  const;
     std::ostream&      cerr()  const;
     std::ostream&      cerr(const RuntimeException& except,
-                            const bool& newline=true);
+                            const bool& prepend_newline=true);
     const ReturnCode&  getRC() const;
 protected:
     void            _init();

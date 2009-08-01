@@ -133,9 +133,9 @@ LogMgr::cerr() const {
 
 std::ostream&
 LogMgr::cerr(const RuntimeException& except,
-             const bool& newline /*=true*/)
+             const bool& prepend_newline /*=true*/)
 {
-    if (newline)
+    if (prepend_newline)
         *_cerr << "\n";
 
     *_cerr << "error: " << except.what() << std::endl;
