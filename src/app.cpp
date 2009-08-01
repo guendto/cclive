@@ -140,7 +140,7 @@ handleURL(const std::string& url) {
                     curlmgr.fetchToFile(props);
                 }
             }
-            catch (const NothingTodo& x) { logmgr.cerr(x); }
+            catch (const NothingTodo& x) { logmgr.cerr(x, false); }
 
             if (opts.exec_run_given) 
                 execmgr.append(props);
