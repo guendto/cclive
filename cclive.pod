@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-cclive - video extraction utility for the flash dismissing hordes
+cclive - lightweight video extraction tool
 
 =head1 SYNOPSIS
 
@@ -10,8 +10,9 @@ cclive [options] [url...]
 
 =head1 DESCRIPTION
 
-cclive is command line video extraction utility for Youtube and other
-video-sharing websites. It is similar to clive but with lower requirements.
+cclive is lightweight command line video extraction tool for Youtube and
+other similar video-sharing websites. It resembles clive in many aspects
+but has lower requirements.
 
 =head1 OPTIONS
 
@@ -39,8 +40,8 @@ Print libcurl debug messages to stderr.
 
 =item B<-t, --title>  [req. --with-perl]
 
-Causes B<cclive> to use video page title for output video filename.
-Ignored if B<cclive> was built --without-perl.
+Causes cclive to use video page title for output video filename.
+Ignored if cclive was built --without-perl.
 
 =item B<--cclass=>I<CCLASS>  [req. --with-perl]
 
@@ -58,7 +59,7 @@ Do not extract any videos.
 
 Continue a partially downloaded video file.
 
-Note that, by default, B<cclive> appends a numeric suffix to the filename
+Note that, by default, cclive appends a numeric suffix to the filename
 if the file exists already. That is unless:
 
   * file is already completely retrieved, or:
@@ -66,7 +67,7 @@ if the file exists already. That is unless:
 
 =item B<-f, --format=>I<FORMAT>
 
-Extract I<format> of the video. If set to I<best>, B<cclive> will
+Extract I<format> of the video. If set to I<best>, cclive will
 attempt to download the best video quality. See also L</FORMATS>.
 
 =item B<-O, --output-video=>I<FILE>
@@ -90,7 +91,7 @@ specifiers appear anywhere in the I<string>, they will be replaced accordingly:
   %h = host string
   %s = file suffix
 
-Note that "%t" is replaced only if B<cclive> was built --with-perl and
+Note that "%t" is replaced only if cclive was built --with-perl and
 the B<--title> option was used. Otherwise "%t" equals to "%i".
 
 Example:
@@ -108,7 +109,7 @@ Limit download speed to I<amount> (KB/s). Ignored for video page fetch.
 
 =item B<--agent=>I<STRING>
 
-Identify B<cclive> as I<string> to the HTTP servers.
+Identify cclive as I<string> to the HTTP servers.
 
 =item B<--proxy=>I<ADDRESS>
 
@@ -118,7 +119,7 @@ Example:
 
   --proxy=http://foo:1234
 
-B<cclive> uses the value of the http_proxy environment variable by default
+cclive uses the value of the http_proxy environment variable by default
 if it is defined.
 
 
@@ -154,7 +155,7 @@ as possible for the invocation of I<command>.
 
 =item B<-e, --exec-run>
 
-Causes B<cclive> to invoke the command defined with B<--exec> when
+Causes cclive to invoke the command defined with B<--exec> when
 transfer finishes.
 
 =item B<--stream-exec=>I<COMMAND>
@@ -166,16 +167,16 @@ either video file path name (B<--stream>) or parsed video link
 
 =item B<--stream=>I<PERCENT>
 
-Causes B<cclive> to fetch, parse, start download and eventually invoke
+Causes cclive to fetch, parse, start download and eventually invoke
 the command defined with B<--stream-exec> when the transfer reaches
 the percentage defined with this option. See also L</EXAMPLES>.
 
-Note that B<cclive> does nothing to check if there is enough data buffered
+Note that cclive does nothing to check if there is enough data buffered
 before invoking the B<--stream-exec> defined I<command>. If the transfer
 rate drops significantly after starting the process and it runs out of data,
-B<cclive> does nothing to fix this.
+cclive does nothing to fix this.
 
-Also note that B<cclive> will not continue to download another file before the
+Also note that cclive will not continue to download another file before the
 child process exits.
 
 This mode is supported for historical reasons. Consider using
@@ -184,7 +185,7 @@ B<--stream-pass> instead.
 =item B<-s, --stream-pass>
 
 Otherwise the same as above but B<instead of> starting the download,
-B<cclive> passes the parsed video link to the command defined with
+cclive passes the parsed video link to the command defined with
 B<--stream-exec>. See also L</EXAMPLES>.
 
 This option was inspired by a C<clive(1)> wrapper script contributed
@@ -232,7 +233,7 @@ to work also.
 
 =head1 FORMATS
 
-B<cclive> downloads "flv" by default from all of the supported websites.
+cclive downloads "flv" by default from all of the supported websites.
 
 =over 4
 
@@ -392,14 +393,9 @@ Development code:
 
 =over 4
 
-=item cclive appeared following the release of clive2
+=item * cclive followed the release of clive2
 
-clive2 introduced quite a few prerequisites and is written in Perl.
-
-=item It was originally written in C but was later rewritten in C++
-
-B<cclive> aims to keep the prerequisites low for both hardware and
-software. Its features are few and essential.
+=item * It was written in C and later rewritten in C++
 
 =back
 

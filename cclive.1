@@ -132,20 +132,21 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2009-07-30" "0.4.7" "cclive manual"
+.TH cclive 1 "2009-08-02" "0.4.7" "cclive manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
 .nh
 .SH "NAME"
-cclive \- video extraction utility for the flash dismissing hordes
+cclive \- lightweight video extraction tool
 .SH "SYNOPSIS"
 .IX Header "SYNOPSIS"
 cclive [options] [url...]
 .SH "DESCRIPTION"
 .IX Header "DESCRIPTION"
-cclive is command line video extraction utility for Youtube and other
-video-sharing websites. It is similar to clive but with lower requirements.
+cclive is lightweight command line video extraction tool for Youtube and
+other similar video-sharing websites. It resembles clive in many aspects
+but has lower requirements.
 .SH "OPTIONS"
 .IX Header "OPTIONS"
 .IP "\fB\-h, \-\-help\fR" 4
@@ -165,8 +166,8 @@ Turn off all output.
 Print libcurl debug messages to stderr.
 .IP "\fB\-t, \-\-title\fR  [req. \-\-with\-perl]" 4
 .IX Item "-t, --title  [req. --with-perl]"
-Causes \fBcclive\fR to use video page title for output video filename.
-Ignored if \fBcclive\fR was built \-\-without\-perl.
+Causes cclive to use video page title for output video filename.
+Ignored if cclive was built \-\-without\-perl.
 .IP "\fB\-\-cclass=\fR\fI\s-1CCLASS\s0\fR  [req. \-\-with\-perl]" 4
 .IX Item "--cclass=CCLASS  [req. --with-perl]"
 Use character\-\fIclass\fR to filter video page titles. Defaults to \*(L"\ew\*(R".
@@ -180,7 +181,7 @@ Do not extract any videos.
 .IX Item "-c, --continue"
 Continue a partially downloaded video file.
 .Sp
-Note that, by default, \fBcclive\fR appends a numeric suffix to the filename
+Note that, by default, cclive appends a numeric suffix to the filename
 if the file exists already. That is unless:
 .Sp
 .Vb 2
@@ -189,7 +190,7 @@ if the file exists already. That is unless:
 .Ve
 .IP "\fB\-f, \-\-format=\fR\fI\s-1FORMAT\s0\fR" 4
 .IX Item "-f, --format=FORMAT"
-Extract \fIformat\fR of the video. If set to \fIbest\fR, \fBcclive\fR will
+Extract \fIformat\fR of the video. If set to \fIbest\fR, cclive will
 attempt to download the best video quality. See also \*(L"\s-1FORMATS\s0\*(R".
 .IP "\fB\-O, \-\-output\-video=\fR\fI\s-1FILE\s0\fR" 4
 .IX Item "-O, --output-video=FILE"
@@ -212,7 +213,7 @@ specifiers appear anywhere in the \fIstring\fR, they will be replaced accordingl
 \&  %s = file suffix
 .Ve
 .Sp
-Note that \*(L"%t\*(R" is replaced only if \fBcclive\fR was built \-\-with\-perl and
+Note that \*(L"%t\*(R" is replaced only if cclive was built \-\-with\-perl and
 the \fB\-\-title\fR option was used. Otherwise \*(L"%t\*(R" equals to \*(L"%i\*(R".
 .Sp
 Example:
@@ -229,7 +230,7 @@ Use of \fB\-\-quiet\fR will be ignored for the \s-1CSV\s0.
 Limit download speed to \fIamount\fR (KB/s). Ignored for video page fetch.
 .IP "\fB\-\-agent=\fR\fI\s-1STRING\s0\fR" 4
 .IX Item "--agent=STRING"
-Identify \fBcclive\fR as \fIstring\fR to the \s-1HTTP\s0 servers.
+Identify cclive as \fIstring\fR to the \s-1HTTP\s0 servers.
 .IP "\fB\-\-proxy=\fR\fI\s-1ADDRESS\s0\fR" 4
 .IX Item "--proxy=ADDRESS"
 Use \fIaddress\fR for \s-1HTTP\s0 proxy.
@@ -240,7 +241,7 @@ Example:
 \&  \-\-proxy=http://foo:1234
 .Ve
 .Sp
-\&\fBcclive\fR uses the value of the http_proxy environment variable by default
+cclive uses the value of the http_proxy environment variable by default
 if it is defined.
 .IP "\fB\-\-no\-proxy\fR" 4
 .IX Item "--no-proxy"
@@ -271,7 +272,7 @@ Same as \fB\-\-exec\fR, except that \*(L"%i\*(R" is replaced with as many pathna
 as possible for the invocation of \fIcommand\fR.
 .IP "\fB\-e, \-\-exec\-run\fR" 4
 .IX Item "-e, --exec-run"
-Causes \fBcclive\fR to invoke the command defined with \fB\-\-exec\fR when
+Causes cclive to invoke the command defined with \fB\-\-exec\fR when
 transfer finishes.
 .IP "\fB\-\-stream\-exec=\fR\fI\s-1COMMAND\s0\fR" 4
 .IX Item "--stream-exec=COMMAND"
@@ -281,16 +282,16 @@ either video file path name (\fB\-\-stream\fR) or parsed video link
 (\fB\-\-stream\-pass\fR).
 .IP "\fB\-\-stream=\fR\fI\s-1PERCENT\s0\fR" 4
 .IX Item "--stream=PERCENT"
-Causes \fBcclive\fR to fetch, parse, start download and eventually invoke
+Causes cclive to fetch, parse, start download and eventually invoke
 the command defined with \fB\-\-stream\-exec\fR when the transfer reaches
 the percentage defined with this option. See also \*(L"\s-1EXAMPLES\s0\*(R".
 .Sp
-Note that \fBcclive\fR does nothing to check if there is enough data buffered
+Note that cclive does nothing to check if there is enough data buffered
 before invoking the \fB\-\-stream\-exec\fR defined \fIcommand\fR. If the transfer
 rate drops significantly after starting the process and it runs out of data,
-\&\fBcclive\fR does nothing to fix this.
+cclive does nothing to fix this.
 .Sp
-Also note that \fBcclive\fR will not continue to download another file before the
+Also note that cclive will not continue to download another file before the
 child process exits.
 .Sp
 This mode is supported for historical reasons. Consider using
@@ -298,7 +299,7 @@ This mode is supported for historical reasons. Consider using
 .IP "\fB\-s, \-\-stream\-pass\fR" 4
 .IX Item "-s, --stream-pass"
 Otherwise the same as above but \fBinstead of\fR starting the download,
-\&\fBcclive\fR passes the parsed video link to the command defined with
+cclive passes the parsed video link to the command defined with
 \&\fB\-\-stream\-exec\fR. See also \*(L"\s-1EXAMPLES\s0\*(R".
 .Sp
 This option was inspired by a \f(CWclive(1)\fR wrapper script contributed
@@ -338,7 +339,7 @@ Alternate to Adobe Flash. \f(CWvlc(1)\fR and \f(CWtotem(1)\fR have been reported
 to work also.
 .SH "FORMATS"
 .IX Header "FORMATS"
-\&\fBcclive\fR downloads \*(L"flv\*(R" by default from all of the supported websites.
+cclive downloads \*(L"flv\*(R" by default from all of the supported websites.
 .IP "\fBwww.youtube.com\fR" 4
 .IX Item "www.youtube.com"
 .PD 0
@@ -504,13 +505,10 @@ Development code:
 .Ve
 .SH "HISTORY"
 .IX Header "HISTORY"
-.IP "cclive appeared following the release of clive2" 4
-.IX Item "cclive appeared following the release of clive2"
-clive2 introduced quite a few prerequisites and is written in Perl.
-.IP "It was originally written in C but was later rewritten in \*(C+" 4
-.IX Item "It was originally written in C but was later rewritten in "
-\&\fBcclive\fR aims to keep the prerequisites low for both hardware and
-software. Its features are few and essential.
+.IP "\(bu" 4
+cclive followed the release of clive2
+.IP "\(bu" 4
+It was written in C and later rewritten in \*(C+
 .SH "SEE ALSO"
 .IX Header "SEE ALSO"
 \&\f(CWclive(1)\fR
