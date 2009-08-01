@@ -35,8 +35,7 @@ public:
     virtual void        parseId  ()                = 0;
     virtual void        parseLink()                = 0;
 public:
-    void                    parsePage          (const std::string& pageContent,
-                                                const std::string& url);
+    void                    parsePage          (const std::string& url);
     const bool  isHost                         (std::string url);
     const VideoProperties&  getVideoProperties () const;
 protected:

@@ -113,7 +113,7 @@ handleURL(const std::string& url) {
         {
             try
             {
-                handler->parsePage( curlmgr.fetchToMem(url), url );
+                handler->parsePage(url);
 
                 VideoProperties props =
                     handler->getVideoProperties();

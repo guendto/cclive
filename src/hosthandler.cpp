@@ -30,6 +30,7 @@
 
 #include "hosthandler.h"
 #include "opts.h"
+#include "curl.h"
 
 #ifdef WITH_PERL // -----------------------------
 #include <EXTERN.h>
@@ -140,13 +141,10 @@ HostHandler::isHost(std::string url) {
 }
 
 void
-HostHandler::parsePage(
-    const std::string& pageContent,
-    const std::string& url)
-{
-    this->pageContent = pageContent;
+HostHandler::parsePage(const std::string& url) {
 
     props.setPageLink(url);
+    pageContent = curlmgr.fetchToMem(url);
 
 #ifdef WITH_PERL
     if (optsmgr.getOptions().title_given)
