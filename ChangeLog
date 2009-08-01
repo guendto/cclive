@@ -8,6 +8,9 @@ Version 0.4.7
     # Dailymotion: spak-mini -> spark-mini
     # Funnyhub: ID parsing
     # Funnyhub: title cleanup
+    # --title: segfault with multiple links
+      * Perl: Use proper cleanup
+      * Example: cclive -t URL URL2 -> segfault after first extraction
 
  Developer-visible changes:
   * src/hosthandler.cpp: rewrite --title handling
