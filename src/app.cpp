@@ -119,10 +119,12 @@ handleURL(const std::string& url) {
             VideoProperties props =
                 handler->getVideoProperties();
 
-            props.formatOutputFilename();
-
             try {
                 curlmgr.queryFileLength(props);
+
+                // Must be called here since the above parses the file
+                // content-type and figures out the file suffix.
+                props.formatOutputFilename();
 
                 if (opts.no_extract_given)
                     printVideo(props);
