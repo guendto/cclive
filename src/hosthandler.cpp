@@ -73,7 +73,11 @@ static const char script_filter[] =
 static void
 initPerl() {
     perl = perl_alloc();
+
+//    PL_perl_destruct_level = 1;
     perl_construct(perl);
+
+//    PL_exit_flags |= PERL_EXIT_DESTRUCT_END;
 
     const char   *args[] = {"", "-e", "0"};
     perl_parse(perl, xs_init, 3, const_cast<char**>(args), 0);
@@ -83,8 +87,12 @@ initPerl() {
 
 static void
 freePerl() {
+    PL_perl_destruct_level = 1;
+
     perl_destruct(perl);
     perl_free(perl);
+
+    perl = 0;
 }
 
 static std::string
@@ -97,32 +105,47 @@ getPageTitle(const std::string &html) {
 
     perl_eval_pv(script_title, TRUE);
 
+//    SvREFCNT_dec(sv_html);
+
     return SvPV(perl_get_sv("title", FALSE), PL_na);
 }
 
-static void
-filterTitle(std::string& title) {
+static std::string
+filterTitle() {
 
     Options opts = optsmgr.getOptions();
 
+    SV *sv_cclass = 0;
     if (opts.cclass_given) {
-        SV     *sv_cclass = perl_get_sv("cclass", TRUE);
+        sv_cclass = perl_get_sv("cclass", TRUE);
         sv_setpv(sv_cclass, opts.cclass_arg);
     }
 
+    SV *sv_nocclass = 0;
     if (opts.no_cclass_given) {
-        SV *sv_nocclass = perl_get_sv("no_cclass", TRUE);
+        sv_nocclass = perl_get_sv("no_cclass", TRUE);
         sv_setiv(sv_nocclass, 1);
     }
 
-    SV *sv_title = perl_get_sv("title", TRUE);
-    sv_setpv(sv_title, title.c_str());
+/*    SV *sv_title = perl_get_sv("title", TRUE);
+    sv_setpv(sv_title, title.c_str());*/
 
     perl_eval_pv(script_filter, TRUE);
 
-    title = SvPV(get_sv("title", FALSE), PL_na);
+    std::string title =
+        SvPV(get_sv("title", FALSE), PL_na);
+
+/*    SvREFCNT_dec(sv_title);
+
+    if (sv_nocclass)
+        SvREFCNT_dec(sv_nocclass);
+
+    if (sv_cclass)
+        SvREFCNT_dec(sv_cclass); */
 
     freePerl();
+
+    return title;
 }
 #endif // WITH_PERL -----------------------------
 
@@ -151,18 +174,15 @@ HostHandler::parsePage(const std::string& url) {
         props.setTitle( getPageTitle(pageContent) );
 #endif
 
-    // call overridden functions
+    // Call overridden functions
     parseId   ();
     parseLink ();
 
 #ifdef WITH_PERL
     // Overridden parseLink may have changed the title video property.
     // Apply --cclass here.
-    if (optsmgr.getOptions().title_given) {
-        std::string title = props.getTitle();
-        filterTitle(title);
-        props.setTitle(title);
-    }
+    if (optsmgr.getOptions().title_given)
+        props.setTitle(filterTitle());
 #endif
 
     this->pageContent.clear();
