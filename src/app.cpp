@@ -100,61 +100,56 @@ printCSV(const VideoProperties& props) {
         << std::endl;
 }
 
+typedef VideoProperties::NothingToDoException        NothingTodo;
+typedef CurlMgr::FetchException                      FetchError;
+typedef HostHandler::ParseException                  ParseError;
+typedef HostHandlerFactory::UnsupportedHostException NoSupport;
+
 static void
 handleURL(const std::string& url) {
-    try
-    {
+    try {
         std::tr1::shared_ptr<HostHandler> handler = 
             HostHandlerFactory::createHandler(url);
 
         Options opts = optsmgr.getOptions();
 
-        if (handler->isHost(url))
-        {
-            try
-            {
-                handler->parsePage(url);
+        if (!handler->isHost(url))
+            return;
 
-                VideoProperties props =
-                    handler->getVideoProperties();
+        try {
+            handler->parsePage(url);
 
-                props.formatOutputFilename();
+            VideoProperties props =
+                handler->getVideoProperties();
 
-                try {
-                    curlmgr.queryFileLength(props);
+            props.formatOutputFilename();
 
-                    if (opts.no_extract_given)
+            try {
+                curlmgr.queryFileLength(props);
+
+                if (opts.no_extract_given)
+                    printVideo(props);
+                else if (opts.emit_csv_given)
+                    printCSV(props);
+                else if (opts.stream_pass_given)
+                    execmgr.passStream(props);
+                else
+                {
+                    if (opts.print_fname_given)
                         printVideo(props);
-                    else if (opts.emit_csv_given)
-                        printCSV(props);
-                    else if (opts.stream_pass_given)
-                        execmgr.passStream(props);
-                    else
-                    {
-                        if (opts.print_fname_given)
-                            printVideo(props);
 
-                        curlmgr.fetchToFile(props);
-                    }
+                    curlmgr.fetchToFile(props);
                 }
-                catch (const VideoProperties::NothingToDoException& x) {
-                    logmgr.cerr(x);
-                }
+            }
+            catch (const NothingTodo& x) { logmgr.cerr(x); }
 
-                if (opts.exec_run_given) 
-                    execmgr.append(props);
-            }
-            catch (const CurlMgr::FetchException& x) {
-                logmgr.cerr(x);
-            }
-            catch (const HostHandler::ParseException& x) {
-                logmgr.cerr(x, false);
-            }
+            if (opts.exec_run_given) 
+                execmgr.append(props);
         }
+        catch (const FetchError& x) { logmgr.cerr(x); }
+        catch (const ParseError& x) { logmgr.cerr(x, false); }
     }
-    catch (const HostHandlerFactory::UnsupportedHostException& x) {
-        logmgr.cerr(x, false);
-    }
+    catch (const NoSupport& x) { logmgr.cerr(x, false); }
 }
 
 void
