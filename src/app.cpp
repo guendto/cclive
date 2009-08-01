@@ -113,9 +113,6 @@ handleURL(const std::string& url) {
 
         Options opts = optsmgr.getOptions();
 
-        if (!handler->isHost(url))
-            return;
-
         try {
             handler->parsePage(url);
 
