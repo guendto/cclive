@@ -7,14 +7,15 @@ Version 0.4.7
   * Fix:
     # Dailymotion: spak-mini -> spark-mini
     # Funnyhub: ID parsing
-    # Funnyhub: title cleanup
-    # --title: segfault with multiple links
-      * Perl: Use proper cleanup
-      * Example: cclive -t URL URL2 -> segfault after first extraction
+    # Funnyhub: title parsing (proper cleanup)
+    # --title with multiple video page links
+      * Example: cclive -t URL URL2
+      * Segfault after 1st video when HTML parsing begins for 2nd
+      * Reason: Perl: incomplete cleanup
 
  Developer-visible changes:
   * src/hosthandler.cpp: rewrite --title handling
-    # allow overridden parseLink to set new page title
+    # parseLink: allow overridden member func set new page title
   * tests/youtube.c: new link
 
 
