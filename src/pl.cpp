@@ -115,9 +115,9 @@ PerlMgr::parseTitle(const std::string& html,
 
 // Presumes $title still exists from parsetitle_pl.
 static const char filtertitle_pl[] =
-"$title =~ s/(youtube|liveleak.com|sevenload|dailymotion)//gi;"
-"$title =~ s/(on vimeo|.golem.de|clipfish|funny hub)//gi;"
-"$title =~ s/(videos|video)//gi;"
+"$title =~ s/youtube|liveleak.com|sevenload|dailymotion//gi;"
+"$title =~ s/on vimeo|.golem.de|clipfish|funny hub//gi;"
+"$title =~ s/video(s?)//gi;"
 "$title =~ s/^[-\\s]+//;"
 "$title =~ s/\\s+$//;"
 
