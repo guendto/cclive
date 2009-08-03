@@ -14,8 +14,10 @@ Version 0.4.7
       * Reason: Perl: incomplete cleanup
 
  Developer-visible changes:
-  * src/hosthandler.cpp: rewrite --title handling
-    # parseLink: allow overridden member func set new page title
+  * Rewrite --title handling
+    # Allow $host.cpp impl. override HTML <title>
+    # hosthandler.cpp: Remove WITH_PERL block
+    # pl.cpp: impl. PerlMgr
   * tests/youtube.c: new link
 
 

@@ -32,122 +32,9 @@
 #include "opts.h"
 #include "curl.h"
 
-#ifdef WITH_PERL // -----------------------------
-#include <EXTERN.h>
-#include <perl.h>
-#include <XSUB.h>
-
-EXTERN_C void xs_init(pTHX);
-
-static PerlInterpreter *perl;
-
-static const char script_title[] =
-"binmode(STDOUT, \":utf8\");"
-
-"use Encode qw(from_to decode_utf8 FB_CROAK);"
-"use HTML::TokeParser;"
-
-"from_to($html, $1, \"utf8\")"
-"    if ($html =~ /charset=(.*?)\"/);"
-
-"$html = Encode::decode_utf8($html, Encode::FB_CROAK);"
-
-"$parser = HTML::TokeParser->new(\\$html);"
-"$parser->get_tag('title');"
-"$title = $parser->get_trimmed_text;"
-;
-
-static const char script_filter[] =
-"$title =~ s/(youtube|liveleak.com|sevenload|dailymotion)//gi;"
-"$title =~ s/(on vimeo|.golem.de|clipfish|funny hub)//gi;"
-"$title =~ s/(video[s])//gi;"
-"$title =~ s/^[-\\s]+//;"
-"$title =~ s/\\s+$//;"
-
-"if (!$no_cclass) {"
-"    $re = $cclass || qr|\\w|;"
-"    $title = join('', $title =~ /$re/g);"
-"}"
-;
-
-static void
-initPerl() {
-    perl = perl_alloc();
-
-//    PL_perl_destruct_level = 1;
-    perl_construct(perl);
-
-//    PL_exit_flags |= PERL_EXIT_DESTRUCT_END;
-
-    const char   *args[] = {"", "-e", "0"};
-    perl_parse(perl, xs_init, 3, const_cast<char**>(args), 0);
-
-    perl_run(perl);
-}
-
-static void
-freePerl() {
-    PL_perl_destruct_level = 1;
-
-    perl_destruct(perl);
-    perl_free(perl);
-
-    perl = 0;
-}
-
-static std::string
-getPageTitle(const std::string &html) {
-
-    initPerl();
-
-    SV *sv_html = perl_get_sv("html", TRUE);
-    sv_setpv(sv_html, html.c_str());
-
-    perl_eval_pv(script_title, TRUE);
-
-//    SvREFCNT_dec(sv_html);
-
-    return SvPV(perl_get_sv("title", FALSE), PL_na);
-}
-
-static std::string
-filterTitle() {
-
-    Options opts = optsmgr.getOptions();
-
-    SV *sv_cclass = 0;
-    if (opts.cclass_given) {
-        sv_cclass = perl_get_sv("cclass", TRUE);
-        sv_setpv(sv_cclass, opts.cclass_arg);
-    }
-
-    SV *sv_nocclass = 0;
-    if (opts.no_cclass_given) {
-        sv_nocclass = perl_get_sv("no_cclass", TRUE);
-        sv_setiv(sv_nocclass, 1);
-    }
-
-/*    SV *sv_title = perl_get_sv("title", TRUE);
-    sv_setpv(sv_title, title.c_str());*/
-
-    perl_eval_pv(script_filter, TRUE);
-
-    std::string title =
-        SvPV(get_sv("title", FALSE), PL_na);
-
-/*    SvREFCNT_dec(sv_title);
-
-    if (sv_nocclass)
-        SvREFCNT_dec(sv_nocclass);
-
-    if (sv_cclass)
-        SvREFCNT_dec(sv_cclass); */
-
-    freePerl();
-
-    return title;
-}
-#endif // WITH_PERL -----------------------------
+#ifdef WITH_PERL
+#include "pl.h"
+#endif
 
 HostHandler::HostHandler()
     : pageContent(""), props(VideoProperties())
@@ -170,8 +57,9 @@ HostHandler::parsePage(const std::string& url) {
     pageContent = curlmgr.fetchToMem(url);
 
 #ifdef WITH_PERL
-    if (optsmgr.getOptions().title_given)
-        props.setTitle( getPageTitle(pageContent) );
+    Options opts = optsmgr.getOptions();
+    if (opts.title_given)
+        perlmgr.parseTitle(pageContent, props);
 #endif
 
     // Call overridden functions
@@ -179,10 +67,10 @@ HostHandler::parsePage(const std::string& url) {
     parseLink ();
 
 #ifdef WITH_PERL
-    // Overridden parseLink may have changed the title video property.
-    // Apply --cclass here.
-    if (optsmgr.getOptions().title_given)
-        props.setTitle(filterTitle());
+    // parseLink above may have changed the title (video property):
+    //  apply --cclass now.
+    if (opts.title_given)
+        perlmgr.filterTitle(props);
 #endif
 
     this->pageContent.clear();

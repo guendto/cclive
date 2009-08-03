@@ -33,7 +33,7 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 target_triplet = @target@
-@WITH_PERL_TRUE@am__append_1 = xsinit.c
+@WITH_PERL_TRUE@am__append_1 = xsinit.c pl.cpp pl.h
 @WITH_PERL_TRUE@am__append_2 = $(perl_CCOPTS)
 @WITH_PERL_TRUE@am__append_3 = $(perl_LDOPTS)
 bin_PROGRAMS = cclive$(EXEEXT)
@@ -51,13 +51,13 @@ binPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 PROGRAMS = $(bin_PROGRAMS)
 am__cclive_SOURCES_DIST = main.cpp app.cpp except.cpp util.cpp \
 	hosthandler.cpp opts.cpp video.cpp curl.cpp progressbar.cpp \
-	exec.cpp log.cpp cmdline.c hostfactory.cpp xsinit.c \
-	youtube.cpp break.cpp evisor.cpp sevenload.cpp liveleak.cpp \
-	dailymotion.cpp vimeo.cpp golem.cpp clipfish.cpp funnyhub.cpp \
-	myubo.cpp google.cpp app.h except.h util.h opts.h \
+	exec.cpp log.cpp cmdline.c hostfactory.cpp xsinit.c pl.cpp \
+	pl.h youtube.cpp break.cpp evisor.cpp sevenload.cpp \
+	liveleak.cpp dailymotion.cpp vimeo.cpp golem.cpp clipfish.cpp \
+	funnyhub.cpp myubo.cpp google.cpp app.h except.h util.h opts.h \
 	hosthandler.h video.h singleton.h macros.h curl.h \
 	progressbar.h exec.h error.h log.h cmdline.h hostfactory.h
-@WITH_PERL_TRUE@am__objects_1 = xsinit.$(OBJEXT)
+@WITH_PERL_TRUE@am__objects_1 = xsinit.$(OBJEXT) pl.$(OBJEXT)
 am__objects_2 = main.$(OBJEXT) app.$(OBJEXT) except.$(OBJEXT) \
 	util.$(OBJEXT) hosthandler.$(OBJEXT) opts.$(OBJEXT) \
 	video.$(OBJEXT) curl.$(OBJEXT) progressbar.$(OBJEXT) \
@@ -318,6 +318,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/myubo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/opts.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pl.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/progressbar.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sevenload.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/util.Po@am__quote@

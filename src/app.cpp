@@ -52,11 +52,18 @@
 #include "log.h"
 #include "app.h"
 
+#ifdef WITH_PERL
+#include "pl.h"
+#endif
+
 // singleton instances
 static std::tr1::shared_ptr<OptionsMgr> __optsmgr(new OptionsMgr);
 static std::tr1::shared_ptr<CurlMgr>    __curlmgr(new CurlMgr);
 static std::tr1::shared_ptr<ExecMgr>    __execmgr(new ExecMgr);
 static std::tr1::shared_ptr<LogMgr>     __logmgr (new LogMgr);
+#ifdef WITH_PERL
+static std::tr1::shared_ptr<PerlMgr>    __perlmgr(new PerlMgr);
+#endif
 
 extern void handle_sigwinch(int); // src/progress.cpp
 

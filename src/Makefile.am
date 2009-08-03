@@ -14,7 +14,7 @@ src =			\
 	hostfactory.cpp
 
 if WITH_PERL
-src += xsinit.c
+src += xsinit.c pl.cpp pl.h
 endif
 
 host =			\
