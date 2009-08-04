@@ -5,14 +5,23 @@
 # scratching. Although they have been intended for FreeBSD,
 # they should port fairly easily to other systems.
 #
-# 1) pkg-add -r mingw32-gcc mingw32-binutils mingw32-bin-msvcrt
-# 2) wget $curl_url
-# 3) tar xjf $curl_release.tar.bz2; cd $curl_release
-# 4) CFLAGS="-O2 -pipe -march=i586" ./configure --host=mingw32 --prefix=`pwd`/dist --without-ssl --without-ipv6 --without-random --disable-ldap && make install-trip
-# 5) Run this script.
+# mingw32:
+# * pkg-add -r mingw32-gcc mingw32-binutils mingw32-bin-msvcrt
+#
+# libcurl:
+# * wget $curl_url ; tar xjf $curl_release.tar.bz2; cd $curl_release
+# * CFLAGS="-O2 -pipe -march=i586" ./configure --host=mingw32 --prefix=`pwd`/dist --without-ssl --without-ipv6 --without-random --disable-ldap && make install-trip
+# libiconv:
+# * wget $iconv_url ; tar xjf $iconv_release.tar.bz2; cd $iconv_release
+# * ./configure --host=mingw32 --prefix=`pwd`/dist && make install
+#
+# cclive:
+# * Edit paths as needed below
+# * Run this script
 
 # Edit as needed:
 curl_config="/usr/home/legatvs/src/curl-7.19.5/dist/bin/curl-config"
+iconv_prefix="/usr/home/legatvs/src/libiconv-1.13.1/dist"
 
 export libcurl_CFLAGS="`$curl_config --cflags`"
 export libcurl_LIBS="`$curl_config --libs`"
@@ -25,7 +34,7 @@ export CFLAGS="$CXXFLAGS"
 #echo $CFLAGS
 
 # Tested only on FreeBSD. Edit prefix as needed.
-./configure --host=mingw32 --prefix=`pwd`/dist --without-man \
+./configure --host=mingw32 --prefix=`pwd`/dist --with-iconv="$iconv_prefix" --without-man \
     && make \
     && echo "'make install' installs the binaries to ./dist" \
     && echo "'./mingw32-package.sh' creates zip archive containing the binaries"
