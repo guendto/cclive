@@ -132,7 +132,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2009-08-02" "0.4.7" "cclive manual"
+.TH cclive 1 "2009-08-04" "0.4.7" "cclive manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -164,16 +164,6 @@ Turn off all output.
 .IP "\fB\-\-debug\fR" 4
 .IX Item "--debug"
 Print libcurl debug messages to stderr.
-.IP "\fB\-t, \-\-title\fR  [req. \-\-with\-perl]" 4
-.IX Item "-t, --title  [req. --with-perl]"
-Causes cclive to use video page title for output video filename.
-Ignored if cclive was built \-\-without\-perl.
-.IP "\fB\-\-cclass=\fR\fI\s-1CCLASS\s0\fR  [req. \-\-with\-perl]" 4
-.IX Item "--cclass=CCLASS  [req. --with-perl]"
-Use character\-\fIclass\fR to filter video page titles. Defaults to \*(L"\ew\*(R".
-.IP "\fB\-C, \-\-no\-cclass\fR" 4
-.IX Item "-C, --no-cclass"
-Negates the use of the character-class.
 .IP "\fB\-n, \-\-no\-extract\fR" 4
 .IX Item "-n, --no-extract"
 Do not extract any videos.
@@ -212,9 +202,6 @@ specifiers appear anywhere in the \fIstring\fR, they will be replaced accordingl
 \&  %h = host string
 \&  %s = file suffix
 .Ve
-.Sp
-Note that \*(L"%t\*(R" is replaced only if cclive was built \-\-with\-perl and
-the \fB\-\-title\fR option was used. Otherwise \*(L"%t\*(R" equals to \*(L"%i\*(R".
 .Sp
 Example:
 .Sp
@@ -421,11 +408,10 @@ Format: flv
 .ie n .IP "\fB\fB$CCLIVE_HOME\fB|$HOME/.ccliverc\fR" 4
 .el .IP "\fB\f(CB$CCLIVE_HOME\fB|$HOME/.ccliverc\fR" 4
 .IX Item "$CCLIVE_HOME|$HOME/.ccliverc"
-.Vb 5
+.Vb 4
 \& agent      = Furball/1.0       # \-\-agent=...
 \& proxy      = http://foo:1234   # \-\-proxy=...
 \& limit\-rate = 50                # \-\-limit\-rate=...
-\& title                          # \-\-title
 \& no\-extract                     # \-\-no\-extract
 .Ve
 .Sp
