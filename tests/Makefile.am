@@ -1,5 +1,5 @@
 
-EXTRA_DIST= pod.pl
+EXTRA_DIST=
 
 check_PROGRAMS=\
 youtube\
