@@ -34,6 +34,11 @@ ClipfishHandler::parseId() {
 }
 
 void
+ClipfishHandler::parseTitle() {
+    props.setTitle( Util::htmlTitle(pageContent) );
+}
+
+void
 ClipfishHandler::parseLink() {
     std::string config_url =
         "http://www.clipfish.de/video_n.php?p=0|DE&vid=" + props.getId();

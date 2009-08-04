@@ -11,18 +11,6 @@ option "quiet"
 option "debug"
     - "show curl debug messages"
     optional
-option "title"
-    t "use video page title for naming video files"
-    optional
-option "cclass"
-    - "character class to filter titles (--title)"
-    string typestr="CCLASS"
-    optional
-    dependon="title"
-option "no-cclass"
-    C "do not apply character class (--title)"
-    optional
-    dependon="title"
 option "no-extract"
     n "do not extract video"
     optional
@@ -55,6 +43,7 @@ option "number-videos"
 option "filename-format"
     - "use custom output filename format"
     string typestr="STRING"
+    default="%t.%s"
     no
 option "emit-csv"
     - "emit video details as csv to stdout"

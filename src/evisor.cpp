@@ -33,6 +33,12 @@ EvisorHandler::parseId() {
 }
 
 void
+EvisorHandler::parseTitle() {
+    props.setTitle(
+        Util::subStr(pageContent, "<center><h1>", "</h1>"));
+}
+
+void
 EvisorHandler::parseLink() {
     props.setLink( Util::subStr(pageContent, "file=", "\"") );
 }

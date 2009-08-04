@@ -33,9 +33,6 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 target_triplet = @target@
-@WITH_PERL_TRUE@am__append_1 = xsinit.c pl.cpp pl.h
-@WITH_PERL_TRUE@am__append_2 = $(perl_CCOPTS)
-@WITH_PERL_TRUE@am__append_3 = $(perl_LDOPTS)
 bin_PROGRAMS = cclive$(EXEEXT)
 subdir = src
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
@@ -49,26 +46,17 @@ CONFIG_CLEAN_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 binPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
 PROGRAMS = $(bin_PROGRAMS)
-am__cclive_SOURCES_DIST = main.cpp app.cpp except.cpp util.cpp \
-	hosthandler.cpp opts.cpp video.cpp curl.cpp progressbar.cpp \
-	exec.cpp log.cpp cmdline.c hostfactory.cpp xsinit.c pl.cpp \
-	pl.h youtube.cpp break.cpp evisor.cpp sevenload.cpp \
-	liveleak.cpp dailymotion.cpp vimeo.cpp golem.cpp clipfish.cpp \
-	funnyhub.cpp myubo.cpp google.cpp app.h except.h util.h opts.h \
-	hosthandler.h video.h singleton.h macros.h curl.h \
-	progressbar.h exec.h error.h log.h cmdline.h hostfactory.h
-@WITH_PERL_TRUE@am__objects_1 = xsinit.$(OBJEXT) pl.$(OBJEXT)
-am__objects_2 = main.$(OBJEXT) app.$(OBJEXT) except.$(OBJEXT) \
+am__objects_1 = main.$(OBJEXT) app.$(OBJEXT) except.$(OBJEXT) \
 	util.$(OBJEXT) hosthandler.$(OBJEXT) opts.$(OBJEXT) \
 	video.$(OBJEXT) curl.$(OBJEXT) progressbar.$(OBJEXT) \
 	exec.$(OBJEXT) log.$(OBJEXT) cmdline.$(OBJEXT) \
-	hostfactory.$(OBJEXT) $(am__objects_1)
-am__objects_3 = youtube.$(OBJEXT) break.$(OBJEXT) evisor.$(OBJEXT) \
+	hostfactory.$(OBJEXT)
+am__objects_2 = youtube.$(OBJEXT) break.$(OBJEXT) evisor.$(OBJEXT) \
 	sevenload.$(OBJEXT) liveleak.$(OBJEXT) dailymotion.$(OBJEXT) \
 	vimeo.$(OBJEXT) golem.$(OBJEXT) clipfish.$(OBJEXT) \
 	funnyhub.$(OBJEXT) myubo.$(OBJEXT) google.$(OBJEXT)
-am__objects_4 =
-am_cclive_OBJECTS = $(am__objects_2) $(am__objects_3) $(am__objects_4)
+am__objects_3 =
+am_cclive_OBJECTS = $(am__objects_1) $(am__objects_2) $(am__objects_3)
 cclive_OBJECTS = $(am_cclive_OBJECTS)
 cclive_LDADD = $(LDADD)
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
@@ -84,7 +72,7 @@ CXXLD = $(CXX)
 CXXLINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) \
 	-o $@
 SOURCES = $(cclive_SOURCES)
-DIST_SOURCES = $(am__cclive_SOURCES_DIST)
+DIST_SOURCES = $(cclive_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -119,7 +107,7 @@ INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
 LDFLAGS = @LDFLAGS@
 LIBOBJS = @LIBOBJS@
-LIBS = $(libcurl_LIBS) $(am__append_3)
+LIBS = $(libcurl_LIBS) $(libiconv_LDFLAGS)
 LTLIBOBJS = @LTLIBOBJS@
 MAKEINFO = @MAKEINFO@
 MKDIR_P = @MKDIR_P@
@@ -131,10 +119,10 @@ PACKAGE_STRING = @PACKAGE_STRING@
 PACKAGE_TARNAME = @PACKAGE_TARNAME@
 PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
-PERL = @PERL@
 PKG_CONFIG = @PKG_CONFIG@
 POD2HTML = @POD2HTML@
 POD2MAN = @POD2MAN@
+PODCHECKER = @PODCHECKER@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 STRIP = @STRIP@
@@ -188,14 +176,14 @@ libcurl_CFLAGS = @libcurl_CFLAGS@
 libcurl_LIBS = @libcurl_LIBS@
 libdir = @libdir@
 libexecdir = @libexecdir@
+libiconv_CFLAGS = @libiconv_CFLAGS@
+libiconv_LDFLAGS = @libiconv_LDFLAGS@
 localedir = @localedir@
 localstatedir = @localstatedir@
 mandir = @mandir@
 mkdir_p = @mkdir_p@
 oldincludedir = @oldincludedir@
 pdfdir = @pdfdir@
-perl_CCOPTS = @perl_CCOPTS@
-perl_LDOPTS = @perl_LDOPTS@
 prefix = @prefix@
 program_transform_name = @program_transform_name@
 psdir = @psdir@
@@ -211,9 +199,21 @@ target_vendor = @target_vendor@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-src = main.cpp app.cpp except.cpp util.cpp hosthandler.cpp opts.cpp \
-	video.cpp curl.cpp progressbar.cpp exec.cpp log.cpp cmdline.c \
-	hostfactory.cpp $(am__append_1)
+src = \
+	main.cpp	\
+	app.cpp		\
+	except.cpp	\
+	util.cpp	\
+	hosthandler.cpp	\
+	opts.cpp	\
+	video.cpp	\
+	curl.cpp	\
+	progressbar.cpp	\
+	exec.cpp	\
+	log.cpp		\
+	cmdline.c	\
+	hostfactory.cpp
+
 hdr = \
 	app.h		\
 	except.h	\
@@ -231,7 +231,7 @@ hdr = \
 	cmdline.h	\
 	hostfactory.h
 
-INCLUDES = $(libcurl_CFLAGS) $(am__append_2)
+INCLUDES = $(libcurl_CFLAGS) $(libiconv_CFLAGS)
 cclive_SOURCES = $(src) $(host) $(hdr)
 all: all-am
 
@@ -318,13 +318,11 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/myubo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/opts.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pl.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/progressbar.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sevenload.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/util.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/video.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/vimeo.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xsinit.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/youtube.Po@am__quote@
 
 .c.o:

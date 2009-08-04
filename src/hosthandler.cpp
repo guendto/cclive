@@ -23,18 +23,17 @@
 #include <cstdlib>
 #endif
 
+#include "config.h"
+
+#include <fstream>
 #include <string>
 #include <vector>
-
-#include "config.h"
+#include <iconv.h>
 
 #include "hosthandler.h"
 #include "opts.h"
+#include "log.h"
 #include "curl.h"
-
-#ifdef WITH_PERL
-#include "pl.h"
-#endif
 
 HostHandler::HostHandler()
     : pageContent(""), props(VideoProperties())
@@ -56,24 +55,73 @@ HostHandler::parsePage(const std::string& url) {
     props.setPageLink(url);
     pageContent = curlmgr.fetchToMem(url);
 
-#ifdef WITH_PERL
-    Options opts = optsmgr.getOptions();
-    if (opts.title_given)
-        perlmgr.parseTitle(pageContent, props);
-#endif
-
-    // Call overridden functions
+    // Call overridden functions.
+    parseTitle();
     parseId   ();
     parseLink ();
 
-#ifdef WITH_PERL
-    // parseLink above may have changed the title (video property):
-    //  apply --cclass now.
-    if (opts.title_given)
-        perlmgr.filterTitle(props);
-#endif
+    // Handle encoding. Done here since we still have page html.
+    toUnicode();
 
-    this->pageContent.clear();
+    pageContent.clear();
+}
+
+void
+HostHandler::toUnicode() {
+#ifdef WITH_ICONV
+    std::string charset;
+    try {
+        charset =
+            Util::subStr(pageContent, "charset=", "\"");
+
+        iconv_t cd =
+            iconv_open( "UTF-8", charset.c_str() );
+
+        if (cd == (iconv_t)-1) {
+            if (errno == EINVAL) {
+                logmgr.cerr()
+                    << "warn: conversion from "
+                    << charset
+                    << " to UTF-8 not available"
+                    << std::endl;
+            }
+            else
+                perror("iconv_popen");
+            return;
+        }
+
+        char inbuf[256];
+        size_t insize = props.getTitle().length();
+
+        if (insize >= sizeof(inbuf))
+            insize = sizeof(inbuf);
+
+        char *inptr = inbuf;
+        snprintf(inptr, sizeof(inbuf), props.getTitle().c_str());
+
+        char outbuf[256];
+        size_t avail = sizeof(outbuf);
+        char *wptr   = (char *)outbuf;
+        memset(wptr, 0, sizeof(outbuf));
+
+        size_t rc =
+            iconv(cd, (const char **)&inptr, &insize, &wptr, &avail);
+
+        if (rc == (size_t)-1) {
+            logmgr.cerr()
+                << "error while converting characters from "
+                << charset
+                << " to UTF-8"
+                << std::endl;
+            return;
+        }
+        iconv_close(cd);
+        cd = 0;
+
+        props.setTitle(outbuf);
+    }
+    catch (const HostHandler::ParseException&) { }
+#endif
 }
 
 const VideoProperties&

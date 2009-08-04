@@ -1,2 +1,5 @@
 repo: git://repo.or.cz/cclive.git
 web : http://repo.or.cz/w/cclive.git
+
+* --title is now obsolete
+  - use "%t" with --filename-format instead

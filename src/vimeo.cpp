@@ -37,6 +37,12 @@ VimeoHandler::parseId() {
 }
 
 void
+VimeoHandler::parseTitle() {
+    props.setTitle(
+        Util::subStr(pageContent, "<meta name=\"title\" content=\"", "\""));
+}
+
+void
 VimeoHandler::parseLink() {
 
     // config

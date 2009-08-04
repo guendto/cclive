@@ -32,15 +32,18 @@ public:
     HostHandler();
     virtual ~HostHandler();
 public:
-    virtual void        parseId  ()                = 0;
-    virtual void        parseLink()                = 0;
+    virtual void parseId   () = 0;
+    virtual void parseTitle() = 0;
+    virtual void parseLink () = 0;
 public:
     void                    parsePage          (const std::string& url);
-    const bool  isHost                         (std::string url);
+    const bool              isHost             (std::string url);
     const VideoProperties&  getVideoProperties () const;
+private:
+    void toUnicode();
 protected:
-    std::string        pageContent;
-    VideoProperties    props;
+    std::string     pageContent;
+    VideoProperties props;
 public:
     class ParseException : public RuntimeException {
     public:
@@ -52,108 +55,120 @@ public:
 
 class YoutubeHandler : public HostHandler {
 public:
-    YoutubeHandler               ();
-    virtual void        parseId  ();
-    virtual void        parseLink();
+    YoutubeHandler();
+    virtual void parseId   ();
+    virtual void parseTitle();
+    virtual void parseLink ();
 };
 
 // Google
 
 class GoogleHandler : public HostHandler {
 public:
-    GoogleHandler                ();
-    virtual void        parseId  ();
-    virtual void        parseLink();
+    GoogleHandler();
+    virtual void  parseId   ();
+    virtual void  parseTitle();
+    virtual void  parseLink ();
 };
 
 // Break
 
 class BreakHandler : public HostHandler {
 public:
-    BreakHandler                 ();
-    virtual void        parseId  ();
-    virtual void        parseLink();
+    BreakHandler();
+    virtual void parseId   ();
+    virtual void parseTitle();
+    virtual void parseLink ();
 };
 
 // EvisorTv
 
 class EvisorHandler : public HostHandler {
 public:
-    EvisorHandler                ();
-    virtual void        parseId  ();
-    virtual void        parseLink();
+    EvisorHandler();
+    virtual void parseId   ();
+    virtual void parseTitle();
+    virtual void parseLink ();
 };
 
 // Sevenload
 
 class SevenloadHandler : public HostHandler {
 public:
-    SevenloadHandler             ();
-    virtual void        parseId  ();
-    virtual void        parseLink();
+    SevenloadHandler();
+    virtual void parseId   ();
+    virtual void parseTitle();
+    virtual void parseLink ();
 };
 
 // Liveleak
 
 class LiveleakHandler : public HostHandler {
 public:
-    LiveleakHandler              ();
-    virtual void        parseId  ();
-    virtual void        parseLink();
+    LiveleakHandler();
+    virtual void parseId   ();
+    virtual void parseTitle();
+    virtual void parseLink ();
 };
 
 // Dailymotion
 
 class DailymotionHandler : public HostHandler {
 public:
-    DailymotionHandler           ();
-    virtual void        parseId  ();
-    virtual void        parseLink();
+    DailymotionHandler();
+    virtual void parseId   ();
+    virtual void parseTitle();
+    virtual void parseLink ();
 };
 
 // Vimeo
 
 class VimeoHandler : public HostHandler {
 public:
-    VimeoHandler                 ();
-    virtual void        parseId  ();
-    virtual void        parseLink();
+    VimeoHandler();
+    virtual void parseId   ();
+    virtual void parseTitle();
+    virtual void parseLink ();
 };
 
 // Golem
 
 class GolemHandler : public HostHandler {
 public:
-    GolemHandler                 ();
-    virtual void        parseId  ();
-    virtual void        parseLink();
+    GolemHandler();
+    virtual void parseId   ();
+    virtual void parseTitle();
+    virtual void parseLink ();
 };
 
 // Clipfish
 
 class ClipfishHandler : public HostHandler {
 public:
-    ClipfishHandler                 ();
-    virtual void        parseId  ();
-    virtual void        parseLink();
+    ClipfishHandler();
+    virtual void parseId   ();
+    virtual void parseTitle();
+    virtual void parseLink ();
 };
 
 // Funnyhub
 
 class FunnyhubHandler : public HostHandler {
 public:
-    FunnyhubHandler              ();
-    virtual void        parseId  ();
-    virtual void        parseLink();
+    FunnyhubHandler();
+    virtual void parseId   ();
+    virtual void parseTitle();
+    virtual void parseLink ();
 };
 
 // Myubo
 
 class MyuboHandler : public HostHandler {
 public:
-	MyuboHandler				 ();
-	virtual void		parseId	 ();
-	virtual void		parseLink();
+	MyuboHandler();
+    virtual void parseId   ();
+    virtual void parseTitle();
+    virtual void parseLink ();
 };
 
 #endif

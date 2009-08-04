@@ -34,6 +34,12 @@ YoutubeHandler::parseId() {
 }
 
 void
+YoutubeHandler::parseTitle() {
+    props.setTitle(
+        Util::subStr(pageContent, "<meta name=\"title\" content=\"", "\""));
+}
+
+void
 YoutubeHandler::parseLink() {
     std::string t =
         Util::subStr(pageContent, "\"t\": \"", "\"");

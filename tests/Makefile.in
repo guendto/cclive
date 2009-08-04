@@ -36,7 +36,6 @@ check_PROGRAMS = youtube$(EXEEXT) break$(EXEEXT) liveleak$(EXEEXT) \
 	dailymotion$(EXEEXT) evisor$(EXEEXT) google$(EXEEXT) \
 	sevenload$(EXEEXT) golem$(EXEEXT) clipfish$(EXEEXT) \
 	funnyhub$(EXEEXT) myubo$(EXEEXT) vimeo$(EXEEXT)
-@WITH_PERL_TRUE@am__append_1 = pod.pl
 subdir = tests
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -145,10 +144,10 @@ PACKAGE_STRING = @PACKAGE_STRING@
 PACKAGE_TARNAME = @PACKAGE_TARNAME@
 PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
-PERL = @PERL@
 PKG_CONFIG = @PKG_CONFIG@
 POD2HTML = @POD2HTML@
 POD2MAN = @POD2MAN@
+PODCHECKER = @PODCHECKER@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 STRIP = @STRIP@
@@ -189,14 +188,14 @@ libcurl_CFLAGS = @libcurl_CFLAGS@
 libcurl_LIBS = @libcurl_LIBS@
 libdir = @libdir@
 libexecdir = @libexecdir@
+libiconv_CFLAGS = @libiconv_CFLAGS@
+libiconv_LDFLAGS = @libiconv_LDFLAGS@
 localedir = @localedir@
 localstatedir = @localstatedir@
 mandir = @mandir@
 mkdir_p = @mkdir_p@
 oldincludedir = @oldincludedir@
 pdfdir = @pdfdir@
-perl_CCOPTS = @perl_CCOPTS@
-perl_LDOPTS = @perl_LDOPTS@
 prefix = @prefix@
 program_transform_name = @program_transform_name@
 psdir = @psdir@
@@ -213,7 +212,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 EXTRA_DIST = pod.pl
-TESTS = $(check_PROGRAMS) $(am__append_1)
+TESTS = $(check_PROGRAMS)
 common = test.c test.h
 AM_CFLAGS = -DCCLIVE_PATH="\"$(top_srcdir)/src/cclive\""
 youtube_SOURCES = youtube.c $(common)

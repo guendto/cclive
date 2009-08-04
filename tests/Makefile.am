@@ -17,10 +17,6 @@ vimeo
 
 TESTS= $(check_PROGRAMS)
 
-if WITH_PERL
-TESTS+= pod.pl
-endif
-
 common= test.c test.h
 
 AM_CFLAGS= -DCCLIVE_PATH="\"$(top_srcdir)/src/cclive\""

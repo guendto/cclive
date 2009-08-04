@@ -120,10 +120,10 @@ PACKAGE_STRING = @PACKAGE_STRING@
 PACKAGE_TARNAME = @PACKAGE_TARNAME@
 PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
-PERL = @PERL@
 PKG_CONFIG = @PKG_CONFIG@
 POD2HTML = @POD2HTML@
 POD2MAN = @POD2MAN@
+PODCHECKER = @PODCHECKER@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 STRIP = @STRIP@
@@ -164,14 +164,14 @@ libcurl_CFLAGS = @libcurl_CFLAGS@
 libcurl_LIBS = @libcurl_LIBS@
 libdir = @libdir@
 libexecdir = @libexecdir@
+libiconv_CFLAGS = @libiconv_CFLAGS@
+libiconv_LDFLAGS = @libiconv_LDFLAGS@
 localedir = @localedir@
 localstatedir = @localstatedir@
 mandir = @mandir@
 mkdir_p = @mkdir_p@
 oldincludedir = @oldincludedir@
 pdfdir = @pdfdir@
-perl_CCOPTS = @perl_CCOPTS@
-perl_LDOPTS = @perl_LDOPTS@
 prefix = @prefix@
 program_transform_name = @program_transform_name@
 psdir = @psdir@
@@ -688,7 +688,7 @@ uninstall-man: uninstall-man1
 	uninstall uninstall-am uninstall-man uninstall-man1
 
 
-.PHONY: cmdline man
+.PHONY: cmdline man checkpod
 cmdline:
 @HAVE_GENGETOPT_TRUE@	@GENGETOPT@ < cmdline.ggo -C --unamed-opts=URL \
 @HAVE_GENGETOPT_TRUE@		--output-dir ./src --no-version
@@ -696,10 +696,13 @@ cmdline:
 man:
 @HAVE_POD2MAN_TRUE@	@POD2MAN@ -c "cclive manual" -n cclive \
 @HAVE_POD2MAN_TRUE@		 -s 1 -r @VERSION@ cclive.pod cclive.1
-@HAVE_POD2MAN_FALSE@	@echo "error: configure did not find 'pod2man' command'
+@HAVE_POD2MAN_FALSE@	@echo "error: configure did not find 'pod2man' command"
 @HAVE_POD2HTML_TRUE@	@POD2HTML@ --title="cclive manual" \
 @HAVE_POD2HTML_TRUE@		--infile=cclive.pod --outfile=cclive.1.html
-@HAVE_POD2HTML_FALSE@	@echo "error: configure did not find 'pod2html' command'
+@HAVE_POD2HTML_FALSE@	@echo "error: configure did not find 'pod2html' command"
+checkpod:
+@HAVE_PODCHECKER_TRUE@	@PODCHECKER@ cclive.pod
+@HAVE_PODCHECKER_FALSE@	@echo "error: configure did not find 'podchecker' command"
 
 local-clean:
 	@rm -rf *.tmp *.core *.html

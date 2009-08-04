@@ -34,6 +34,12 @@ SevenloadHandler::parseId() {
 }
 
 void
+SevenloadHandler::parseTitle() {
+    props.setTitle(
+        Util::subStr(pageContent, "class=\"L title\">", "</h1>"));
+}
+
+void
 SevenloadHandler::parseLink() {
     std::string cpath =
         Util::subStr(pageContent, "configPath=", "\"");

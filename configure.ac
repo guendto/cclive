@@ -25,6 +25,10 @@ AC_PATH_PROG(GENGETOPT, gengetopt, no)
 AM_CONDITIONAL([HAVE_GENGETOPT], [test x"$GENGETOPT" != "xno"])
 AC_SUBST(GENGETOPT)
 
+AC_PATH_PROG(PODCHECKER, podchecker, no)
+AM_CONDITIONAL([HAVE_PODCHECKER], [test x"$PODCHECKER" != "xno"])
+AC_SUBST(PODCHECKER)
+
 AC_PATH_PROG(POD2MAN, pod2man, no)
 AM_CONDITIONAL([HAVE_POD2MAN], [test x"$POD2MAN" != "xno"])
 AC_SUBST(POD2MAN)
@@ -81,30 +85,52 @@ AC_ARG_ENABLE([tests],
     [enable_tests=no])
 AM_CONDITIONAL([ENABLE_TESTS], [test x"$enable_tests" != "xno"])
 
-# --with-perl
-AC_ARG_WITH([perl],
-    [AS_HELP_STRING([--with-perl],
-        [embed Perl to enable title parsing @<:@default=no@:>@])],
-    [],
-    [with_perl=no])
-if [ test x"$with_perl" = "xyes" ]; then
-    AC_PATH_PROG(PERL, perl, no)
-    if [ test x"$PERL" = "xno" ]; then
-        AC_MSG_ERROR([perl not found in path])
-    fi
-    perl_CCOPTS=`$PERL -MExtUtils::Embed -e ccopts`
-    perl_LDOPTS=`$PERL -MExtUtils::Embed -e ldopts`
-    AC_SUBST(perl_CCOPTS)
-    AC_SUBST(perl_LDOPTS)
-    AC_MSG_CHECKING([for HTML::TokeParser])
-    if $PERL -MHTML::TokeParser >/dev/null 2>&1; then
-        AC_MSG_RESULT([yes])
+# --with-iconv
+AC_ARG_WITH([iconv],
+    [AS_HELP_STRING([--with-iconv[=prefix]],
+        [build with libiconv @<:@default=no@:>@])],
+    [with_iconv=$withval],
+    [with_iconv=no])
+if [ test x"$with_iconv" != "xno" ]; then
+    if [ test x"$with_iconv" = "xyes" ]; then
+        AC_CHECK_HEADER([iconv.h],
+            AC_CHECK_LIB([iconv], [iconv_open], [libiconv_LDFLAGS=-liconv])
+        )
     else
-        AC_MSG_ERROR([HTML::TokeParser module is required])
+        # Use prefix user supplied instead.
+        libiconv_CFLAGS="-I$with_iconv/include"
+        libiconv_LDFLAGS="-L$with_iconv/lib -liconv"
     fi
-    AC_DEFINE([WITH_PERL], [1], [Whether Perl is embedded])
+    AC_SUBST(libiconv_CFLAGS)
+    AC_SUBST(libiconv_LDFLAGS)
+    AC_DEFINE([WITH_ICONV], [1], [With libiconv])
 fi
-AM_CONDITIONAL([WITH_PERL], [test x"$with_perl" != "xno"])
+AM_CONDITIONAL([WITH_ICONV], [test x"$with_iconv" != "xno"])
+
+# --with-perl
+#AC_ARG_WITH([perl],
+#    [AS_HELP_STRING([--with-perl],
+#        [embed Perl to enable title parsing @<:@default=no@:>@])],
+#    [],
+#    [with_perl=no])
+#if [ test x"$with_perl" = "xyes" ]; then
+#    AC_PATH_PROG(PERL, perl, no)
+#    if [ test x"$PERL" = "xno" ]; then
+#        AC_MSG_ERROR([perl not found in path])
+#    fi
+#    perl_CCOPTS=`$PERL -MExtUtils::Embed -e ccopts`
+#    perl_LDOPTS=`$PERL -MExtUtils::Embed -e ldopts`
+#    AC_SUBST(perl_CCOPTS)
+#    AC_SUBST(perl_LDOPTS)
+#    AC_MSG_CHECKING([for HTML::TokeParser])
+#    if $PERL -MHTML::TokeParser >/dev/null 2>&1; then
+#        AC_MSG_RESULT([yes])
+#    else
+#        AC_MSG_ERROR([HTML::TokeParser module is required])
+#    fi
+#    AC_DEFINE([WITH_PERL], [1], [Whether Perl is embedded])
+#fi
+#AM_CONDITIONAL([WITH_PERL], [test x"$with_perl" != "xno"])
 
 # Check host.
 case "$host" in

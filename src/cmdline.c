@@ -37,15 +37,12 @@ const char *gengetopt_args_info_help[] = {
   "      --hosts                   list supported hosts",
   "  -q, --quiet                   turn off all output",
   "      --debug                   show curl debug messages",
-  "  -t, --title                   use video page title for naming video files",
-  "      --cclass=CCLASS           character class to filter titles (--title)",
-  "  -C, --no-cclass               do not apply character class (--title)",
   "  -n, --no-extract              do not extract video",
   "  -c, --continue                resume partially downloaded file",
   "  -f, --format=FORMAT           download video format  (possible \n                                  values=\"flv\", \"best\", \"fmt17\", \n                                  \"fmt18\", \"fmt22\", \"fmt35\", \"hq\", \n                                  \"3gp\", \"spark-mini\", \"vp6-hq\", \n                                  \"vp6-hd\", \"vp6\", \"h264\", \"hd\", \n                                  \"mp4\", \"high\", \"ipod\" default=`flv')",
   "  -O, --output-video=FILE       write video to file",
   "  -N, --number-videos           number extracted videos",
-  "      --filename-format=STRING  use custom output filename format",
+  "      --filename-format=STRING  use custom output filename format  \n                                  (default=`%t.%s')",
   "      --emit-csv                emit video details as csv to stdout",
   "      --limit-rate=AMOUNT       limit download speed to amount kb per second",
   "      --agent=STRING            identify as string  (default=`Mozilla/5.0')",
@@ -116,9 +113,6 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->hosts_given = 0 ;
   args_info->quiet_given = 0 ;
   args_info->debug_given = 0 ;
-  args_info->title_given = 0 ;
-  args_info->cclass_given = 0 ;
-  args_info->no_cclass_given = 0 ;
   args_info->no_extract_given = 0 ;
   args_info->continue_given = 0 ;
   args_info->format_given = 0 ;
@@ -144,13 +138,11 @@ static
 void clear_args (struct gengetopt_args_info *args_info)
 {
   FIX_UNUSED (args_info);
-  args_info->cclass_arg = NULL;
-  args_info->cclass_orig = NULL;
   args_info->format_arg = gengetopt_strdup ("flv");
   args_info->format_orig = NULL;
   args_info->output_video_arg = NULL;
   args_info->output_video_orig = NULL;
-  args_info->filename_format_arg = NULL;
+  args_info->filename_format_arg = gengetopt_strdup ("%t.%s");
   args_info->filename_format_orig = NULL;
   args_info->limit_rate_orig = NULL;
   args_info->agent_arg = gengetopt_strdup ("Mozilla/5.0");
@@ -179,28 +171,25 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->hosts_help = gengetopt_args_info_help[2] ;
   args_info->quiet_help = gengetopt_args_info_help[3] ;
   args_info->debug_help = gengetopt_args_info_help[4] ;
-  args_info->title_help = gengetopt_args_info_help[5] ;
-  args_info->cclass_help = gengetopt_args_info_help[6] ;
-  args_info->no_cclass_help = gengetopt_args_info_help[7] ;
-  args_info->no_extract_help = gengetopt_args_info_help[8] ;
-  args_info->continue_help = gengetopt_args_info_help[9] ;
-  args_info->format_help = gengetopt_args_info_help[10] ;
-  args_info->output_video_help = gengetopt_args_info_help[11] ;
-  args_info->number_videos_help = gengetopt_args_info_help[12] ;
-  args_info->filename_format_help = gengetopt_args_info_help[13] ;
-  args_info->emit_csv_help = gengetopt_args_info_help[14] ;
-  args_info->limit_rate_help = gengetopt_args_info_help[15] ;
-  args_info->agent_help = gengetopt_args_info_help[16] ;
-  args_info->proxy_help = gengetopt_args_info_help[17] ;
-  args_info->no_proxy_help = gengetopt_args_info_help[18] ;
-  args_info->connect_timeout_help = gengetopt_args_info_help[19] ;
-  args_info->connect_timeout_socks_help = gengetopt_args_info_help[20] ;
-  args_info->exec_help = gengetopt_args_info_help[21] ;
-  args_info->exec_run_help = gengetopt_args_info_help[22] ;
-  args_info->stream_exec_help = gengetopt_args_info_help[23] ;
-  args_info->stream_help = gengetopt_args_info_help[24] ;
-  args_info->stream_pass_help = gengetopt_args_info_help[25] ;
-  args_info->print_fname_help = gengetopt_args_info_help[26] ;
+  args_info->no_extract_help = gengetopt_args_info_help[5] ;
+  args_info->continue_help = gengetopt_args_info_help[6] ;
+  args_info->format_help = gengetopt_args_info_help[7] ;
+  args_info->output_video_help = gengetopt_args_info_help[8] ;
+  args_info->number_videos_help = gengetopt_args_info_help[9] ;
+  args_info->filename_format_help = gengetopt_args_info_help[10] ;
+  args_info->emit_csv_help = gengetopt_args_info_help[11] ;
+  args_info->limit_rate_help = gengetopt_args_info_help[12] ;
+  args_info->agent_help = gengetopt_args_info_help[13] ;
+  args_info->proxy_help = gengetopt_args_info_help[14] ;
+  args_info->no_proxy_help = gengetopt_args_info_help[15] ;
+  args_info->connect_timeout_help = gengetopt_args_info_help[16] ;
+  args_info->connect_timeout_socks_help = gengetopt_args_info_help[17] ;
+  args_info->exec_help = gengetopt_args_info_help[18] ;
+  args_info->exec_run_help = gengetopt_args_info_help[19] ;
+  args_info->stream_exec_help = gengetopt_args_info_help[20] ;
+  args_info->stream_help = gengetopt_args_info_help[21] ;
+  args_info->stream_pass_help = gengetopt_args_info_help[22] ;
+  args_info->print_fname_help = gengetopt_args_info_help[23] ;
   
 }
 
@@ -284,8 +273,6 @@ static void
 cmdline_parser_release (struct gengetopt_args_info *args_info)
 {
   unsigned int i;
-  free_string_field (&(args_info->cclass_arg));
-  free_string_field (&(args_info->cclass_orig));
   free_string_field (&(args_info->format_arg));
   free_string_field (&(args_info->format_orig));
   free_string_field (&(args_info->output_video_arg));
@@ -390,12 +377,6 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "quiet", 0, 0 );
   if (args_info->debug_given)
     write_into_file(outfile, "debug", 0, 0 );
-  if (args_info->title_given)
-    write_into_file(outfile, "title", 0, 0 );
-  if (args_info->cclass_given)
-    write_into_file(outfile, "cclass", args_info->cclass_orig, 0);
-  if (args_info->no_cclass_given)
-    write_into_file(outfile, "no-cclass", 0, 0 );
   if (args_info->no_extract_given)
     write_into_file(outfile, "no-extract", 0, 0 );
   if (args_info->continue_given)
@@ -552,16 +533,6 @@ cmdline_parser_required2 (struct gengetopt_args_info *args_info, const char *pro
   /* checks for required options */
   
   /* checks for dependences among options */
-  if (args_info->cclass_given && ! args_info->title_given)
-    {
-      fprintf (stderr, "%s: '--cclass' option depends on option 'title'%s\n", prog_name, (additional_error ? additional_error : ""));
-      error = 1;
-    }
-  if (args_info->no_cclass_given && ! args_info->title_given)
-    {
-      fprintf (stderr, "%s: '--no-cclass' ('-C') option depends on option 'title'%s\n", prog_name, (additional_error ? additional_error : ""));
-      error = 1;
-    }
   if (args_info->exec_run_given && ! args_info->exec_given)
     {
       fprintf (stderr, "%s: '--exec-run' ('-e') option depends on option 'exec'%s\n", prog_name, (additional_error ? additional_error : ""));
@@ -747,9 +718,6 @@ cmdline_parser_internal (
         { "hosts",	0, NULL, 0 },
         { "quiet",	0, NULL, 'q' },
         { "debug",	0, NULL, 0 },
-        { "title",	0, NULL, 't' },
-        { "cclass",	1, NULL, 0 },
-        { "no-cclass",	0, NULL, 'C' },
         { "no-extract",	0, NULL, 'n' },
         { "continue",	0, NULL, 'c' },
         { "format",	1, NULL, 'f' },
@@ -772,7 +740,7 @@ cmdline_parser_internal (
         { 0,  0, 0, 0 }
       };
 
-      c = getopt_long (argc, argv, "hvqtCncf:O:Nes", long_options, &option_index);
+      c = getopt_long (argc, argv, "hvqncf:O:Nes", long_options, &option_index);
 
       if (c == -1) break;	/* Exit from `while (1)' loop.  */
 
@@ -803,30 +771,6 @@ cmdline_parser_internal (
               &(local_args_info.quiet_given), optarg, 0, 0, ARG_NO,
               check_ambiguity, override, 0, 0,
               "quiet", 'q',
-              additional_error))
-            goto failure;
-        
-          break;
-        case 't':	/* use video page title for naming video files.  */
-        
-        
-          if (update_arg( 0 , 
-               0 , &(args_info->title_given),
-              &(local_args_info.title_given), optarg, 0, 0, ARG_NO,
-              check_ambiguity, override, 0, 0,
-              "title", 't',
-              additional_error))
-            goto failure;
-        
-          break;
-        case 'C':	/* do not apply character class (--title).  */
-        
-        
-          if (update_arg( 0 , 
-               0 , &(args_info->no_cclass_given),
-              &(local_args_info.no_cclass_given), optarg, 0, 0, ARG_NO,
-              check_ambiguity, override, 0, 0,
-              "no-cclass", 'C',
               additional_error))
             goto failure;
         
@@ -945,20 +889,6 @@ cmdline_parser_internal (
               goto failure;
           
           }
-          /* character class to filter titles (--title).  */
-          else if (strcmp (long_options[option_index].name, "cclass") == 0)
-          {
-          
-          
-            if (update_arg( (void *)&(args_info->cclass_arg), 
-                 &(args_info->cclass_orig), &(args_info->cclass_given),
-                &(local_args_info.cclass_given), optarg, 0, 0, ARG_STRING,
-                check_ambiguity, override, 0, 0,
-                "cclass", '-',
-                additional_error))
-              goto failure;
-          
-          }
           /* use custom output filename format.  */
           else if (strcmp (long_options[option_index].name, "filename-format") == 0)
           {
@@ -966,7 +896,7 @@ cmdline_parser_internal (
           
             if (update_arg( (void *)&(args_info->filename_format_arg), 
                  &(args_info->filename_format_orig), &(args_info->filename_format_given),
-                &(local_args_info.filename_format_given), optarg, 0, 0, ARG_STRING,
+                &(local_args_info.filename_format_given), optarg, 0, "%t.%s", ARG_STRING,
                 check_ambiguity, override, 0, 0,
                 "filename-format", '-',
                 additional_error))

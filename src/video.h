@@ -52,7 +52,6 @@ public:
 public:
     void formatOutputFilename           ();
 private:
-    void defaultOutputFilenameFormatter (std::stringstream&);
     void customOutputFilenameFormatter  (std::stringstream&);
 private:
     std::string id;

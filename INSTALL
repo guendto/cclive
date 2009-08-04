@@ -12,6 +12,9 @@
 
             Optional Packages
 
+ --with-iconv[=prefix]
+    Causes cclive to convert video titles to unicode with libiconv.
+
  --with-man (default)
     Whether the manual page should be installed. --without-man disables this.
 
@@ -19,15 +22,6 @@
     If enabled, cclive handles SIGWINCH signal to resize progressbar to
     match the terminal width. BSD/Linux specific, may work on other
     Unix-like systems.
-
-    Disabled by default.
-
- --with-perl
-    Build cclive with embedded Perl interpreter. Used to parse
-    video page <title> tags. Enables the --title and --title-cclass
-    options.
-    
-    Note that you will also need the HTML::Tokenizer Perl module.
 
     Disabled by default.
 

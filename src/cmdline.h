@@ -46,11 +46,6 @@ struct gengetopt_args_info
   const char *hosts_help; /**< @brief list supported hosts help description.  */
   const char *quiet_help; /**< @brief turn off all output help description.  */
   const char *debug_help; /**< @brief show curl debug messages help description.  */
-  const char *title_help; /**< @brief use video page title for naming video files help description.  */
-  char * cclass_arg;	/**< @brief character class to filter titles (--title).  */
-  char * cclass_orig;	/**< @brief character class to filter titles (--title) original value given at command line.  */
-  const char *cclass_help; /**< @brief character class to filter titles (--title) help description.  */
-  const char *no_cclass_help; /**< @brief do not apply character class (--title) help description.  */
   const char *no_extract_help; /**< @brief do not extract video help description.  */
   const char *continue_help; /**< @brief resume partially downloaded file help description.  */
   char * format_arg;	/**< @brief download video format (default='flv').  */
@@ -60,7 +55,7 @@ struct gengetopt_args_info
   char * output_video_orig;	/**< @brief write video to file original value given at command line.  */
   const char *output_video_help; /**< @brief write video to file help description.  */
   const char *number_videos_help; /**< @brief number extracted videos help description.  */
-  char * filename_format_arg;	/**< @brief use custom output filename format.  */
+  char * filename_format_arg;	/**< @brief use custom output filename format (default='%t.%s').  */
   char * filename_format_orig;	/**< @brief use custom output filename format original value given at command line.  */
   const char *filename_format_help; /**< @brief use custom output filename format help description.  */
   const char *emit_csv_help; /**< @brief emit video details as csv to stdout help description.  */
@@ -98,9 +93,6 @@ struct gengetopt_args_info
   unsigned int hosts_given ;	/**< @brief Whether hosts was given.  */
   unsigned int quiet_given ;	/**< @brief Whether quiet was given.  */
   unsigned int debug_given ;	/**< @brief Whether debug was given.  */
-  unsigned int title_given ;	/**< @brief Whether title was given.  */
-  unsigned int cclass_given ;	/**< @brief Whether cclass was given.  */
-  unsigned int no_cclass_given ;	/**< @brief Whether no-cclass was given.  */
   unsigned int no_extract_given ;	/**< @brief Whether no-extract was given.  */
   unsigned int continue_given ;	/**< @brief Whether continue was given.  */
   unsigned int format_given ;	/**< @brief Whether format was given.  */

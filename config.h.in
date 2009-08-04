@@ -122,8 +122,8 @@
 /* Version number of package */
 #undef VERSION
 
-/* Whether Perl is embedded */
-#undef WITH_PERL
+/* With libiconv */
+#undef WITH_ICONV
 
 /* Define to 1 if on MINIX. */
 #undef _MINIX

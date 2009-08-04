@@ -33,6 +33,12 @@ BreakHandler::parseId() {
 }
 
 void
+BreakHandler::parseTitle() {
+    props.setTitle(
+        Util::subStr(pageContent, "id=\"vid_title\" content=\"", "\""));
+}
+
+void
 BreakHandler::parseLink() {
     std::string fpath =
         Util::subStr(pageContent, "ContentFilePath='", "'");

@@ -38,19 +38,6 @@ Turn off all output.
 
 Print libcurl debug messages to stderr.
 
-=item B<-t, --title>  [req. --with-perl]
-
-Causes cclive to use video page title for output video filename.
-Ignored if cclive was built --without-perl.
-
-=item B<--cclass=>I<CCLASS>  [req. --with-perl]
-
-Use character-I<class> to filter video page titles. Defaults to "\w".
-
-=item B<-C, --no-cclass>
-
-Negates the use of the character-class.
-
 =item B<-n, --no-extract>
 
 Do not extract any videos.
@@ -90,9 +77,6 @@ specifiers appear anywhere in the I<string>, they will be replaced accordingly:
   %i = id
   %h = host string
   %s = file suffix
-
-Note that "%t" is replaced only if cclive was built --with-perl and
-the B<--title> option was used. Otherwise "%t" equals to "%i".
 
 Example:
 
@@ -320,7 +304,6 @@ Format: flv
  agent      = Furball/1.0       # --agent=...
  proxy      = http://foo:1234   # --proxy=...
  limit-rate = 50                # --limit-rate=...
- title                          # --title
  no-extract                     # --no-extract
 
 Most of the program options can be defined in the ~/.ccliverc config file.
