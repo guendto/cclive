@@ -28,7 +28,10 @@
 #include <fstream>
 #include <string>
 #include <vector>
+
+#ifdef WITH_ICONV
 #include <iconv.h>
+#endif
 
 #include "hosthandler.h"
 #include "opts.h"
