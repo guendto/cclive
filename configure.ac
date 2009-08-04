@@ -2,8 +2,8 @@
 # Process this file with autoconf to produce a configure script.
 
 m4_define([vmaj], [0])
-m4_define([vmin], [4])
-m4_define([vmic], [7])
+m4_define([vmin], [5])
+m4_define([vmic], [0])
 
 AC_PREREQ(2.62)
 AC_INIT([cclive], vmaj[.]vmin[.]vmic)
