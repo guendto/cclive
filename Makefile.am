@@ -20,7 +20,7 @@ endif
 cmdline:
 if HAVE_GENGETOPT
 	@GENGETOPT@ < cmdline.ggo -C --unamed-opts=URL \
-		--output-dir ./src --no-version
+		--output-dir ./src --no-version --long-help --default-optional --show-required
 else
 	@echo "error: configure did not find 'gengetopt' command"
 endif
