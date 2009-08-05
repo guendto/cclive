@@ -44,8 +44,8 @@ hdr =			\
 	cmdline.h	\
 	hostfactory.h
 
-INCLUDES	=$(libcurl_CFLAGS) $(libiconv_CFLAGS)
-LIBS 		=$(libcurl_LIBS) $(libiconv_LDFLAGS)
+INCLUDES	=$(libcurl_CFLAGS) $(libiconv_CFLAGS) $(libpcrecpp_CFLAGS)
+LIBS 		=$(libcurl_LIBS) $(libiconv_LIBS) $(libpcrecpp_LIBS)
 
 bin_PROGRAMS		=cclive
 cclive_SOURCES 		=$(src) $(host) $(hdr)

@@ -125,6 +125,9 @@
 /* With libiconv */
 #undef WITH_ICONV
 
+/* With libpcrecpp */
+#undef WITH_PCRE
+
 /* Define to 1 if on MINIX. */
 #undef _MINIX
 

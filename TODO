@@ -1,5 +1,5 @@
 repo: git://repo.or.cz/cclive.git
 web : http://repo.or.cz/w/cclive.git
 
-* add: --remove-chars=[string]
-  - could be modified later to use pcre
+* add: --title-regex=expr
+  - used to filter video titles before using them as output filenames

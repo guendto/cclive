@@ -37,7 +37,7 @@ AC_PATH_PROG(POD2HTML, pod2html, no)
 AM_CONDITIONAL([HAVE_POD2HTML], [test x"$POD2HTML" != "xno"])
 AC_SUBST(POD2HTML)
 
-# Checks for libraries.
+# Checks for (mandatory) libraries.
 PKG_CHECK_MODULES(libcurl, libcurl >= 7.18.0)
 
 # Checks for header files.
@@ -59,14 +59,6 @@ AC_PROG_GCC_TRADITIONAL
 AC_TYPE_SIGNAL
 AC_CHECK_FUNCS([memset strchr strcspn strspn strtol])
 
-# --with-man
-AC_ARG_WITH([man],
-    [AS_HELP_STRING([--with-man],
-        [install cclive.1 manual page @<:@default=yes@:>@])],
-    [],
-    [with_man=yes])
-AM_CONDITIONAL([WITH_MAN], [test x"$with_man" != "xno"])
-
 # --enable-sigwinch
 AC_ARG_ENABLE([sigwinch],
     [AS_HELP_STRING([--enable-sigwinch],
@@ -86,31 +78,61 @@ AC_ARG_ENABLE([tests],
 AM_CONDITIONAL([ENABLE_TESTS], [test x"$enable_tests" != "xno"])
 
 # --with-iconv
-AC_ARG_WITH(
-    [iconv],
-    [AS_HELP_STRING([--with-iconv[=prefix]],
-        [build with libiconv @<:@default=no@:>@])],
+AC_ARG_WITH([iconv],
+    [AS_HELP_STRING([--with-iconv=PREFIX],
+        [search for libiconv in PREFIX @<:@default=/usr@:>@])],
     [with_iconv=$withval],
     [with_iconv=no]
 )
 if [ test x"$with_iconv" != "xno" ]; then
     if [ test x"$with_iconv" = "xyes" ]; then
         AC_CHECK_HEADER([iconv.h],
-            AC_CHECK_LIB([iconv], [iconv_open], [libiconv_LDFLAGS=-liconv])
+            AC_CHECK_LIB([iconv], [iconv_open], [libiconv_LIBS=-liconv])
         )
     else
-        # Use the user supplied prefix instead. Presume s/he knows better.
+        # User knows better.
         libiconv_CFLAGS="-I$with_iconv/include"
-        libiconv_LDFLAGS="-L$with_iconv/lib -liconv"
+        libiconv_LIBS="-L$with_iconv/lib -liconv"
     fi
-    if [ test x"$libiconv_LDFLAGS" = "x" ]; then
+    if [ test x"$libiconv_LIBS" = "x" ]; then
         AC_MSG_ERROR([libiconv not found])
     fi
     AC_SUBST(libiconv_CFLAGS)
-    AC_SUBST(libiconv_LDFLAGS)
+    AC_SUBST(libiconv_LIBS)
     AC_DEFINE([WITH_ICONV], [1], [With libiconv])
 fi
 AM_CONDITIONAL([WITH_ICONV], [test x"$with_iconv" != "xno"])
+
+AC_ARG_WITH([pcrecpp],
+    [AS_HELP_STRING([--with-pcrecpp=PREFIX],
+        [search for libpcrecpp in PREFIX @<:@default=pkg-config returned path@:>@])],
+    [with_pcrecpp=$withval],
+    [with_pcrecpp=no]
+)
+if [ test x"$with_pcrecpp" != "xno" ]; then
+    if [ test x"$with_pcrecpp" = "xyes" ]; then
+        PKG_CHECK_MODULES(libpcrecpp, libpcrecpp >= 7.9)
+    else
+        # User knows better.
+        libpcrecpp_CFLAGS="-I$with_pcrecpp/include"
+        libpcrecpp_LIBS="-L$with_pcrecpp/lib -lpcrecpp"
+    fi
+    if [ test x"$libpcrecpp_LIBS" = "x" ]; then
+        AC_MSG_ERROR([libpcrecpp not found])
+    fi
+    AC_SUBST(libpcrecpp_CFLAGS)
+    AC_SUBST(libpcrecpp_LIBS)
+    AC_DEFINE([WITH_PCRE], [1], [With libpcrecpp])
+fi
+AM_CONDITIONAL([WITH_PCRE], [test x"$with_pcre" != "xno"])
+
+# --with-man
+AC_ARG_WITH([man],
+    [AS_HELP_STRING([--with-man],
+        [install cclive.1 manual page @<:@default=yes@:>@])],
+    [],
+    [with_man=yes])
+AM_CONDITIONAL([WITH_MAN], [test x"$with_man" != "xno"])
 
 # --with-perl
 #AC_ARG_WITH([perl],
