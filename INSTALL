@@ -2,36 +2,39 @@
             Installation
 
  Typically "./configure && make install".
- 
- See also:
-   http://code.google.com/p/cclive/wiki/HowtoInstall
 
- cclive is confirmed to cross-compile on FreeBSD for MSWindows using
- mingw32. See the mingw32-build.sh for tips.
+
+            Known platforms and ports
+ 
+ See:
+   http://code.google.com/p/cclive/wiki/HowtoInstall
 
 
             Optional Packages
 
- --with-iconv[=prefix]
-    Causes cclive to convert video titles to unicode with libiconv.
+ --with-iconv[=PATH]  (recommended)
+    Causes cclive to use libiconv for character set conversions.
 
- --with-man (default)
-    Whether the manual page should be installed. --without-man disables this.
+ --with-pcrecpp[=PATH] (recommended)
+    Causes cclive to filter the video titles using the --title-regex
+    expression. Enables the --title-regex program option.
 
  --enable-sigwinch
-    If enabled, cclive handles SIGWINCH signal to resize progressbar to
-    match the terminal width. BSD/Linux specific, may work on other
-    Unix-like systems.
-
-    Disabled by default.
+    If enabled, cclive will handle the SIGWINCH to resize the
+    "progressbar" to match the terminal width. This is known
+    to work on at least BSD and Linux systems.
 
  --enable-tests
     Enable tests that can be run by typing "make check". Note that
     cclive will use any settings defined in ~/.cclive while running
-    the tests.
+    the tests. To skip the internet based tests, define NO_INTERNET
+    environment variable before "make check".
 
-    To disable the internet based tests, define NO_INTERNET environment
-    variable.
+ --without-man
+    Do not install cclive.1 manual page.
+
+ Example:
+    ./configure --with-iconv=/usr/local/src --with-pcrecpp
 
 
             Prerequisites
