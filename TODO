@@ -2,4 +2,4 @@ repo: git://repo.or.cz/cclive.git
 web : http://repo.or.cz/w/cclive.git
 
 * add: --remove-chars=[string]
-* keep: --with-perl
+  - could be modified later to use pcre
