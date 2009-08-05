@@ -86,20 +86,25 @@ AC_ARG_ENABLE([tests],
 AM_CONDITIONAL([ENABLE_TESTS], [test x"$enable_tests" != "xno"])
 
 # --with-iconv
-AC_ARG_WITH([iconv],
+AC_ARG_WITH(
+    [iconv],
     [AS_HELP_STRING([--with-iconv[=prefix]],
         [build with libiconv @<:@default=no@:>@])],
     [with_iconv=$withval],
-    [with_iconv=no])
+    [with_iconv=no]
+)
 if [ test x"$with_iconv" != "xno" ]; then
     if [ test x"$with_iconv" = "xyes" ]; then
         AC_CHECK_HEADER([iconv.h],
             AC_CHECK_LIB([iconv], [iconv_open], [libiconv_LDFLAGS=-liconv])
         )
     else
-        # Use prefix user supplied instead.
+        # Use the user supplied prefix instead. Presume s/he knows better.
         libiconv_CFLAGS="-I$with_iconv/include"
         libiconv_LDFLAGS="-L$with_iconv/lib -liconv"
+    fi
+    if [ test x"$libiconv_LDFLAGS" = "x" ]; then
+        AC_MSG_ERROR([libiconv not found])
     fi
     AC_SUBST(libiconv_CFLAGS)
     AC_SUBST(libiconv_LDFLAGS)

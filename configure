@@ -7277,6 +7277,7 @@ if test "${with_iconv+set}" = set; then
   withval=$with_iconv; with_iconv=$withval
 else
   with_iconv=no
+
 fi
 
 if  test x"$with_iconv" != "xno" ; then
@@ -7483,9 +7484,14 @@ fi
 
 
     else
-        # Use prefix user supplied instead.
+        # Use the user supplied prefix instead. Presume s/he knows better.
         libiconv_CFLAGS="-I$with_iconv/include"
         libiconv_LDFLAGS="-L$with_iconv/lib -liconv"
+    fi
+    if  test x"$libiconv_LDFLAGS" = "x" ; then
+        { { $as_echo "$as_me:$LINENO: error: libiconv not found" >&5
+$as_echo "$as_me: error: libiconv not found" >&2;}
+   { (exit 1); exit 1; }; }
     fi
 
 
