@@ -27,7 +27,7 @@
 
 const char *gengetopt_args_info_purpose = "";
 
-const char *gengetopt_args_info_usage = "Usage: " CMDLINE_PARSER_PACKAGE " [-h|--help] [-v|--version] [--hosts] [-q|--quiet] [--debug] \n         [--emit-csv] [--print-fname] [--agent=string] \n         [--proxy=proxyhost[:port]] [--no-proxy] [--connect-timeout=seconds] \n         [--connect-timeout-socks=s] [-fformat|--format=format] \n         [-n|--no-extract] [-c|--continue] [-lkb/s|--limit-rate=kb/s] \n         [-Ofile|--output-video=file] [-N|--number-videos] \n         [-Fstring|--filename-format=string] [--exec=expr[;|+]] [-e|--exec-run] \n         [--stream-exec=expr] [-s|--stream-pass] [--stream=percent] [URL]...";
+const char *gengetopt_args_info_usage = "Usage: " CMDLINE_PARSER_PACKAGE " [-h|--help] [-v|--version] [--hosts] [-q|--quiet] [--debug] \n         [--emit-csv] [--print-fname] [--agent=string] \n         [--proxy=proxyhost[:port]] [--no-proxy] [--connect-timeout=seconds] \n         [--connect-timeout-socks=s] [-n|--no-extract] [-c|--continue] \n         [-lkb/s|--limit-rate=kb/s] [-Ofile|--output-video=file] \n         [-N|--number-videos] [-Fstring|--filename-format=string] \n         [-fformat|--format=format] [--exec=expr[;|+]] [-e|--exec-run] \n         [--stream-exec=expr] [-s|--stream-pass] [--stream=percent] [URL]...";
 
 const char *gengetopt_args_info_description = "";
 
@@ -45,15 +45,15 @@ const char *gengetopt_args_info_help[] = {
   "      --proxy=proxyhost[:port]  use specified proxy",
   "      --no-proxy                do not use proxy even if http_proxy is defined",
   "      --connect-timeout=seconds max time allowed connection to server take  \n                                  (default=`30')",
-  "      --connect-timeout-socks=s identical but tries to workaround SOCKS bug in \n                                  libcurl  (default=`30')",
+  "      --connect-timeout-socks=s identical but tries to work around SOCKS proxy \n                                  bug in libcurl  (default=`30')",
   "\n Group: Download",
-  "  -f, --format=format           download video format  (possible \n                                  values=\"flv\", \"best\", \"fmt17\", \n                                  \"fmt18\", \"fmt22\", \"fmt35\", \"hq\", \n                                  \"3gp\", \"spark-mini\", \"vp6-hq\", \n                                  \"vp6-hd\", \"vp6\", \"h264\", \"hd\", \n                                  \"mp4\", \"high\", \"ipod\" default=`flv')",
   "  -n, --no-extract              do not actually extract video, simulate only",
   "  -c, --continue                resume partially downloaded file",
   "  -l, --limit-rate=kb/s         limit download speed to KB/s",
   "  -O, --output-video=file       write video to file",
   "  -N, --number-videos           prepend a numeric prefix to output filenames",
   "  -F, --filename-format=string  use output filename format  (default=`%t.%s')",
+  "  -f, --format=format           download video format  (possible \n                                  values=\"flv\", \"best\", \"fmt17\", \n                                  \"fmt18\", \"fmt22\", \"fmt35\", \"hq\", \n                                  \"3gp\", \"spark-mini\", \"vp6-hq\", \n                                  \"vp6-hd\", \"vp6\", \"h264\", \"hd\", \n                                  \"mp4\", \"high\", \"ipod\" default=`flv')",
   "\n Group: Subsequent",
   "      --exec=expr[;|+]          command to invoke when transfer finishes",
   "  -e, --exec-run                invoke command defined with --exec",
@@ -125,13 +125,13 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->no_proxy_given = 0 ;
   args_info->connect_timeout_given = 0 ;
   args_info->connect_timeout_socks_given = 0 ;
-  args_info->format_given = 0 ;
   args_info->no_extract_given = 0 ;
   args_info->continue_given = 0 ;
   args_info->limit_rate_given = 0 ;
   args_info->output_video_given = 0 ;
   args_info->number_videos_given = 0 ;
   args_info->filename_format_given = 0 ;
+  args_info->format_given = 0 ;
   args_info->exec_given = 0 ;
   args_info->exec_run_given = 0 ;
   args_info->stream_exec_given = 0 ;
@@ -156,13 +156,13 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->connect_timeout_orig = NULL;
   args_info->connect_timeout_socks_arg = 30;
   args_info->connect_timeout_socks_orig = NULL;
-  args_info->format_arg = gengetopt_strdup ("flv");
-  args_info->format_orig = NULL;
   args_info->limit_rate_orig = NULL;
   args_info->output_video_arg = NULL;
   args_info->output_video_orig = NULL;
   args_info->filename_format_arg = gengetopt_strdup ("%t.%s");
   args_info->filename_format_orig = NULL;
+  args_info->format_arg = gengetopt_strdup ("flv");
+  args_info->format_orig = NULL;
   args_info->exec_arg = NULL;
   args_info->exec_orig = NULL;
   args_info->stream_exec_arg = NULL;
@@ -188,13 +188,13 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->no_proxy_help = gengetopt_args_info_help[11] ;
   args_info->connect_timeout_help = gengetopt_args_info_help[12] ;
   args_info->connect_timeout_socks_help = gengetopt_args_info_help[13] ;
-  args_info->format_help = gengetopt_args_info_help[15] ;
-  args_info->no_extract_help = gengetopt_args_info_help[16] ;
-  args_info->continue_help = gengetopt_args_info_help[17] ;
-  args_info->limit_rate_help = gengetopt_args_info_help[18] ;
-  args_info->output_video_help = gengetopt_args_info_help[19] ;
-  args_info->number_videos_help = gengetopt_args_info_help[20] ;
-  args_info->filename_format_help = gengetopt_args_info_help[21] ;
+  args_info->no_extract_help = gengetopt_args_info_help[15] ;
+  args_info->continue_help = gengetopt_args_info_help[16] ;
+  args_info->limit_rate_help = gengetopt_args_info_help[17] ;
+  args_info->output_video_help = gengetopt_args_info_help[18] ;
+  args_info->number_videos_help = gengetopt_args_info_help[19] ;
+  args_info->filename_format_help = gengetopt_args_info_help[20] ;
+  args_info->format_help = gengetopt_args_info_help[21] ;
   args_info->exec_help = gengetopt_args_info_help[23] ;
   args_info->exec_run_help = gengetopt_args_info_help[24] ;
   args_info->stream_exec_help = gengetopt_args_info_help[26] ;
@@ -289,13 +289,13 @@ cmdline_parser_release (struct gengetopt_args_info *args_info)
   free_string_field (&(args_info->proxy_orig));
   free_string_field (&(args_info->connect_timeout_orig));
   free_string_field (&(args_info->connect_timeout_socks_orig));
-  free_string_field (&(args_info->format_arg));
-  free_string_field (&(args_info->format_orig));
   free_string_field (&(args_info->limit_rate_orig));
   free_string_field (&(args_info->output_video_arg));
   free_string_field (&(args_info->output_video_orig));
   free_string_field (&(args_info->filename_format_arg));
   free_string_field (&(args_info->filename_format_orig));
+  free_string_field (&(args_info->format_arg));
+  free_string_field (&(args_info->format_orig));
   free_string_field (&(args_info->exec_arg));
   free_string_field (&(args_info->exec_orig));
   free_string_field (&(args_info->stream_exec_arg));
@@ -401,8 +401,6 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "connect-timeout", args_info->connect_timeout_orig, 0);
   if (args_info->connect_timeout_socks_given)
     write_into_file(outfile, "connect-timeout-socks", args_info->connect_timeout_socks_orig, 0);
-  if (args_info->format_given)
-    write_into_file(outfile, "format", args_info->format_orig, cmdline_parser_format_values);
   if (args_info->no_extract_given)
     write_into_file(outfile, "no-extract", 0, 0 );
   if (args_info->continue_given)
@@ -415,6 +413,8 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "number-videos", 0, 0 );
   if (args_info->filename_format_given)
     write_into_file(outfile, "filename-format", args_info->filename_format_orig, 0);
+  if (args_info->format_given)
+    write_into_file(outfile, "format", args_info->format_orig, cmdline_parser_format_values);
   if (args_info->exec_given)
     write_into_file(outfile, "exec", args_info->exec_orig, 0);
   if (args_info->exec_run_given)
@@ -478,9 +478,6 @@ reset_group_Download(struct gengetopt_args_info *args_info)
   if (! args_info->Download_group_counter)
     return;
   
-  args_info->format_given = 0 ;
-  free_string_field (&(args_info->format_arg));
-  free_string_field (&(args_info->format_orig));
   args_info->no_extract_given = 0 ;
   args_info->continue_given = 0 ;
   args_info->limit_rate_given = 0 ;
@@ -492,6 +489,9 @@ reset_group_Download(struct gengetopt_args_info *args_info)
   args_info->filename_format_given = 0 ;
   free_string_field (&(args_info->filename_format_arg));
   free_string_field (&(args_info->filename_format_orig));
+  args_info->format_given = 0 ;
+  free_string_field (&(args_info->format_arg));
+  free_string_field (&(args_info->format_orig));
 
   args_info->Download_group_counter = 0;
 }
@@ -824,13 +824,13 @@ cmdline_parser_internal (
         { "no-proxy",	0, NULL, 0 },
         { "connect-timeout",	1, NULL, 0 },
         { "connect-timeout-socks",	1, NULL, 0 },
-        { "format",	1, NULL, 'f' },
         { "no-extract",	0, NULL, 'n' },
         { "continue",	0, NULL, 'c' },
         { "limit-rate",	1, NULL, 'l' },
         { "output-video",	1, NULL, 'O' },
         { "number-videos",	0, NULL, 'N' },
         { "filename-format",	1, NULL, 'F' },
+        { "format",	1, NULL, 'f' },
         { "exec",	1, NULL, 0 },
         { "exec-run",	0, NULL, 'e' },
         { "stream-exec",	1, NULL, 0 },
@@ -839,7 +839,7 @@ cmdline_parser_internal (
         { 0,  0, 0, 0 }
       };
 
-      c = getopt_long (argc, argv, "hvqf:ncl:O:NF:es", long_options, &option_index);
+      c = getopt_long (argc, argv, "hvqncl:O:NF:f:es", long_options, &option_index);
 
       if (c == -1) break;	/* Exit from `while (1)' loop.  */
 
@@ -873,21 +873,6 @@ cmdline_parser_internal (
               &(local_args_info.quiet_given), optarg, 0, 0, ARG_NO,
               check_ambiguity, override, 0, 0,
               "quiet", 'q',
-              additional_error))
-            goto failure;
-        
-          break;
-        case 'f':	/* download video format.  */
-        
-          if (args_info->Download_group_counter && override)
-            reset_group_Download (args_info);
-          args_info->Download_group_counter += 1;
-        
-          if (update_arg( (void *)&(args_info->format_arg), 
-               &(args_info->format_orig), &(args_info->format_given),
-              &(local_args_info.format_given), optarg, cmdline_parser_format_values, "flv", ARG_STRING,
-              check_ambiguity, override, 0, 0,
-              "format", 'f',
               additional_error))
             goto failure;
         
@@ -978,6 +963,21 @@ cmdline_parser_internal (
               &(local_args_info.filename_format_given), optarg, 0, "%t.%s", ARG_STRING,
               check_ambiguity, override, 0, 0,
               "filename-format", 'F',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 'f':	/* download video format.  */
+        
+          if (args_info->Download_group_counter && override)
+            reset_group_Download (args_info);
+          args_info->Download_group_counter += 1;
+        
+          if (update_arg( (void *)&(args_info->format_arg), 
+               &(args_info->format_orig), &(args_info->format_given),
+              &(local_args_info.format_given), optarg, cmdline_parser_format_values, "flv", ARG_STRING,
+              check_ambiguity, override, 0, 0,
+              "format", 'f',
               additional_error))
             goto failure;
         
@@ -1147,7 +1147,7 @@ cmdline_parser_internal (
               goto failure;
           
           }
-          /* identical but tries to workaround SOCKS bug in libcurl.  */
+          /* identical but tries to work around SOCKS proxy bug in libcurl.  */
           else if (strcmp (long_options[option_index].name, "connect-timeout-socks") == 0)
           {
           

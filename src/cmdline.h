@@ -58,12 +58,9 @@ struct gengetopt_args_info
   int connect_timeout_arg;	/**< @brief max time allowed connection to server take (default='30').  */
   char * connect_timeout_orig;	/**< @brief max time allowed connection to server take original value given at command line.  */
   const char *connect_timeout_help; /**< @brief max time allowed connection to server take help description.  */
-  int connect_timeout_socks_arg;	/**< @brief identical but tries to workaround SOCKS bug in libcurl (default='30').  */
-  char * connect_timeout_socks_orig;	/**< @brief identical but tries to workaround SOCKS bug in libcurl original value given at command line.  */
-  const char *connect_timeout_socks_help; /**< @brief identical but tries to workaround SOCKS bug in libcurl help description.  */
-  char * format_arg;	/**< @brief download video format (default='flv').  */
-  char * format_orig;	/**< @brief download video format original value given at command line.  */
-  const char *format_help; /**< @brief download video format help description.  */
+  int connect_timeout_socks_arg;	/**< @brief identical but tries to work around SOCKS proxy bug in libcurl (default='30').  */
+  char * connect_timeout_socks_orig;	/**< @brief identical but tries to work around SOCKS proxy bug in libcurl original value given at command line.  */
+  const char *connect_timeout_socks_help; /**< @brief identical but tries to work around SOCKS proxy bug in libcurl help description.  */
   const char *no_extract_help; /**< @brief do not actually extract video, simulate only help description.  */
   const char *continue_help; /**< @brief resume partially downloaded file help description.  */
   int limit_rate_arg;	/**< @brief limit download speed to KB/s.  */
@@ -76,6 +73,9 @@ struct gengetopt_args_info
   char * filename_format_arg;	/**< @brief use output filename format (default='%t.%s').  */
   char * filename_format_orig;	/**< @brief use output filename format original value given at command line.  */
   const char *filename_format_help; /**< @brief use output filename format help description.  */
+  char * format_arg;	/**< @brief download video format (default='flv').  */
+  char * format_orig;	/**< @brief download video format original value given at command line.  */
+  const char *format_help; /**< @brief download video format help description.  */
   char * exec_arg;	/**< @brief command to invoke when transfer finishes.  */
   char * exec_orig;	/**< @brief command to invoke when transfer finishes original value given at command line.  */
   const char *exec_help; /**< @brief command to invoke when transfer finishes help description.  */
@@ -100,13 +100,13 @@ struct gengetopt_args_info
   unsigned int no_proxy_given ;	/**< @brief Whether no-proxy was given.  */
   unsigned int connect_timeout_given ;	/**< @brief Whether connect-timeout was given.  */
   unsigned int connect_timeout_socks_given ;	/**< @brief Whether connect-timeout-socks was given.  */
-  unsigned int format_given ;	/**< @brief Whether format was given.  */
   unsigned int no_extract_given ;	/**< @brief Whether no-extract was given.  */
   unsigned int continue_given ;	/**< @brief Whether continue was given.  */
   unsigned int limit_rate_given ;	/**< @brief Whether limit-rate was given.  */
   unsigned int output_video_given ;	/**< @brief Whether output-video was given.  */
   unsigned int number_videos_given ;	/**< @brief Whether number-videos was given.  */
   unsigned int filename_format_given ;	/**< @brief Whether filename-format was given.  */
+  unsigned int format_given ;	/**< @brief Whether format was given.  */
   unsigned int exec_given ;	/**< @brief Whether exec was given.  */
   unsigned int exec_run_given ;	/**< @brief Whether exec-run was given.  */
   unsigned int stream_exec_given ;	/**< @brief Whether stream-exec was given.  */

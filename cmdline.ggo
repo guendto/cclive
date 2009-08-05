@@ -51,29 +51,12 @@ groupoption "connect-timeout"
     optional
     group="HTTP"
 groupoption "connect-timeout-socks"
-    - "identical but tries to workaround SOCKS bug in libcurl"
+    - "identical but tries to work around SOCKS proxy bug in libcurl"
     int typestr="s"
     default="30"
     optional
     group="HTTP"
 
-groupoption "format"
-    f "download video format"
-    values="flv","best",
-        # youtube:
-        "fmt17","fmt18","fmt22","fmt35","hq","3gp",
-        # dmotion:
-        "spark-mini","vp6-hq","vp6-hd","vp6","h264",
-        # vimeo:
-        "hd",
-        # google:
-        "mp4",
-        # golem:
-        "high", "ipod"
-    default="flv"
-    typestr="format"
-    optional
-    group="Download"
 groupoption "no-extract"
     n "do not actually extract video, simulate only"
     optional
@@ -101,6 +84,23 @@ groupoption "filename-format"
     string typestr="string"
     default="%t.%s"
     no
+    group="Download"
+groupoption "format"
+    f "download video format"
+    values="flv","best",
+        # youtube:
+        "fmt17","fmt18","fmt22","fmt35","hq","3gp",
+        # dmotion:
+        "spark-mini","vp6-hq","vp6-hd","vp6","h264",
+        # vimeo:
+        "hd",
+        # google:
+        "mp4",
+        # golem:
+        "high", "ipod"
+    default="flv"
+    typestr="format"
+    optional
     group="Download"
 
 groupoption "exec"
