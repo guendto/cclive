@@ -132,7 +132,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2009-08-04" "0.4.7" "cclive manual"
+.TH cclive 1 "2009-08-05" "0.5.0" "cclive manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -178,12 +178,12 @@ if the file exists already. That is unless:
 \&  * file is already completely retrieved, or:
 \&  * \-c or \-O is used
 .Ve
-.IP "\fB\-f, \-\-format=\fR\fI\s-1FORMAT\s0\fR" 4
-.IX Item "-f, --format=FORMAT"
+.IP "\fB\-f, \-\-format\fR=\fIformat\fR" 4
+.IX Item "-f, --format=format"
 Extract \fIformat\fR of the video. If set to \fIbest\fR, cclive will
 attempt to download the best video quality. See also \*(L"\s-1FORMATS\s0\*(R".
-.IP "\fB\-O, \-\-output\-video=\fR\fI\s-1FILE\s0\fR" 4
-.IX Item "-O, --output-video=FILE"
+.IP "\fB\-O, \-\-output\-video\fR=\fIfile\fR" 4
+.IX Item "-O, --output-video=file"
 Write extracted video to \fIfile\fR. Overwrites any already existing
 files without a warning.
 .Sp
@@ -191,10 +191,10 @@ Do \fInot\fR use this when extracting multiple videos on one run.
 .IP "\fB\-N, \-\-number\-videos\fR" 4
 .IX Item "-N, --number-videos"
 Add a numeric prefix to the video filenames.
-.IP "\fB\-\-filename\-format=\fR\fI\s-1STRING\s0\fR" 4
-.IX Item "--filename-format=STRING"
-Use \fIstring\fR to format the output video filename. If any of the following
-specifiers appear anywhere in the \fIstring\fR, they will be replaced accordingly:
+.IP "\fB\-\-filename\-format\fR=\fIformatstring\fR" 4
+.IX Item "--filename-format=formatstring"
+Use \fIformatstring\fR to format the output video filename. If any of the following
+specifiers appear anywhere in the \fIformatstring\fR, they will be replaced accordingly:
 .Sp
 .Vb 4
 \&  %t = page title
@@ -212,14 +212,14 @@ Example:
 .IX Item "--emit-csv"
 Emit video details in \s-1CSV\s0 to stdout. Implies \fB\-\-no\-extract\fR.
 Use of \fB\-\-quiet\fR will be ignored for the \s-1CSV\s0.
-.IP "\fB\-\-limit\-rate=\fR\fI\s-1AMOUNT\s0\fR" 4
-.IX Item "--limit-rate=AMOUNT"
+.IP "\fB\-\-limit\-rate\fR=\fIamount\fR" 4
+.IX Item "--limit-rate=amount"
 Limit download speed to \fIamount\fR (KB/s). Ignored for video page fetch.
-.IP "\fB\-\-agent=\fR\fI\s-1STRING\s0\fR" 4
-.IX Item "--agent=STRING"
+.IP "\fB\-\-agent\fR=\fIstring\fR" 4
+.IX Item "--agent=string"
 Identify cclive as \fIstring\fR to the \s-1HTTP\s0 servers.
-.IP "\fB\-\-proxy=\fR\fI\s-1ADDRESS\s0\fR" 4
-.IX Item "--proxy=ADDRESS"
+.IP "\fB\-\-proxy\fR=\fIaddress\fR" 4
+.IX Item "--proxy=address"
 Use \fIaddress\fR for \s-1HTTP\s0 proxy.
 .Sp
 Example:
@@ -233,19 +233,19 @@ if it is defined.
 .IP "\fB\-\-no\-proxy\fR" 4
 .IX Item "--no-proxy"
 Do not use proxy, even if http_proxy environment variable is defined.
-.IP "\fB\-\-connect\-timeout=\fR\fI\s-1SECONDS\s0\fR" 4
-.IX Item "--connect-timeout=SECONDS"
+.IP "\fB\-\-connect\-timeout\fR=\fIseconds\fR" 4
+.IX Item "--connect-timeout=seconds"
 Maximum time in \fIseconds\fR allowed for connection to take. Defaults to 30.
-.IP "\fB\-\-connect\-timeout\-socks=\fR\fI\s-1SECONDS\s0\fR" 4
-.IX Item "--connect-timeout-socks=SECONDS"
+.IP "\fB\-\-connect\-timeout\-socks\fR=\fIseconds\fR" 4
+.IX Item "--connect-timeout-socks=seconds"
 Same as above but tries to workaround the \s-1SOCKS\s0 proxy bug in cURL. Defaults
 to 30.
-.IP "\fB\-\-exec=\fR\fI\s-1COMMAND\s0\fR\fB;\fR" 4
-.IX Item "--exec=COMMAND;"
-Execute \fIcommand\fR after each file transfer. Optional arguments may be passed
+.IP "\fB\-\-exec\fR=\fIexpression\fR\fB;\fR" 4
+.IX Item "--exec=expression;"
+Execute \fIexpression\fR after each file transfer. Optional arguments may be passed
 to the command. The expression must be terminated by a semicolon (\*(L";\*(R").
 .Sp
-If the specifier \*(L"%i\*(R" appears anywhere in \fIcommand\fR name or the arguments
+If the specifier \*(L"%i\*(R" appears anywhere in \fIexpression\fR name or the arguments
 it is replaced by the pathname of the extracted video file.
 .Sp
 Example:
@@ -253,28 +253,28 @@ Example:
 .Vb 1
 \&  % cclive \-\-exec="mplayer \-really\-quiet %i;" \-e URL
 .Ve
-.IP "\fB\-\-exec=\fR\fI\s-1COMMAND\s0\fR\fB+\fR" 4
-.IX Item "--exec=COMMAND+"
+.IP "\fB\-\-exec\fR=\fIexpression\fR\fB+\fR" 4
+.IX Item "--exec=expression+"
 Same as \fB\-\-exec\fR, except that \*(L"%i\*(R" is replaced with as many pathnames
-as possible for the invocation of \fIcommand\fR.
+as possible for the invocation of \fIexpression\fR.
 .IP "\fB\-e, \-\-exec\-run\fR" 4
 .IX Item "-e, --exec-run"
 Causes cclive to invoke the command defined with \fB\-\-exec\fR when
 transfer finishes.
-.IP "\fB\-\-stream\-exec=\fR\fI\s-1COMMAND\s0\fR" 4
-.IX Item "--stream-exec=COMMAND"
+.IP "\fB\-\-stream\-exec\fR=\fIexpression\fR" 4
+.IX Item "--stream-exec=expression"
 Define the command to be invoked with \fB\-\-stream\fR and \fB\-\-stream\-pass\fR.
-If a \*(L"%i\*(R" specifier is used in the \fIcommand\fR, it will be replaced with
+If a \*(L"%i\*(R" specifier is used in the \fIexpression\fR, it will be replaced with
 either video file path name (\fB\-\-stream\fR) or parsed video link
 (\fB\-\-stream\-pass\fR).
-.IP "\fB\-\-stream=\fR\fI\s-1PERCENT\s0\fR" 4
-.IX Item "--stream=PERCENT"
+.IP "\fB\-\-stream\fR=\fIpercentage\fR" 4
+.IX Item "--stream=percentage"
 Causes cclive to fetch, parse, start download and eventually invoke
 the command defined with \fB\-\-stream\-exec\fR when the transfer reaches
-the percentage defined with this option. See also \*(L"\s-1EXAMPLES\s0\*(R".
+the \fIpercentage\fR defined with this option. See also \*(L"\s-1EXAMPLES\s0\*(R".
 .Sp
 Note that cclive does nothing to check if there is enough data buffered
-before invoking the \fB\-\-stream\-exec\fR defined \fIcommand\fR. If the transfer
+before invoking the \fB\-\-stream\-exec\fR defined \fIexpression\fR. If the transfer
 rate drops significantly after starting the process and it runs out of data,
 cclive does nothing to fix this.
 .Sp
@@ -449,10 +449,11 @@ Causes \fBlibcurl\fR to be verbose.
 Simulates video extraction only.
 .SH "BUGS"
 .IX Header "BUGS"
-Sure to be some.
+Sure to be some. Please report them:
 .PP
-Please report them:
-  <http://code.google.com/p/cclive/issues/>
+.Vb 1
+\&  <http://code.google.com/p/cclive/issues/>
+.Ve
 .SH "EXIT STATUS"
 .IX Header "EXIT STATUS"
 cclive exits 0 on success, and >0 if an error occurs.

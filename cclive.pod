@@ -52,12 +52,12 @@ if the file exists already. That is unless:
   * file is already completely retrieved, or:
   * -c or -O is used
 
-=item B<-f, --format=>I<FORMAT>
+=item B<-f, --format>=I<format>
 
 Extract I<format> of the video. If set to I<best>, cclive will
 attempt to download the best video quality. See also L</FORMATS>.
 
-=item B<-O, --output-video=>I<FILE>
+=item B<-O, --output-video>=I<file>
 
 Write extracted video to I<file>. Overwrites any already existing
 files without a warning.
@@ -68,10 +68,10 @@ Do I<not> use this when extracting multiple videos on one run.
 
 Add a numeric prefix to the video filenames.
 
-=item B<--filename-format=>I<STRING>
+=item B<--filename-format>=I<formatstring>
 
-Use I<string> to format the output video filename. If any of the following
-specifiers appear anywhere in the I<string>, they will be replaced accordingly:
+Use I<formatstring> to format the output video filename. If any of the following
+specifiers appear anywhere in the I<formatstring>, they will be replaced accordingly:
 
   %t = page title
   %i = id
@@ -87,15 +87,15 @@ Example:
 Emit video details in CSV to stdout. Implies B<--no-extract>.
 Use of B<--quiet> will be ignored for the CSV.
 
-=item B<--limit-rate=>I<AMOUNT>
+=item B<--limit-rate>=I<amount>
 
 Limit download speed to I<amount> (KB/s). Ignored for video page fetch.
 
-=item B<--agent=>I<STRING>
+=item B<--agent>=I<string>
 
 Identify cclive as I<string> to the HTTP servers.
 
-=item B<--proxy=>I<ADDRESS>
+=item B<--proxy>=I<address>
 
 Use I<address> for HTTP proxy.
 
@@ -111,52 +111,52 @@ if it is defined.
 
 Do not use proxy, even if http_proxy environment variable is defined.
 
-=item B<--connect-timeout=>I<SECONDS>
+=item B<--connect-timeout>=I<seconds>
 
 Maximum time in I<seconds> allowed for connection to take. Defaults to 30.
 
-=item B<--connect-timeout-socks=>I<SECONDS>
+=item B<--connect-timeout-socks>=I<seconds>
 
 Same as above but tries to workaround the SOCKS proxy bug in cURL. Defaults
 to 30.
 
-=item B<--exec=>I<COMMAND>B<;>
+=item B<--exec>=I<expression>B<;>
 
-Execute I<command> after each file transfer. Optional arguments may be passed
+Execute I<expression> after each file transfer. Optional arguments may be passed
 to the command. The expression must be terminated by a semicolon (";").
 
-If the specifier "%i" appears anywhere in I<command> name or the arguments
+If the specifier "%i" appears anywhere in I<expression> name or the arguments
 it is replaced by the pathname of the extracted video file.
 
 Example:
 
   % cclive --exec="mplayer -really-quiet %i;" -e URL
 
-=item B<--exec=>I<COMMAND>B<+>
+=item B<--exec>=I<expression>B<+>
 
 Same as B<--exec>, except that "%i" is replaced with as many pathnames
-as possible for the invocation of I<command>.
+as possible for the invocation of I<expression>.
 
 =item B<-e, --exec-run>
 
 Causes cclive to invoke the command defined with B<--exec> when
 transfer finishes.
 
-=item B<--stream-exec=>I<COMMAND>
+=item B<--stream-exec>=I<expression>
 
 Define the command to be invoked with B<--stream> and B<--stream-pass>.
-If a "%i" specifier is used in the I<command>, it will be replaced with
+If a "%i" specifier is used in the I<expression>, it will be replaced with
 either video file path name (B<--stream>) or parsed video link
 (B<--stream-pass>).
 
-=item B<--stream=>I<PERCENT>
+=item B<--stream>=I<percentage>
 
 Causes cclive to fetch, parse, start download and eventually invoke
 the command defined with B<--stream-exec> when the transfer reaches
-the percentage defined with this option. See also L</EXAMPLES>.
+the I<percentage> defined with this option. See also L</EXAMPLES>.
 
 Note that cclive does nothing to check if there is enough data buffered
-before invoking the B<--stream-exec> defined I<command>. If the transfer
+before invoking the B<--stream-exec> defined I<expression>. If the transfer
 rate drops significantly after starting the process and it runs out of data,
 cclive does nothing to fix this.
 
@@ -337,9 +337,8 @@ Simulates video extraction only.
 
 =head1 BUGS
 
-Sure to be some.
+Sure to be some. Please report them:
 
-Please report them:
   <http://code.google.com/p/cclive/issues/>
 
 =head1 EXIT STATUS
