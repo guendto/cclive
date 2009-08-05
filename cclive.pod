@@ -66,9 +66,9 @@ Do I<not> use this when extracting multiple videos on one run.
 
 =item B<-N, --number-videos>
 
-Add a numeric prefix to the video filenames.
+Prepend a numeric prefix to the output files.
 
-=item B<--filename-format>=I<formatstring>
+=item B<-F, --filename-format>=I<formatstring>
 
 Use I<formatstring> to format the output video filename. If any of the following
 specifiers appear anywhere in the I<formatstring>, they will be replaced accordingly:
@@ -87,7 +87,7 @@ Example:
 Emit video details in CSV to stdout. Implies B<--no-extract>.
 Use of B<--quiet> will be ignored for the CSV.
 
-=item B<--limit-rate>=I<amount>
+=item B<l, --limit-rate>=I<amount>
 
 Limit download speed to I<amount> (KB/s). Ignored for video page fetch.
 

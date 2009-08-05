@@ -190,9 +190,9 @@ files without a warning.
 Do \fInot\fR use this when extracting multiple videos on one run.
 .IP "\fB\-N, \-\-number\-videos\fR" 4
 .IX Item "-N, --number-videos"
-Add a numeric prefix to the video filenames.
-.IP "\fB\-\-filename\-format\fR=\fIformatstring\fR" 4
-.IX Item "--filename-format=formatstring"
+Prepend a numeric prefix to the output files.
+.IP "\fB\-F, \-\-filename\-format\fR=\fIformatstring\fR" 4
+.IX Item "-F, --filename-format=formatstring"
 Use \fIformatstring\fR to format the output video filename. If any of the following
 specifiers appear anywhere in the \fIformatstring\fR, they will be replaced accordingly:
 .Sp
@@ -212,8 +212,8 @@ Example:
 .IX Item "--emit-csv"
 Emit video details in \s-1CSV\s0 to stdout. Implies \fB\-\-no\-extract\fR.
 Use of \fB\-\-quiet\fR will be ignored for the \s-1CSV\s0.
-.IP "\fB\-\-limit\-rate\fR=\fIamount\fR" 4
-.IX Item "--limit-rate=amount"
+.IP "\fBl, \-\-limit\-rate\fR=\fIamount\fR" 4
+.IX Item "l, --limit-rate=amount"
 Limit download speed to \fIamount\fR (KB/s). Ignored for video page fetch.
 .IP "\fB\-\-agent\fR=\fIstring\fR" 4
 .IX Item "--agent=string"
