@@ -1,23 +1,63 @@
 
+defgroup "Output"
+defgroup "HTTP"
+defgroup "Download"
+defgroup "Subsequent"
+defgroup "Streaming"
+
 option "version"
     v "print version and exit"
     optional
 option "hosts"
     - "list supported hosts"
     optional
-option "quiet"
+
+groupoption "quiet"
     q "turn off all output"
     optional
-option "debug"
+    group="Output"
+groupoption "debug"
     - "show curl debug messages"
     optional
-option "no-extract"
-    n "do not extract video"
+    group="Output"
+groupoption "emit-csv"
+    - "emit video details as csv to stdout"
     optional
-option "continue"
-    c "resume partially downloaded file"
+    group="Output"
+groupoption "print-fname"
+    - "print output filename on a single line"
     optional
-option "format"
+    group="Output"
+
+groupoption "agent"
+    - "identify as string"
+    string typestr="string"
+    no
+    default="Mozilla/5.0"
+    group="HTTP"
+groupoption "proxy"
+    - "use specified proxy"
+    string typestr="proxyhost[:port]"
+    no
+    group="HTTP"
+groupoption "no-proxy"
+    - "do not use proxy even if http_proxy is defined"
+    optional
+    group="HTTP"
+groupoption "connect-timeout"
+    - "max time allowed connection to server take"
+    int typestr="seconds"
+    default="30"
+    optional
+    group="HTTP"
+groupoption "connect-timeout-socks"
+    - "identical but tries to workaround SOCKS bug in libcurl"
+    int typestr="s"
+    default="30"
+    optional
+    group="HTTP"
+
+groupoption "format"
     f "download video format"
     values="flv","best",
         # youtube:
@@ -31,70 +71,62 @@ option "format"
         # golem:
         "high", "ipod"
     default="flv"
-    typestr="FORMAT"
+    typestr="format"
     optional
-option "output-video"
+    group="Download"
+groupoption "no-extract"
+    n "do not actually extract video, simulate only"
+    optional
+    group="Download"
+groupoption "continue"
+    c "resume partially downloaded file"
+    optional
+    group="Download"
+groupoption "limit-rate"
+    l "limit download speed to KB/s"
+    int typestr="kb/s"
+    optional
+    group="Download"
+groupoption "output-video"
     O "write video to file"
-    string typestr="FILE"
+    string typestr="file"
     no
-option "number-videos"
-    N "number extracted videos"
+    group="Download"
+groupoption "number-videos"
+    N "prepend a numeric prefix to output filenames"
     optional
-option "filename-format"
-    - "use custom output filename format"
-    string typestr="STRING"
+    group="Download"
+groupoption "filename-format"
+    F "use output filename format"
+    string typestr="string"
     default="%t.%s"
     no
-option "emit-csv"
-    - "emit video details as csv to stdout"
+    group="Download"
+
+groupoption "exec"
+    - "command to invoke when transfer finishes"
+    string typestr="expr[;|+]"
     optional
-option "limit-rate"
-    - "limit download speed to amount kb per second"
-    int typestr="AMOUNT"
-    optional
-option "agent"
-    - "identify as string"
-    string typestr="STRING"
-    no
-    default="Mozilla/5.0"
-option "proxy"
-    - "use address for http proxy"
-    string typestr="ADDRESS"
-    no
-option "no-proxy"
-    - "do not use proxy at all"
-    optional
-option "connect-timeout"
-    - "max time allowed connection to server take"
-    int typestr="SECS"
-    default="30"
-    optional
-option "connect-timeout-socks"
-    - "same as above but with SOCKS proxy workaround"
-    int typestr="S"
-    default="30"
-    optional
-option "exec"
-    - "command to run when transfer finishes"
-    string typestr="COMMAND"
-    optional
-option "exec-run"
+    group="Subsequent"
+groupoption "exec-run"
     e "invoke command defined with --exec"
     optional
     dependon="exec"
-option "stream-exec"
+    group="Subsequent"
+
+groupoption "stream-exec"
     - "stream command to be invoked"
-    string typestr="COMMAND"
+    string typestr="expr"
     optional
-option "stream"
-    - "invoke --stream-exec when transfer reaches %"
-    int typestr="PERCENT"
-    optional
-    dependon="stream-exec"
-option  "stream-pass"
+    group="Streaming"
+groupoption "stream-pass"
     s "pass video link to --stream-exec command"
     optional
     dependon="stream-exec"
-option "print-fname"
-    - "print output filename on a single line"
+    group="Streaming"
+groupoption "stream"
+    - "invoke --stream-exec when transfer reaches %"
+    int typestr="percent"
     optional
+    dependon="stream-exec"
+    group="Streaming"
