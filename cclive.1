@@ -158,88 +158,93 @@ Print version and exit.
 .IP "\fB\-\-hosts\fR" 4
 .IX Item "--hosts"
 Print a list of supported hosts to stdout and exit.
+.PP
+\&\fBOutput\fR
 .IP "\fB\-q, \-\-quiet\fR" 4
 .IX Item "-q, --quiet"
 Turn off all output.
 .IP "\fB\-\-debug\fR" 4
 .IX Item "--debug"
 Print libcurl debug messages to stderr.
+.IP "\fB\-\-emit\-csv\fR" 4
+.IX Item "--emit-csv"
+Evit video details in \s-1CSV\s0 to stdout. Implies \fB\-\-no\-extract\fR.
+\&\fB\-\-quiet\fR will be ignored for \s-1CSV\s0 output.
+.IP "\fB\-\-print\-fname\fR" 4
+.IX Item "--print-fname"
+Print output filename on a single line before each file transfer.
+.PP
+\&\fB\s-1HTTP\s0\fR
+.IP "\fB\-\-agent\fR=\fIstring\fR" 4
+.IX Item "--agent=string"
+Identify cclive as \fIstring\fR to the \s-1HTTP\s0 servers.
+.IP "\fB\-\-proxy\fR=\fIproxyhost[:port]\fR" 4
+.IX Item "--proxy=proxyhost[:port]"
+Use the specified \s-1HTTP\s0 proxy. Overrides http_proxy definition.
+.IP "\fB\-\-no\-proxy\fR" 4
+.IX Item "--no-proxy"
+Do not use \s-1HTTP\s0 proxy, even if http_proxy environment variable is defined.
+.IP "\fB\-\-connect\-timeout\fR=\fIseconds\fR" 4
+.IX Item "--connect-timeout=seconds"
+Maximum time in \fIseconds\fR allowed for connection to take. Defaults to 30.
+.IP "\fB\-\-connect\-timeout\-socks\fR=\fIseconds\fR" 4
+.IX Item "--connect-timeout-socks=seconds"
+Identical to the above but tries to work around the (known) \s-1SOCKS\s0 proxy bug
+in libcurl. Defaults to 30.
+.PP
+\&\fBDownload\fR
 .IP "\fB\-n, \-\-no\-extract\fR" 4
 .IX Item "-n, --no-extract"
-Do not extract any videos.
+Do not actually extract any videos, simulate only.
 .IP "\fB\-c, \-\-continue\fR" 4
 .IX Item "-c, --continue"
 Continue a partially downloaded video file.
 .Sp
-Note that, by default, cclive appends a numeric suffix to the filename
-if the file exists already. That is unless:
+cclive appends a numeric suffix (e.g. \*(L".1\*(R") to the output filename
+if the file exists already \*(-- unless:
 .Sp
-.Vb 2
-\&  * file is already completely retrieved, or:
-\&  * \-c or \-O is used
+.Vb 3
+\&  * file is already completely retrieved
+\&Or:
+\&  * either \-\-continue or \-\-output\-video is used
 .Ve
-.IP "\fB\-f, \-\-format\fR=\fIformat\fR" 4
-.IX Item "-f, --format=format"
-Extract \fIformat\fR of the video. If set to \fIbest\fR, cclive will
-attempt to download the best video quality. See also \*(L"\s-1FORMATS\s0\*(R".
+.IP "\fBl, \-\-limit\-rate\fR=\fIamount\fR" 4
+.IX Item "l, --limit-rate=amount"
+Limit download speed to \fIamount\fR (KB/s). Page fetches will
+ignore this limitation.
 .IP "\fB\-O, \-\-output\-video\fR=\fIfile\fR" 4
 .IX Item "-O, --output-video=file"
-Write extracted video to \fIfile\fR. Overwrites any already existing
-files without a warning.
-.Sp
-Do \fInot\fR use this when extracting multiple videos on one run.
+Write the downloaded video \fIfile\fR. Note that this causes cclive
+overwrite existing file without warning.
 .IP "\fB\-N, \-\-number\-videos\fR" 4
 .IX Item "-N, --number-videos"
-Prepend a numeric prefix to the output files.
+Prepend a numeric prefix to the output filenames.
 .IP "\fB\-F, \-\-filename\-format\fR=\fIformatstring\fR" 4
 .IX Item "-F, --filename-format=formatstring"
-Use \fIformatstring\fR to format the output video filename. If any of the following
-specifiers appear anywhere in the \fIformatstring\fR, they will be replaced accordingly:
+Use the specified \fIformatstring\fR for formatting the output filenames.
+cclive defaults to \*(L"%t.%s\*(R". Any supported specifiers (below) appearing
+in the \fIformatstring\fR will be replaced accordingly:
 .Sp
 .Vb 4
-\&  %t = page title
-\&  %i = id
-\&  %h = host string
+\&  %t = video title
+\&  %i = video id
+\&  %h = website domain
 \&  %s = file suffix
 .Ve
 .Sp
 Example:
 .Sp
 .Vb 1
-\&  % cclive \-\-filename\-format="%i.%s" \-n URL
+\&  % cclive \-\-filename\-format="%i.%s" URL
 .Ve
-.IP "\fB\-\-emit\-csv\fR" 4
-.IX Item "--emit-csv"
-Emit video details in \s-1CSV\s0 to stdout. Implies \fB\-\-no\-extract\fR.
-Use of \fB\-\-quiet\fR will be ignored for the \s-1CSV\s0.
-.IP "\fBl, \-\-limit\-rate\fR=\fIamount\fR" 4
-.IX Item "l, --limit-rate=amount"
-Limit download speed to \fIamount\fR (KB/s). Ignored for video page fetch.
-.IP "\fB\-\-agent\fR=\fIstring\fR" 4
-.IX Item "--agent=string"
-Identify cclive as \fIstring\fR to the \s-1HTTP\s0 servers.
-.IP "\fB\-\-proxy\fR=\fIaddress\fR" 4
-.IX Item "--proxy=address"
-Use \fIaddress\fR for \s-1HTTP\s0 proxy.
+.IP "\fB\-f, \-\-format\fR=\fIformat\fR" 4
+.IX Item "-f, --format=format"
+Download the \fIformat\fR of the video. If set to \fIbest\fR, cclive
+attempts to download the best quality of the video.
 .Sp
-Example:
-.Sp
-.Vb 1
-\&  \-\-proxy=http://foo:1234
-.Ve
-.Sp
-cclive uses the value of the http_proxy environment variable by default
-if it is defined.
-.IP "\fB\-\-no\-proxy\fR" 4
-.IX Item "--no-proxy"
-Do not use proxy, even if http_proxy environment variable is defined.
-.IP "\fB\-\-connect\-timeout\fR=\fIseconds\fR" 4
-.IX Item "--connect-timeout=seconds"
-Maximum time in \fIseconds\fR allowed for connection to take. Defaults to 30.
-.IP "\fB\-\-connect\-timeout\-socks\fR=\fIseconds\fR" 4
-.IX Item "--connect-timeout-socks=seconds"
-Same as above but tries to workaround the \s-1SOCKS\s0 proxy bug in cURL. Defaults
-to 30.
+See also \*(L"\s-1FORMATS\s0\*(R".
+.PP
+\&\fBSubsequent\fR
 .IP "\fB\-\-exec\fR=\fIexpression\fR\fB;\fR" 4
 .IX Item "--exec=expression;"
 Execute \fIexpression\fR after each file transfer. Optional arguments may be passed
@@ -259,14 +264,25 @@ Same as \fB\-\-exec\fR, except that \*(L"%i\*(R" is replaced with as many pathna
 as possible for the invocation of \fIexpression\fR.
 .IP "\fB\-e, \-\-exec\-run\fR" 4
 .IX Item "-e, --exec-run"
-Causes cclive to invoke the command defined with \fB\-\-exec\fR when
-transfer finishes.
+Causes cclive to invoke the command defined with \fB\-\-exec\fR when download
+finishes.
+.PP
+\&\fBStreaming\fR
 .IP "\fB\-\-stream\-exec\fR=\fIexpression\fR" 4
 .IX Item "--stream-exec=expression"
 Define the command to be invoked with \fB\-\-stream\fR and \fB\-\-stream\-pass\fR.
+.Sp
 If a \*(L"%i\*(R" specifier is used in the \fIexpression\fR, it will be replaced with
-either video file path name (\fB\-\-stream\fR) or parsed video link
+either a video file path name (\fB\-\-stream\fR) or a parsed video link
 (\fB\-\-stream\-pass\fR).
+.IP "\fB\-s, \-\-stream\-pass\fR" 4
+.IX Item "-s, --stream-pass"
+Otherwise the same as \fB\-\-stream\fR but instead of starting the download,
+cclive passes the parsed video link to the command defined with
+\&\fB\-\-stream\-exec\fR. See also \*(L"\s-1EXAMPLES\s0\*(R".
+.Sp
+This option was inspired by a \f(CWclive(1)\fR wrapper script contributed
+by Bill Squire.
 .IP "\fB\-\-stream\fR=\fIpercentage\fR" 4
 .IX Item "--stream=percentage"
 Causes cclive to fetch, parse, start download and eventually invoke
@@ -283,17 +299,6 @@ child process exits.
 .Sp
 This mode is supported for historical reasons. Consider using
 \&\fB\-\-stream\-pass\fR instead.
-.IP "\fB\-s, \-\-stream\-pass\fR" 4
-.IX Item "-s, --stream-pass"
-Otherwise the same as above but \fBinstead of\fR starting the download,
-cclive passes the parsed video link to the command defined with
-\&\fB\-\-stream\-exec\fR. See also \*(L"\s-1EXAMPLES\s0\*(R".
-.Sp
-This option was inspired by a \f(CWclive(1)\fR wrapper script contributed
-by Bill Squire.
-.IP "\fB\-\-print\-fname\fR" 4
-.IX Item "--print-fname"
-Print output filename on a single line before each file transfer.
 .SH "EXAMPLES"
 .IX Header "EXAMPLES"
 .IP "cclive \s-1URL\s0" 4
@@ -326,12 +331,13 @@ Alternate to Adobe Flash. \f(CWvlc(1)\fR and \f(CWtotem(1)\fR have been reported
 to work also.
 .SH "FORMATS"
 .IX Header "FORMATS"
-cclive downloads \*(L"flv\*(R" by default from all of the supported websites.
-.IP "\fBwww.youtube.com\fR" 4
-.IX Item "www.youtube.com"
+\&\*(L"flv\*(R" is downloaded by default if \fB\-\-format\fR is not defined. Some
+websites support several video formats. Details listed below.
+.IP "youtube.com" 4
+.IX Item "youtube.com"
 .PD 0
-.IP "\fBwww.last.fm\fR" 4
-.IX Item "www.last.fm"
+.IP "last.fm" 4
+.IX Item "last.fm"
 .PD
 Format: (flv|fmt17|fmt18|fmt22|fmt35)
 .Sp
@@ -351,8 +357,8 @@ Note that you can use either format \s-1ID\s0, e.g. fmt22 or hd.
 .Sp
 Some of the last.fm videos are actually hosted by Youtube.
 cclive can be used to download such videos.
-.IP "\fBwww.dailymotion.com\fR" 4
-.IX Item "www.dailymotion.com"
+.IP "dailymotion.com" 4
+.IX Item "dailymotion.com"
 Format: (flv|spark\-mini|vp6\-hq|vp6\-hd|vp6|h264)
 .Sp
 The \s-1HD\s0 and \s-1HQ\s0 videos may not always be available.
@@ -365,10 +371,10 @@ The \s-1HD\s0 and \s-1HQ\s0 videos may not always be available.
 \&  flv       .. flv     (320x240)
 \&  spark\-mini.. flv       (80x60)
 .Ve
-.IP "\fBgolem.de\fR" 4
+.IP "golem.de" 4
 .IX Item "golem.de"
 Format: (flv|high|ipod)
-.IP "\fBvimeo.com\fR" 4
+.IP "vimeo.com" 4
 .IX Item "vimeo.com"
 Format: (flv|hd)
 .Sp
@@ -381,26 +387,26 @@ For further reading:
 .Vb 1
 \&  http://vimeo.com/help/hd
 .Ve
-.IP "\fBvideo.google.com\fR" 4
+.IP "video.google.com" 4
 .IX Item "video.google.com"
 Format: (flv|mp4)
 .Sp
 mp4 may not always be available.
-.IP "\fBwww.sevenload.com\fR" 4
-.IX Item "www.sevenload.com"
+.IP "sevenload.com" 4
+.IX Item "sevenload.com"
 .PD 0
-.IP "\fBwww.break.com\fR" 4
-.IX Item "www.break.com"
-.IP "\fBwww.liveleak.com\fR" 4
-.IX Item "www.liveleak.com"
-.IP "\fBwww.evisor.tv\fR" 4
-.IX Item "www.evisor.tv"
-.IP "\fBwww.clipfish.de\fR" 4
-.IX Item "www.clipfish.de"
-.IP "\fBwww.funnyhub.com\fR" 4
-.IX Item "www.funnyhub.com"
-.IP "\fBwww.myubo.com\fR" 4
-.IX Item "www.myubo.com"
+.IP "break.com" 4
+.IX Item "break.com"
+.IP "liveleak.com" 4
+.IX Item "liveleak.com"
+.IP "evisor.tv" 4
+.IX Item "evisor.tv"
+.IP "clipfish.de" 4
+.IX Item "clipfish.de"
+.IP "funnyhub.com" 4
+.IX Item "funnyhub.com"
+.IP "myubo.com" 4
+.IX Item "myubo.com"
 .PD
 Format: flv
 .SH "FILES"
@@ -440,7 +446,7 @@ Some tips that we have found useful:
 \&  % cclive \-\-debug URL
 .Ve
 .PP
-Causes \fBlibcurl\fR to be verbose.
+Causes libcurl to be verbose.
 .PP
 .Vb 1
 \&  % cclive \-n URL
