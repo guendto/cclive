@@ -132,7 +132,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2009-08-05" "0.5.0" "cclive manual"
+.TH cclive 1 "2009-08-07" "0.5.0" "cclive manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -426,7 +426,10 @@ Most of the program options can be defined in the ~/.ccliverc config file.
 .IX Header "UNICODE"
 Q: Why am I seeing mangled video filenames?
 .PP
-A: Make sure you have set appropriate locale. For example (in csh/urxvt terms):
+* Make sure you have compiled cclive \-\-with\-iconv. Some of the websites may
+not use \s-1UTF\-8\s0.
+.PP
+* Make sure you have set appropriate locale. For example (in csh/urxvt terms):
 .PP
 .Vb 2
 \&  % setenv LANG en_US.UTF\-8
@@ -438,6 +441,18 @@ You can get a list of supported locales on your typical Unix-like system with:
 .Vb 1
 \&  % locale \-a
 .Ve
+.PP
+Q: I'm using a custom \-\-regexp=\*(L"(\ew|\es)\*(R" with \-g. Why do the \s-1UTF\-8\s0 characters
+seem to be missing?
+.PP
+\&\*(L"In \s-1UTF\-8\s0 mode, characters with values greater than 128 never match  \ed,
+\&\es, or \ew, and always match \eD, \eS, and \eW. This is true even when Uni\-
+code character property support is available.  These  sequences  retain
+their original meanings from before \s-1UTF\-8\s0 support was available, mainly
+for efficiency reasons. Note that this also affects \eb, because  it  is
+defined in terms of \ew and \eW.\*(R" \*(-- man pcrepattern
+.PP
+Try \-\-regexp=\*(L"(\epL|\es)\*(R" instead.
 .SH "DEBUGGING"
 .IX Header "DEBUGGING"
 Some tips that we have found useful:

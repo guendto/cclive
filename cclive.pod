@@ -341,7 +341,10 @@ Most of the program options can be defined in the ~/.ccliverc config file.
 
 Q: Why am I seeing mangled video filenames?
 
-A: Make sure you have set appropriate locale. For example (in csh/urxvt terms):
+* Make sure you have compiled cclive --with-iconv. Some of the websites may
+not use UTF-8.
+
+* Make sure you have set appropriate locale. For example (in csh/urxvt terms):
 
   % setenv LANG en_US.UTF-8
   % urxvt &
@@ -349,6 +352,18 @@ A: Make sure you have set appropriate locale. For example (in csh/urxvt terms):
 You can get a list of supported locales on your typical Unix-like system with:
 
   % locale -a
+
+Q: I'm using a custom --regexp="(\w|\s)" with -g. Why do the UTF-8 characters
+seem to be missing?
+
+"In UTF-8 mode, characters with values greater than 128 never match  \d,
+\s, or \w, and always match \D, \S, and \W. This is true even when Uni-
+code character property support is available.  These  sequences  retain
+their original meanings from before UTF-8 support was available, mainly
+for efficiency reasons. Note that this also affects \b, because  it  is
+defined in terms of \w and \W." -- man pcrepattern
+
+Try --regexp="(\pL|\s)" instead.
 
 =head1 DEBUGGING
 
