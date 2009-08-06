@@ -1,6 +1,8 @@
 repo: git://repo.or.cz/cclive.git
 web : http://repo.or.cz/w/cclive.git
 
+* manual: add --regexp, --find-all
+* manual: update "groups" with "sections" as done in cmdline.ggo
 * add: -r, --title-regex=expr
   - use regular expression to filter video titles before using them
   for output filenames
