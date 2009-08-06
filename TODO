@@ -1,5 +1,12 @@
 repo: git://repo.or.cz/cclive.git
 web : http://repo.or.cz/w/cclive.git
 
-* add: --title-regex=expr
-  - used to filter video titles before using them as output filenames
+* add: -r, --title-regex=expr
+  - use regular expression to filter video titles before using them
+  for output filenames
+* add: -g, --find-all
+  - use repeated matching to find all occurences, like Perl's /g option
+  dependon="title-regex"
+
+  Examples:
+    cclive -gr "(\\w)" URL
