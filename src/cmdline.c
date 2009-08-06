@@ -27,7 +27,7 @@
 
 const char *gengetopt_args_info_purpose = "";
 
-const char *gengetopt_args_info_usage = "Usage: " CMDLINE_PARSER_PACKAGE " [-h|--help] [-v|--version] [--hosts] [-q|--quiet] [--debug] \n         [--emit-csv] [--print-fname] [--agent=string] \n         [--proxy=proxyhost[:port]] [--no-proxy] [--connect-timeout=seconds] \n         [--connect-timeout-socks=s] [-n|--no-extract] [-c|--continue] \n         [-lkb/s|--limit-rate=kb/s] [-Ofile|--output-video=file] \n         [-N|--number-videos] [-Fstring|--filename-format=string] \n         [-fformat|--format=format] [--exec=expr[;|+]] [-e|--exec-run] \n         [--stream-exec=expr] [-s|--stream-pass] [--stream=percent] [URL]...";
+const char *gengetopt_args_info_usage = "Usage: " CMDLINE_PARSER_PACKAGE " [-h|--help] [-v|--version] [--hosts] [-q|--quiet] [--debug] \n         [--emit-csv] [--print-fname] [--agent=string] \n         [--proxy=proxyhost[:port]] [--no-proxy] [--connect-timeout=seconds] \n         [--connect-timeout-socks=s] [-n|--no-extract] [-c|--continue] \n         [-lkb/s|--limit-rate=kb/s] [-Ofile|--output-video=file] \n         [-N|--number-videos] [-Fstring|--filename-format=string] \n         [-fformat|--format=format] [--exec=expr[;|+]] [-e|--exec-run] \n         [--stream-exec=expr] [-s|--stream-pass] [--stream=percent] \n         [-rexpr|--regexp=expr] [-g|--find-all] [URL]...";
 
 const char *gengetopt_args_info_description = "";
 
@@ -61,6 +61,9 @@ const char *gengetopt_args_info_help[] = {
   "      --stream-exec=expr        stream command to be invoked",
   "  -s, --stream-pass             pass video link to --stream-exec command",
   "      --stream=percent          invoke --stream-exec when transfer reaches %",
+  "\n Group: Regular expression",
+  "  -r, --regexp=expr             regular expression to filter video title",
+  "  -g, --find-all                use repeated matching to find all occurences, \n                                  like Perl's /g option",
     0
 };
 
@@ -137,9 +140,12 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->stream_exec_given = 0 ;
   args_info->stream_pass_given = 0 ;
   args_info->stream_given = 0 ;
+  args_info->regexp_given = 0 ;
+  args_info->find_all_given = 0 ;
   args_info->Download_group_counter = 0 ;
   args_info->HTTP_group_counter = 0 ;
   args_info->Output_group_counter = 0 ;
+  args_info->Regular_expression_group_counter = 0 ;
   args_info->Streaming_group_counter = 0 ;
   args_info->Subsequent_group_counter = 0 ;
 }
@@ -168,6 +174,8 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->stream_exec_arg = NULL;
   args_info->stream_exec_orig = NULL;
   args_info->stream_orig = NULL;
+  args_info->regexp_arg = NULL;
+  args_info->regexp_orig = NULL;
   
 }
 
@@ -200,6 +208,8 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->stream_exec_help = gengetopt_args_info_help[26] ;
   args_info->stream_pass_help = gengetopt_args_info_help[27] ;
   args_info->stream_help = gengetopt_args_info_help[28] ;
+  args_info->regexp_help = gengetopt_args_info_help[30] ;
+  args_info->find_all_help = gengetopt_args_info_help[31] ;
   
 }
 
@@ -301,6 +311,8 @@ cmdline_parser_release (struct gengetopt_args_info *args_info)
   free_string_field (&(args_info->stream_exec_arg));
   free_string_field (&(args_info->stream_exec_orig));
   free_string_field (&(args_info->stream_orig));
+  free_string_field (&(args_info->regexp_arg));
+  free_string_field (&(args_info->regexp_orig));
   
   
   for (i = 0; i < args_info->inputs_num; ++i)
@@ -425,6 +437,10 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "stream-pass", 0, 0 );
   if (args_info->stream_given)
     write_into_file(outfile, "stream", args_info->stream_orig, 0);
+  if (args_info->regexp_given)
+    write_into_file(outfile, "regexp", args_info->regexp_orig, 0);
+  if (args_info->find_all_given)
+    write_into_file(outfile, "find-all", 0, 0 );
   
 
   i = EXIT_SUCCESS;
@@ -529,6 +545,20 @@ reset_group_Output(struct gengetopt_args_info *args_info)
   args_info->print_fname_given = 0 ;
 
   args_info->Output_group_counter = 0;
+}
+
+static void
+reset_group_Regular_expression(struct gengetopt_args_info *args_info)
+{
+  if (! args_info->Regular_expression_group_counter)
+    return;
+  
+  args_info->regexp_given = 0 ;
+  free_string_field (&(args_info->regexp_arg));
+  free_string_field (&(args_info->regexp_orig));
+  args_info->find_all_given = 0 ;
+
+  args_info->Regular_expression_group_counter = 0;
 }
 
 static void
@@ -645,6 +675,11 @@ cmdline_parser_required2 (struct gengetopt_args_info *args_info, const char *pro
   if (args_info->stream_given && ! args_info->stream_exec_given)
     {
       fprintf (stderr, "%s: '--stream' option depends on option 'stream-exec'%s\n", prog_name, (additional_error ? additional_error : ""));
+      error = 1;
+    }
+  if (args_info->find_all_given && ! args_info->regexp_given)
+    {
+      fprintf (stderr, "%s: '--find-all' ('-g') option depends on option 'regexp'%s\n", prog_name, (additional_error ? additional_error : ""));
       error = 1;
     }
 
@@ -836,10 +871,12 @@ cmdline_parser_internal (
         { "stream-exec",	1, NULL, 0 },
         { "stream-pass",	0, NULL, 's' },
         { "stream",	1, NULL, 0 },
+        { "regexp",	1, NULL, 'r' },
+        { "find-all",	0, NULL, 'g' },
         { 0,  0, 0, 0 }
       };
 
-      c = getopt_long (argc, argv, "hvqncl:O:NF:f:es", long_options, &option_index);
+      c = getopt_long (argc, argv, "hvqncl:O:NF:f:esr:g", long_options, &option_index);
 
       if (c == -1) break;	/* Exit from `while (1)' loop.  */
 
@@ -1008,6 +1045,36 @@ cmdline_parser_internal (
               &(local_args_info.stream_pass_given), optarg, 0, 0, ARG_NO,
               check_ambiguity, override, 0, 0,
               "stream-pass", 's',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 'r':	/* regular expression to filter video title.  */
+        
+          if (args_info->Regular_expression_group_counter && override)
+            reset_group_Regular_expression (args_info);
+          args_info->Regular_expression_group_counter += 1;
+        
+          if (update_arg( (void *)&(args_info->regexp_arg), 
+               &(args_info->regexp_orig), &(args_info->regexp_given),
+              &(local_args_info.regexp_given), optarg, 0, 0, ARG_STRING,
+              check_ambiguity, override, 0, 0,
+              "regexp", 'r',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 'g':	/* use repeated matching to find all occurences, like Perl's /g option.  */
+        
+          if (args_info->Regular_expression_group_counter && override)
+            reset_group_Regular_expression (args_info);
+          args_info->Regular_expression_group_counter += 1;
+        
+          if (update_arg( 0 , 
+               0 , &(args_info->find_all_given),
+              &(local_args_info.find_all_given), optarg, 0, 0, ARG_NO,
+              check_ambiguity, override, 0, 0,
+              "find-all", 'g',
               additional_error))
             goto failure;
         
@@ -1242,6 +1309,12 @@ cmdline_parser_internal (
   if (args_info->Output_group_counter > 1)
     {
       fprintf (stderr, "%s: %d options of group Output were given. At most one is required%s.\n", argv[0], args_info->Output_group_counter, (additional_error ? additional_error : ""));
+      error = 1;
+    }
+  
+  if (args_info->Regular_expression_group_counter > 1)
+    {
+      fprintf (stderr, "%s: %d options of group Regular expression were given. At most one is required%s.\n", argv[0], args_info->Regular_expression_group_counter, (additional_error ? additional_error : ""));
       error = 1;
     }
   

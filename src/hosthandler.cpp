@@ -25,12 +25,17 @@
 
 #include "config.h"
 
+#include <iostream>
 #include <fstream>
 #include <string>
 #include <vector>
 
 #ifdef WITH_ICONV
 #include <iconv.h>
+#endif
+
+#ifdef WITH_PCRE
+#include <pcrecpp.h>
 #endif
 
 #include "hosthandler.h"
@@ -63,8 +68,11 @@ HostHandler::parsePage(const std::string& url) {
     parseId   ();
     parseLink ();
 
-    // Handle encoding. Done here since we still have page html.
+    // Handle title encoding. Done here since we still have page html.
     toUnicode();
+
+    // Apply regexp to title.
+    applyRegexp();
 
     pageContent.clear();
 }
@@ -124,6 +132,37 @@ HostHandler::toUnicode() {
         props.setTitle(outbuf);
     }
     catch (const HostHandler::ParseException&) { }
+#endif
+}
+
+void
+HostHandler::applyRegexp() {
+#ifdef WITH_PCRE
+    Options opts = optsmgr.getOptions();
+
+    if (!opts.regexp_given)
+        return;
+
+    std::cout << opts.number_videos_given << std::endl;
+    if (opts.find_all_given) {
+        pcrecpp::StringPiece sp(props.getTitle());
+        pcrecpp::RE re(opts.regexp_arg, pcrecpp::UTF8());
+
+        puts("find_all");
+
+        std::string s,tmp;
+        while (re.FindAndConsume(&sp, &s))
+            tmp += s;
+
+        props.setTitle(tmp);
+    }
+    else {
+        puts("partial match.");
+        std::string s;
+        pcrecpp::RE(opts.regexp_arg, pcrecpp::UTF8())
+            .PartialMatch(props.getTitle(), &s);
+        props.setTitle(s);
+    }
 #endif
 }
 

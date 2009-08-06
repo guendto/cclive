@@ -41,6 +41,7 @@ public:
     const VideoProperties&  getVideoProperties () const;
 private:
     void toUnicode();
+    void applyRegexp();
 protected:
     std::string     pageContent;
     VideoProperties props;

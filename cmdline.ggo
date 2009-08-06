@@ -4,6 +4,7 @@ defgroup "HTTP"
 defgroup "Download"
 defgroup "Subsequent"
 defgroup "Streaming"
+defgroup "Regular expression"
 
 option "version"
     v "print version and exit"
@@ -130,3 +131,14 @@ groupoption "stream"
     optional
     dependon="stream-exec"
     group="Streaming"
+
+groupoption "regexp"
+    r "regular expression to filter video title"
+    string typestr="expr"
+    group="Regular expression"
+    optional
+groupoption "find-all"
+    g "use repeated matching to find all occurences, like Perl's /g option"
+    optional
+    dependon="regexp"
+    group="Regular expression"
