@@ -1,11 +1,4 @@
 
-defgroup "Output"
-defgroup "HTTP"
-defgroup "Download"
-defgroup "Subsequent"
-defgroup "Streaming"
-defgroup "Regular expression"
-
 option "version"
     v "print version and exit"
     optional
@@ -13,80 +6,60 @@ option "hosts"
     - "list supported hosts"
     optional
 
-groupoption "quiet"
+section "Output"
+option "quiet"
     q "turn off all output"
     optional
-    group="Output"
-groupoption "debug"
+option "debug"
     - "show curl debug messages"
     optional
-    group="Output"
-groupoption "emit-csv"
+option "emit-csv"
     - "emit video details as csv to stdout"
     optional
-    group="Output"
-groupoption "print-fname"
+option "print-fname"
     - "print output filename on a single line"
     optional
-    group="Output"
 
-groupoption "agent"
+section "HTTP"
+option "agent"
     - "identify as string"
     string typestr="string"
-    no
     default="Mozilla/5.0"
-    group="HTTP"
-groupoption "proxy"
+    optional
+option "proxy"
     - "use specified proxy"
     string typestr="proxyhost[:port]"
-    no
-    group="HTTP"
-groupoption "no-proxy"
+    optional
+option "no-proxy"
     - "do not use proxy even if http_proxy is defined"
     optional
-    group="HTTP"
-groupoption "connect-timeout"
+option "connect-timeout"
     - "max time allowed connection to server take"
     int typestr="seconds"
     default="30"
     optional
-    group="HTTP"
-groupoption "connect-timeout-socks"
+option "connect-timeout-socks"
     - "identical but tries to work around SOCKS proxy bug in libcurl"
     int typestr="s"
     default="30"
     optional
-    group="HTTP"
 
-groupoption "no-extract"
+section "Download"
+option "no-extract"
     n "do not actually extract video, simulate only"
     optional
-    group="Download"
-groupoption "continue"
+option "continue"
     c "resume partially downloaded file"
     optional
-    group="Download"
-groupoption "limit-rate"
+option "limit-rate"
     l "limit download speed to KB/s"
     int typestr="kb/s"
     optional
-    group="Download"
-groupoption "output-video"
+option "output-video"
     O "write video to file"
     string typestr="file"
-    no
-    group="Download"
-groupoption "number-videos"
-    N "prepend a numeric prefix to output filenames"
     optional
-    group="Download"
-groupoption "filename-format"
-    F "use output filename format"
-    string typestr="string"
-    default="%t.%s"
-    no
-    group="Download"
-groupoption "format"
+option "format"
     f "download video format"
     values="flv","best",
         # youtube:
@@ -102,43 +75,46 @@ groupoption "format"
     default="flv"
     typestr="format"
     optional
-    group="Download"
 
-groupoption "exec"
+section "Filename formatting"
+option "number-videos"
+    N "prepend a numeric prefix to output filenames"
+    optional
+option "filename-format"
+    F "use output filename format"
+    string typestr="string"
+    default="%t.%s"
+    optional
+option "regexp"
+    r "regular expression to filter video title"
+    string typestr="expr"
+    optional
+option "find-all"
+    g "use repeated matching to find all occurences, like Perl's /g option"
+    optional
+    dependon="regexp"
+
+section "Subsequent"
+option "exec"
     - "command to invoke when transfer finishes"
     string typestr="expr[;|+]"
     optional
-    group="Subsequent"
-groupoption "exec-run"
+option "exec-run"
     e "invoke command defined with --exec"
     optional
     dependon="exec"
-    group="Subsequent"
 
-groupoption "stream-exec"
+section "Streaming"
+option "stream-exec"
     - "stream command to be invoked"
     string typestr="expr"
     optional
-    group="Streaming"
-groupoption "stream-pass"
+option "stream-pass"
     s "pass video link to --stream-exec command"
     optional
     dependon="stream-exec"
-    group="Streaming"
-groupoption "stream"
+option "stream"
     - "invoke --stream-exec when transfer reaches %"
     int typestr="percent"
     optional
     dependon="stream-exec"
-    group="Streaming"
-
-groupoption "regexp"
-    r "regular expression to filter video title"
-    string typestr="expr"
-    group="Regular expression"
-    optional
-groupoption "find-all"
-    g "use repeated matching to find all occurences, like Perl's /g option"
-    optional
-    dependon="regexp"
-    group="Regular expression"

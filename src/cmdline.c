@@ -27,7 +27,7 @@
 
 const char *gengetopt_args_info_purpose = "";
 
-const char *gengetopt_args_info_usage = "Usage: " CMDLINE_PARSER_PACKAGE " [-h|--help] [-v|--version] [--hosts] [-q|--quiet] [--debug] \n         [--emit-csv] [--print-fname] [--agent=string] \n         [--proxy=proxyhost[:port]] [--no-proxy] [--connect-timeout=seconds] \n         [--connect-timeout-socks=s] [-n|--no-extract] [-c|--continue] \n         [-lkb/s|--limit-rate=kb/s] [-Ofile|--output-video=file] \n         [-N|--number-videos] [-Fstring|--filename-format=string] \n         [-fformat|--format=format] [--exec=expr[;|+]] [-e|--exec-run] \n         [--stream-exec=expr] [-s|--stream-pass] [--stream=percent] \n         [-rexpr|--regexp=expr] [-g|--find-all] [URL]...";
+const char *gengetopt_args_info_usage = "Usage: " CMDLINE_PARSER_PACKAGE " [-h|--help] [-v|--version] [--hosts] [-q|--quiet] [--debug] \n         [--emit-csv] [--print-fname] [--agent=string] \n         [--proxy=proxyhost[:port]] [--no-proxy] [--connect-timeout=seconds] \n         [--connect-timeout-socks=s] [-n|--no-extract] [-c|--continue] \n         [-lkb/s|--limit-rate=kb/s] [-Ofile|--output-video=file] \n         [-fformat|--format=format] [-N|--number-videos] \n         [-Fstring|--filename-format=string] [-rexpr|--regexp=expr] \n         [-g|--find-all] [--exec=expr[;|+]] [-e|--exec-run] \n         [--stream-exec=expr] [-s|--stream-pass] [--stream=percent] [URL]...";
 
 const char *gengetopt_args_info_description = "";
 
@@ -35,35 +35,35 @@ const char *gengetopt_args_info_help[] = {
   "  -h, --help                    Print help and exit",
   "  -v, --version                 print version and exit",
   "      --hosts                   list supported hosts",
-  "\n Group: Output",
+  "\nOutput:",
   "  -q, --quiet                   turn off all output",
   "      --debug                   show curl debug messages",
   "      --emit-csv                emit video details as csv to stdout",
   "      --print-fname             print output filename on a single line",
-  "\n Group: HTTP",
+  "\nHTTP:",
   "      --agent=string            identify as string  (default=`Mozilla/5.0')",
   "      --proxy=proxyhost[:port]  use specified proxy",
   "      --no-proxy                do not use proxy even if http_proxy is defined",
   "      --connect-timeout=seconds max time allowed connection to server take  \n                                  (default=`30')",
   "      --connect-timeout-socks=s identical but tries to work around SOCKS proxy \n                                  bug in libcurl  (default=`30')",
-  "\n Group: Download",
+  "\nDownload:",
   "  -n, --no-extract              do not actually extract video, simulate only",
   "  -c, --continue                resume partially downloaded file",
   "  -l, --limit-rate=kb/s         limit download speed to KB/s",
   "  -O, --output-video=file       write video to file",
+  "  -f, --format=format           download video format  (possible \n                                  values=\"flv\", \"best\", \"fmt17\", \n                                  \"fmt18\", \"fmt22\", \"fmt35\", \"hq\", \n                                  \"3gp\", \"spark-mini\", \"vp6-hq\", \n                                  \"vp6-hd\", \"vp6\", \"h264\", \"hd\", \n                                  \"mp4\", \"high\", \"ipod\" default=`flv')",
+  "\nFilename formatting:",
   "  -N, --number-videos           prepend a numeric prefix to output filenames",
   "  -F, --filename-format=string  use output filename format  (default=`%t.%s')",
-  "  -f, --format=format           download video format  (possible \n                                  values=\"flv\", \"best\", \"fmt17\", \n                                  \"fmt18\", \"fmt22\", \"fmt35\", \"hq\", \n                                  \"3gp\", \"spark-mini\", \"vp6-hq\", \n                                  \"vp6-hd\", \"vp6\", \"h264\", \"hd\", \n                                  \"mp4\", \"high\", \"ipod\" default=`flv')",
-  "\n Group: Subsequent",
+  "  -r, --regexp=expr             regular expression to filter video title",
+  "  -g, --find-all                use repeated matching to find all occurences, \n                                  like Perl's /g option",
+  "\nSubsequent:",
   "      --exec=expr[;|+]          command to invoke when transfer finishes",
   "  -e, --exec-run                invoke command defined with --exec",
-  "\n Group: Streaming",
+  "\nStreaming:",
   "      --stream-exec=expr        stream command to be invoked",
   "  -s, --stream-pass             pass video link to --stream-exec command",
   "      --stream=percent          invoke --stream-exec when transfer reaches %",
-  "\n Group: Regular expression",
-  "  -r, --regexp=expr             regular expression to filter video title",
-  "  -g, --find-all                use repeated matching to find all occurences, \n                                  like Perl's /g option",
     0
 };
 
@@ -132,22 +132,16 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->continue_given = 0 ;
   args_info->limit_rate_given = 0 ;
   args_info->output_video_given = 0 ;
+  args_info->format_given = 0 ;
   args_info->number_videos_given = 0 ;
   args_info->filename_format_given = 0 ;
-  args_info->format_given = 0 ;
+  args_info->regexp_given = 0 ;
+  args_info->find_all_given = 0 ;
   args_info->exec_given = 0 ;
   args_info->exec_run_given = 0 ;
   args_info->stream_exec_given = 0 ;
   args_info->stream_pass_given = 0 ;
   args_info->stream_given = 0 ;
-  args_info->regexp_given = 0 ;
-  args_info->find_all_given = 0 ;
-  args_info->Download_group_counter = 0 ;
-  args_info->HTTP_group_counter = 0 ;
-  args_info->Output_group_counter = 0 ;
-  args_info->Regular_expression_group_counter = 0 ;
-  args_info->Streaming_group_counter = 0 ;
-  args_info->Subsequent_group_counter = 0 ;
 }
 
 static
@@ -165,17 +159,17 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->limit_rate_orig = NULL;
   args_info->output_video_arg = NULL;
   args_info->output_video_orig = NULL;
-  args_info->filename_format_arg = gengetopt_strdup ("%t.%s");
-  args_info->filename_format_orig = NULL;
   args_info->format_arg = gengetopt_strdup ("flv");
   args_info->format_orig = NULL;
+  args_info->filename_format_arg = gengetopt_strdup ("%t.%s");
+  args_info->filename_format_orig = NULL;
+  args_info->regexp_arg = NULL;
+  args_info->regexp_orig = NULL;
   args_info->exec_arg = NULL;
   args_info->exec_orig = NULL;
   args_info->stream_exec_arg = NULL;
   args_info->stream_exec_orig = NULL;
   args_info->stream_orig = NULL;
-  args_info->regexp_arg = NULL;
-  args_info->regexp_orig = NULL;
   
 }
 
@@ -200,16 +194,16 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->continue_help = gengetopt_args_info_help[16] ;
   args_info->limit_rate_help = gengetopt_args_info_help[17] ;
   args_info->output_video_help = gengetopt_args_info_help[18] ;
-  args_info->number_videos_help = gengetopt_args_info_help[19] ;
-  args_info->filename_format_help = gengetopt_args_info_help[20] ;
-  args_info->format_help = gengetopt_args_info_help[21] ;
-  args_info->exec_help = gengetopt_args_info_help[23] ;
-  args_info->exec_run_help = gengetopt_args_info_help[24] ;
-  args_info->stream_exec_help = gengetopt_args_info_help[26] ;
-  args_info->stream_pass_help = gengetopt_args_info_help[27] ;
-  args_info->stream_help = gengetopt_args_info_help[28] ;
-  args_info->regexp_help = gengetopt_args_info_help[30] ;
-  args_info->find_all_help = gengetopt_args_info_help[31] ;
+  args_info->format_help = gengetopt_args_info_help[19] ;
+  args_info->number_videos_help = gengetopt_args_info_help[21] ;
+  args_info->filename_format_help = gengetopt_args_info_help[22] ;
+  args_info->regexp_help = gengetopt_args_info_help[23] ;
+  args_info->find_all_help = gengetopt_args_info_help[24] ;
+  args_info->exec_help = gengetopt_args_info_help[26] ;
+  args_info->exec_run_help = gengetopt_args_info_help[27] ;
+  args_info->stream_exec_help = gengetopt_args_info_help[29] ;
+  args_info->stream_pass_help = gengetopt_args_info_help[30] ;
+  args_info->stream_help = gengetopt_args_info_help[31] ;
   
 }
 
@@ -302,17 +296,17 @@ cmdline_parser_release (struct gengetopt_args_info *args_info)
   free_string_field (&(args_info->limit_rate_orig));
   free_string_field (&(args_info->output_video_arg));
   free_string_field (&(args_info->output_video_orig));
-  free_string_field (&(args_info->filename_format_arg));
-  free_string_field (&(args_info->filename_format_orig));
   free_string_field (&(args_info->format_arg));
   free_string_field (&(args_info->format_orig));
+  free_string_field (&(args_info->filename_format_arg));
+  free_string_field (&(args_info->filename_format_orig));
+  free_string_field (&(args_info->regexp_arg));
+  free_string_field (&(args_info->regexp_orig));
   free_string_field (&(args_info->exec_arg));
   free_string_field (&(args_info->exec_orig));
   free_string_field (&(args_info->stream_exec_arg));
   free_string_field (&(args_info->stream_exec_orig));
   free_string_field (&(args_info->stream_orig));
-  free_string_field (&(args_info->regexp_arg));
-  free_string_field (&(args_info->regexp_orig));
   
   
   for (i = 0; i < args_info->inputs_num; ++i)
@@ -421,12 +415,16 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "limit-rate", args_info->limit_rate_orig, 0);
   if (args_info->output_video_given)
     write_into_file(outfile, "output-video", args_info->output_video_orig, 0);
+  if (args_info->format_given)
+    write_into_file(outfile, "format", args_info->format_orig, cmdline_parser_format_values);
   if (args_info->number_videos_given)
     write_into_file(outfile, "number-videos", 0, 0 );
   if (args_info->filename_format_given)
     write_into_file(outfile, "filename-format", args_info->filename_format_orig, 0);
-  if (args_info->format_given)
-    write_into_file(outfile, "format", args_info->format_orig, cmdline_parser_format_values);
+  if (args_info->regexp_given)
+    write_into_file(outfile, "regexp", args_info->regexp_orig, 0);
+  if (args_info->find_all_given)
+    write_into_file(outfile, "find-all", 0, 0 );
   if (args_info->exec_given)
     write_into_file(outfile, "exec", args_info->exec_orig, 0);
   if (args_info->exec_run_given)
@@ -437,10 +435,6 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "stream-pass", 0, 0 );
   if (args_info->stream_given)
     write_into_file(outfile, "stream", args_info->stream_orig, 0);
-  if (args_info->regexp_given)
-    write_into_file(outfile, "regexp", args_info->regexp_orig, 0);
-  if (args_info->find_all_given)
-    write_into_file(outfile, "find-all", 0, 0 );
   
 
   i = EXIT_SUCCESS;
@@ -486,109 +480,6 @@ gengetopt_strdup (const char *s)
     return (char*)0;
   strcpy(result, s);
   return result;
-}
-
-static void
-reset_group_Download(struct gengetopt_args_info *args_info)
-{
-  if (! args_info->Download_group_counter)
-    return;
-  
-  args_info->no_extract_given = 0 ;
-  args_info->continue_given = 0 ;
-  args_info->limit_rate_given = 0 ;
-  free_string_field (&(args_info->limit_rate_orig));
-  args_info->output_video_given = 0 ;
-  free_string_field (&(args_info->output_video_arg));
-  free_string_field (&(args_info->output_video_orig));
-  args_info->number_videos_given = 0 ;
-  args_info->filename_format_given = 0 ;
-  free_string_field (&(args_info->filename_format_arg));
-  free_string_field (&(args_info->filename_format_orig));
-  args_info->format_given = 0 ;
-  free_string_field (&(args_info->format_arg));
-  free_string_field (&(args_info->format_orig));
-
-  args_info->Download_group_counter = 0;
-}
-
-static void
-reset_group_HTTP(struct gengetopt_args_info *args_info)
-{
-  if (! args_info->HTTP_group_counter)
-    return;
-  
-  args_info->agent_given = 0 ;
-  free_string_field (&(args_info->agent_arg));
-  free_string_field (&(args_info->agent_orig));
-  args_info->proxy_given = 0 ;
-  free_string_field (&(args_info->proxy_arg));
-  free_string_field (&(args_info->proxy_orig));
-  args_info->no_proxy_given = 0 ;
-  args_info->connect_timeout_given = 0 ;
-  free_string_field (&(args_info->connect_timeout_orig));
-  args_info->connect_timeout_socks_given = 0 ;
-  free_string_field (&(args_info->connect_timeout_socks_orig));
-
-  args_info->HTTP_group_counter = 0;
-}
-
-static void
-reset_group_Output(struct gengetopt_args_info *args_info)
-{
-  if (! args_info->Output_group_counter)
-    return;
-  
-  args_info->quiet_given = 0 ;
-  args_info->debug_given = 0 ;
-  args_info->emit_csv_given = 0 ;
-  args_info->print_fname_given = 0 ;
-
-  args_info->Output_group_counter = 0;
-}
-
-static void
-reset_group_Regular_expression(struct gengetopt_args_info *args_info)
-{
-  if (! args_info->Regular_expression_group_counter)
-    return;
-  
-  args_info->regexp_given = 0 ;
-  free_string_field (&(args_info->regexp_arg));
-  free_string_field (&(args_info->regexp_orig));
-  args_info->find_all_given = 0 ;
-
-  args_info->Regular_expression_group_counter = 0;
-}
-
-static void
-reset_group_Streaming(struct gengetopt_args_info *args_info)
-{
-  if (! args_info->Streaming_group_counter)
-    return;
-  
-  args_info->stream_exec_given = 0 ;
-  free_string_field (&(args_info->stream_exec_arg));
-  free_string_field (&(args_info->stream_exec_orig));
-  args_info->stream_pass_given = 0 ;
-  args_info->stream_given = 0 ;
-  free_string_field (&(args_info->stream_orig));
-
-  args_info->Streaming_group_counter = 0;
-}
-
-static void
-reset_group_Subsequent(struct gengetopt_args_info *args_info)
-{
-  if (! args_info->Subsequent_group_counter)
-    return;
-  
-  args_info->exec_given = 0 ;
-  free_string_field (&(args_info->exec_arg));
-  free_string_field (&(args_info->exec_orig));
-  args_info->exec_run_given = 0 ;
-
-  args_info->Subsequent_group_counter = 0;
 }
 
 int
@@ -662,6 +553,11 @@ cmdline_parser_required2 (struct gengetopt_args_info *args_info, const char *pro
   /* checks for required options */
   
   /* checks for dependences among options */
+  if (args_info->find_all_given && ! args_info->regexp_given)
+    {
+      fprintf (stderr, "%s: '--find-all' ('-g') option depends on option 'regexp'%s\n", prog_name, (additional_error ? additional_error : ""));
+      error = 1;
+    }
   if (args_info->exec_run_given && ! args_info->exec_given)
     {
       fprintf (stderr, "%s: '--exec-run' ('-e') option depends on option 'exec'%s\n", prog_name, (additional_error ? additional_error : ""));
@@ -675,11 +571,6 @@ cmdline_parser_required2 (struct gengetopt_args_info *args_info, const char *pro
   if (args_info->stream_given && ! args_info->stream_exec_given)
     {
       fprintf (stderr, "%s: '--stream' option depends on option 'stream-exec'%s\n", prog_name, (additional_error ? additional_error : ""));
-      error = 1;
-    }
-  if (args_info->find_all_given && ! args_info->regexp_given)
-    {
-      fprintf (stderr, "%s: '--find-all' ('-g') option depends on option 'regexp'%s\n", prog_name, (additional_error ? additional_error : ""));
       error = 1;
     }
 
@@ -863,20 +754,20 @@ cmdline_parser_internal (
         { "continue",	0, NULL, 'c' },
         { "limit-rate",	1, NULL, 'l' },
         { "output-video",	1, NULL, 'O' },
+        { "format",	1, NULL, 'f' },
         { "number-videos",	0, NULL, 'N' },
         { "filename-format",	1, NULL, 'F' },
-        { "format",	1, NULL, 'f' },
+        { "regexp",	1, NULL, 'r' },
+        { "find-all",	0, NULL, 'g' },
         { "exec",	1, NULL, 0 },
         { "exec-run",	0, NULL, 'e' },
         { "stream-exec",	1, NULL, 0 },
         { "stream-pass",	0, NULL, 's' },
         { "stream",	1, NULL, 0 },
-        { "regexp",	1, NULL, 'r' },
-        { "find-all",	0, NULL, 'g' },
         { 0,  0, 0, 0 }
       };
 
-      c = getopt_long (argc, argv, "hvqncl:O:NF:f:esr:g", long_options, &option_index);
+      c = getopt_long (argc, argv, "hvqncl:O:f:NF:r:ges", long_options, &option_index);
 
       if (c == -1) break;	/* Exit from `while (1)' loop.  */
 
@@ -901,9 +792,6 @@ cmdline_parser_internal (
           break;
         case 'q':	/* turn off all output.  */
         
-          if (args_info->Output_group_counter && override)
-            reset_group_Output (args_info);
-          args_info->Output_group_counter += 1;
         
           if (update_arg( 0 , 
                0 , &(args_info->quiet_given),
@@ -916,9 +804,6 @@ cmdline_parser_internal (
           break;
         case 'n':	/* do not actually extract video, simulate only.  */
         
-          if (args_info->Download_group_counter && override)
-            reset_group_Download (args_info);
-          args_info->Download_group_counter += 1;
         
           if (update_arg( 0 , 
                0 , &(args_info->no_extract_given),
@@ -931,9 +816,6 @@ cmdline_parser_internal (
           break;
         case 'c':	/* resume partially downloaded file.  */
         
-          if (args_info->Download_group_counter && override)
-            reset_group_Download (args_info);
-          args_info->Download_group_counter += 1;
         
           if (update_arg( 0 , 
                0 , &(args_info->continue_given),
@@ -946,9 +828,6 @@ cmdline_parser_internal (
           break;
         case 'l':	/* limit download speed to KB/s.  */
         
-          if (args_info->Download_group_counter && override)
-            reset_group_Download (args_info);
-          args_info->Download_group_counter += 1;
         
           if (update_arg( (void *)&(args_info->limit_rate_arg), 
                &(args_info->limit_rate_orig), &(args_info->limit_rate_given),
@@ -961,9 +840,6 @@ cmdline_parser_internal (
           break;
         case 'O':	/* write video to file.  */
         
-          if (args_info->Download_group_counter && override)
-            reset_group_Download (args_info);
-          args_info->Download_group_counter += 1;
         
           if (update_arg( (void *)&(args_info->output_video_arg), 
                &(args_info->output_video_orig), &(args_info->output_video_given),
@@ -974,11 +850,20 @@ cmdline_parser_internal (
             goto failure;
         
           break;
+        case 'f':	/* download video format.  */
+        
+        
+          if (update_arg( (void *)&(args_info->format_arg), 
+               &(args_info->format_orig), &(args_info->format_given),
+              &(local_args_info.format_given), optarg, cmdline_parser_format_values, "flv", ARG_STRING,
+              check_ambiguity, override, 0, 0,
+              "format", 'f',
+              additional_error))
+            goto failure;
+        
+          break;
         case 'N':	/* prepend a numeric prefix to output filenames.  */
         
-          if (args_info->Download_group_counter && override)
-            reset_group_Download (args_info);
-          args_info->Download_group_counter += 1;
         
           if (update_arg( 0 , 
                0 , &(args_info->number_videos_given),
@@ -991,9 +876,6 @@ cmdline_parser_internal (
           break;
         case 'F':	/* use output filename format.  */
         
-          if (args_info->Download_group_counter && override)
-            reset_group_Download (args_info);
-          args_info->Download_group_counter += 1;
         
           if (update_arg( (void *)&(args_info->filename_format_arg), 
                &(args_info->filename_format_orig), &(args_info->filename_format_given),
@@ -1004,56 +886,8 @@ cmdline_parser_internal (
             goto failure;
         
           break;
-        case 'f':	/* download video format.  */
-        
-          if (args_info->Download_group_counter && override)
-            reset_group_Download (args_info);
-          args_info->Download_group_counter += 1;
-        
-          if (update_arg( (void *)&(args_info->format_arg), 
-               &(args_info->format_orig), &(args_info->format_given),
-              &(local_args_info.format_given), optarg, cmdline_parser_format_values, "flv", ARG_STRING,
-              check_ambiguity, override, 0, 0,
-              "format", 'f',
-              additional_error))
-            goto failure;
-        
-          break;
-        case 'e':	/* invoke command defined with --exec.  */
-        
-          if (args_info->Subsequent_group_counter && override)
-            reset_group_Subsequent (args_info);
-          args_info->Subsequent_group_counter += 1;
-        
-          if (update_arg( 0 , 
-               0 , &(args_info->exec_run_given),
-              &(local_args_info.exec_run_given), optarg, 0, 0, ARG_NO,
-              check_ambiguity, override, 0, 0,
-              "exec-run", 'e',
-              additional_error))
-            goto failure;
-        
-          break;
-        case 's':	/* pass video link to --stream-exec command.  */
-        
-          if (args_info->Streaming_group_counter && override)
-            reset_group_Streaming (args_info);
-          args_info->Streaming_group_counter += 1;
-        
-          if (update_arg( 0 , 
-               0 , &(args_info->stream_pass_given),
-              &(local_args_info.stream_pass_given), optarg, 0, 0, ARG_NO,
-              check_ambiguity, override, 0, 0,
-              "stream-pass", 's',
-              additional_error))
-            goto failure;
-        
-          break;
         case 'r':	/* regular expression to filter video title.  */
         
-          if (args_info->Regular_expression_group_counter && override)
-            reset_group_Regular_expression (args_info);
-          args_info->Regular_expression_group_counter += 1;
         
           if (update_arg( (void *)&(args_info->regexp_arg), 
                &(args_info->regexp_orig), &(args_info->regexp_given),
@@ -1066,15 +900,36 @@ cmdline_parser_internal (
           break;
         case 'g':	/* use repeated matching to find all occurences, like Perl's /g option.  */
         
-          if (args_info->Regular_expression_group_counter && override)
-            reset_group_Regular_expression (args_info);
-          args_info->Regular_expression_group_counter += 1;
         
           if (update_arg( 0 , 
                0 , &(args_info->find_all_given),
               &(local_args_info.find_all_given), optarg, 0, 0, ARG_NO,
               check_ambiguity, override, 0, 0,
               "find-all", 'g',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 'e':	/* invoke command defined with --exec.  */
+        
+        
+          if (update_arg( 0 , 
+               0 , &(args_info->exec_run_given),
+              &(local_args_info.exec_run_given), optarg, 0, 0, ARG_NO,
+              check_ambiguity, override, 0, 0,
+              "exec-run", 'e',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 's':	/* pass video link to --stream-exec command.  */
+        
+        
+          if (update_arg( 0 , 
+               0 , &(args_info->stream_pass_given),
+              &(local_args_info.stream_pass_given), optarg, 0, 0, ARG_NO,
+              check_ambiguity, override, 0, 0,
+              "stream-pass", 's',
               additional_error))
             goto failure;
         
@@ -1099,9 +954,6 @@ cmdline_parser_internal (
           else if (strcmp (long_options[option_index].name, "debug") == 0)
           {
           
-            if (args_info->Output_group_counter && override)
-              reset_group_Output (args_info);
-            args_info->Output_group_counter += 1;
           
             if (update_arg( 0 , 
                  0 , &(args_info->debug_given),
@@ -1116,9 +968,6 @@ cmdline_parser_internal (
           else if (strcmp (long_options[option_index].name, "emit-csv") == 0)
           {
           
-            if (args_info->Output_group_counter && override)
-              reset_group_Output (args_info);
-            args_info->Output_group_counter += 1;
           
             if (update_arg( 0 , 
                  0 , &(args_info->emit_csv_given),
@@ -1133,9 +982,6 @@ cmdline_parser_internal (
           else if (strcmp (long_options[option_index].name, "print-fname") == 0)
           {
           
-            if (args_info->Output_group_counter && override)
-              reset_group_Output (args_info);
-            args_info->Output_group_counter += 1;
           
             if (update_arg( 0 , 
                  0 , &(args_info->print_fname_given),
@@ -1150,9 +996,6 @@ cmdline_parser_internal (
           else if (strcmp (long_options[option_index].name, "agent") == 0)
           {
           
-            if (args_info->HTTP_group_counter && override)
-              reset_group_HTTP (args_info);
-            args_info->HTTP_group_counter += 1;
           
             if (update_arg( (void *)&(args_info->agent_arg), 
                  &(args_info->agent_orig), &(args_info->agent_given),
@@ -1167,9 +1010,6 @@ cmdline_parser_internal (
           else if (strcmp (long_options[option_index].name, "proxy") == 0)
           {
           
-            if (args_info->HTTP_group_counter && override)
-              reset_group_HTTP (args_info);
-            args_info->HTTP_group_counter += 1;
           
             if (update_arg( (void *)&(args_info->proxy_arg), 
                  &(args_info->proxy_orig), &(args_info->proxy_given),
@@ -1184,9 +1024,6 @@ cmdline_parser_internal (
           else if (strcmp (long_options[option_index].name, "no-proxy") == 0)
           {
           
-            if (args_info->HTTP_group_counter && override)
-              reset_group_HTTP (args_info);
-            args_info->HTTP_group_counter += 1;
           
             if (update_arg( 0 , 
                  0 , &(args_info->no_proxy_given),
@@ -1201,9 +1038,6 @@ cmdline_parser_internal (
           else if (strcmp (long_options[option_index].name, "connect-timeout") == 0)
           {
           
-            if (args_info->HTTP_group_counter && override)
-              reset_group_HTTP (args_info);
-            args_info->HTTP_group_counter += 1;
           
             if (update_arg( (void *)&(args_info->connect_timeout_arg), 
                  &(args_info->connect_timeout_orig), &(args_info->connect_timeout_given),
@@ -1218,9 +1052,6 @@ cmdline_parser_internal (
           else if (strcmp (long_options[option_index].name, "connect-timeout-socks") == 0)
           {
           
-            if (args_info->HTTP_group_counter && override)
-              reset_group_HTTP (args_info);
-            args_info->HTTP_group_counter += 1;
           
             if (update_arg( (void *)&(args_info->connect_timeout_socks_arg), 
                  &(args_info->connect_timeout_socks_orig), &(args_info->connect_timeout_socks_given),
@@ -1235,9 +1066,6 @@ cmdline_parser_internal (
           else if (strcmp (long_options[option_index].name, "exec") == 0)
           {
           
-            if (args_info->Subsequent_group_counter && override)
-              reset_group_Subsequent (args_info);
-            args_info->Subsequent_group_counter += 1;
           
             if (update_arg( (void *)&(args_info->exec_arg), 
                  &(args_info->exec_orig), &(args_info->exec_given),
@@ -1252,9 +1080,6 @@ cmdline_parser_internal (
           else if (strcmp (long_options[option_index].name, "stream-exec") == 0)
           {
           
-            if (args_info->Streaming_group_counter && override)
-              reset_group_Streaming (args_info);
-            args_info->Streaming_group_counter += 1;
           
             if (update_arg( (void *)&(args_info->stream_exec_arg), 
                  &(args_info->stream_exec_orig), &(args_info->stream_exec_given),
@@ -1269,9 +1094,6 @@ cmdline_parser_internal (
           else if (strcmp (long_options[option_index].name, "stream") == 0)
           {
           
-            if (args_info->Streaming_group_counter && override)
-              reset_group_Streaming (args_info);
-            args_info->Streaming_group_counter += 1;
           
             if (update_arg( (void *)&(args_info->stream_arg), 
                  &(args_info->stream_orig), &(args_info->stream_given),
@@ -1294,42 +1116,6 @@ cmdline_parser_internal (
         } /* switch */
     } /* while */
 
-  if (args_info->Download_group_counter > 1)
-    {
-      fprintf (stderr, "%s: %d options of group Download were given. At most one is required%s.\n", argv[0], args_info->Download_group_counter, (additional_error ? additional_error : ""));
-      error = 1;
-    }
-  
-  if (args_info->HTTP_group_counter > 1)
-    {
-      fprintf (stderr, "%s: %d options of group HTTP were given. At most one is required%s.\n", argv[0], args_info->HTTP_group_counter, (additional_error ? additional_error : ""));
-      error = 1;
-    }
-  
-  if (args_info->Output_group_counter > 1)
-    {
-      fprintf (stderr, "%s: %d options of group Output were given. At most one is required%s.\n", argv[0], args_info->Output_group_counter, (additional_error ? additional_error : ""));
-      error = 1;
-    }
-  
-  if (args_info->Regular_expression_group_counter > 1)
-    {
-      fprintf (stderr, "%s: %d options of group Regular expression were given. At most one is required%s.\n", argv[0], args_info->Regular_expression_group_counter, (additional_error ? additional_error : ""));
-      error = 1;
-    }
-  
-  if (args_info->Streaming_group_counter > 1)
-    {
-      fprintf (stderr, "%s: %d options of group Streaming were given. At most one is required%s.\n", argv[0], args_info->Streaming_group_counter, (additional_error ? additional_error : ""));
-      error = 1;
-    }
-  
-  if (args_info->Subsequent_group_counter > 1)
-    {
-      fprintf (stderr, "%s: %d options of group Subsequent were given. At most one is required%s.\n", argv[0], args_info->Subsequent_group_counter, (additional_error ? additional_error : ""));
-      error = 1;
-    }
-  
 
 
   if (check_required)

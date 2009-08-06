@@ -165,7 +165,7 @@ VideoProperties::getFilename() const {
     return filename;
 }
 
-static int video_num;
+static int video_num = 0;
 
 void
 VideoProperties::formatOutputFilename() {

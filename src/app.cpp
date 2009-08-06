@@ -178,9 +178,8 @@ App::run() {
 
     std::vector<std::string> tokens;
 
-    if (!opts.inputs_num) {
+    if (!opts.inputs_num)
         tokens = parseInput();
-    }
     else {
         for (register unsigned int i=0; i<opts.inputs_num; ++i)
             tokens.push_back(opts.inputs[i]);
@@ -227,6 +226,7 @@ App::parseInput() {
         std::istream_iterator<std::string >(),
         std::back_inserter<std::vector<std::string> >(tokens)
     );
+
     return tokens;
 }
 
@@ -247,20 +247,23 @@ static const char copyr_notice[] =
         locale = const_cast<char *>("undefined");
 
     std::cout
-        << CMDLINE_PARSER_PACKAGE   << " version "
-        << CMDLINE_PARSER_VERSION   << " with libcurl version "
-        << c->version               << "  ["
-        << CANONICAL_TARGET         << "]\n"
-        << copyr_notice             << "\n"
-        << "\n  Locale  : "         << locale
-        << "\n  Config  : "         << optsmgr.getPath()
+        << CMDLINE_PARSER_PACKAGE << " version "
+        << CMDLINE_PARSER_VERSION << " with libcurl version "
+        << c->version             << "  ["
+        << CANONICAL_TARGET       << "]\n"
+        << copyr_notice           << "\n"
+        << "\n  Locale  : "       << locale
+        << "\n  Config  : "       << optsmgr.getPath()
         << "\n  Features: "
 #ifdef WITH_ICONV
         << "--with-iconv "
 #endif
+#ifdef WITH_PCRE
+        << "--with-pcrecpp "
+#endif
 #ifdef USE_SIGWINCH
         << "--enable-sigwinch "
 #endif
-        << "\n  Home    : "         << "<http://cclive.googlecode.com/>"
+        << "\n  Home    : "       << "<http://cclive.googlecode.com/>"
         << std::endl;
 }

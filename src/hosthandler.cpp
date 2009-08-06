@@ -25,7 +25,6 @@
 
 #include "config.h"
 
-#include <iostream>
 #include <fstream>
 #include <string>
 #include <vector>
@@ -115,8 +114,13 @@ HostHandler::toUnicode() {
         char *wptr   = (char *)outbuf;
         memset(wptr, 0, sizeof(outbuf));
 
-        size_t rc =
-            iconv(cd, (const char **)&inptr, &insize, &wptr, &avail);
+        size_t rc = iconv(cd, 
+#ifndef HOST_W32 // TODO: pinpoint real reason, w32 is unlikely the reason
+            (const char **)
+#else
+            (char **)
+#endif
+            &inptr, &insize, &wptr, &avail);
 
         if (rc == (size_t)-1) {
             logmgr.cerr()
@@ -143,26 +147,26 @@ HostHandler::applyRegexp() {
     if (!opts.regexp_given)
         return;
 
-    std::cout << opts.number_videos_given << std::endl;
+    std::string title;
+
     if (opts.find_all_given) {
         pcrecpp::StringPiece sp(props.getTitle());
         pcrecpp::RE re(opts.regexp_arg, pcrecpp::UTF8());
 
-        puts("find_all");
-
-        std::string s,tmp;
+        std::string s;
         while (re.FindAndConsume(&sp, &s))
-            tmp += s;
-
-        props.setTitle(tmp);
+            title += s;
     }
     else {
-        puts("partial match.");
-        std::string s;
         pcrecpp::RE(opts.regexp_arg, pcrecpp::UTF8())
-            .PartialMatch(props.getTitle(), &s);
-        props.setTitle(s);
+            .PartialMatch(props.getTitle(), &title);
     }
+
+    // Remove leading and trailing whitespace.
+    pcrecpp::RE("(\\s+)").Replace("", &title);
+    pcrecpp::RE("(\\s+)$").Replace("", &title);
+
+    props.setTitle(title);
 #endif
 }
 

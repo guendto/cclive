@@ -69,13 +69,17 @@ struct gengetopt_args_info
   char * output_video_arg;	/**< @brief write video to file.  */
   char * output_video_orig;	/**< @brief write video to file original value given at command line.  */
   const char *output_video_help; /**< @brief write video to file help description.  */
+  char * format_arg;	/**< @brief download video format (default='flv').  */
+  char * format_orig;	/**< @brief download video format original value given at command line.  */
+  const char *format_help; /**< @brief download video format help description.  */
   const char *number_videos_help; /**< @brief prepend a numeric prefix to output filenames help description.  */
   char * filename_format_arg;	/**< @brief use output filename format (default='%t.%s').  */
   char * filename_format_orig;	/**< @brief use output filename format original value given at command line.  */
   const char *filename_format_help; /**< @brief use output filename format help description.  */
-  char * format_arg;	/**< @brief download video format (default='flv').  */
-  char * format_orig;	/**< @brief download video format original value given at command line.  */
-  const char *format_help; /**< @brief download video format help description.  */
+  char * regexp_arg;	/**< @brief regular expression to filter video title.  */
+  char * regexp_orig;	/**< @brief regular expression to filter video title original value given at command line.  */
+  const char *regexp_help; /**< @brief regular expression to filter video title help description.  */
+  const char *find_all_help; /**< @brief use repeated matching to find all occurences, like Perl's /g option help description.  */
   char * exec_arg;	/**< @brief command to invoke when transfer finishes.  */
   char * exec_orig;	/**< @brief command to invoke when transfer finishes original value given at command line.  */
   const char *exec_help; /**< @brief command to invoke when transfer finishes help description.  */
@@ -87,10 +91,6 @@ struct gengetopt_args_info
   int stream_arg;	/**< @brief invoke --stream-exec when transfer reaches %.  */
   char * stream_orig;	/**< @brief invoke --stream-exec when transfer reaches % original value given at command line.  */
   const char *stream_help; /**< @brief invoke --stream-exec when transfer reaches % help description.  */
-  char * regexp_arg;	/**< @brief regular expression to filter video title.  */
-  char * regexp_orig;	/**< @brief regular expression to filter video title original value given at command line.  */
-  const char *regexp_help; /**< @brief regular expression to filter video title help description.  */
-  const char *find_all_help; /**< @brief use repeated matching to find all occurences, like Perl's /g option help description.  */
   
   unsigned int help_given ;	/**< @brief Whether help was given.  */
   unsigned int version_given ;	/**< @brief Whether version was given.  */
@@ -108,25 +108,19 @@ struct gengetopt_args_info
   unsigned int continue_given ;	/**< @brief Whether continue was given.  */
   unsigned int limit_rate_given ;	/**< @brief Whether limit-rate was given.  */
   unsigned int output_video_given ;	/**< @brief Whether output-video was given.  */
+  unsigned int format_given ;	/**< @brief Whether format was given.  */
   unsigned int number_videos_given ;	/**< @brief Whether number-videos was given.  */
   unsigned int filename_format_given ;	/**< @brief Whether filename-format was given.  */
-  unsigned int format_given ;	/**< @brief Whether format was given.  */
+  unsigned int regexp_given ;	/**< @brief Whether regexp was given.  */
+  unsigned int find_all_given ;	/**< @brief Whether find-all was given.  */
   unsigned int exec_given ;	/**< @brief Whether exec was given.  */
   unsigned int exec_run_given ;	/**< @brief Whether exec-run was given.  */
   unsigned int stream_exec_given ;	/**< @brief Whether stream-exec was given.  */
   unsigned int stream_pass_given ;	/**< @brief Whether stream-pass was given.  */
   unsigned int stream_given ;	/**< @brief Whether stream was given.  */
-  unsigned int regexp_given ;	/**< @brief Whether regexp was given.  */
-  unsigned int find_all_given ;	/**< @brief Whether find-all was given.  */
 
   char **inputs ; /**< @brief unamed options (options without names) */
   unsigned inputs_num ; /**< @brief unamed options number */
-  int Download_group_counter; /**< @brief Counter for group Download */
-  int HTTP_group_counter; /**< @brief Counter for group HTTP */
-  int Output_group_counter; /**< @brief Counter for group Output */
-  int Regular_expression_group_counter; /**< @brief Counter for group Regular_expression */
-  int Streaming_group_counter; /**< @brief Counter for group Streaming */
-  int Subsequent_group_counter; /**< @brief Counter for group Subsequent */
 } ;
 
 /** @brief The additional parameters to pass to parser functions */
