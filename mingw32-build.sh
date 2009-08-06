@@ -15,6 +15,10 @@
 # * wget $iconv_url ; tar xjf $iconv_release.tar.bz2; cd $iconv_release
 # * ./configure --host=mingw32 --prefix=`pwd`/dist && make install
 #
+# pcre:
+# * wget ...
+# * ./configure --host=mingw32 --prefix=`pwd`/dist && make install-strip
+#
 # cclive:
 # * Edit paths as needed below
 # * Run this script
@@ -22,6 +26,7 @@
 # Edit as needed:
 curl_config="/usr/home/legatvs/src/curl-7.19.5/dist/bin/curl-config"
 iconv_prefix="/usr/home/legatvs/src/libiconv-1.13.1/dist"
+pcre_config="/usr/home/legatvs/src/pcre-7.9/dist/bin/pcre-config"
 
 export libcurl_CFLAGS="`$curl_config --cflags`"
 export libcurl_LIBS="`$curl_config --libs`"
@@ -33,8 +38,13 @@ export CFLAGS="$CXXFLAGS"
 #echo $CXXFLAGS
 #echo $CFLAGS
 
+export libpcrecpp_CFLAGS="`$pcre_config --cflags`"
+export libpcrecpp_LIBS="`$pcre_config --libs` -lpcrecpp"
+#echo $libpcrecpp_CFLAGS
+#echo $libpcrecpp_LIBS
+
 # Tested only on FreeBSD. Edit prefix as needed.
-./configure --host=mingw32 --prefix=`pwd`/dist --with-iconv="$iconv_prefix" --without-man \
+./configure --host=mingw32 --prefix=`pwd`/dist --with-iconv="$iconv_prefix" --with-pcrecpp --without-man \
     && make \
     && echo "'make install' installs the binaries to ./dist" \
     && echo "'./mingw32-package.sh' creates zip archive containing the binaries"
