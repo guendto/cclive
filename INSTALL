@@ -16,8 +16,8 @@
     Causes cclive to use libiconv for character set conversions.
 
  --with-pcrecpp[=PATH] (recommended)
-    Causes cclive to filter the video titles using the --title-regex
-    expression. Enables the --title-regex program option.
+    Allows use of --regexp and --find-all for cleaning up video titles
+    before they are used for output filenames.
 
  --enable-sigwinch
     If enabled, cclive will handle the SIGWINCH to resize the
