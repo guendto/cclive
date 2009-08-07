@@ -28,7 +28,7 @@ Print version and exit.
 
 =item B<--hosts>
 
-Print a list of supported hosts to stdout and exit.
+Print supported hosts and exit.
 
 =back
 
@@ -46,12 +46,12 @@ Print libcurl debug messages to stderr.
 
 =item B<--emit-csv>
 
-Evit video details in CSV to stdout. Implies B<--no-extract>.
-B<--quiet> will be ignored for CSV output.
+Print video details in CSV. Implies B<--no-extract>.
+Ignores B<--quiet> for CSV.
 
 =item B<--print-fname>
 
-Print output filename on a single line before each file transfer.
+Print filename on one line before download starts.
 
 =back
 
@@ -77,8 +77,8 @@ Maximum time in I<seconds> allowed for connection to take. Defaults to 30.
 
 =item B<--connect-timeout-socks>=I<seconds>
 
-Identical to the above but tries to work around the (known) SOCKS proxy bug
-in libcurl. Defaults to 30.
+Otherwise identical to the above option but works around the known SOCKS
+proxy bug in libcurl. Defaults to 30.
 
 =back
 
@@ -94,26 +94,29 @@ Do not actually extract any videos, simulate only.
 
 Continue a partially downloaded video file.
 
-cclive appends a numeric suffix (e.g. ".1") to the output filename
-if the file exists already -- unless:
+By default, cclive appends a numeric suffix (e.g. ".1") to the
+filename if the file exists already, unless:
 
-  * file is already completely retrieved
-Or:
-  * either --continue or --output-video is used
+=over 4
+
+=item * file is already completely retrieved, or:
+
+=item * either --continue --output-video is defined
+
+=back
 
 =item B<l, --limit-rate>=I<amount>
 
-Limit download speed to I<amount> (KB/s). Page fetches will
-ignore this setting.
+Limit download speed to I<amount> (KB/s). Video page fetches remain
+unaffected by this option.
 
 =item B<-O, --output-video>=I<file>
 
-Write the downloaded video I<file>. Note that this causes cclive
-overwrite existing file without warning.
+Write the downloaded video I<file>.
 
 =item B<-f, --format>=I<format>
 
-Download the I<format> of the video. If set to I<best>, cclive
+Download I<format> of the video. If set to I<best>, cclive
 attempts to download the best quality of the video.
 
 See also L</FORMATS>.
@@ -194,13 +197,14 @@ B<Filename formatting>
 
 =item B<-N, --number-videos>
 
-Prepend a numeric prefix to the output filenames.
+Prepend a numeric prefix (e.g. "001_") to the output filenames.
 
 =item B<-r, --regexp>=I<expression>
 
-A regular expression to filter the video titles before using them
-for output filenames. Quietly ignored if cclive was built without
-pcre support.
+A regular expression to filter the video titles before using them for
+output filenames. Quietly ignored if cclive was built without PCRE.
+
+Refer to PCRE manual page for syntax, patterns etc.
 
 =item B<-g, --find-all>
 
@@ -208,9 +212,9 @@ Use repeated matching to find all occurences, like Perl's /g option.
 
 =item B<-F, --filename-format>=I<formatstring>
 
-Use the specified I<formatstring> for formatting the output filenames.
-cclive defaults to "%t.%s". Any supported specifiers (below) appearing
-in the I<formatstring> will be replaced accordingly:
+Use the specified I<formatstring> to format the output filenames. cclive
+defaults to "%t.%s". Any supported specifiers (below) appearing in the
+I<formatstring> will be replaced accordingly:
 
   %t = video title
   %i = video id
@@ -219,7 +223,7 @@ in the I<formatstring> will be replaced accordingly:
 
 Example:
 
-  % cclive --filename-format="%i.%s" URL
+  % cclive -F "%i.%s" URL
 
 =back
 
@@ -269,7 +273,7 @@ use them for the output filename.
 =head1 FORMATS
 
 "flv" is downloaded by default if B<--format> is not defined. Some
-websites support several video formats. Details listed below.
+websites support more than one video format.
 
 =over 4
 

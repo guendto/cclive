@@ -157,7 +157,7 @@ Print help and exit.
 Print version and exit.
 .IP "\fB\-\-hosts\fR" 4
 .IX Item "--hosts"
-Print a list of supported hosts to stdout and exit.
+Print supported hosts and exit.
 .PP
 \&\fBOutput\fR
 .IP "\fB\-q, \-\-quiet\fR" 4
@@ -168,11 +168,11 @@ Turn off all output.
 Print libcurl debug messages to stderr.
 .IP "\fB\-\-emit\-csv\fR" 4
 .IX Item "--emit-csv"
-Evit video details in \s-1CSV\s0 to stdout. Implies \fB\-\-no\-extract\fR.
-\&\fB\-\-quiet\fR will be ignored for \s-1CSV\s0 output.
+Print video details in \s-1CSV\s0. Implies \fB\-\-no\-extract\fR.
+Ignores \fB\-\-quiet\fR for \s-1CSV\s0.
 .IP "\fB\-\-print\-fname\fR" 4
 .IX Item "--print-fname"
-Print output filename on a single line before each file transfer.
+Print filename on one line before download starts.
 .PP
 \&\fB\s-1HTTP\s0\fR
 .IP "\fB\-\-agent\fR=\fIstring\fR" 4
@@ -189,8 +189,8 @@ Do not use \s-1HTTP\s0 proxy, even if http_proxy environment variable is defined
 Maximum time in \fIseconds\fR allowed for connection to take. Defaults to 30.
 .IP "\fB\-\-connect\-timeout\-socks\fR=\fIseconds\fR" 4
 .IX Item "--connect-timeout-socks=seconds"
-Identical to the above but tries to work around the (known) \s-1SOCKS\s0 proxy bug
-in libcurl. Defaults to 30.
+Otherwise identical to the above option but works around the known \s-1SOCKS\s0
+proxy bug in libcurl. Defaults to 30.
 .PP
 \&\fBDownload\fR
 .IP "\fB\-n, \-\-no\-extract\fR" 4
@@ -200,25 +200,26 @@ Do not actually extract any videos, simulate only.
 .IX Item "-c, --continue"
 Continue a partially downloaded video file.
 .Sp
-cclive appends a numeric suffix (e.g. \*(L".1\*(R") to the output filename
-if the file exists already \*(-- unless:
-.Sp
-.Vb 3
-\&  * file is already completely retrieved
-\&Or:
-\&  * either \-\-continue or \-\-output\-video is used
-.Ve
+By default, cclive appends a numeric suffix (e.g. \*(L".1\*(R") to the
+filename if the file exists already, unless:
+.RS 4
+.IP "\(bu" 4
+file is already completely retrieved, or:
+.IP "\(bu" 4
+either \-\-continue \-\-output\-video is defined
+.RE
+.RS 4
+.RE
 .IP "\fBl, \-\-limit\-rate\fR=\fIamount\fR" 4
 .IX Item "l, --limit-rate=amount"
-Limit download speed to \fIamount\fR (KB/s). Page fetches will
-ignore this setting.
+Limit download speed to \fIamount\fR (KB/s). Video page fetches remain
+unaffected by this option.
 .IP "\fB\-O, \-\-output\-video\fR=\fIfile\fR" 4
 .IX Item "-O, --output-video=file"
-Write the downloaded video \fIfile\fR. Note that this causes cclive
-overwrite existing file without warning.
+Write the downloaded video \fIfile\fR.
 .IP "\fB\-f, \-\-format\fR=\fIformat\fR" 4
 .IX Item "-f, --format=format"
-Download the \fIformat\fR of the video. If set to \fIbest\fR, cclive
+Download \fIformat\fR of the video. If set to \fIbest\fR, cclive
 attempts to download the best quality of the video.
 .Sp
 See also \*(L"\s-1FORMATS\s0\*(R".
@@ -282,20 +283,21 @@ This mode is supported for historical reasons. Consider using
 \&\fBFilename formatting\fR
 .IP "\fB\-N, \-\-number\-videos\fR" 4
 .IX Item "-N, --number-videos"
-Prepend a numeric prefix to the output filenames.
+Prepend a numeric prefix (e.g. \*(L"001_\*(R") to the output filenames.
 .IP "\fB\-r, \-\-regexp\fR=\fIexpression\fR" 4
 .IX Item "-r, --regexp=expression"
-A regular expression to filter the video titles before using them
-for output filenames. Quietly ignored if cclive was built without
-pcre support.
+A regular expression to filter the video titles before using them for
+output filenames. Quietly ignored if cclive was built without \s-1PCRE\s0.
+.Sp
+Refer to \s-1PCRE\s0 manual page for syntax, patterns etc.
 .IP "\fB\-g, \-\-find\-all\fR" 4
 .IX Item "-g, --find-all"
 Use repeated matching to find all occurences, like Perl's /g option.
 .IP "\fB\-F, \-\-filename\-format\fR=\fIformatstring\fR" 4
 .IX Item "-F, --filename-format=formatstring"
-Use the specified \fIformatstring\fR for formatting the output filenames.
-cclive defaults to \*(L"%t.%s\*(R". Any supported specifiers (below) appearing
-in the \fIformatstring\fR will be replaced accordingly:
+Use the specified \fIformatstring\fR to format the output filenames. cclive
+defaults to \*(L"%t.%s\*(R". Any supported specifiers (below) appearing in the
+\&\fIformatstring\fR will be replaced accordingly:
 .Sp
 .Vb 4
 \&  %t = video title
@@ -307,7 +309,7 @@ in the \fIformatstring\fR will be replaced accordingly:
 Example:
 .Sp
 .Vb 1
-\&  % cclive \-\-filename\-format="%i.%s" URL
+\&  % cclive \-F "%i.%s" URL
 .Ve
 .SH "EXAMPLES"
 .IX Header "EXAMPLES"
@@ -351,7 +353,7 @@ use them for the output filename.
 .SH "FORMATS"
 .IX Header "FORMATS"
 \&\*(L"flv\*(R" is downloaded by default if \fB\-\-format\fR is not defined. Some
-websites support several video formats. Details listed below.
+websites support more than one video format.
 .IP "youtube.com" 4
 .IX Item "youtube.com"
 .PD 0
