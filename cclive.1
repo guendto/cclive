@@ -446,7 +446,7 @@ Most of the program options can be defined in the ~/.ccliverc config file.
 .IP "Q: Why am I seeing mangled video filenames?" 4
 .IX Item "Q: Why am I seeing mangled video filenames?"
 Make sure you have compiled cclive \-\-with\-iconv. Some of the websites may
-not use \s-1UTF\-8\s0.
+not use \s-1UTF\-8\s0. cclive converts data from such websites to \s-1UTF\-8\s0.
 .Sp
 Make also sure you have set the locale. For example (in csh/urxvt terms):
 .Sp
@@ -463,6 +463,8 @@ You can get a list of supported locales on your typical Unix-like system with:
 .ie n .IP "Q: Why are the \s-1UTF\-8\s0 characters missing with \-g \-\-regexp=""(\ew|\es)""?" 4
 .el .IP "Q: Why are the \s-1UTF\-8\s0 characters missing with \-g \-\-regexp=``(\ew|\es)''?" 4
 .IX Item "Q: Why are the UTF-8 characters missing with -g --regexp=(w|s)?"
+Assuming cclive was built \-\-with\-pcrecpp.
+.Sp
 A quote from pcrepattern manual page:
 .Sp
 \&\*(L"In \s-1UTF\-8\s0 mode, characters with values greater than 128 never match  \ed,
