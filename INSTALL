@@ -12,10 +12,10 @@
 
             Optional Packages
 
- --with-iconv[=PATH]  (recommended)
+ --with-iconv[=PREFIX]  (recommended)
     Causes cclive to use libiconv for character set conversions.
 
- --with-pcrecpp[=PATH] (recommended)
+ --with-pcrecpp[=PREFIX] (recommended)
     Allows use of --regexp and --find-all for cleaning up video titles
     before they are used for output filenames.
 
@@ -34,7 +34,7 @@
     Do not install cclive.1 manual page.
 
  Example:
-    ./configure --with-iconv=/usr/local/src --with-pcrecpp
+    ./configure --with-iconv=/usr/local --with-pcrecpp
 
 
             Prerequisites
