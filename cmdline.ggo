@@ -39,7 +39,7 @@ option "connect-timeout"
     default="30"
     optional
 option "connect-timeout-socks"
-    - "identical but tries to work around SOCKS proxy bug in libcurl"
+    - "same but tries to work around SOCKS proxy bug in libcurl"
     int typestr="s"
     default="30"
     optional

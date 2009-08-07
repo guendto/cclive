@@ -58,9 +58,9 @@ struct gengetopt_args_info
   int connect_timeout_arg;	/**< @brief max time allowed connection to server take (default='30').  */
   char * connect_timeout_orig;	/**< @brief max time allowed connection to server take original value given at command line.  */
   const char *connect_timeout_help; /**< @brief max time allowed connection to server take help description.  */
-  int connect_timeout_socks_arg;	/**< @brief identical but tries to work around SOCKS proxy bug in libcurl (default='30').  */
-  char * connect_timeout_socks_orig;	/**< @brief identical but tries to work around SOCKS proxy bug in libcurl original value given at command line.  */
-  const char *connect_timeout_socks_help; /**< @brief identical but tries to work around SOCKS proxy bug in libcurl help description.  */
+  int connect_timeout_socks_arg;	/**< @brief same but tries to work around SOCKS proxy bug in libcurl (default='30').  */
+  char * connect_timeout_socks_orig;	/**< @brief same but tries to work around SOCKS proxy bug in libcurl original value given at command line.  */
+  const char *connect_timeout_socks_help; /**< @brief same but tries to work around SOCKS proxy bug in libcurl help description.  */
   const char *no_extract_help; /**< @brief do not actually extract video, simulate only help description.  */
   const char *continue_help; /**< @brief resume partially downloaded file help description.  */
   int limit_rate_arg;	/**< @brief limit download speed to KB/s.  */

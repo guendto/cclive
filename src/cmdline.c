@@ -45,7 +45,7 @@ const char *gengetopt_args_info_help[] = {
   "      --proxy=proxyhost[:port]  use specified proxy",
   "      --no-proxy                do not use proxy even if http_proxy is defined",
   "      --connect-timeout=seconds max time allowed connection to server take  \n                                  (default=`30')",
-  "      --connect-timeout-socks=s identical but tries to work around SOCKS proxy \n                                  bug in libcurl  (default=`30')",
+  "      --connect-timeout-socks=s same but tries to work around SOCKS proxy bug \n                                  in libcurl  (default=`30')",
   "\nDownload:",
   "  -n, --no-extract              do not actually extract video, simulate only",
   "  -c, --continue                resume partially downloaded file",
@@ -1048,7 +1048,7 @@ cmdline_parser_internal (
               goto failure;
           
           }
-          /* identical but tries to work around SOCKS proxy bug in libcurl.  */
+          /* same but tries to work around SOCKS proxy bug in libcurl.  */
           else if (strcmp (long_options[option_index].name, "connect-timeout-socks") == 0)
           {
           
