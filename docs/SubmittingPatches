@@ -1,0 +1,11 @@
+
+If you are using git:
+  * Check for unnecessary whitespace with "git diff --check"
+  * use "git format-patch -M" to create the patch
+
+Otherwise:
+  * Please use "diff -u" when generating the patches
+
+Submitting:
+  * See AUTHORS file for email
+  * Or submit them to cclive@googlegroups.com

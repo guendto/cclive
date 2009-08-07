@@ -65,7 +65,7 @@ RECURSIVE_CLEAN_TARGETS = mostlyclean-recursive clean-recursive	\
   distclean-recursive maintainer-clean-recursive
 ETAGS = etags
 CTAGS = ctags
-DIST_SUBDIRS = src tests
+DIST_SUBDIRS = src docs tests
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -189,11 +189,10 @@ target_vendor = @target_vendor@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-SUBDIRS = src $(am__append_1)
+SUBDIRS = src docs $(am__append_1)
 EXTRA_DIST = \
 cmdline.ggo\
 cclive.pod\
-HACKING\
 examples/config\
 README.w32\
 mingw32-build.sh\

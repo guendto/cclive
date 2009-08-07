@@ -1,4 +1,4 @@
-SUBDIRS= src
+SUBDIRS= src docs
 if ENABLE_TESTS
 SUBDIRS+= tests
 endif
@@ -6,7 +6,6 @@ endif
 EXTRA_DIST=\
 cmdline.ggo\
 cclive.pod\
-HACKING\
 examples/config\
 README.w32\
 mingw32-build.sh\
