@@ -211,32 +211,11 @@ if the file exists already \*(-- unless:
 .IP "\fBl, \-\-limit\-rate\fR=\fIamount\fR" 4
 .IX Item "l, --limit-rate=amount"
 Limit download speed to \fIamount\fR (KB/s). Page fetches will
-ignore this limitation.
+ignore this setting.
 .IP "\fB\-O, \-\-output\-video\fR=\fIfile\fR" 4
 .IX Item "-O, --output-video=file"
 Write the downloaded video \fIfile\fR. Note that this causes cclive
 overwrite existing file without warning.
-.IP "\fB\-N, \-\-number\-videos\fR" 4
-.IX Item "-N, --number-videos"
-Prepend a numeric prefix to the output filenames.
-.IP "\fB\-F, \-\-filename\-format\fR=\fIformatstring\fR" 4
-.IX Item "-F, --filename-format=formatstring"
-Use the specified \fIformatstring\fR for formatting the output filenames.
-cclive defaults to \*(L"%t.%s\*(R". Any supported specifiers (below) appearing
-in the \fIformatstring\fR will be replaced accordingly:
-.Sp
-.Vb 4
-\&  %t = video title
-\&  %i = video id
-\&  %h = website domain
-\&  %s = file suffix
-.Ve
-.Sp
-Example:
-.Sp
-.Vb 1
-\&  % cclive \-\-filename\-format="%i.%s" URL
-.Ve
 .IP "\fB\-f, \-\-format\fR=\fIformat\fR" 4
 .IX Item "-f, --format=format"
 Download the \fIformat\fR of the video. If set to \fIbest\fR, cclive
@@ -299,14 +278,45 @@ child process exits.
 .Sp
 This mode is supported for historical reasons. Consider using
 \&\fB\-\-stream\-pass\fR instead.
+.PP
+\&\fBFilename formatting\fR
+.IP "\fB\-N, \-\-number\-videos\fR" 4
+.IX Item "-N, --number-videos"
+Prepend a numeric prefix to the output filenames.
+.IP "\fB\-r, \-\-regexp\fR=\fIexpression\fR" 4
+.IX Item "-r, --regexp=expression"
+A regular expression to filter the video titles before using them
+for output filenames. Quietly ignored if cclive was built without
+pcre support.
+.IP "\fB\-g, \-\-find\-all\fR" 4
+.IX Item "-g, --find-all"
+Use repeated matching to find all occurences, like Perl's /g option.
+.IP "\fB\-F, \-\-filename\-format\fR=\fIformatstring\fR" 4
+.IX Item "-F, --filename-format=formatstring"
+Use the specified \fIformatstring\fR for formatting the output filenames.
+cclive defaults to \*(L"%t.%s\*(R". Any supported specifiers (below) appearing
+in the \fIformatstring\fR will be replaced accordingly:
+.Sp
+.Vb 4
+\&  %t = video title
+\&  %i = video id
+\&  %h = website domain
+\&  %s = file suffix
+.Ve
+.Sp
+Example:
+.Sp
+.Vb 1
+\&  % cclive \-\-filename\-format="%i.%s" URL
+.Ve
 .SH "EXAMPLES"
 .IX Header "EXAMPLES"
 .IP "cclive \s-1URL\s0" 4
 .IX Item "cclive URL"
 Download video from \s-1URL\s0.
-.IP "cclive \-f fmt18 \s-1URL\s0" 4
-.IX Item "cclive -f fmt18 URL"
-Download fmt18/mp4 (Youtube) format of the video from the \s-1URL\s0.
+.IP "cclive \-f fmt18 Youtube_URL" 4
+.IX Item "cclive -f fmt18 Youtube_URL"
+Download fmt18 (mp4) format of the video.
 .ie n .IP "cclive \-\-exec=""mplayer \-really\-quiet %i;"" \-e \s-1URL\s0" 4
 .el .IP "cclive \-\-exec=``mplayer \-really\-quiet \f(CW%i\fR;'' \-e \s-1URL\s0" 4
 .IX Item "cclive --exec=mplayer -really-quiet %i; -e URL"
@@ -327,8 +337,17 @@ reaches 20%.
 .IP "cclive \-s \s-1URL\s0" 4
 .IX Item "cclive -s URL"
 .PD
-Alternate to Adobe Flash. \f(CWvlc(1)\fR and \f(CWtotem(1)\fR have been reported
-to work also.
+Alternate to streaming with Adobe Flash. \f(CWvlc(1)\fR and \f(CWtotem(1)\fR have been
+reported to work also.
+.ie n .IP "cclive \-r ""(\ew+)"" \s-1URL\s0" 4
+.el .IP "cclive \-r ``(\ew+)'' \s-1URL\s0" 4
+.IX Item "cclive -r (w+) URL"
+Grab the first \*(L"word\*(R" character from video title for output filename.
+.ie n .IP "cclive \-gr ""(\ew|\es)"" \s-1URL\s0" 4
+.el .IP "cclive \-gr ``(\ew|\es)'' \s-1URL\s0" 4
+.IX Item "cclive -gr (w|s) URL"
+Grab all \*(L"word\*(R" and \*(L"whitespace\*(R" characters from the video title and
+use them for the output filename.
 .SH "FORMATS"
 .IX Header "FORMATS"
 \&\*(L"flv\*(R" is downloaded by default if \fB\-\-format\fR is not defined. Some
@@ -424,49 +443,43 @@ Format: flv
 Most of the program options can be defined in the ~/.ccliverc config file.
 .SH "UNICODE"
 .IX Header "UNICODE"
-Q: Why am I seeing mangled video filenames?
-.PP
-* Make sure you have compiled cclive \-\-with\-iconv. Some of the websites may
+.IP "Q: Why am I seeing mangled video filenames?" 4
+.IX Item "Q: Why am I seeing mangled video filenames?"
+Make sure you have compiled cclive \-\-with\-iconv. Some of the websites may
 not use \s-1UTF\-8\s0.
-.PP
-* Make sure you have set appropriate locale. For example (in csh/urxvt terms):
-.PP
+.Sp
+Make also sure you have set the locale. For example (in csh/urxvt terms):
+.Sp
 .Vb 2
 \&  % setenv LANG en_US.UTF\-8
 \&  % urxvt &
 .Ve
-.PP
+.Sp
 You can get a list of supported locales on your typical Unix-like system with:
-.PP
+.Sp
 .Vb 1
 \&  % locale \-a
 .Ve
-.PP
-Q: I'm using a custom \-\-regexp=\*(L"(\ew|\es)\*(R" with \-g. Why do the \s-1UTF\-8\s0 characters
-seem to be missing?
-.PP
+.ie n .IP "Q: Why are the \s-1UTF\-8\s0 characters missing with \-g \-\-regexp=""(\ew|\es)""?" 4
+.el .IP "Q: Why are the \s-1UTF\-8\s0 characters missing with \-g \-\-regexp=``(\ew|\es)''?" 4
+.IX Item "Q: Why are the UTF-8 characters missing with -g --regexp=(w|s)?"
+A quote from pcrepattern manual page:
+.Sp
 \&\*(L"In \s-1UTF\-8\s0 mode, characters with values greater than 128 never match  \ed,
 \&\es, or \ew, and always match \eD, \eS, and \eW. This is true even when Uni\-
 code character property support is available.  These  sequences  retain
 their original meanings from before \s-1UTF\-8\s0 support was available, mainly
 for efficiency reasons. Note that this also affects \eb, because  it  is
-defined in terms of \ew and \eW.\*(R" \*(-- man pcrepattern
-.PP
+defined in terms of \ew and \eW.\*(R"
+.Sp
 Try \-\-regexp=\*(L"(\epL|\es)\*(R" instead.
 .SH "DEBUGGING"
 .IX Header "DEBUGGING"
-Some tips that we have found useful:
-.PP
-.Vb 1
-\&  % cclive \-\-debug URL
-.Ve
-.PP
+.IP "cclive \-\-debug \s-1URL\s0" 4
+.IX Item "cclive --debug URL"
 Causes libcurl to be verbose.
-.PP
-.Vb 1
-\&  % cclive \-n URL
-.Ve
-.PP
+.IP "cclive \-n \s-1URL\s0" 4
+.IX Item "cclive -n URL"
 Simulates video extraction only.
 .SH "BUGS"
 .IX Header "BUGS"
@@ -494,23 +507,15 @@ cclive exits 0 on success, and >0 if an error occurs.
 .Ve
 .SH "OTHER"
 .IX Header "OTHER"
-Project page:
-.PP
-.Vb 1
-\&  <http://cclive.googlecode.com/>
-.Ve
-.PP
-Front-end:
-.PP
-.Vb 1
-\&  <http://abby.googlecode.com/>
-.Ve
-.PP
-Development code:
-.PP
-.Vb 1
-\&  % git clone git://repo.or.cz/cclive.git
-.Ve
+.IP "Project page" 4
+.IX Item "Project page"
+<http://cclive.googlecode.com/>
+.IP "Front-end" 4
+.IX Item "Front-end"
+<http://abby.googlecode.com/>
+.IP "Development code:" 4
+.IX Item "Development code:"
+% git clone git://repo.or.cz/cclive.git
 .SH "HISTORY"
 .IX Header "HISTORY"
 .IP "\(bu" 4

@@ -104,31 +104,12 @@ Or:
 =item B<l, --limit-rate>=I<amount>
 
 Limit download speed to I<amount> (KB/s). Page fetches will
-ignore this limitation.
+ignore this setting.
 
 =item B<-O, --output-video>=I<file>
 
 Write the downloaded video I<file>. Note that this causes cclive
 overwrite existing file without warning.
-
-=item B<-N, --number-videos>
-
-Prepend a numeric prefix to the output filenames.
-
-=item B<-F, --filename-format>=I<formatstring>
-
-Use the specified I<formatstring> for formatting the output filenames.
-cclive defaults to "%t.%s". Any supported specifiers (below) appearing
-in the I<formatstring> will be replaced accordingly:
-
-  %t = video title
-  %i = video id
-  %h = website domain
-  %s = file suffix
-
-Example:
-
-  % cclive --filename-format="%i.%s" URL
 
 =item B<-f, --format>=I<format>
 
@@ -207,6 +188,41 @@ B<--stream-pass> instead.
 
 =back
 
+B<Filename formatting>
+
+=over 4
+
+=item B<-N, --number-videos>
+
+Prepend a numeric prefix to the output filenames.
+
+=item B<-r, --regexp>=I<expression>
+
+A regular expression to filter the video titles before using them
+for output filenames. Quietly ignored if cclive was built without
+pcre support.
+
+=item B<-g, --find-all>
+
+Use repeated matching to find all occurences, like Perl's /g option.
+
+=item B<-F, --filename-format>=I<formatstring>
+
+Use the specified I<formatstring> for formatting the output filenames.
+cclive defaults to "%t.%s". Any supported specifiers (below) appearing
+in the I<formatstring> will be replaced accordingly:
+
+  %t = video title
+  %i = video id
+  %h = website domain
+  %s = file suffix
+
+Example:
+
+  % cclive --filename-format="%i.%s" URL
+
+=back
+
 =head1 EXAMPLES
 
 =over 4
@@ -215,9 +231,9 @@ B<--stream-pass> instead.
 
 Download video from URL.
 
-=item cclive -f fmt18 URL
+=item cclive -f fmt18 Youtube_URL
 
-Download fmt18/mp4 (Youtube) format of the video from the URL.
+Download fmt18 (mp4) format of the video.
 
 =item cclive --exec="mplayer -really-quiet %i;" -e URL
 
@@ -236,8 +252,17 @@ reaches 20%.
 
 =item cclive -s URL
 
-Alternate to Adobe Flash. C<vlc(1)> and C<totem(1)> have been reported
-to work also.
+Alternate to streaming with Adobe Flash. C<vlc(1)> and C<totem(1)> have been
+reported to work also.
+
+=item cclive -r "(\w+)" URL
+
+Grab the first "word" character from video title for output filename.
+
+=item cclive -gr "(\w|\s)" URL
+
+Grab all "word" and "whitespace" characters from the video title and
+use them for the output filename.
 
 =back
 
@@ -339,12 +364,14 @@ Most of the program options can be defined in the ~/.ccliverc config file.
 
 =head1 UNICODE
 
-Q: Why am I seeing mangled video filenames?
+=over 4
 
-* Make sure you have compiled cclive --with-iconv. Some of the websites may
+=item Q: Why am I seeing mangled video filenames?
+
+Make sure you have compiled cclive --with-iconv. Some of the websites may
 not use UTF-8.
 
-* Make sure you have set appropriate locale. For example (in csh/urxvt terms):
+Make also sure you have set the locale. For example (in csh/urxvt terms):
 
   % setenv LANG en_US.UTF-8
   % urxvt &
@@ -353,29 +380,34 @@ You can get a list of supported locales on your typical Unix-like system with:
 
   % locale -a
 
-Q: I'm using a custom --regexp="(\w|\s)" with -g. Why do the UTF-8 characters
-seem to be missing?
+=item Q: Why are the UTF-8 characters missing with -g --regexp="(\w|\s)"?
+
+A quote from pcrepattern manual page:
 
 "In UTF-8 mode, characters with values greater than 128 never match  \d,
 \s, or \w, and always match \D, \S, and \W. This is true even when Uni-
 code character property support is available.  These  sequences  retain
 their original meanings from before UTF-8 support was available, mainly
 for efficiency reasons. Note that this also affects \b, because  it  is
-defined in terms of \w and \W." -- man pcrepattern
+defined in terms of \w and \W."
 
 Try --regexp="(\pL|\s)" instead.
 
+=back
+
 =head1 DEBUGGING
 
-Some tips that we have found useful:
+=over 4
 
-  % cclive --debug URL
+=item cclive --debug URL
 
 Causes libcurl to be verbose.
 
-  % cclive -n URL
+=item cclive -n URL
 
 Simulates video extraction only.
+
+=back
 
 =head1 BUGS
 
@@ -401,17 +433,21 @@ cclive exits 0 on success, and E<gt>0 if an error occurs.
 
 =head1 OTHER
 
-Project page:
+=over 4
 
-  <http://cclive.googlecode.com/>
+=item Project page
 
-Front-end:
+<http://cclive.googlecode.com/>
 
-  <http://abby.googlecode.com/>
+=item Front-end
 
-Development code:
+<http://abby.googlecode.com/>
 
-  % git clone git://repo.or.cz/cclive.git
+=item Development code:
+
+% git clone git://repo.or.cz/cclive.git
+
+=back
 
 =head1 HISTORY
 
