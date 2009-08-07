@@ -33,21 +33,19 @@
  --without-man
     Do not install cclive.1 manual page.
 
- Example:
-    ./configure --with-iconv=/usr/local --with-pcrecpp
-
 
             Prerequisites
 
  * libcurl (7.18.0+)
 
- Optional:
- * Perl 5.8+ with HTML::TokeParser module. See --with-perl above.
+ Optional (see above):
+   * iconv (1.13.1+)  [libiconv]
+   * pcre  (7.9+)     [libpcrecpp]
 
 
             Examples
 
- # ./configure --prefix=/usr/local --enable-sigwinch
+ # ./configure --with-iconv=/usr/local --with-pcrecpp --enable-sigwinch
  # make install
 
 
@@ -56,5 +54,6 @@
  Typical use:
     % cclive "http://youtube.com/watch?v=3HD220e0bx4"
 
- Be sure to read the manual page which contains the EXAMPLES section.
- For a configuration file example, see examples/config.
+ Be sure to read the manual. See also examples/config.
+
+
