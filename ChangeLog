@@ -6,7 +6,7 @@ Version 0.5.0
   * New default: --filename-format: "%t.%s"
 
  Developer-visible changes:
-  * Update NEWS
+  * Update NEWS, manual
   * configure:
     # Add: --with-iconv[=prefix]
     # Add: --with-pcrecpp[=prefix]
