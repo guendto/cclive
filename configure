@@ -7525,12 +7525,12 @@ if test -n "$libpcrecpp_CFLAGS"; then
     pkg_cv_libpcrecpp_CFLAGS="$libpcrecpp_CFLAGS"
  elif test -n "$PKG_CONFIG"; then
     if test -n "$PKG_CONFIG" && \
-    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"libpcrecpp >= 7.9\"") >&5
-  ($PKG_CONFIG --exists --print-errors "libpcrecpp >= 7.9") 2>&5
+    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"libpcrecpp >= 7.8\"") >&5
+  ($PKG_CONFIG --exists --print-errors "libpcrecpp >= 7.8") 2>&5
   ac_status=$?
   $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; then
-  pkg_cv_libpcrecpp_CFLAGS=`$PKG_CONFIG --cflags "libpcrecpp >= 7.9" 2>/dev/null`
+  pkg_cv_libpcrecpp_CFLAGS=`$PKG_CONFIG --cflags "libpcrecpp >= 7.8" 2>/dev/null`
 else
   pkg_failed=yes
 fi
@@ -7541,12 +7541,12 @@ if test -n "$libpcrecpp_LIBS"; then
     pkg_cv_libpcrecpp_LIBS="$libpcrecpp_LIBS"
  elif test -n "$PKG_CONFIG"; then
     if test -n "$PKG_CONFIG" && \
-    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"libpcrecpp >= 7.9\"") >&5
-  ($PKG_CONFIG --exists --print-errors "libpcrecpp >= 7.9") 2>&5
+    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"libpcrecpp >= 7.8\"") >&5
+  ($PKG_CONFIG --exists --print-errors "libpcrecpp >= 7.8") 2>&5
   ac_status=$?
   $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; then
-  pkg_cv_libpcrecpp_LIBS=`$PKG_CONFIG --libs "libpcrecpp >= 7.9" 2>/dev/null`
+  pkg_cv_libpcrecpp_LIBS=`$PKG_CONFIG --libs "libpcrecpp >= 7.8" 2>/dev/null`
 else
   pkg_failed=yes
 fi
@@ -7564,14 +7564,14 @@ else
         _pkg_short_errors_supported=no
 fi
         if test $_pkg_short_errors_supported = yes; then
-	        libpcrecpp_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "libpcrecpp >= 7.9" 2>&1`
+	        libpcrecpp_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "libpcrecpp >= 7.8" 2>&1`
         else
-	        libpcrecpp_PKG_ERRORS=`$PKG_CONFIG --print-errors "libpcrecpp >= 7.9" 2>&1`
+	        libpcrecpp_PKG_ERRORS=`$PKG_CONFIG --print-errors "libpcrecpp >= 7.8" 2>&1`
         fi
 	# Put the nasty error message in config.log where it belongs
 	echo "$libpcrecpp_PKG_ERRORS" >&5
 
-	{ { $as_echo "$as_me:$LINENO: error: Package requirements (libpcrecpp >= 7.9) were not met:
+	{ { $as_echo "$as_me:$LINENO: error: Package requirements (libpcrecpp >= 7.8) were not met:
 
 $libpcrecpp_PKG_ERRORS
 
@@ -7582,7 +7582,7 @@ Alternatively, you may set the environment variables libpcrecpp_CFLAGS
 and libpcrecpp_LIBS to avoid the need to call pkg-config.
 See the pkg-config man page for more details.
 " >&5
-$as_echo "$as_me: error: Package requirements (libpcrecpp >= 7.9) were not met:
+$as_echo "$as_me: error: Package requirements (libpcrecpp >= 7.8) were not met:
 
 $libpcrecpp_PKG_ERRORS
 

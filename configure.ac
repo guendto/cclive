@@ -111,7 +111,7 @@ AC_ARG_WITH([pcrecpp],
 )
 if [ test x"$with_pcrecpp" != "xno" ]; then
     if [ test x"$with_pcrecpp" = "xyes" ]; then
-        PKG_CHECK_MODULES(libpcrecpp, libpcrecpp >= 7.9)
+        PKG_CHECK_MODULES(libpcrecpp, libpcrecpp >= 7.8)
     else
         # User knows better.
         libpcrecpp_CFLAGS="-I$with_pcrecpp/include"
