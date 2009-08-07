@@ -391,7 +391,7 @@ their original meanings from before UTF-8 support was available, mainly
 for efficiency reasons. Note that this also affects \b, because  it  is
 defined in terms of \w and \W."
 
-Try --regexp="(\pL|\s)" instead.
+Try --regexp="(\w|\s|\pL").
 
 =back
 
