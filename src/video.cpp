@@ -220,7 +220,7 @@ VideoProperties::customOutputFilenameFormatter(
     Options opts    = optsmgr.getOptions();
     std::string fmt = opts.filename_format_arg;
 
-    Util::subStrReplace(fmt, "%t", title);
+    Util::subStrReplace(fmt, "%t", title.empty() ? id : title);
     Util::subStrReplace(fmt, "%i", id);
     Util::subStrReplace(fmt, "%h", host);
     Util::subStrReplace(fmt, "%s", suffix);
