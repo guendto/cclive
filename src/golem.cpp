@@ -35,6 +35,13 @@ GolemHandler::parseId() {
 }
 
 void
+GolemHandler::parseTitle() {
+    props.setTitle(
+        Util::subStr(pageContent,
+            "<h1 class=\"headlinenormal\">Video: ", "</h1>"));
+}
+
+void
 GolemHandler::parseLink() {
     std::string config_url =
         "http://video.golem.de/xml/" + props.getId();

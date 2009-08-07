@@ -35,6 +35,12 @@ FunnyhubHandler::parseId() {
 }
 
 void
+FunnyhubHandler::parseTitle() {
+    props.setTitle(
+        Util::subStr(pageContent, "yahooBuzzArticleHeadline = \"", "\""));
+}
+
+void
 FunnyhubHandler::parseLink() {
     const char *begin = "\"flv\", \"";
     const char *end   = "\"";

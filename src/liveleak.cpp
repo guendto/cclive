@@ -34,6 +34,13 @@ LiveleakHandler::parseId() {
 }
 
 void
+LiveleakHandler::parseTitle() {
+    std::string title = Util::htmlTitle(pageContent);
+    Util::subStrReplace(title, "LiveLeak.com - ", "");
+    props.setTitle(title);
+}
+
+void
 LiveleakHandler::parseLink() {
     std::string confPath =
         Util::subStr(pageContent, "'config','", "'");

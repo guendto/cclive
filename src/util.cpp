@@ -152,3 +152,8 @@ Util::tokenize(const std::string& src, const std::string& delims) {
     }
     return v;
 }
+
+std::string
+Util::htmlTitle(const std::string& html) {
+    return Util::subStr(html, "<title>", "</title>");
+}

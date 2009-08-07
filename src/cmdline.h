@@ -46,80 +46,78 @@ struct gengetopt_args_info
   const char *hosts_help; /**< @brief list supported hosts help description.  */
   const char *quiet_help; /**< @brief turn off all output help description.  */
   const char *debug_help; /**< @brief show curl debug messages help description.  */
-  const char *title_help; /**< @brief use video page title for naming video files help description.  */
-  char * cclass_arg;	/**< @brief character class to filter titles (--title).  */
-  char * cclass_orig;	/**< @brief character class to filter titles (--title) original value given at command line.  */
-  const char *cclass_help; /**< @brief character class to filter titles (--title) help description.  */
-  const char *no_cclass_help; /**< @brief do not apply character class (--title) help description.  */
-  const char *no_extract_help; /**< @brief do not extract video help description.  */
-  const char *continue_help; /**< @brief resume partially downloaded file help description.  */
-  char * format_arg;	/**< @brief download video format (default='flv').  */
-  char * format_orig;	/**< @brief download video format original value given at command line.  */
-  const char *format_help; /**< @brief download video format help description.  */
-  char * output_video_arg;	/**< @brief write video to file.  */
-  char * output_video_orig;	/**< @brief write video to file original value given at command line.  */
-  const char *output_video_help; /**< @brief write video to file help description.  */
-  const char *number_videos_help; /**< @brief number extracted videos help description.  */
-  char * filename_format_arg;	/**< @brief use custom output filename format.  */
-  char * filename_format_orig;	/**< @brief use custom output filename format original value given at command line.  */
-  const char *filename_format_help; /**< @brief use custom output filename format help description.  */
   const char *emit_csv_help; /**< @brief emit video details as csv to stdout help description.  */
-  int limit_rate_arg;	/**< @brief limit download speed to amount kb per second.  */
-  char * limit_rate_orig;	/**< @brief limit download speed to amount kb per second original value given at command line.  */
-  const char *limit_rate_help; /**< @brief limit download speed to amount kb per second help description.  */
+  const char *print_fname_help; /**< @brief print output filename on a single line help description.  */
   char * agent_arg;	/**< @brief identify as string (default='Mozilla/5.0').  */
   char * agent_orig;	/**< @brief identify as string original value given at command line.  */
   const char *agent_help; /**< @brief identify as string help description.  */
-  char * proxy_arg;	/**< @brief use address for http proxy.  */
-  char * proxy_orig;	/**< @brief use address for http proxy original value given at command line.  */
-  const char *proxy_help; /**< @brief use address for http proxy help description.  */
-  const char *no_proxy_help; /**< @brief do not use proxy at all help description.  */
+  char * proxy_arg;	/**< @brief use specified proxy.  */
+  char * proxy_orig;	/**< @brief use specified proxy original value given at command line.  */
+  const char *proxy_help; /**< @brief use specified proxy help description.  */
+  const char *no_proxy_help; /**< @brief do not use proxy even if http_proxy is defined help description.  */
   int connect_timeout_arg;	/**< @brief max time allowed connection to server take (default='30').  */
   char * connect_timeout_orig;	/**< @brief max time allowed connection to server take original value given at command line.  */
   const char *connect_timeout_help; /**< @brief max time allowed connection to server take help description.  */
-  int connect_timeout_socks_arg;	/**< @brief same as above but with SOCKS proxy workaround (default='30').  */
-  char * connect_timeout_socks_orig;	/**< @brief same as above but with SOCKS proxy workaround original value given at command line.  */
-  const char *connect_timeout_socks_help; /**< @brief same as above but with SOCKS proxy workaround help description.  */
-  char * exec_arg;	/**< @brief command to run when transfer finishes.  */
-  char * exec_orig;	/**< @brief command to run when transfer finishes original value given at command line.  */
-  const char *exec_help; /**< @brief command to run when transfer finishes help description.  */
+  int connect_timeout_socks_arg;	/**< @brief same but tries to work around SOCKS proxy bug in libcurl (default='30').  */
+  char * connect_timeout_socks_orig;	/**< @brief same but tries to work around SOCKS proxy bug in libcurl original value given at command line.  */
+  const char *connect_timeout_socks_help; /**< @brief same but tries to work around SOCKS proxy bug in libcurl help description.  */
+  const char *no_extract_help; /**< @brief do not actually extract video, simulate only help description.  */
+  const char *continue_help; /**< @brief resume partially downloaded file help description.  */
+  int limit_rate_arg;	/**< @brief limit download speed to KB/s.  */
+  char * limit_rate_orig;	/**< @brief limit download speed to KB/s original value given at command line.  */
+  const char *limit_rate_help; /**< @brief limit download speed to KB/s help description.  */
+  char * output_video_arg;	/**< @brief write video to file.  */
+  char * output_video_orig;	/**< @brief write video to file original value given at command line.  */
+  const char *output_video_help; /**< @brief write video to file help description.  */
+  char * format_arg;	/**< @brief download video format (default='flv').  */
+  char * format_orig;	/**< @brief download video format original value given at command line.  */
+  const char *format_help; /**< @brief download video format help description.  */
+  const char *number_videos_help; /**< @brief prepend a numeric prefix to output filenames help description.  */
+  char * regexp_arg;	/**< @brief regular expression to filter video title.  */
+  char * regexp_orig;	/**< @brief regular expression to filter video title original value given at command line.  */
+  const char *regexp_help; /**< @brief regular expression to filter video title help description.  */
+  const char *find_all_help; /**< @brief use repeated matching to find all occurences, like Perl's /g option help description.  */
+  char * filename_format_arg;	/**< @brief output filename format (default='%t.%s').  */
+  char * filename_format_orig;	/**< @brief output filename format original value given at command line.  */
+  const char *filename_format_help; /**< @brief output filename format help description.  */
+  char * exec_arg;	/**< @brief command to invoke when transfer finishes.  */
+  char * exec_orig;	/**< @brief command to invoke when transfer finishes original value given at command line.  */
+  const char *exec_help; /**< @brief command to invoke when transfer finishes help description.  */
   const char *exec_run_help; /**< @brief invoke command defined with --exec help description.  */
   char * stream_exec_arg;	/**< @brief stream command to be invoked.  */
   char * stream_exec_orig;	/**< @brief stream command to be invoked original value given at command line.  */
   const char *stream_exec_help; /**< @brief stream command to be invoked help description.  */
+  const char *stream_pass_help; /**< @brief pass video link to --stream-exec command help description.  */
   int stream_arg;	/**< @brief invoke --stream-exec when transfer reaches %.  */
   char * stream_orig;	/**< @brief invoke --stream-exec when transfer reaches % original value given at command line.  */
   const char *stream_help; /**< @brief invoke --stream-exec when transfer reaches % help description.  */
-  const char *stream_pass_help; /**< @brief pass video link to --stream-exec command help description.  */
-  const char *print_fname_help; /**< @brief print output filename on a single line help description.  */
   
   unsigned int help_given ;	/**< @brief Whether help was given.  */
   unsigned int version_given ;	/**< @brief Whether version was given.  */
   unsigned int hosts_given ;	/**< @brief Whether hosts was given.  */
   unsigned int quiet_given ;	/**< @brief Whether quiet was given.  */
   unsigned int debug_given ;	/**< @brief Whether debug was given.  */
-  unsigned int title_given ;	/**< @brief Whether title was given.  */
-  unsigned int cclass_given ;	/**< @brief Whether cclass was given.  */
-  unsigned int no_cclass_given ;	/**< @brief Whether no-cclass was given.  */
-  unsigned int no_extract_given ;	/**< @brief Whether no-extract was given.  */
-  unsigned int continue_given ;	/**< @brief Whether continue was given.  */
-  unsigned int format_given ;	/**< @brief Whether format was given.  */
-  unsigned int output_video_given ;	/**< @brief Whether output-video was given.  */
-  unsigned int number_videos_given ;	/**< @brief Whether number-videos was given.  */
-  unsigned int filename_format_given ;	/**< @brief Whether filename-format was given.  */
   unsigned int emit_csv_given ;	/**< @brief Whether emit-csv was given.  */
-  unsigned int limit_rate_given ;	/**< @brief Whether limit-rate was given.  */
+  unsigned int print_fname_given ;	/**< @brief Whether print-fname was given.  */
   unsigned int agent_given ;	/**< @brief Whether agent was given.  */
   unsigned int proxy_given ;	/**< @brief Whether proxy was given.  */
   unsigned int no_proxy_given ;	/**< @brief Whether no-proxy was given.  */
   unsigned int connect_timeout_given ;	/**< @brief Whether connect-timeout was given.  */
   unsigned int connect_timeout_socks_given ;	/**< @brief Whether connect-timeout-socks was given.  */
+  unsigned int no_extract_given ;	/**< @brief Whether no-extract was given.  */
+  unsigned int continue_given ;	/**< @brief Whether continue was given.  */
+  unsigned int limit_rate_given ;	/**< @brief Whether limit-rate was given.  */
+  unsigned int output_video_given ;	/**< @brief Whether output-video was given.  */
+  unsigned int format_given ;	/**< @brief Whether format was given.  */
+  unsigned int number_videos_given ;	/**< @brief Whether number-videos was given.  */
+  unsigned int regexp_given ;	/**< @brief Whether regexp was given.  */
+  unsigned int find_all_given ;	/**< @brief Whether find-all was given.  */
+  unsigned int filename_format_given ;	/**< @brief Whether filename-format was given.  */
   unsigned int exec_given ;	/**< @brief Whether exec was given.  */
   unsigned int exec_run_given ;	/**< @brief Whether exec-run was given.  */
   unsigned int stream_exec_given ;	/**< @brief Whether stream-exec was given.  */
-  unsigned int stream_given ;	/**< @brief Whether stream was given.  */
   unsigned int stream_pass_given ;	/**< @brief Whether stream-pass was given.  */
-  unsigned int print_fname_given ;	/**< @brief Whether print-fname was given.  */
+  unsigned int stream_given ;	/**< @brief Whether stream was given.  */
 
   char **inputs ; /**< @brief unamed options (options without names) */
   unsigned inputs_num ; /**< @brief unamed options number */

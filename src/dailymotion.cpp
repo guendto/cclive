@@ -37,6 +37,12 @@ DailymotionHandler::parseId() {
 }
 
 void
+DailymotionHandler::parseTitle() {
+    props.setTitle(
+        Util::subStr(pageContent, "<h1 class=\"dmco_title\">", "</h1>"));
+}
+
+void
 DailymotionHandler::parseLink() {
     std::string paths =
         Util::subStr(pageContent, "\"video\", \"", "\"");

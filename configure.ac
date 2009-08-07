@@ -2,8 +2,8 @@
 # Process this file with autoconf to produce a configure script.
 
 m4_define([vmaj], [0])
-m4_define([vmin], [4])
-m4_define([vmic], [7])
+m4_define([vmin], [5])
+m4_define([vmic], [0])
 
 AC_PREREQ(2.62)
 AC_INIT([cclive], vmaj[.]vmin[.]vmic)
@@ -25,6 +25,10 @@ AC_PATH_PROG(GENGETOPT, gengetopt, no)
 AM_CONDITIONAL([HAVE_GENGETOPT], [test x"$GENGETOPT" != "xno"])
 AC_SUBST(GENGETOPT)
 
+AC_PATH_PROG(PODCHECKER, podchecker, no)
+AM_CONDITIONAL([HAVE_PODCHECKER], [test x"$PODCHECKER" != "xno"])
+AC_SUBST(PODCHECKER)
+
 AC_PATH_PROG(POD2MAN, pod2man, no)
 AM_CONDITIONAL([HAVE_POD2MAN], [test x"$POD2MAN" != "xno"])
 AC_SUBST(POD2MAN)
@@ -33,7 +37,7 @@ AC_PATH_PROG(POD2HTML, pod2html, no)
 AM_CONDITIONAL([HAVE_POD2HTML], [test x"$POD2HTML" != "xno"])
 AC_SUBST(POD2HTML)
 
-# Checks for libraries.
+# Checks for (mandatory) libraries.
 PKG_CHECK_MODULES(libcurl, libcurl >= 7.18.0)
 
 # Checks for header files.
@@ -55,14 +59,6 @@ AC_PROG_GCC_TRADITIONAL
 AC_TYPE_SIGNAL
 AC_CHECK_FUNCS([memset strchr strcspn strspn strtol])
 
-# --with-man
-AC_ARG_WITH([man],
-    [AS_HELP_STRING([--with-man],
-        [install cclive.1 manual page @<:@default=yes@:>@])],
-    [],
-    [with_man=yes])
-AM_CONDITIONAL([WITH_MAN], [test x"$with_man" != "xno"])
-
 # --enable-sigwinch
 AC_ARG_ENABLE([sigwinch],
     [AS_HELP_STRING([--enable-sigwinch],
@@ -81,30 +77,62 @@ AC_ARG_ENABLE([tests],
     [enable_tests=no])
 AM_CONDITIONAL([ENABLE_TESTS], [test x"$enable_tests" != "xno"])
 
-# --with-perl
-AC_ARG_WITH([perl],
-    [AS_HELP_STRING([--with-perl],
-        [embed Perl to enable title parsing @<:@default=no@:>@])],
-    [],
-    [with_perl=no])
-if [ test x"$with_perl" = "xyes" ]; then
-    AC_PATH_PROG(PERL, perl, no)
-    if [ test x"$PERL" = "xno" ]; then
-        AC_MSG_ERROR([perl not found in path])
-    fi
-    perl_CCOPTS=`$PERL -MExtUtils::Embed -e ccopts`
-    perl_LDOPTS=`$PERL -MExtUtils::Embed -e ldopts`
-    AC_SUBST(perl_CCOPTS)
-    AC_SUBST(perl_LDOPTS)
-    AC_MSG_CHECKING([for HTML::TokeParser])
-    if $PERL -MHTML::TokeParser >/dev/null 2>&1; then
-        AC_MSG_RESULT([yes])
+# --with-iconv
+AC_ARG_WITH([iconv],
+    [AS_HELP_STRING([--with-iconv=PREFIX],
+        [search for libiconv in PREFIX @<:@default=/usr@:>@])],
+    [with_iconv=$withval],
+    [with_iconv=no]
+)
+if [ test x"$with_iconv" != "xno" ]; then
+    if [ test x"$with_iconv" = "xyes" ]; then
+        AC_CHECK_HEADER([iconv.h],
+            AC_CHECK_LIB([iconv], [iconv_open], [libiconv_LIBS=-liconv])
+        )
     else
-        AC_MSG_ERROR([HTML::TokeParser module is required])
+        # User knows better.
+        libiconv_CFLAGS="-I$with_iconv/include"
+        libiconv_LIBS="-L$with_iconv/lib -liconv"
     fi
-    AC_DEFINE([WITH_PERL], [1], [Whether Perl is embedded])
+    if [ test x"$libiconv_LIBS" = "x" ]; then
+        AC_MSG_ERROR([libiconv not found])
+    fi
+    AC_SUBST(libiconv_CFLAGS)
+    AC_SUBST(libiconv_LIBS)
+    AC_DEFINE([WITH_ICONV], [1], [With libiconv])
 fi
-AM_CONDITIONAL([WITH_PERL], [test x"$with_perl" != "xno"])
+AM_CONDITIONAL([WITH_ICONV], [test x"$with_iconv" != "xno"])
+
+AC_ARG_WITH([pcrecpp],
+    [AS_HELP_STRING([--with-pcrecpp=PREFIX],
+        [search for libpcrecpp in PREFIX @<:@default=pkg-config returned path@:>@])],
+    [with_pcrecpp=$withval],
+    [with_pcrecpp=no]
+)
+if [ test x"$with_pcrecpp" != "xno" ]; then
+    if [ test x"$with_pcrecpp" = "xyes" ]; then
+        PKG_CHECK_MODULES(libpcrecpp, libpcrecpp >= 7.9)
+    else
+        # User knows better.
+        libpcrecpp_CFLAGS="-I$with_pcrecpp/include"
+        libpcrecpp_LIBS="-L$with_pcrecpp/lib -lpcrecpp"
+    fi
+    if [ test x"$libpcrecpp_LIBS" = "x" ]; then
+        AC_MSG_ERROR([libpcrecpp not found])
+    fi
+    AC_SUBST(libpcrecpp_CFLAGS)
+    AC_SUBST(libpcrecpp_LIBS)
+    AC_DEFINE([WITH_PCRE], [1], [With libpcrecpp])
+fi
+AM_CONDITIONAL([WITH_PCRE], [test x"$with_pcre" != "xno"])
+
+# --with-man
+AC_ARG_WITH([man],
+    [AS_HELP_STRING([--with-man],
+        [install cclive.1 manual page @<:@default=yes@:>@])],
+    [],
+    [with_man=yes])
+AM_CONDITIONAL([WITH_MAN], [test x"$with_man" != "xno"])
 
 # Check host.
 case "$host" in
@@ -120,5 +148,6 @@ esac
 
 AC_CONFIG_FILES([Makefile
                  src/Makefile
-                 tests/Makefile])
+                 tests/Makefile
+                 docs/Makefile])
 AC_OUTPUT

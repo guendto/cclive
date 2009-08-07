@@ -52,18 +52,11 @@
 #include "log.h"
 #include "app.h"
 
-#ifdef WITH_PERL
-#include "pl.h"
-#endif
-
 // singleton instances
 static std::tr1::shared_ptr<OptionsMgr> __optsmgr(new OptionsMgr);
 static std::tr1::shared_ptr<CurlMgr>    __curlmgr(new CurlMgr);
 static std::tr1::shared_ptr<ExecMgr>    __execmgr(new ExecMgr);
 static std::tr1::shared_ptr<LogMgr>     __logmgr (new LogMgr);
-#ifdef WITH_PERL
-static std::tr1::shared_ptr<PerlMgr>    __perlmgr(new PerlMgr);
-#endif
 
 extern void handle_sigwinch(int); // src/progress.cpp
 
@@ -174,14 +167,6 @@ App::run() {
 
     execmgr.verifyExecArgument();
 
-#ifndef WITH_PERL
-    if (opts.title_given) {
-        logmgr.cerr()
-            << "warn: built without perl: ignoring --title"
-            << std::endl;
-    }
-#endif
-
 #ifdef HOST_W32
     if (opts.stream_exec_given) {
         logmgr.cerr()
@@ -193,9 +178,8 @@ App::run() {
 
     std::vector<std::string> tokens;
 
-    if (!opts.inputs_num) {
+    if (!opts.inputs_num)
         tokens = parseInput();
-    }
     else {
         for (register unsigned int i=0; i<opts.inputs_num; ++i)
             tokens.push_back(opts.inputs[i]);
@@ -242,6 +226,7 @@ App::parseInput() {
         std::istream_iterator<std::string >(),
         std::back_inserter<std::vector<std::string> >(tokens)
     );
+
     return tokens;
 }
 
@@ -262,20 +247,23 @@ static const char copyr_notice[] =
         locale = const_cast<char *>("undefined");
 
     std::cout
-        << CMDLINE_PARSER_PACKAGE   << " version "
-        << CMDLINE_PARSER_VERSION   << " with libcurl version "
-        << c->version               << "  ["
-        << CANONICAL_TARGET         << "]\n"
-        << copyr_notice             << "\n"
-        << "\n  Config  : "         << optsmgr.getPath()
+        << CMDLINE_PARSER_PACKAGE << " version "
+        << CMDLINE_PARSER_VERSION << " with libcurl version "
+        << c->version             << "  ["
+        << CANONICAL_TARGET       << "]\n"
+        << copyr_notice           << "\n"
+        << "\n  Locale  : "       << locale
+        << "\n  Config  : "       << optsmgr.getPath()
         << "\n  Features: "
+#ifdef WITH_ICONV
+        << "--with-iconv "
+#endif
+#ifdef WITH_PCRE
+        << "--with-pcrecpp "
+#endif
 #ifdef USE_SIGWINCH
         << "--enable-sigwinch "
 #endif
-#ifdef WITH_PERL
-        << "--with-perl "
-#endif
-        << "\n  Locale  : "           << locale
-        << "\n  Home    : "           << "<http://cclive.googlecode.com/>"
+        << "\n  Home    : "       << "<http://cclive.googlecode.com/>"
         << std::endl;
 }

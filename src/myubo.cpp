@@ -35,6 +35,11 @@ MyuboHandler::parseId() {
 }
 
 void
+MyuboHandler::parseTitle() {
+    // Done in parseLink.
+}
+
+void
 MyuboHandler::parseLink() {
 
     // myubo uses a static <title>. Grab video title elsewhere.

@@ -1,30 +1,37 @@
 
-Building cclive using mingw32 is covered in the mingw32-build.sh script.
-
 README for MSWindows users
 --------------------------
 
-* due to the limitations of mingw32 and mswindows, some of the
-features are not available on this platform -- cclive will spew
-out warnings for those features
+* Mswindows binaries are experimental
 
-* cclive checks for CCLIVE_HOME and HOME environment variable,
-if neither is defined, cclive ignores config file parsing
+* The testing relies on those users who use them and report back any bugs
 
-* cclive looks for a "ccliverc" file, not .ccliverc as it
-does on unix-like systems
+* The author of these binaries has no use for mswindows binaries, he's only
+cross-compiling and packaging them
 
-* For example:
+* If you are interested in taking over this port, please contact the author
+about it
 
-  set CCLIVE_HOME c:\cclive
+* Some features are not supported by these binaries due to limitations of
+mswindows, cclive typically spews out warnings accordingly
 
-  type c:\cclive\ccliverc
+* If, and only if, either CCLIVE_HOME or HOME environment variable is defined,
+cclive parses config file
+
+* Note that cclive looks for "ccliverc" config file, not .ccliverc as it
+does on Unix-like systems
+
+* Example:
+
+  > set CCLIVE_HOME c:\cclive
+
+  > type c:\cclive\ccliverc
   proxy = http://foo:1234
   debug
 
-  c:\cclive\cclive.exe --version
+  > c:\cclive\cclive.exe --version
   ... (should print)
   Config: c:\cclive\ccliverc
   ...
 
-* See also cclive.1.html for cclive(1) manual page
+* The manual page cclive(1) is bundled in HTML, be sure to glance it over

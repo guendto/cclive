@@ -48,6 +48,7 @@ VideoProperties::VideoProperties()
 void
 VideoProperties::setId(const std::string& id) {
     this->id = id;
+    Util::subStrReplace(this->id, "-", "_");
 }
 
 void
@@ -164,7 +165,7 @@ VideoProperties::getFilename() const {
     return filename;
 }
 
-static int video_num;
+static int video_num = 0;
 
 void
 VideoProperties::formatOutputFilename() {
@@ -181,10 +182,7 @@ VideoProperties::formatOutputFilename() {
               << "_";
         }
 
-        if (!opts.filename_format_given)
-            defaultOutputFilenameFormatter(b);
-        else
-            customOutputFilenameFormatter(b);
+        customOutputFilenameFormatter(b);
 
         filename = b.str();
 
@@ -216,32 +214,13 @@ VideoProperties::formatOutputFilename() {
 }
 
 void
-VideoProperties::defaultOutputFilenameFormatter(
-    std::stringstream& b)
-{
-    Options opts = optsmgr.getOptions();
-    if (opts.title_given && title.length() > 0)
-        b << title;
-    else {
-        Util::subStrReplace(id, "-", "_");
-        b << host << "_" << id;
-    }
-
-    b << "." << suffix;
-}
-
-void
 VideoProperties::customOutputFilenameFormatter(
     std::stringstream& b)
 {
-    Options opts = optsmgr.getOptions();
+    Options opts    = optsmgr.getOptions();
     std::string fmt = opts.filename_format_arg;
-    std::string _title = id;
-#ifdef WITH_PERL
-    if (opts.title_given && title.length() > 0)
-        _title = title;
-#endif
-    Util::subStrReplace(fmt, "%t", _title);
+
+    Util::subStrReplace(fmt, "%t", title);
     Util::subStrReplace(fmt, "%i", id);
     Util::subStrReplace(fmt, "%h", host);
     Util::subStrReplace(fmt, "%s", suffix);

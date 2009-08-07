@@ -5,29 +5,59 @@ option "version"
 option "hosts"
     - "list supported hosts"
     optional
+
+section "Output"
 option "quiet"
     q "turn off all output"
     optional
 option "debug"
     - "show curl debug messages"
     optional
-option "title"
-    t "use video page title for naming video files"
+option "emit-csv"
+    - "emit video details as csv to stdout"
     optional
-option "cclass"
-    - "character class to filter titles (--title)"
-    string typestr="CCLASS"
+option "print-fname"
+    - "print output filename on a single line"
     optional
-    dependon="title"
-option "no-cclass"
-    C "do not apply character class (--title)"
+
+section "HTTP"
+option "agent"
+    - "identify as string"
+    string typestr="string"
+    default="Mozilla/5.0"
     optional
-    dependon="title"
+option "proxy"
+    - "use specified proxy"
+    string typestr="proxyhost[:port]"
+    optional
+option "no-proxy"
+    - "do not use proxy even if http_proxy is defined"
+    optional
+option "connect-timeout"
+    - "max time allowed connection to server take"
+    int typestr="seconds"
+    default="30"
+    optional
+option "connect-timeout-socks"
+    - "same but tries to work around SOCKS proxy bug in libcurl"
+    int typestr="s"
+    default="30"
+    optional
+
+section "Download"
 option "no-extract"
-    n "do not extract video"
+    n "do not actually extract video, simulate only"
     optional
 option "continue"
     c "resume partially downloaded file"
+    optional
+option "limit-rate"
+    l "limit download speed to KB/s"
+    int typestr="kb/s"
+    optional
+option "output-video"
+    O "write video to file"
+    string typestr="file"
     optional
 option "format"
     f "download video format"
@@ -43,69 +73,48 @@ option "format"
         # golem:
         "high", "ipod"
     default="flv"
-    typestr="FORMAT"
+    typestr="format"
     optional
-option "output-video"
-    O "write video to file"
-    string typestr="FILE"
-    no
+
+section "Filename formatting"
 option "number-videos"
-    N "number extracted videos"
+    N "prepend a numeric prefix to output filenames"
     optional
+option "regexp"
+    r "regular expression to filter video title"
+    string typestr="expr"
+    optional
+option "find-all"
+    g "use repeated matching to find all occurences, like Perl's /g option"
+    optional
+    dependon="regexp"
 option "filename-format"
-    - "use custom output filename format"
-    string typestr="STRING"
-    no
-option "emit-csv"
-    - "emit video details as csv to stdout"
+    F "output filename format"
+    string typestr="string"
+    default="%t.%s"
     optional
-option "limit-rate"
-    - "limit download speed to amount kb per second"
-    int typestr="AMOUNT"
-    optional
-option "agent"
-    - "identify as string"
-    string typestr="STRING"
-    no
-    default="Mozilla/5.0"
-option "proxy"
-    - "use address for http proxy"
-    string typestr="ADDRESS"
-    no
-option "no-proxy"
-    - "do not use proxy at all"
-    optional
-option "connect-timeout"
-    - "max time allowed connection to server take"
-    int typestr="SECS"
-    default="30"
-    optional
-option "connect-timeout-socks"
-    - "same as above but with SOCKS proxy workaround"
-    int typestr="S"
-    default="30"
-    optional
+
+section "Subsequent"
 option "exec"
-    - "command to run when transfer finishes"
-    string typestr="COMMAND"
+    - "command to invoke when transfer finishes"
+    string typestr="expr[;|+]"
     optional
 option "exec-run"
     e "invoke command defined with --exec"
     optional
     dependon="exec"
+
+section "Streaming"
 option "stream-exec"
     - "stream command to be invoked"
-    string typestr="COMMAND"
+    string typestr="expr"
     optional
-option "stream"
-    - "invoke --stream-exec when transfer reaches %"
-    int typestr="PERCENT"
-    optional
-    dependon="stream-exec"
-option  "stream-pass"
+option "stream-pass"
     s "pass video link to --stream-exec command"
     optional
     dependon="stream-exec"
-option "print-fname"
-    - "print output filename on a single line"
+option "stream"
+    - "invoke --stream-exec when transfer reaches %"
+    int typestr="percent"
     optional
+    dependon="stream-exec"

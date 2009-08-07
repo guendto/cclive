@@ -1,5 +1,5 @@
 
-EXTRA_DIST= pod.pl
+EXTRA_DIST=
 
 check_PROGRAMS=\
 youtube\
@@ -16,10 +16,6 @@ myubo\
 vimeo
 
 TESTS= $(check_PROGRAMS)
-
-if WITH_PERL
-TESTS+= pod.pl
-endif
 
 common= test.c test.h
 

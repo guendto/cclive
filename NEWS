@@ -1,0 +1,31 @@
+News about cclive releases
+--------------------------
+
+Release 0.5.0
+-------------
+
+The dependency of Perl HTML::Tokenizer Perl module have been replaced with
+iconv and pcrecpp (c++ bindings for pcre). Perl (or libperl) was a rather
+steep requirement after all.
+
+cclive previously only allowed the use of video titles in filenames if it
+was built with Perl support. It now uses video title for filenames by default.
+
+cclive can now be built with the *optional* iconv (to convert character sets)
+and pcrecpp (to custom filter video titles) support, but these are only
+recommendations.
+
+Due to these changes, the following options have been removed in this release:
+--title (obsolete since 0.4.1 after adding --filename-format), --cclass and
+--no-cclass (previously used with Perl, replaced with --regexp and --find-all).
+
+  -r, --regexp [req. pcrecpp]
+    - Defines the regular expression that can be used to "filter"
+      video titles before they are used for filenames
+
+  -g, --find-all [req. pcrecpp]
+    - Used together with the above to repeat the matching to find
+      all occurences, similar to Perl's /g option
+
+  Example:
+    cclive -gr "(\w|\s)" URL

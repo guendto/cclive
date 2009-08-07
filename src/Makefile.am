@@ -13,10 +13,6 @@ src =			\
 	cmdline.c	\
 	hostfactory.cpp
 
-if WITH_PERL
-src += xsinit.c pl.cpp pl.h
-endif
-
 host =			\
 	youtube.cpp	\
 	break.cpp	\
@@ -48,13 +44,8 @@ hdr =			\
 	cmdline.h	\
 	hostfactory.h
 
-INCLUDES	=$(libcurl_CFLAGS)
-LIBS 		=$(libcurl_LIBS)
-
-if WITH_PERL
-INCLUDES	+=$(perl_CCOPTS)
-LIBS		+=$(perl_LDOPTS)
-endif
+INCLUDES	=$(libcurl_CFLAGS) $(libiconv_CFLAGS) $(libpcrecpp_CFLAGS)
+LIBS 		=$(libcurl_LIBS) $(libiconv_LIBS) $(libpcrecpp_LIBS)
 
 bin_PROGRAMS		=cclive
 cclive_SOURCES 		=$(src) $(host) $(hdr)

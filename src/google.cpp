@@ -34,6 +34,12 @@ GoogleHandler::parseId() {
 }
 
 void
+GoogleHandler::parseTitle() {
+    props.setTitle(
+        Util::subStr(pageContent, "<div class=titlebar-title>", "</div>"));
+}
+
+void
 GoogleHandler::parseLink() {
     props.setLink( Util::subStr(pageContent, "videoUrl\\x3d", "\\x26") );
 
