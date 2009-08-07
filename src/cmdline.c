@@ -27,7 +27,7 @@
 
 const char *gengetopt_args_info_purpose = "";
 
-const char *gengetopt_args_info_usage = "Usage: " CMDLINE_PARSER_PACKAGE " [-h|--help] [-v|--version] [--hosts] [-q|--quiet] [--debug] \n         [--emit-csv] [--print-fname] [--agent=string] \n         [--proxy=proxyhost[:port]] [--no-proxy] [--connect-timeout=seconds] \n         [--connect-timeout-socks=s] [-n|--no-extract] [-c|--continue] \n         [-lkb/s|--limit-rate=kb/s] [-Ofile|--output-video=file] \n         [-fformat|--format=format] [-N|--number-videos] \n         [-Fstring|--filename-format=string] [-rexpr|--regexp=expr] \n         [-g|--find-all] [--exec=expr[;|+]] [-e|--exec-run] \n         [--stream-exec=expr] [-s|--stream-pass] [--stream=percent] [URL]...";
+const char *gengetopt_args_info_usage = "Usage: " CMDLINE_PARSER_PACKAGE " [-h|--help] [-v|--version] [--hosts] [-q|--quiet] [--debug] \n         [--emit-csv] [--print-fname] [--agent=string] \n         [--proxy=proxyhost[:port]] [--no-proxy] [--connect-timeout=seconds] \n         [--connect-timeout-socks=s] [-n|--no-extract] [-c|--continue] \n         [-lkb/s|--limit-rate=kb/s] [-Ofile|--output-video=file] \n         [-fformat|--format=format] [-N|--number-videos] [-rexpr|--regexp=expr] \n         [-g|--find-all] [-Fstring|--filename-format=string] [--exec=expr[;|+]] \n         [-e|--exec-run] [--stream-exec=expr] [-s|--stream-pass] \n         [--stream=percent] [URL]...";
 
 const char *gengetopt_args_info_description = "";
 
@@ -54,9 +54,9 @@ const char *gengetopt_args_info_help[] = {
   "  -f, --format=format           download video format  (possible \n                                  values=\"flv\", \"best\", \"fmt17\", \n                                  \"fmt18\", \"fmt22\", \"fmt35\", \"hq\", \n                                  \"3gp\", \"spark-mini\", \"vp6-hq\", \n                                  \"vp6-hd\", \"vp6\", \"h264\", \"hd\", \n                                  \"mp4\", \"high\", \"ipod\" default=`flv')",
   "\nFilename formatting:",
   "  -N, --number-videos           prepend a numeric prefix to output filenames",
-  "  -F, --filename-format=string  use output filename format  (default=`%t.%s')",
   "  -r, --regexp=expr             regular expression to filter video title",
   "  -g, --find-all                use repeated matching to find all occurences, \n                                  like Perl's /g option",
+  "  -F, --filename-format=string  output filename format  (default=`%t.%s')",
   "\nSubsequent:",
   "      --exec=expr[;|+]          command to invoke when transfer finishes",
   "  -e, --exec-run                invoke command defined with --exec",
@@ -134,9 +134,9 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->output_video_given = 0 ;
   args_info->format_given = 0 ;
   args_info->number_videos_given = 0 ;
-  args_info->filename_format_given = 0 ;
   args_info->regexp_given = 0 ;
   args_info->find_all_given = 0 ;
+  args_info->filename_format_given = 0 ;
   args_info->exec_given = 0 ;
   args_info->exec_run_given = 0 ;
   args_info->stream_exec_given = 0 ;
@@ -161,10 +161,10 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->output_video_orig = NULL;
   args_info->format_arg = gengetopt_strdup ("flv");
   args_info->format_orig = NULL;
-  args_info->filename_format_arg = gengetopt_strdup ("%t.%s");
-  args_info->filename_format_orig = NULL;
   args_info->regexp_arg = NULL;
   args_info->regexp_orig = NULL;
+  args_info->filename_format_arg = gengetopt_strdup ("%t.%s");
+  args_info->filename_format_orig = NULL;
   args_info->exec_arg = NULL;
   args_info->exec_orig = NULL;
   args_info->stream_exec_arg = NULL;
@@ -196,9 +196,9 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->output_video_help = gengetopt_args_info_help[18] ;
   args_info->format_help = gengetopt_args_info_help[19] ;
   args_info->number_videos_help = gengetopt_args_info_help[21] ;
-  args_info->filename_format_help = gengetopt_args_info_help[22] ;
-  args_info->regexp_help = gengetopt_args_info_help[23] ;
-  args_info->find_all_help = gengetopt_args_info_help[24] ;
+  args_info->regexp_help = gengetopt_args_info_help[22] ;
+  args_info->find_all_help = gengetopt_args_info_help[23] ;
+  args_info->filename_format_help = gengetopt_args_info_help[24] ;
   args_info->exec_help = gengetopt_args_info_help[26] ;
   args_info->exec_run_help = gengetopt_args_info_help[27] ;
   args_info->stream_exec_help = gengetopt_args_info_help[29] ;
@@ -298,10 +298,10 @@ cmdline_parser_release (struct gengetopt_args_info *args_info)
   free_string_field (&(args_info->output_video_orig));
   free_string_field (&(args_info->format_arg));
   free_string_field (&(args_info->format_orig));
-  free_string_field (&(args_info->filename_format_arg));
-  free_string_field (&(args_info->filename_format_orig));
   free_string_field (&(args_info->regexp_arg));
   free_string_field (&(args_info->regexp_orig));
+  free_string_field (&(args_info->filename_format_arg));
+  free_string_field (&(args_info->filename_format_orig));
   free_string_field (&(args_info->exec_arg));
   free_string_field (&(args_info->exec_orig));
   free_string_field (&(args_info->stream_exec_arg));
@@ -419,12 +419,12 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "format", args_info->format_orig, cmdline_parser_format_values);
   if (args_info->number_videos_given)
     write_into_file(outfile, "number-videos", 0, 0 );
-  if (args_info->filename_format_given)
-    write_into_file(outfile, "filename-format", args_info->filename_format_orig, 0);
   if (args_info->regexp_given)
     write_into_file(outfile, "regexp", args_info->regexp_orig, 0);
   if (args_info->find_all_given)
     write_into_file(outfile, "find-all", 0, 0 );
+  if (args_info->filename_format_given)
+    write_into_file(outfile, "filename-format", args_info->filename_format_orig, 0);
   if (args_info->exec_given)
     write_into_file(outfile, "exec", args_info->exec_orig, 0);
   if (args_info->exec_run_given)
@@ -756,9 +756,9 @@ cmdline_parser_internal (
         { "output-video",	1, NULL, 'O' },
         { "format",	1, NULL, 'f' },
         { "number-videos",	0, NULL, 'N' },
-        { "filename-format",	1, NULL, 'F' },
         { "regexp",	1, NULL, 'r' },
         { "find-all",	0, NULL, 'g' },
+        { "filename-format",	1, NULL, 'F' },
         { "exec",	1, NULL, 0 },
         { "exec-run",	0, NULL, 'e' },
         { "stream-exec",	1, NULL, 0 },
@@ -767,7 +767,7 @@ cmdline_parser_internal (
         { 0,  0, 0, 0 }
       };
 
-      c = getopt_long (argc, argv, "hvqncl:O:f:NF:r:ges", long_options, &option_index);
+      c = getopt_long (argc, argv, "hvqncl:O:f:Nr:gF:es", long_options, &option_index);
 
       if (c == -1) break;	/* Exit from `while (1)' loop.  */
 
@@ -874,18 +874,6 @@ cmdline_parser_internal (
             goto failure;
         
           break;
-        case 'F':	/* use output filename format.  */
-        
-        
-          if (update_arg( (void *)&(args_info->filename_format_arg), 
-               &(args_info->filename_format_orig), &(args_info->filename_format_given),
-              &(local_args_info.filename_format_given), optarg, 0, "%t.%s", ARG_STRING,
-              check_ambiguity, override, 0, 0,
-              "filename-format", 'F',
-              additional_error))
-            goto failure;
-        
-          break;
         case 'r':	/* regular expression to filter video title.  */
         
         
@@ -906,6 +894,18 @@ cmdline_parser_internal (
               &(local_args_info.find_all_given), optarg, 0, 0, ARG_NO,
               check_ambiguity, override, 0, 0,
               "find-all", 'g',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 'F':	/* output filename format.  */
+        
+        
+          if (update_arg( (void *)&(args_info->filename_format_arg), 
+               &(args_info->filename_format_orig), &(args_info->filename_format_given),
+              &(local_args_info.filename_format_given), optarg, 0, "%t.%s", ARG_STRING,
+              check_ambiguity, override, 0, 0,
+              "filename-format", 'F',
               additional_error))
             goto failure;
         

@@ -73,13 +73,13 @@ struct gengetopt_args_info
   char * format_orig;	/**< @brief download video format original value given at command line.  */
   const char *format_help; /**< @brief download video format help description.  */
   const char *number_videos_help; /**< @brief prepend a numeric prefix to output filenames help description.  */
-  char * filename_format_arg;	/**< @brief use output filename format (default='%t.%s').  */
-  char * filename_format_orig;	/**< @brief use output filename format original value given at command line.  */
-  const char *filename_format_help; /**< @brief use output filename format help description.  */
   char * regexp_arg;	/**< @brief regular expression to filter video title.  */
   char * regexp_orig;	/**< @brief regular expression to filter video title original value given at command line.  */
   const char *regexp_help; /**< @brief regular expression to filter video title help description.  */
   const char *find_all_help; /**< @brief use repeated matching to find all occurences, like Perl's /g option help description.  */
+  char * filename_format_arg;	/**< @brief output filename format (default='%t.%s').  */
+  char * filename_format_orig;	/**< @brief output filename format original value given at command line.  */
+  const char *filename_format_help; /**< @brief output filename format help description.  */
   char * exec_arg;	/**< @brief command to invoke when transfer finishes.  */
   char * exec_orig;	/**< @brief command to invoke when transfer finishes original value given at command line.  */
   const char *exec_help; /**< @brief command to invoke when transfer finishes help description.  */
@@ -110,9 +110,9 @@ struct gengetopt_args_info
   unsigned int output_video_given ;	/**< @brief Whether output-video was given.  */
   unsigned int format_given ;	/**< @brief Whether format was given.  */
   unsigned int number_videos_given ;	/**< @brief Whether number-videos was given.  */
-  unsigned int filename_format_given ;	/**< @brief Whether filename-format was given.  */
   unsigned int regexp_given ;	/**< @brief Whether regexp was given.  */
   unsigned int find_all_given ;	/**< @brief Whether find-all was given.  */
+  unsigned int filename_format_given ;	/**< @brief Whether filename-format was given.  */
   unsigned int exec_given ;	/**< @brief Whether exec was given.  */
   unsigned int exec_run_given ;	/**< @brief Whether exec-run was given.  */
   unsigned int stream_exec_given ;	/**< @brief Whether stream-exec was given.  */

@@ -80,11 +80,6 @@ section "Filename formatting"
 option "number-videos"
     N "prepend a numeric prefix to output filenames"
     optional
-option "filename-format"
-    F "use output filename format"
-    string typestr="string"
-    default="%t.%s"
-    optional
 option "regexp"
     r "regular expression to filter video title"
     string typestr="expr"
@@ -93,6 +88,11 @@ option "find-all"
     g "use repeated matching to find all occurences, like Perl's /g option"
     optional
     dependon="regexp"
+option "filename-format"
+    F "output filename format"
+    string typestr="string"
+    default="%t.%s"
+    optional
 
 section "Subsequent"
 option "exec"
