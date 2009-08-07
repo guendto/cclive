@@ -39,8 +39,8 @@
  * libcurl (7.18.0+)
 
  Optional (see above):
-   * iconv (1.13.1+)  [libiconv]
-   * pcre  (7.9+)     [libpcrecpp]
+   * libiconv (1.13.1+)
+   * libpcrecpp  (7.9+)
 
 
             Examples
