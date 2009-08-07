@@ -1,3 +1,20 @@
+Version 0.5.0
+
+ User-visible changes:
+  * Add: --regexp, --find-all options
+  * Remove: --title, --cclass, --no-cclass
+  * New default: --filename-format: "%t.%s"
+
+ Developer-visible changes:
+  * Update NEWS
+  * configure:
+    # Add: --with-iconv[=prefix]
+    # Add: --with-pcrecpp[=prefix]
+    # Add: make checkpod (replaces tests/pod.pl)
+    # Remove: --with-perl
+  * Remove: tests/pod.pl
+
+
 Version 0.4.7
 (August 5, 2009)
 
