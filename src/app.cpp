@@ -254,15 +254,12 @@ static const char copyr_notice[] =
         << copyr_notice           << "\n"
         << "\n  Locale  : "       << locale
         << "\n  Config  : "       << optsmgr.getPath()
-        << "\n  Features: "
-#ifdef WITH_ICONV
-        << "--with-iconv "
-#endif
-#ifdef WITH_PCRE
-        << "--with-pcrecpp "
+        << "\n  Features: pcre "
+#ifdef HAVE_ICONV
+        << "iconv "
 #endif
 #ifdef USE_SIGWINCH
-        << "--enable-sigwinch "
+        << "sigwinch "
 #endif
         << "\n  Home    : "       << "<http://cclive.googlecode.com/>"
         << std::endl;
