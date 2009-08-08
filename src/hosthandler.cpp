@@ -29,7 +29,7 @@
 #include <string>
 #include <vector>
 
-#ifdef WITH_ICONV
+#ifdef HAVE_ICONV
 #include <iconv.h>
 #endif
 
@@ -78,7 +78,7 @@ HostHandler::parsePage(const std::string& url) {
 
 void
 HostHandler::toUnicode() {
-#ifdef WITH_ICONV
+#ifdef HAVE_ICONV
     std::string charset;
     try {
         charset =
@@ -101,27 +101,20 @@ HostHandler::toUnicode() {
         }
 
         char inbuf[256];
+        ICONV_CONST char *inptr = inbuf;
         size_t insize = props.getTitle().length();
 
         if (insize >= sizeof(inbuf))
             insize = sizeof(inbuf);
 
-        char *inptr = inbuf;
-        snprintf(inptr, sizeof(inbuf), props.getTitle().c_str());
+        snprintf(inbuf, sizeof(inbuf), props.getTitle().c_str());
 
         char outbuf[256];
         size_t avail = sizeof(outbuf);
         char *wptr   = (char *)outbuf;
         memset(wptr, 0, sizeof(outbuf));
 
-        size_t rc = iconv(cd, 
-#ifndef HOST_W32 // TODO: pinpoint real reason, w32 is unlikely the reason
-            (const char **)
-#else
-            (char **)
-#endif
-            &inptr, &insize, &wptr, &avail);
-
+        size_t rc = iconv(cd, &inptr, &insize, &wptr, &avail);
         if (rc == (size_t)-1) {
             logmgr.cerr()
                 << "error while converting characters from "

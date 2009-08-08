@@ -106,8 +106,10 @@ INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
 LDFLAGS = @LDFLAGS@
+LIBICONV = @LIBICONV@
 LIBOBJS = @LIBOBJS@
-LIBS = $(libcurl_LIBS) $(libiconv_LIBS) $(libpcrecpp_LIBS)
+LIBS = $(libcurl_LIBS) $(LIBICONV) $(LTLIBICONV)
+LTLIBICONV = @LTLIBICONV@
 LTLIBOBJS = @LTLIBOBJS@
 MAKEINFO = @MAKEINFO@
 MKDIR_P = @MKDIR_P@
@@ -151,18 +153,18 @@ docdir = @docdir@
 dvidir = @dvidir@
 exec_prefix = @exec_prefix@
 host = \
-	youtube.cpp	\
-	break.cpp	\
-	evisor.cpp	\
-	sevenload.cpp	\
-	liveleak.cpp	\
-	dailymotion.cpp	\
-	vimeo.cpp	\
-	golem.cpp	\
-	clipfish.cpp	\
-	funnyhub.cpp    \
-	myubo.cpp	\
-	google.cpp
+youtube.cpp\
+break.cpp\
+evisor.cpp\
+sevenload.cpp\
+liveleak.cpp\
+dailymotion.cpp\
+vimeo.cpp\
+golem.cpp\
+clipfish.cpp\
+funnyhub.cpp\
+myubo.cpp\
+google.cpp
 
 host_alias = @host_alias@
 host_cpu = @host_cpu@
@@ -176,8 +178,6 @@ libcurl_CFLAGS = @libcurl_CFLAGS@
 libcurl_LIBS = @libcurl_LIBS@
 libdir = @libdir@
 libexecdir = @libexecdir@
-libiconv_CFLAGS = @libiconv_CFLAGS@
-libiconv_LIBS = @libiconv_LIBS@
 libpcrecpp_CFLAGS = @libpcrecpp_CFLAGS@
 libpcrecpp_LIBS = @libpcrecpp_LIBS@
 localedir = @localedir@
@@ -202,38 +202,38 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 src = \
-	main.cpp	\
-	app.cpp		\
-	except.cpp	\
-	util.cpp	\
-	hosthandler.cpp	\
-	opts.cpp	\
-	video.cpp	\
-	curl.cpp	\
-	progressbar.cpp	\
-	exec.cpp	\
-	log.cpp		\
-	cmdline.c	\
-	hostfactory.cpp
+main.cpp\
+app.cpp	\
+except.cpp\
+util.cpp\
+hosthandler.cpp\
+opts.cpp\
+video.cpp\
+curl.cpp\
+progressbar.cpp\
+exec.cpp\
+log.cpp	\
+cmdline.c\
+hostfactory.cpp
 
 hdr = \
-	app.h		\
-	except.h	\
-	util.h		\
-	opts.h		\
-	hosthandler.h	\
-	video.h		\
-	singleton.h	\
-	macros.h	\
-	curl.h		\
-	progressbar.h	\
-	exec.h		\
-	error.h		\
-	log.h		\
-	cmdline.h	\
-	hostfactory.h
+app.h\
+except.h\
+util.h\
+opts.h\
+hosthandler.h\
+video.h\
+singleton.h\
+macros.h\
+curl.h\
+progressbar.h\
+exec.h\
+error.h\
+log.h\
+cmdline.h\
+hostfactory.h
 
-INCLUDES = $(libcurl_CFLAGS) $(libiconv_CFLAGS) $(libpcrecpp_CFLAGS)
+INCLUDES = $(libcurl_CFLAGS)
 cclive_SOURCES = $(src) $(host) $(hdr)
 all: all-am
 

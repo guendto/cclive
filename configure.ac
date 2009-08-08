@@ -20,6 +20,7 @@ AM_INIT_AUTOMAKE()
 AC_PROG_CXX
 AC_PROG_CC
 AC_GNU_SOURCE
+AM_ICONV
 
 AC_PATH_PROG(GENGETOPT, gengetopt, no)
 AM_CONDITIONAL([HAVE_GENGETOPT], [test x"$GENGETOPT" != "xno"])
@@ -77,32 +78,7 @@ AC_ARG_ENABLE([tests],
     [enable_tests=no])
 AM_CONDITIONAL([ENABLE_TESTS], [test x"$enable_tests" != "xno"])
 
-# --with-iconv
-AC_ARG_WITH([iconv],
-    [AS_HELP_STRING([--with-iconv=PREFIX],
-        [search for libiconv in PREFIX @<:@default=/usr@:>@])],
-    [with_iconv=$withval],
-    [with_iconv=no]
-)
-if [ test x"$with_iconv" != "xno" ]; then
-    if [ test x"$with_iconv" = "xyes" ]; then
-        AC_CHECK_HEADER([iconv.h],
-            AC_CHECK_LIB([iconv], [iconv_open], [libiconv_LIBS=-liconv])
-        )
-    else
-        # User knows better.
-        libiconv_CFLAGS="-I$with_iconv/include"
-        libiconv_LIBS="-L$with_iconv/lib -liconv"
-    fi
-    if [ test x"$libiconv_LIBS" = "x" ]; then
-        AC_MSG_ERROR([libiconv not found])
-    fi
-    AC_SUBST(libiconv_CFLAGS)
-    AC_SUBST(libiconv_LIBS)
-    AC_DEFINE([WITH_ICONV], [1], [With libiconv])
-fi
-AM_CONDITIONAL([WITH_ICONV], [test x"$with_iconv" != "xno"])
-
+# --with-pcrecpp
 AC_ARG_WITH([pcrecpp],
     [AS_HELP_STRING([--with-pcrecpp=PREFIX],
         [search for libpcrecpp in PREFIX @<:@default=pkg-config returned path@:>@])],
