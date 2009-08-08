@@ -16,6 +16,13 @@ AC_DEFINE_UNQUOTED(CANONICAL_HOST, "$host", [Canonical host])
 
 AM_INIT_AUTOMAKE()
 
+# Check host.
+case "$host" in
+    *-*-mingw32*)
+        host_w32=yes
+    ;;
+esac
+
 # Checks for programs.
 AC_PROG_CXX
 AC_PROG_CC
@@ -55,6 +62,12 @@ AC_TYPE_SIZE_T
 AC_CHECK_TYPES([ptrdiff_t])
 
 # Checks for library functions.
+if [ test x"$host_w32" = "xno" ]; then
+    # mingw32-g++ (4.2.1) returns otherwise:
+    #   error: '::malloc' has not been declared etc.
+    AC_FUNC_MALLOC
+    AC_FUNC_REALLOC
+fi
 AC_FUNC_ERROR_AT_LINE
 AC_FUNC_FORK
 AC_PROG_GCC_TRADITIONAL
@@ -87,17 +100,10 @@ AC_ARG_WITH([man],
     [with_man=yes])
 AM_CONDITIONAL([WITH_MAN], [test x"$with_man" != "xno"])
 
-# Check host.
-case "$host" in
-    *-*-mingw32*)
-        AC_DEFINE([HOST_W32], [1], [...])
-        host_w32=true
-    ;;
-    *)
-        AC_FUNC_MALLOC
-        AC_FUNC_REALLOC
-    ;;
-esac
+# Other.
+if [ test x"$host_w32" = "xyes" ]; then
+    AC_DEFINE([HOST_W32], [1], [Define to enable w32])
+fi
 
 AC_CONFIG_FILES([Makefile
                  src/Makefile
