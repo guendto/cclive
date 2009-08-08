@@ -202,9 +202,7 @@ Prepend a numeric prefix (e.g. "001_") to the output filenames.
 =item B<-r, --regexp>=I<expression>
 
 A regular expression to filter the video titles before using them for
-output filenames. Quietly ignored if cclive was built without PCRE.
-
-Refer to PCRE manual page for syntax, patterns etc.
+output filenames. See also PCRE manual page for syntax, patterns, etc.
 
 =item B<-g, --find-all>
 
@@ -386,9 +384,7 @@ You can get a list of supported locales on your typical Unix-like system with:
 
 =item Q: Why are the UTF-8 characters missing with -g --regexp="(\w|\s)"?
 
-Assuming cclive was built --with-pcrecpp.
-
-A quote from pcrepattern manual page:
+A quote from "man pcrepattern":
 
 "In UTF-8 mode, characters with values greater than 128 never match  \d,
 \s, or \w, and always match \D, \S, and \W. This is true even when Uni-

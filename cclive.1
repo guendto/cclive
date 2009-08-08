@@ -132,7 +132,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2009-08-07" "0.5.0" "cclive manual"
+.TH cclive 1 "2009-08-08" "0.5.0" "cclive manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -287,9 +287,7 @@ Prepend a numeric prefix (e.g. \*(L"001_\*(R") to the output filenames.
 .IP "\fB\-r, \-\-regexp\fR=\fIexpression\fR" 4
 .IX Item "-r, --regexp=expression"
 A regular expression to filter the video titles before using them for
-output filenames. Quietly ignored if cclive was built without \s-1PCRE\s0.
-.Sp
-Refer to \s-1PCRE\s0 manual page for syntax, patterns etc.
+output filenames. See also \s-1PCRE\s0 manual page for syntax, patterns, etc.
 .IP "\fB\-g, \-\-find\-all\fR" 4
 .IX Item "-g, --find-all"
 Use repeated matching to find all occurences, like Perl's /g option.
@@ -465,9 +463,7 @@ You can get a list of supported locales on your typical Unix-like system with:
 .ie n .IP "Q: Why are the \s-1UTF\-8\s0 characters missing with \-g \-\-regexp=""(\ew|\es)""?" 4
 .el .IP "Q: Why are the \s-1UTF\-8\s0 characters missing with \-g \-\-regexp=``(\ew|\es)''?" 4
 .IX Item "Q: Why are the UTF-8 characters missing with -g --regexp=(w|s)?"
-Assuming cclive was built \-\-with\-pcrecpp.
-.Sp
-A quote from pcrepattern manual page:
+A quote from \*(L"man pcrepattern\*(R":
 .Sp
 \&\*(L"In \s-1UTF\-8\s0 mode, characters with values greater than 128 never match  \ed,
 \&\es, or \ew, and always match \eD, \eS, and \eW. This is true even when Uni\-
