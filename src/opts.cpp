@@ -17,11 +17,10 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <cstdlib>
-
 #include "config.h"
 
 #include <iostream>
+#include <cstdlib>
 #include <string>
 #include <vector>
 
