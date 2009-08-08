@@ -4,6 +4,7 @@ Version 0.5.0
   * Add: --regexp, --find-all options
   * Remove: --title, --cclass, --no-cclass
   * New default: --filename-format: "%t.%s"
+  * Zeropad: ETA
 
  Developer-visible changes:
   * Update NEWS, manual

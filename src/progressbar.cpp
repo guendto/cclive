@@ -237,6 +237,9 @@ ProgressBar::finish() {
 #endif
 }
 
+#define zeropad(n,v) \
+    std::setw(n) << std::setfill('0') << v
+
 const std::string
 ProgressBar::timeToStr(const int secs) const {
     std::stringstream s;
@@ -244,11 +247,11 @@ ProgressBar::timeToStr(const int secs) const {
     if (secs < 100)
         s << secs << "s";
     else if (secs < 100 * 60)
-        s << secs/60 << "m" << secs%60 << "s";
+        s << zeropad(2,secs/60) << "m" << zeropad(2,secs%60) << "s";
     else if (secs < 48 * 3600)
-        s << secs/3600 << "h" << (secs/60)%60 << "m";
+        s << zeropad(2,secs/3600) << "h" << zeropad(2,(secs/60)%60) << "m";
     else if (secs < 100 * 86400)
-        s << secs/86400 << "d" << (secs/3600)%60 << "h";
+        s << secs/86400 << "d" << zeropad(2,(secs/3600)%60) << "h";
     else
         s << secs/86400 << "d";
 
