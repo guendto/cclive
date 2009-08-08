@@ -40,6 +40,7 @@ AC_SUBST(POD2HTML)
 
 # Checks for (mandatory) libraries.
 PKG_CHECK_MODULES(libcurl, libcurl >= 7.18.0)
+PKG_CHECK_MODULES(libpcrecpp, libpcrecpp >= 7.8)
 
 # Checks for header files.
 AC_HEADER_STDC
@@ -77,30 +78,6 @@ AC_ARG_ENABLE([tests],
     [],
     [enable_tests=no])
 AM_CONDITIONAL([ENABLE_TESTS], [test x"$enable_tests" != "xno"])
-
-# --with-pcrecpp
-AC_ARG_WITH([pcrecpp],
-    [AS_HELP_STRING([--with-pcrecpp=PREFIX],
-        [search for libpcrecpp in PREFIX @<:@default=pkg-config returned path@:>@])],
-    [with_pcrecpp=$withval],
-    [with_pcrecpp=no]
-)
-if [ test x"$with_pcrecpp" != "xno" ]; then
-    if [ test x"$with_pcrecpp" = "xyes" ]; then
-        PKG_CHECK_MODULES(libpcrecpp, libpcrecpp >= 7.8)
-    else
-        # User knows better.
-        libpcrecpp_CFLAGS="-I$with_pcrecpp/include"
-        libpcrecpp_LIBS="-L$with_pcrecpp/lib -lpcrecpp"
-    fi
-    if [ test x"$libpcrecpp_LIBS" = "x" ]; then
-        AC_MSG_ERROR([libpcrecpp not found])
-    fi
-    AC_SUBST(libpcrecpp_CFLAGS)
-    AC_SUBST(libpcrecpp_LIBS)
-    AC_DEFINE([WITH_PCRE], [1], [With libpcrecpp])
-fi
-AM_CONDITIONAL([WITH_PCRE], [test x"$with_pcre" != "xno"])
 
 # --with-man
 AC_ARG_WITH([man],

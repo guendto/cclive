@@ -33,9 +33,7 @@
 #include <iconv.h>
 #endif
 
-#ifdef WITH_PCRE
 #include <pcrecpp.h>
-#endif
 
 #include "hosthandler.h"
 #include "opts.h"
@@ -134,7 +132,6 @@ HostHandler::toUnicode() {
 
 void
 HostHandler::applyRegexp() {
-#ifdef WITH_PCRE
     Options opts = optsmgr.getOptions();
 
     if (!opts.regexp_given)
@@ -160,7 +157,6 @@ HostHandler::applyRegexp() {
     pcrecpp::RE("(\\s+)$").Replace("", &title);
 
     props.setTitle(title);
-#endif
 }
 
 const VideoProperties&

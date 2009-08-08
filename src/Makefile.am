@@ -44,8 +44,8 @@ log.h\
 cmdline.h\
 hostfactory.h
 
-INCLUDES=$(libcurl_CFLAGS)
-LIBS=$(libcurl_LIBS) $(LIBICONV) $(LTLIBICONV)
+INCLUDES=$(libcurl_CFLAGS) $(libpcrecpp_CFLAGS)
+LIBS=$(libcurl_LIBS) $(LIBICONV) $(LTLIBICONV) $(libpcrecpp_LIBS)
 
 bin_PROGRAMS=cclive
 cclive_SOURCES=$(src) $(host) $(hdr)

@@ -1,27 +1,26 @@
 
+
             Installation
 
  Typically "./configure && make install".
 
 
-
             Prerequisites
 
- * libcurl    (7.18.0+)  <http://curl.haxx.se/>
+ * libcurl  (7.18.0+)  <http://curl.haxx.se/>
 
- Optional (see below):
-   * libiconv (1.12.0+)  <http://www.gnu.org/software/libiconv/>
-   * libpcrecpp  (7.8+)  <http://pcre.org/>
+ * libpcre  (7.8+)     <http://pcre.org/>
+
+ * libiconv (1.12.0+)  <http://www.gnu.org/software/libiconv/>
+
+   Some operating systems have iconv in the C library, for example glibc.
+   Some have it in a separate library libiconv, for example OSF/1 or FreeBSD.
+   Regardless of the operating system, GNU libiconv might have been installed.
+   In that case, it should be used instead of the operating system's native
+   iconv. 
 
 
-            Optional Packages
-
- --with-iconv[=PREFIX]  (recommended)
-    Causes cclive to use libiconv for character set conversions.
-
- --with-pcrecpp[=PREFIX] (recommended)
-    Allows use of --regexp and --find-all for cleaning up video titles
-    before they are used for output filenames.
+            Notable ./configure options
 
  --enable-sigwinch
     If enabled, cclive will handle the SIGWINCH to resize the
@@ -38,15 +37,12 @@
     Do not install cclive.1 manual page.
 
 
-            Examples
+            Example
 
- # ./configure --with-iconv=/usr/local --with-pcrecpp --enable-sigwinch
+ # ./configure --enable-sigwinch
  # make install
 
-
-            Known platforms and ports
- 
- See:
+ See also:
    http://code.google.com/p/cclive/wiki/HowtoInstall
 
 
@@ -55,6 +51,6 @@
  Typical use:
     % cclive "http://youtube.com/watch?v=3HD220e0bx4"
 
- Be sure to read the manual. See also examples/config.
+ Be sure to read the manual also and see examples/config.
 
 

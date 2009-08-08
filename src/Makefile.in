@@ -108,7 +108,7 @@ INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
 LDFLAGS = @LDFLAGS@
 LIBICONV = @LIBICONV@
 LIBOBJS = @LIBOBJS@
-LIBS = $(libcurl_LIBS) $(LIBICONV) $(LTLIBICONV)
+LIBS = $(libcurl_LIBS) $(LIBICONV) $(LTLIBICONV) $(libpcrecpp_LIBS)
 LTLIBICONV = @LTLIBICONV@
 LTLIBOBJS = @LTLIBOBJS@
 MAKEINFO = @MAKEINFO@
@@ -233,7 +233,7 @@ log.h\
 cmdline.h\
 hostfactory.h
 
-INCLUDES = $(libcurl_CFLAGS)
+INCLUDES = $(libcurl_CFLAGS) $(libpcrecpp_CFLAGS)
 cclive_SOURCES = $(src) $(host) $(hdr)
 all: all-am
 
