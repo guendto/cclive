@@ -5,18 +5,18 @@ Release 0.5.0
 -------------
 
 The dependency of Perl HTML::Tokenizer Perl module have been replaced with
-iconv and pcre for significantly lower system footprint.
+libiconv and PCRE for significantly lower system footprint. Perl was used to
+parse and cleanup the video titles before using them for filenames.
 
-With this release, cclive starts using video titles for filenames by default.
-Previously this was only possible if cclive was build with Perl support.
+Additionally, cclive now parses the video pages with PCRE.
 
-The following options have been removed due to these changes:
+  Removed options:
   --title
-    - obsolete since 0.4.1 after adding --filename-format
+    - obsolete since 0.4.1 by --filename-format
   --cclass, --no-cclass
-    - previously used with Perl
+    - obsoleted by --regexp and --find-all (below)
 
-New options:
+  New options:
   -r, --regexp [req. pcrecpp]
     - Defines the regular expression that can be used to "filter"
       video titles before they are used for filenames

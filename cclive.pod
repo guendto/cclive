@@ -203,6 +203,7 @@ Prepend a numeric prefix (e.g. "001_") to the output filenames.
 
 A regular expression to filter the video titles before using them for
 output filenames. See also PCRE manual page for syntax, patterns, etc.
+See also B<--filename-format>.
 
 =item B<-g, --find-all>
 
@@ -211,17 +212,17 @@ Use repeated matching to find all occurences, like Perl's /g option.
 =item B<-F, --filename-format>=I<formatstring>
 
 Use the specified I<formatstring> to format the output filenames. cclive
-defaults to "%t.%s". Any supported specifiers (below) appearing in the
+defaults to "%h_%i.%s". Any supported specifiers (below) appearing in the
 I<formatstring> will be replaced accordingly:
 
   %t = video title
   %i = video id
-  %h = website domain
+  %h = website id
   %s = file suffix
 
 Example:
 
-  % cclive -F "%i.%s" URL
+  % cclive -F "%t.%s" URL
 
 =back
 
@@ -257,11 +258,11 @@ reaches 20%.
 Alternate to streaming with Adobe Flash. C<vlc(1)> and C<totem(1)> have been
 reported to work also.
 
-=item cclive -r "(\w+)" URL
+=item cclive -F "%t.%s" -r "(\w+)" URL
 
 Grab the first "word" character from video title for output filename.
 
-=item cclive -gr "(\w|\s)" URL
+=item cclive -F "%t.%s" -gr "(\w|\s)" URL
 
 Grab all "word" and "whitespace" characters from the video title and
 use them for the output filename.

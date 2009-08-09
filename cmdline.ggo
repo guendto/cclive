@@ -91,7 +91,7 @@ option "find-all"
 option "filename-format"
     F "output filename format"
     string typestr="string"
-    default="%t.%s"
+    default="%h_%i.%s"
     optional
 
 section "Subsequent"

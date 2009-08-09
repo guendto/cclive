@@ -132,7 +132,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2009-08-08" "0.5.0" "cclive manual"
+.TH cclive 1 "2009-08-09" "0.5.0" "cclive manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -288,26 +288,27 @@ Prepend a numeric prefix (e.g. \*(L"001_\*(R") to the output filenames.
 .IX Item "-r, --regexp=expression"
 A regular expression to filter the video titles before using them for
 output filenames. See also \s-1PCRE\s0 manual page for syntax, patterns, etc.
+See also \fB\-\-filename\-format\fR.
 .IP "\fB\-g, \-\-find\-all\fR" 4
 .IX Item "-g, --find-all"
 Use repeated matching to find all occurences, like Perl's /g option.
 .IP "\fB\-F, \-\-filename\-format\fR=\fIformatstring\fR" 4
 .IX Item "-F, --filename-format=formatstring"
 Use the specified \fIformatstring\fR to format the output filenames. cclive
-defaults to \*(L"%t.%s\*(R". Any supported specifiers (below) appearing in the
+defaults to \*(L"%h_%i.%s\*(R". Any supported specifiers (below) appearing in the
 \&\fIformatstring\fR will be replaced accordingly:
 .Sp
 .Vb 4
 \&  %t = video title
 \&  %i = video id
-\&  %h = website domain
+\&  %h = website id
 \&  %s = file suffix
 .Ve
 .Sp
 Example:
 .Sp
 .Vb 1
-\&  % cclive \-F "%i.%s" URL
+\&  % cclive \-F "%t.%s" URL
 .Ve
 .SH "EXAMPLES"
 .IX Header "EXAMPLES"
@@ -339,13 +340,13 @@ reaches 20%.
 .PD
 Alternate to streaming with Adobe Flash. \f(CWvlc(1)\fR and \f(CWtotem(1)\fR have been
 reported to work also.
-.ie n .IP "cclive \-r ""(\ew+)"" \s-1URL\s0" 4
-.el .IP "cclive \-r ``(\ew+)'' \s-1URL\s0" 4
-.IX Item "cclive -r (w+) URL"
+.ie n .IP "cclive \-F ""%t.%s"" \-r ""(\ew+)"" \s-1URL\s0" 4
+.el .IP "cclive \-F ``%t.%s'' \-r ``(\ew+)'' \s-1URL\s0" 4
+.IX Item "cclive -F %t.%s -r (w+) URL"
 Grab the first \*(L"word\*(R" character from video title for output filename.
-.ie n .IP "cclive \-gr ""(\ew|\es)"" \s-1URL\s0" 4
-.el .IP "cclive \-gr ``(\ew|\es)'' \s-1URL\s0" 4
-.IX Item "cclive -gr (w|s) URL"
+.ie n .IP "cclive \-F ""%t.%s"" \-gr ""(\ew|\es)"" \s-1URL\s0" 4
+.el .IP "cclive \-F ``%t.%s'' \-gr ``(\ew|\es)'' \s-1URL\s0" 4
+.IX Item "cclive -F %t.%s -gr (w|s) URL"
 Grab all \*(L"word\*(R" and \*(L"whitespace\*(R" characters from the video title and
 use them for the output filename.
 .SH "FORMATS"

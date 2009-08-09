@@ -77,7 +77,7 @@ struct gengetopt_args_info
   char * regexp_orig;	/**< @brief regular expression to filter video title original value given at command line.  */
   const char *regexp_help; /**< @brief regular expression to filter video title help description.  */
   const char *find_all_help; /**< @brief use repeated matching to find all occurences, like Perl's /g option help description.  */
-  char * filename_format_arg;	/**< @brief output filename format (default='%t.%s').  */
+  char * filename_format_arg;	/**< @brief output filename format (default='%h_%i.%s').  */
   char * filename_format_orig;	/**< @brief output filename format original value given at command line.  */
   const char *filename_format_help; /**< @brief output filename format help description.  */
   char * exec_arg;	/**< @brief command to invoke when transfer finishes.  */

@@ -56,7 +56,7 @@ const char *gengetopt_args_info_help[] = {
   "  -N, --number-videos           prepend a numeric prefix to output filenames",
   "  -r, --regexp=expr             regular expression to filter video title",
   "  -g, --find-all                use repeated matching to find all occurences, \n                                  like Perl's /g option",
-  "  -F, --filename-format=string  output filename format  (default=`%t.%s')",
+  "  -F, --filename-format=string  output filename format  (default=`%h_%i.%s')",
   "\nSubsequent:",
   "      --exec=expr[;|+]          command to invoke when transfer finishes",
   "  -e, --exec-run                invoke command defined with --exec",
@@ -163,7 +163,7 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->format_orig = NULL;
   args_info->regexp_arg = NULL;
   args_info->regexp_orig = NULL;
-  args_info->filename_format_arg = gengetopt_strdup ("%t.%s");
+  args_info->filename_format_arg = gengetopt_strdup ("%h_%i.%s");
   args_info->filename_format_orig = NULL;
   args_info->exec_arg = NULL;
   args_info->exec_orig = NULL;
@@ -903,7 +903,7 @@ cmdline_parser_internal (
         
           if (update_arg( (void *)&(args_info->filename_format_arg), 
                &(args_info->filename_format_orig), &(args_info->filename_format_given),
-              &(local_args_info.filename_format_given), optarg, 0, "%t.%s", ARG_STRING,
+              &(local_args_info.filename_format_given), optarg, 0, "%h_%i.%s", ARG_STRING,
               check_ambiguity, override, 0, 0,
               "filename-format", 'F',
               additional_error))
