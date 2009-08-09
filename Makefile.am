@@ -1,4 +1,4 @@
-SUBDIRS= src docs
+SUBDIRS= src
 if ENABLE_TESTS
 SUBDIRS+= tests
 endif
@@ -9,7 +9,9 @@ cclive.pod\
 examples/config\
 README.w32\
 mingw32-build.sh\
-mingw32-package.sh
+mingw32-package.sh\
+docs/AddingSupport\
+docs/SubmittingPatches
 
 if WITH_MAN
 dist_man_MANS= cclive.1
