@@ -95,15 +95,8 @@ Do not actually extract any videos, simulate only.
 Continue a partially downloaded video file.
 
 By default, cclive appends a numeric suffix (e.g. ".1") to the
-filename if the file exists already, unless:
-
-=over 4
-
-=item * file is already completely retrieved, or:
-
-=item * either --continue --output-video is defined
-
-=back
+filename if the file exists already, unless file is already completely
+retrieved, or either --continue --output-video is defined.
 
 =item B<l, --limit-rate>=I<amount>
 
@@ -134,10 +127,6 @@ to the command. The expression must be terminated by a semicolon (";").
 
 If the specifier "%i" appears anywhere in I<expression> name or the arguments
 it is replaced by the pathname of the extracted video file.
-
-Example:
-
-  % cclive --exec="mplayer -really-quiet %i;" -e URL
 
 =item B<--exec>=I<expression>B<+>
 
@@ -219,10 +208,6 @@ I<formatstring> will be replaced accordingly:
   %i = video id
   %h = website id
   %s = file suffix
-
-Example:
-
-  % cclive -F "%t.%s" URL
 
 =back
 
@@ -458,7 +443,7 @@ cclive exits 0 on success, and E<gt>0 if an error occurs.
 
 =item * cclive followed the release of clive2
 
-=item * It was written in C and later rewritten in C++
+=item * It was originally written in C but later rewritten in C++
 
 =back
 

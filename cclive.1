@@ -201,15 +201,8 @@ Do not actually extract any videos, simulate only.
 Continue a partially downloaded video file.
 .Sp
 By default, cclive appends a numeric suffix (e.g. \*(L".1\*(R") to the
-filename if the file exists already, unless:
-.RS 4
-.IP "\(bu" 4
-file is already completely retrieved, or:
-.IP "\(bu" 4
-either \-\-continue \-\-output\-video is defined
-.RE
-.RS 4
-.RE
+filename if the file exists already, unless file is already completely
+retrieved, or either \-\-continue \-\-output\-video is defined.
 .IP "\fBl, \-\-limit\-rate\fR=\fIamount\fR" 4
 .IX Item "l, --limit-rate=amount"
 Limit download speed to \fIamount\fR (KB/s). Video page fetches remain
@@ -232,12 +225,6 @@ to the command. The expression must be terminated by a semicolon (\*(L";\*(R").
 .Sp
 If the specifier \*(L"%i\*(R" appears anywhere in \fIexpression\fR name or the arguments
 it is replaced by the pathname of the extracted video file.
-.Sp
-Example:
-.Sp
-.Vb 1
-\&  % cclive \-\-exec="mplayer \-really\-quiet %i;" \-e URL
-.Ve
 .IP "\fB\-\-exec\fR=\fIexpression\fR\fB+\fR" 4
 .IX Item "--exec=expression+"
 Same as \fB\-\-exec\fR, except that \*(L"%i\*(R" is replaced with as many pathnames
@@ -303,12 +290,6 @@ defaults to \*(L"%h_%i.%s\*(R". Any supported specifiers (below) appearing in th
 \&  %i = video id
 \&  %h = website id
 \&  %s = file suffix
-.Ve
-.Sp
-Example:
-.Sp
-.Vb 1
-\&  % cclive \-F "%t.%s" URL
 .Ve
 .SH "EXAMPLES"
 .IX Header "EXAMPLES"
@@ -522,7 +503,7 @@ cclive exits 0 on success, and >0 if an error occurs.
 .IP "\(bu" 4
 cclive followed the release of clive2
 .IP "\(bu" 4
-It was written in C and later rewritten in \*(C+
+It was originally written in C but later rewritten in \*(C+
 .SH "SEE ALSO"
 .IX Header "SEE ALSO"
 \&\f(CWclive(1)\fR
