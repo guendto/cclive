@@ -43,7 +43,6 @@ public:
     static std::vector<std::string>
                         tokenize     (const std::string& src,
                                         const std::string& delims);
-    static std::string htmlTitle(const std::string& html);
 };
 
 #endif
