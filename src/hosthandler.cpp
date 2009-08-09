@@ -60,16 +60,15 @@ HostHandler::parsePage(const std::string& url) {
     // Handle title encoding. Done here since we still have page html.
     toUnicode();
 
-    // Apply regexp to title.
+    // Apply regexp.
     std::string title = props.getTitle();
-    Options opts      = optsmgr.getOptions();
 
-    if (opts.regexp_given)
+    if (optsmgr.getOptions().regexp_given)
         applyRegexp(title);
 
     // Remove leading and trailing whitespace.
-    pcrecpp::RE("(\\s+)").Replace("", &title);
-    pcrecpp::RE("(\\s+)$").Replace("", &title);
+    pcrecpp::RE("^[\\s]+").Replace("", &title);
+    pcrecpp::RE("\\s+$").Replace("", &title);
 
     props.setTitle(title);
 
