@@ -31,9 +31,9 @@ public:
 public:
     void setVerbose(const bool&);
 protected:
-    int flushBuffer();
-    virtual int_type overflow(int_type);
-    virtual int sync();
+    int              flushBuffer ();
+    virtual int_type overflow    (int_type);
+    virtual int      sync        ();
 protected:
     enum { BufferSize=1024 };
     char buffer[BufferSize];

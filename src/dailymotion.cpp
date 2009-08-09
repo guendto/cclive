@@ -52,7 +52,7 @@ DailymotionHandler::parseLink() {
     partialMatch("(?i)\"video\", \"(.*?)\"", &paths);
     curlmgr.unescape(paths);
 
-    std::vector<std::string> tokens =
+    const std::vector<std::string> tokens =
         Util::tokenize(paths, "||");
 
     if (tokens.size() == 0)
@@ -67,11 +67,11 @@ DailymotionHandler::parseLink() {
     std::string link;
     std::map<std::string, std::string> width;
 
-    for (std::vector<std::string>::iterator iter = tokens.begin();
+    for (std::vector<std::string>::const_iterator iter = tokens.begin();
         iter != tokens.end();
         ++iter)
     {
-        std::vector<std::string> v =
+        const std::vector<std::string> v =
             Util::tokenize(*iter, "@@");
 
         if (v.size() == 0)

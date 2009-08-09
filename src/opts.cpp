@@ -40,14 +40,16 @@ OptionsMgr::~OptionsMgr() {
 }
 
 void
-OptionsMgr::init(int argc, char **argv) {
+OptionsMgr::init(const int& argc, char * const *argv) {
 
-    char *home = getenv("CCLIVE_HOME");
+    const char *home = getenv("CCLIVE_HOME");
     if (!home)
         home = getenv("HOME");
 
-    std::string fname = "/.ccliverc";
-#ifdef HOST_W32
+    const std::string
+#ifndef HOST_W32
+    fname = "/.ccliverc";
+#else
     fname = "\\ccliverc";
 #endif
 
@@ -68,6 +70,7 @@ OptionsMgr::init(int argc, char **argv) {
                 pp->initialize      = 0;
                 pp->override        = 1;
                 pp->check_required  = 1;
+
                 if (cmdline_parser_ext(argc, argv, &opts, pp) == 0)
                     no_conf = false;
             }

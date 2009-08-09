@@ -51,7 +51,7 @@ YoutubeHandler::parseLink() {
     std::string lnk =
         "http://youtube.com/get_video?video_id=" +props.getId()+ "&t=" +t;
 
-    std::string fmt =
+    const std::string fmt =
         optsmgr.getOptions().format_arg;
 
     if (fmt == "best") {

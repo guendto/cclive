@@ -24,25 +24,25 @@ class ProgressBar {
 public:
     ProgressBar();
 public:
-    void init(VideoProperties&);
-    void update(double now);
-    void finish();
+    void init   (const VideoProperties&);
+    void update (double now);
+    void finish ();
 private:
-    const std::string timeToStr(const int secs) const;
-    const std::string getUnit(double& rate) const;
-    void              forkStreamer();
+    const std::string timeToStr    (const int& secs) const;
+    const std::string getUnit      (double& rate) const;
+    void              forkStreamer ();
 private:
     VideoProperties props;
-    time_t          lastUpdate;
-    time_t          started;
-    double          initial;
-    double          total;
-    double          count;
-    bool            done;
-    int             width;
-    int             termWidth;
-    bool            streamFlag;
-    pid_t           streamPid;
+    time_t lastUpdate;
+    time_t started;
+    double initial;
+    double total;
+    double count;
+    bool   done;
+    int    width;
+    int    termWidth;
+    bool   streamFlag;
+    pid_t  streamPid;
 private:
     enum { DEFAULT_TERM_WIDTH=80 };
 };

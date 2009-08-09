@@ -24,11 +24,11 @@ class App {
 public:
     virtual ~App();
 public:
-    void main (int argc, char **argv);
+    void main (const int& argc, char * const *argv);
     void run  ();
 protected:
-    std::vector<std::string> parseInput   ();
-    void printVersion ();
+    std::vector<std::string> parseInput ();
+    void printVersion                   ();
 };
 
 #endif

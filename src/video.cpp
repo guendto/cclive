@@ -79,7 +79,7 @@ void
 VideoProperties::setContentType(const std::string& contentType) {
     this->contentType = contentType;
 
-    std::string::size_type pos = contentType.find("/");
+    const std::string::size_type pos = contentType.find("/");
 
     if (pos != std::string::npos) {
         suffix = contentType.substr(pos+1);
@@ -164,7 +164,7 @@ static int video_num = 0;
 void
 VideoProperties::formatOutputFilename() {
 
-    Options opts = optsmgr.getOptions();
+    const Options opts = optsmgr.getOptions();
 
     if (!opts.output_video_given) {
         std::stringstream b;
@@ -211,8 +211,8 @@ void
 VideoProperties::customOutputFilenameFormatter(
     std::stringstream& b)
 {
-    Options opts    = optsmgr.getOptions();
-    std::string fmt = opts.filename_format_arg;
+    const Options opts  = optsmgr.getOptions();
+    std::string fmt     = opts.filename_format_arg;
 
     Util::subStrReplace(fmt, "%t", title.empty() ? id : title);
     Util::subStrReplace(fmt, "%i", id);

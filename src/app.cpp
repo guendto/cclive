@@ -58,7 +58,7 @@ App::~App() {
 }
 
 void
-App::main(int argc, char **argv) {
+App::main(const int& argc, char * const *argv) {
     optsmgr.init(argc, argv);
     logmgr.init(); // apply --quiet
     curlmgr.init();
@@ -105,7 +105,7 @@ handleURL(const std::string& url) {
         std::tr1::shared_ptr<HostHandler> handler = 
             HostHandlerFactory::createHandler(url);
 
-        Options opts = optsmgr.getOptions();
+        const Options opts = optsmgr.getOptions();
 
         try {
             handler->parsePage(url);
@@ -147,7 +147,7 @@ handleURL(const std::string& url) {
 
 void
 App::run() {
-    Options opts = optsmgr.getOptions();
+    const Options opts = optsmgr.getOptions();
 
     if (opts.version_given) {
         printVersion();
@@ -233,12 +233,12 @@ static const char copyr_notice[] =
 "This is free software: you are free to change and redistribute it.\n"
 "There is NO WARRANTY, to the extent permitted by law.";
 
-    curl_version_info_data *c =
+    const curl_version_info_data *c =
         curl_version_info(CURLVERSION_NOW);
 
-    char *locale = getenv("LANG");
+    const char *locale = getenv("LANG");
     if (!locale)
-        locale = const_cast<char *>("undefined");
+        locale = "undefined";
 
     std::cout
         << CMDLINE_PARSER_PACKAGE << " version "

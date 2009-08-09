@@ -115,7 +115,9 @@ HostHandler::toUnicode() {
         char *wptr   = (char *)outbuf;
         memset(wptr, 0, sizeof(outbuf));
 
-        size_t rc = iconv(cd, &inptr, &insize, &wptr, &avail);
+        const size_t rc =
+            iconv(cd, &inptr, &insize, &wptr, &avail);
+
         if (rc == (size_t)-1) {
             logmgr.cerr()
                 << "error while converting characters from "
@@ -124,6 +126,7 @@ HostHandler::toUnicode() {
                 << std::endl;
             return;
         }
+
         iconv_close(cd);
         cd = 0;
 
@@ -136,7 +139,7 @@ HostHandler::toUnicode() {
 void
 HostHandler::applyRegexp(std::string& title) {
 
-    Options opts = optsmgr.getOptions();
+    const Options opts = optsmgr.getOptions();
 
     if (opts.find_all_given) {
         pcrecpp::StringPiece sp(title);

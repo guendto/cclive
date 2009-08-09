@@ -41,7 +41,7 @@ RuntimeException::RuntimeException(
 RuntimeException::~RuntimeException() {
 }
 
-std::string
+const std::string
 RuntimeException::what() const {
     static const char
     errorStrings[_CCLIVE_MAX_RETURNCODES][48] = {
@@ -80,3 +80,5 @@ const ReturnCode&
 RuntimeException::getRC() const {
     return rc;
 }
+
+

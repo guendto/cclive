@@ -109,7 +109,7 @@ LogMgr::_init() {
 
 void
 LogMgr::init() {
-    Options opts = optsmgr.getOptions();
+    const Options opts = optsmgr.getOptions();
     _out->setVerbose(!opts.quiet_given);
     _err->setVerbose(!opts.quiet_given);
 }

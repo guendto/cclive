@@ -33,7 +33,7 @@ public:
     std::string  fetchToMem     (const std::string& url,
                                     const std::string& what="");
     void         queryFileLength(VideoProperties&);
-    void         fetchToFile    (VideoProperties&);
+    void         fetchToFile    (const VideoProperties&);
     const std::string& unescape (std::string& url) const;
 public:
     class FetchException : public RuntimeException {

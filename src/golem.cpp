@@ -49,7 +49,7 @@ GolemHandler::parseLink() {
     std::string config_url =
         "http://video.golem.de/xml/" + props.getId();
 
-    std::string config =
+    const std::string config =
         curlmgr.fetchToMem(config_url, "config");
 
     std::string link =

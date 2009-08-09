@@ -48,7 +48,7 @@ GoogleHandler::parseLink() {
     std::string lnk;
     partialMatch("(?i)videourl\\W+x3d(.*?)\\W+x26", &lnk);
 
-    std::string fmt = optsmgr.getOptions().format_arg;
+    const std::string fmt = optsmgr.getOptions().format_arg;
 
     if (fmt == "mp4" || fmt == "best") {
         try   {

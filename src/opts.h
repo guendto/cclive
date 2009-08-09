@@ -30,9 +30,9 @@ public:
     OptionsMgr();
     virtual ~OptionsMgr();
 public:
-    void     init   (int argc, char **argv);
-    const Options& getOptions() const;
-    const std::string& getPath() const;
+    void                init        (const int& argc, char *const *argv);
+    const Options&      getOptions  () const;
+    const std::string&  getPath     () const;
 private:
     Options opts;
     std::string path;

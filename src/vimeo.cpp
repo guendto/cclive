@@ -51,7 +51,7 @@ VimeoHandler::parseLink() {
     std::string config_path =
         "http://vimeo.com/moogaloop/load/clip:" + props.getId();
 
-    std::string config = 
+    const std::string config = 
         curlmgr.fetchToMem(config_path, "config");
 
     std::string sign;
@@ -61,16 +61,14 @@ VimeoHandler::parseLink() {
     partialMatch("(?i)<request_signature_expires>(.*?)</", &exp, config);
 
     std::string hd;
-    try {
-        partialMatch("(?i)<hd_button>(.*?)</", &hd, config);
-    }
+    try   { partialMatch("(?i)<hd_button>(.*?)</", &hd, config); }
     catch (const HostHandler::ParseException& x) { }
 
     std::string lnk =
         "http://vimeo.com/moogaloop/play/clip:" +props.getId()+
         "/" +sign+ "/" +exp;
 
-    Options opts = optsmgr.getOptions();
+    const Options opts = optsmgr.getOptions();
 
     if (!strcmp(opts.format_arg, "best")
         || !strcmp(opts.format_arg, "hd"))

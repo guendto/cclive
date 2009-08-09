@@ -37,6 +37,7 @@ Util::fileExists(const std::string& path) {
         len = f.tellg();
         f.close();
     }
+
     return len;
 }
 
@@ -46,18 +47,21 @@ Util::subStr(const std::string& src,
              const std::string& end,
              const bool& croak_if_not_found /*=true*/)
 {
-    std::string::size_type begin_pos = src.find(begin);
+    const std::string::size_type begin_pos = src.find(begin);
     if (begin_pos == std::string::npos && croak_if_not_found)
         throw HostHandler::ParseException("not found: "+begin);
 
-    std::string::size_type end_pos =
+    const std::string::size_type end_pos =
         src.find(end, begin_pos + begin.length());
 
     if (end_pos == std::string::npos && croak_if_not_found)
         throw HostHandler::ParseException("not found: "+end);
 
-    std::string::size_type from = begin_pos + begin.length();
-    std::string::size_type len  = end_pos - begin_pos - begin.length();
+    const std::string::size_type from =
+        begin_pos + begin.length();
+
+    const std::string::size_type len =
+        end_pos - begin_pos - begin.length();
 
     return src.substr(from, len);
 }
@@ -68,18 +72,21 @@ Util::rsubStr(const std::string& src,
         const std::string& end,
         const bool& croak_if_not_found /*=true*/)
 {
-    std::string::size_type end_pos = src.rfind(end);
+    const std::string::size_type end_pos = src.rfind(end);
     if (end_pos == std::string::npos && croak_if_not_found)
         throw HostHandler::ParseException("not found: "+end);
 
-    std::string::size_type begin_pos =
+    const std::string::size_type begin_pos =
         src.rfind(begin, end_pos - end.length());
 
     if (begin_pos == std::string::npos && croak_if_not_found)
         throw HostHandler::ParseException("not found: "+begin);
 
-    std::string::size_type from = begin_pos + begin.length();
-    std::string::size_type  len = end_pos - begin_pos - begin.length();
+    const std::string::size_type from =
+        begin_pos + begin.length();
+
+    const std::string::size_type len =
+        end_pos - begin_pos - begin.length();
 
     return src.substr(from, len);
 }
@@ -91,9 +98,10 @@ Util::subStrReplace(
     const std::string& with)
 {
     std::string::size_type pos;
-    while ((pos = src.find(what)) != std::string::npos) {
+
+    while ((pos = src.find(what)) != std::string::npos)
         src.replace(pos, what.size(), with);
-    }
+
     return src;
 }
 
@@ -107,25 +115,29 @@ Util::nocookieToYoutube(std::string& url) {
 std::string&
 Util::embedToPage(std::string& url) {
     typedef std::map<std::string, std::string> mapstr;
+
     mapstr m;
+
     m["/v/"]                = "/watch?v=";  // youtube
     m["googleplayer.swf"]   = "videoplay";  // google
     m["/pl/"]               = "/videos/";   // sevenload
     m["/e/"]                = "/view?i=";   // liveleak
-    for (mapstr::iterator iter = m.begin();
+
+    for (mapstr::const_iterator iter = m.begin();
         iter != m.end();
         ++iter)
     {
         Util::subStrReplace(url, iter->first, iter->second);
     }
+
     return url;
 }
 
 std::string&
 Util::lastfmToYoutube(std::string& url) {
-    std::string::size_type pos = url.find("+1-");
+    const std::string::size_type pos = url.find("+1-");
     if (pos != std::string::npos) {
-        std::string id = url.substr(pos+3);
+        const std::string id = url.substr(pos+3);
         url = "http://youtube.com/watch?v=" + id;
     }
     return url;

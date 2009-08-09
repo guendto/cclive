@@ -91,7 +91,7 @@ ProgressBar::ProgressBar()
 }
 
 void
-ProgressBar::init(VideoProperties& props) {
+ProgressBar::init(const VideoProperties& props) {
     this->props = props;
 
     initial = props.getInitial();   // bytes dl previously
@@ -171,7 +171,7 @@ ProgressBar::update(double now) {
           << "M";
 
 #if defined(HAVE_FORK) && defined(HAVE_WORKING_FORK)
-        Options opts = optsmgr.getOptions();
+        const Options opts = optsmgr.getOptions();
         if (opts.stream_given
             && opts.stream_exec_given
             && !streamFlag)
@@ -241,7 +241,7 @@ ProgressBar::finish() {
     std::setw(n) << std::setfill('0') << v
 
 const std::string
-ProgressBar::timeToStr(const int secs) const {
+ProgressBar::timeToStr(const int& secs) const {
     std::stringstream s;
 
     if (secs < 100)

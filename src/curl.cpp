@@ -50,14 +50,14 @@
 static CURL *curl;
 
 static std::string
-formatError (const long &httpcode) {
+formatError (const long& httpcode) {
     std::stringstream s;
     s << "server returned http/" << httpcode << "";
     return s.str();
 }
 
 static std::string
-formatError (const CURLcode &code) {
+formatError (const CURLcode& code) {
     std::stringstream s;
     s << curl_easy_strerror(code) << " (rc=" << code << ")";
     return s.str();
@@ -91,7 +91,7 @@ CurlMgr::init() {
     if (!curl)
         throw RuntimeException(CCLIVE_CURLINIT);
 
-    Options opts = optsmgr.getOptions();
+    const Options opts = optsmgr.getOptions();
 
     curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1L);
     curl_easy_setopt(curl, CURLOPT_USERAGENT, opts.agent_arg);
@@ -100,9 +100,9 @@ CurlMgr::init() {
     curl_easy_setopt(curl, CURLOPT_NOBODY, 0L);
     curl_easy_setopt(curl, CURLOPT_VERBOSE, opts.debug_given);
 
-    char *proxy = opts.proxy_arg;
+    const char *proxy = opts.proxy_arg;
     if (opts.no_proxy_given)
-        proxy = const_cast<char*>("");
+        proxy = "";
 
     curl_easy_setopt(curl, CURLOPT_PROXY, proxy);
 }
@@ -150,7 +150,7 @@ CurlMgr::fetchToMem(const std::string& url, const std::string &what) {
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &mem);
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, callback_writemem);
 
-    Options opts = optsmgr.getOptions();
+    const Options opts = optsmgr.getOptions();
 
     curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT,
         opts.connect_timeout_arg);
@@ -165,7 +165,8 @@ CurlMgr::fetchToMem(const std::string& url, const std::string &what) {
     curl_easy_setopt(curl, CURLOPT_TIMEOUT,
         opts.connect_timeout_socks_arg);
 
-    CURLcode rc = curl_easy_perform(curl);
+    const CURLcode rc =
+        curl_easy_perform(curl);
 
     curl_easy_setopt(curl, CURLOPT_TIMEOUT, 0L);
 
@@ -204,7 +205,7 @@ CurlMgr::queryFileLength(VideoProperties& props) {
     }
     logmgr.cout() << "verify video link ..." << std::flush;
 
-    Options opts = optsmgr.getOptions();
+    const Options opts = optsmgr.getOptions();
 
     curl_easy_setopt(curl, CURLOPT_URL, props.getLink().c_str());
     curl_easy_setopt(curl, CURLOPT_NOBODY, 1L);      // GET -> HEAD
@@ -215,7 +216,8 @@ CurlMgr::queryFileLength(VideoProperties& props) {
     curl_easy_setopt(curl, CURLOPT_TIMEOUT,
                      opts.connect_timeout_socks_arg);
 
-    CURLcode rc = curl_easy_perform(curl);
+    const CURLcode rc =
+        curl_easy_perform(curl);
 
     curl_easy_setopt(curl, CURLOPT_TIMEOUT, 0L);
     curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L); // reset HEAD -> GET
@@ -232,7 +234,7 @@ CurlMgr::queryFileLength(VideoProperties& props) {
 
         if (200 == httpcode || 206 == httpcode)
         {
-            char *ct = NULL;
+            const char *ct = NULL;
             curl_easy_getinfo(curl, CURLINFO_CONTENT_TYPE, &ct);
 
             double len = 0;
@@ -241,11 +243,11 @@ CurlMgr::queryFileLength(VideoProperties& props) {
 
             props.setLength(len);
             props.setContentType(ct);
+
             logmgr.cout() << "done." << std::endl;
         }
-        else {
+        else
             errmsg = formatError(httpcode);
-        }
     }
     else
         errmsg = formatError(rc);
@@ -288,10 +290,9 @@ callback_progress(
 }
 
 void
-CurlMgr::fetchToFile(VideoProperties& props) {
-    Options opts = optsmgr.getOptions();
-
-    double initial = props.getInitial();
+CurlMgr::fetchToFile(const VideoProperties& props) {
+    const Options opts = optsmgr.getOptions();
+    const double initial = props.getInitial();
 
     if (opts.continue_given && initial > 0) {
         double remaining = props.getLength() - initial;
@@ -339,7 +340,8 @@ CurlMgr::fetchToFile(VideoProperties& props) {
     curl_off_t limit_rate = opts.limit_rate_arg * 1024;
     curl_easy_setopt(curl, CURLOPT_MAX_RECV_SPEED_LARGE, limit_rate);
 
-    CURLcode rc = curl_easy_perform(curl);
+    const CURLcode rc =
+        curl_easy_perform(curl);
 
     curl_easy_setopt(curl, CURLOPT_HEADER, 1L);
     curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1L);
