@@ -24,6 +24,7 @@
 #include <vector>
 
 #ifdef HAVE_ICONV
+#include <cerrno>
 #include <iconv.h>
 #endif
 
