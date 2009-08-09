@@ -27,3 +27,17 @@ New options:
 
   Example:
     cclive -gr "(\w|\s)" URL
+
+  Comparisons:
+  ------------
+                              SIZE     RES      Notes
+  clive  2.2.4              ~13924k  ~10388k    Perl all the way
+  cclive 0.4.7 (w/ perl)     ~8300k   ~6908k    Video titles enabled
+  cclive 0.4.7 (w/o perl)    ~5940k   ~3224k    No video titles
+  cclive 0.5.0               ~5780k   ~3196k    Video titles enabled by default
+
+  SIZE = total size of the process (text, data, and stack)
+  RES  = current amount of resident memory
+
+  Note  : Amounts are approximates. cclive was built with "-O2 -march=pentium4"
+  Tested: FreeBSD 7.2, readings collected from top(1)
