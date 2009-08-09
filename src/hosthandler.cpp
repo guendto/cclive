@@ -107,7 +107,8 @@ HostHandler::toUnicode() {
         if (insize >= sizeof(inbuf))
             insize = sizeof(inbuf);
 
-        snprintf(inbuf, sizeof(inbuf), props.getTitle().c_str());
+        snprintf(inbuf, sizeof(inbuf),
+            "%s", props.getTitle().c_str());
 
         char outbuf[256];
         size_t avail = sizeof(outbuf);
