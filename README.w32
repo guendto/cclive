@@ -4,22 +4,18 @@ README for MSWindows users
 
 * Mswindows binaries are experimental
 
-* The testing relies on those users who use them and report back any bugs
+* We rely on users to report back any bugs
 
-* The author of these binaries has no use for mswindows binaries, he's only
-cross-compiling and packaging them
+* Please read the manual page (cclive.1.html) if you are new to cclive
 
-* If you are interested in taking over this port, please contact the author
-about it
+* Contact us if you are interested to take over the mswindows-port
 
-* Some features are not supported by these binaries due to limitations of
-mswindows, cclive typically spews out warnings accordingly
+* Some features are not available in this port due to OS limitations
 
-* If, and only if, either CCLIVE_HOME or HOME environment variable is defined,
-cclive parses config file
+* cclive attempts to parse config file ONLY if either CCLIVE_HOME or HOME
+  environment variable has been defined
 
-* Note that cclive looks for "ccliverc" config file, not .ccliverc as it
-does on Unix-like systems
+* cclive looks for "ccliverc", not ".ccliverc"
 
 * Example:
 
@@ -34,4 +30,4 @@ does on Unix-like systems
   Config: c:\cclive\ccliverc
   ...
 
-* The manual page cclive(1) is bundled in HTML, be sure to glance it over
+
