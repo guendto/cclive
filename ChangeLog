@@ -8,6 +8,7 @@ Version 0.5.0
 
  Developer-visible changes:
   * Update NEWS, manual
+  * $host.cpp: re-impl. using pcre
   * New prerequisites:
     # libiconv
     # libpcre (cpp)

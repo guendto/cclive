@@ -27,8 +27,6 @@
 #include <iconv.h>
 #endif
 
-#include <pcrecpp.h>
-
 #include "hosthandler.h"
 #include "opts.h"
 #include "log.h"
@@ -63,7 +61,17 @@ HostHandler::parsePage(const std::string& url) {
     toUnicode();
 
     // Apply regexp to title.
-    applyRegexp();
+    std::string title = props.getTitle();
+    Options opts      = optsmgr.getOptions();
+
+    if (opts.regexp_given)
+        applyRegexp(title);
+
+    // Remove leading and trailing whitespace.
+    pcrecpp::RE("(\\s+)").Replace("", &title);
+    pcrecpp::RE("(\\s+)$").Replace("", &title);
+
+    props.setTitle(title);
 
     pageContent.clear();
 }
@@ -125,32 +133,40 @@ HostHandler::toUnicode() {
 }
 
 void
-HostHandler::applyRegexp() {
+HostHandler::applyRegexp(std::string& title) {
+
     Options opts = optsmgr.getOptions();
 
-    if (!opts.regexp_given)
-        return;
-
-    std::string title;
-
     if (opts.find_all_given) {
-        pcrecpp::StringPiece sp(props.getTitle());
+        pcrecpp::StringPiece sp(title);
         pcrecpp::RE re(opts.regexp_arg, pcrecpp::UTF8());
+
+        title.clear();
 
         std::string s;
         while (re.FindAndConsume(&sp, &s))
             title += s;
     }
     else {
+        std::string tmp = title;
+        title.clear();
+
         pcrecpp::RE(opts.regexp_arg, pcrecpp::UTF8())
-            .PartialMatch(props.getTitle(), &title);
+            .PartialMatch(tmp, &title);
     }
 
-    // Remove leading and trailing whitespace.
-    pcrecpp::RE("(\\s+)").Replace("", &title);
-    pcrecpp::RE("(\\s+)$").Replace("", &title);
-
     props.setTitle(title);
+}
+
+void
+HostHandler::partialMatch(
+    const std::string& re,
+    const pcrecpp::Arg& dst,
+    const std::string& data/*=""*/)
+{
+    const std::string& content = !data.empty() ? data : pageContent;
+    if (!pcrecpp::RE(re).PartialMatch(content, dst))
+        throw HostHandler::ParseException("no match: "+re);
 }
 
 const VideoProperties&

@@ -30,27 +30,34 @@ GoogleHandler::GoogleHandler()
 
 void
 GoogleHandler::parseId() {
-    props.setId( Util::subStr(pageContent, "docid:'", "'") );
+    std::string id;
+    partialMatch("(?i)docid:'(.*?)'", &id);
+    props.setId(id);
 }
 
 void
 GoogleHandler::parseTitle() {
-    props.setTitle(
-        Util::subStr(pageContent, "<div class=titlebar-title>", "</div>"));
+    std::string title;
+    partialMatch("(?i)<div class=titlebar-title>(.*?)</", &title);
+    props.setTitle(title);
 }
 
 void
 GoogleHandler::parseLink() {
-    props.setLink( Util::subStr(pageContent, "videoUrl\\x3d", "\\x26") );
+
+    std::string lnk;
+    partialMatch("(?i)videourl\\W+x3d(.*?)\\W+x26", &lnk);
 
     std::string fmt = optsmgr.getOptions().format_arg;
 
     if (fmt == "mp4" || fmt == "best") {
-        const char *end_mp4 = "=ck1";
         try   {
-            props.setLink(
-                Util::rsubStr(pageContent, "href=", end_mp4) +end_mp4);
+            partialMatch("(?i)href=(.*?)=ck1", &lnk);
+            lnk += "=ck1";
         }
         catch (ParseException x) { /* default to flv */ }
     }
+    props.setLink(lnk);
 }
+
+

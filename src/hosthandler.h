@@ -23,6 +23,8 @@
 #include <string>
 #include <vector>
 
+#include <pcrecpp.h>
+
 #include "except.h"
 #include "video.h"
 #include "util.h"
@@ -39,9 +41,12 @@ public:
     void                    parsePage          (const std::string& url);
     const bool              isHost             (std::string url);
     const VideoProperties&  getVideoProperties () const;
+    void                    partialMatch       (const std::string& re,
+                                                const pcrecpp::Arg& dst,
+                                                const std::string& data="");
 private:
-    void toUnicode();
-    void applyRegexp();
+    void toUnicode   ();
+    void applyRegexp (std::string& title);
 protected:
     std::string     pageContent;
     VideoProperties props;

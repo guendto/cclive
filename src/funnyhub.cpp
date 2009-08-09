@@ -1,4 +1,5 @@
 /*
+ * Copyright (C) 2009 Toni Gundogdu.
  * Copyright (C) 2009 Patrick Hoffmann <patrick@sobran.de>.
  *
  * This file is part of cclive.
@@ -29,20 +30,23 @@ FunnyhubHandler::FunnyhubHandler()
 
 void
 FunnyhubHandler::parseId() {
-    const char *begin = "/videofiles/";
-    const char *end   = "_";
-    props.setId( Util::subStr(pageContent, begin, end) );
+    std::string id;
+    partialMatch("(?i)\\/videofiles\\/(.*?)\\_", &id);
+    props.setId(id);
 }
 
 void
 FunnyhubHandler::parseTitle() {
-    props.setTitle(
-        Util::subStr(pageContent, "yahooBuzzArticleHeadline = \"", "\""));
+    std::string title;
+    partialMatch("(?i)yahoobuzzarticleheadline = \"(.*?)\"", &title);
+    props.setTitle(title);
 }
 
 void
 FunnyhubHandler::parseLink() {
-    const char *begin = "\"flv\", \"";
-    const char *end   = "\"";
-    props.setLink( Util::subStr(pageContent, begin, end) );
+    std::string lnk;
+    partialMatch("(?i)\"flv\", \"(.*?)\"", &lnk);
+    props.setLink(lnk);
 }
+
+

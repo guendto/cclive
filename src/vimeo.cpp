@@ -33,19 +33,20 @@ VimeoHandler::VimeoHandler()
 
 void
 VimeoHandler::parseId() {
-    props.setId( Util::subStr(pageContent, "clip_id=", "\"") );
+    std::string id;
+    partialMatch("(?i)clip_id=(.*?)\"", &id);
+    props.setId(id);
 }
 
 void
 VimeoHandler::parseTitle() {
-    props.setTitle(
-        Util::subStr(pageContent, "<meta name=\"title\" content=\"", "\""));
+    std::string title;
+    partialMatch("(?i)<meta name=\"title\" content=\"(.*?)\"", &title);
+    props.setTitle(title);
 }
 
 void
 VimeoHandler::parseLink() {
-
-    // config
 
     std::string config_path =
         "http://vimeo.com/moogaloop/load/clip:" + props.getId();
@@ -53,17 +54,17 @@ VimeoHandler::parseLink() {
     std::string config = 
         curlmgr.fetchToMem(config_path, "config");
 
-    std::string sign =
-        Util::subStr( config, "<request_signature>", "</request_signature>" );
+    std::string sign;
+    partialMatch("(?i)<request_signature>(.*?)</", &sign, config);
 
-    std::string exp =
-        Util::subStr( config,
-            "<request_signature_expires>", "</request_signature_expires>" );
+    std::string exp;
+    partialMatch("(?i)<request_signature_expires>(.*?)</", &exp, config);
 
-    std::string hd =
-        Util::subStr( config, "<hd_button>", "</hd_button>", false );
-
-    // video link
+    std::string hd;
+    try {
+        partialMatch("(?i)<hd_button>(.*?)</", &hd, config);
+    }
+    catch (const HostHandler::ParseException& x) { }
 
     std::string lnk =
         "http://vimeo.com/moogaloop/play/clip:" +props.getId()+
@@ -80,3 +81,5 @@ VimeoHandler::parseLink() {
 
     props.setLink(lnk);
 }
+
+

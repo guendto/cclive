@@ -29,25 +29,31 @@ BreakHandler::BreakHandler()
 
 void
 BreakHandler::parseId() {
-    props.setId( Util::subStr(pageContent, "ContentID='", "'") );
+    std::string id;
+    partialMatch("(?i)contentid='(.*?)'", &id);
+    props.setId(id);
 }
 
 void
 BreakHandler::parseTitle() {
-    props.setTitle(
-        Util::subStr(pageContent, "id=\"vid_title\" content=\"", "\""));
+    std::string title;
+    partialMatch("(?i)id=\"vid_title\" content=\"(.*?)\"", &title);
+    props.setTitle(title);
 }
 
 void
 BreakHandler::parseLink() {
-    std::string fpath =
-        Util::subStr(pageContent, "ContentFilePath='", "'");
 
-    std::string fname =
-        Util::subStr(pageContent, "FileName='", "'");
+    std::string fpath;
+    partialMatch("(?i)contentfilepath='(.*?)'", &fpath);
+
+    std::string fname;
+    partialMatch("(?i)filename='(.*?)'", &fname);
 
     std::string lnk =
-        "http://media1.break.com/dnet/media/" + fpath + "/" + fname + ".flv";
+        "http://media1.break.com/dnet/media/" +fpath+ "/" +fname+ ".flv";
 
-    props.setLink( lnk );
+    props.setLink(lnk);
 }
+
+

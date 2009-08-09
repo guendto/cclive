@@ -35,22 +35,33 @@ SevenloadHandler::parseId() {
 
 void
 SevenloadHandler::parseTitle() {
-    props.setTitle(
-        Util::subStr(pageContent, "class=\"L title\">", "</h1>"));
+    std::string title;
+    try {
+        partialMatch("(?i)<h1 id=\"itemtitle\">(.*?)</", &title);
+    }
+    catch(const HostHandler::ParseException& x) {
+        partialMatch("(?i)class=\"l title\">(.*?)</", &title);
+    }
+    props.setTitle(title);
 }
 
 void
 SevenloadHandler::parseLink() {
-    std::string cpath =
-        Util::subStr(pageContent, "configPath=", "\"");
 
+    std::string cpath;
+    partialMatch("(?i)configpath=(.*?)\"", &cpath);
     curlmgr.unescape(cpath);
 
     std::string config =
         curlmgr.fetchToMem(cpath, "config");
 
-    props.setId( Util::subStr(config, "item id=\"", "\"") );
+    std::string id;
+    partialMatch("(?i)item id=\"(.*?)\"", &id, config);
+    props.setId(id);
 
-    props.setLink(
-        Util::subStr(config, "<location seeking=\"yes\">", "</location>") );
+    std::string lnk;
+    partialMatch("(?i)<location seeking=\"yes\">(.*?)</", &lnk, config);
+    props.setLink(lnk);
 }
+
+

@@ -31,18 +31,21 @@ GolemHandler::GolemHandler()
 
 void
 GolemHandler::parseId() {
-    props.setId( Util::subStr(pageContent, "\"id\", \"", "\"") );
+    std::string id;
+    partialMatch("(?i)\"id\", \"(.*?)\"", &id);
+    props.setId(id);
 }
 
 void
 GolemHandler::parseTitle() {
-    props.setTitle(
-        Util::subStr(pageContent,
-            "<h1 class=\"headlinenormal\">Video: ", "</h1>"));
+    std::string title;
+    partialMatch("(?i)<h1 class=\"headlinenormal\">video:(.*?)</", &title);
+    props.setTitle(title);
 }
 
 void
 GolemHandler::parseLink() {
+
     std::string config_url =
         "http://video.golem.de/xml/" + props.getId();
 
@@ -52,10 +55,8 @@ GolemHandler::parseLink() {
     std::string link =
         "http://video.golem.de/download/" + props.getId();
 
-    std::string title = 
-        Util::subStr(config, "<title>", "</title>");
-
-    std::string fmt = optsmgr.getOptions().format_arg;
+    std::string fmt =
+        optsmgr.getOptions().format_arg;
 
     if (fmt == "best") {
         // One should not simply assume "high" (or "hd")

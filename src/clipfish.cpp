@@ -30,21 +30,35 @@ ClipfishHandler::ClipfishHandler()
 
 void
 ClipfishHandler::parseId() {
-    props.setId( Util::subStr(props.getPageLink(), "/video/", "/") );
+    std::string id;
+    partialMatch("(?i)\\/video\\/(.*?)\\/", &id, props.getPageLink());
+    props.setId(id);
 }
 
 void
 ClipfishHandler::parseTitle() {
-    props.setTitle( Util::htmlTitle(pageContent) );
+
+    std::string title;
+
+    partialMatch("(?i)<title>(.*?)</title>", &title);
+    Util::subStrReplace(title, "Video: ", "");
+    Util::subStrReplace(title, " - Clipfish", "");
+
+    props.setTitle(title);
 }
 
 void
 ClipfishHandler::parseLink() {
+
     std::string config_url =
         "http://www.clipfish.de/video_n.php?p=0|DE&vid=" + props.getId();
 
     std::string config =
         curlmgr.fetchToMem(config_url, "config");
 
-    props.setLink( Util::subStr(config, "&url=", "&") );
+    std::string lnk;
+    partialMatch("(?i)&url=(.*?)&", &lnk, config);
+    props.setLink(lnk);
 }
+
+

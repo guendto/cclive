@@ -33,29 +33,33 @@ DailymotionHandler::DailymotionHandler()
 
 void
 DailymotionHandler::parseId() {
-    props.setId( Util::subStr(pageContent, "swf/", "?") );
+    std::string id;
+    partialMatch("(?i)swf\\/(.*?)\?", &id);
+    props.setId(id);
 }
 
 void
 DailymotionHandler::parseTitle() {
-    props.setTitle(
-        Util::subStr(pageContent, "<h1 class=\"dmco_title\">", "</h1>"));
+    std::string title;
+    partialMatch("(?i)<h1 class=\"dmco_title\">(.*?)</", &title);
+    props.setTitle(title);
 }
 
 void
 DailymotionHandler::parseLink() {
-    std::string paths =
-        Util::subStr(pageContent, "\"video\", \"", "\"");
 
+    std::string paths;
+    partialMatch("(?i)\"video\", \"(.*?)\"", &paths);
     curlmgr.unescape(paths);
 
     std::vector<std::string> tokens =
         Util::tokenize(paths, "||");
 
     if (tokens.size() == 0)
-        throw ParseException("paths parsing failed for \"||\"");
+        throw ParseException("unable to tokenize (\"||\")");
 
-    std::string format = optsmgr.getOptions().format_arg;
+    std::string format =
+        optsmgr.getOptions().format_arg;
 
     if (format == "flv")
         format = "spark";
@@ -67,7 +71,8 @@ DailymotionHandler::parseLink() {
         iter != tokens.end();
         ++iter)
     {
-        std::vector<std::string> v = Util::tokenize(*iter, "@@");
+        std::vector<std::string> v =
+            Util::tokenize(*iter, "@@");
 
         if (v.size() == 0)
             continue;
@@ -91,3 +96,5 @@ DailymotionHandler::parseLink() {
 
     props.setLink(link);
 }
+
+

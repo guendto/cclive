@@ -1,4 +1,5 @@
 /*
+ * Copyright (C) 2009 Toni Gundogdu.
  * Copyright (C) 2009 Patrick Hoffmann <patrick@sobran.de>.
  *
  * This file is part of cclive.
@@ -29,28 +30,24 @@ MyuboHandler::MyuboHandler()
 
 void
 MyuboHandler::parseId() {
-    const char *begin = "movieid=";
-    const char *end   = "\"";
-    props.setId( Util::subStr(pageContent, begin, end) );
+    std::string id;
+    partialMatch("(?i)movieid=(.*?)\"", &id);
+    props.setId(id);
 }
 
 void
 MyuboHandler::parseTitle() {
-    // Done in parseLink.
+    // myubo uses a static <title>. Grab video title elsewhere.
+    std::string title;
+    partialMatch("(?i)<div id=\"moviedetail\"><h1>(.*?)</", &title);
+    props.setTitle(title);
 }
 
 void
 MyuboHandler::parseLink() {
-
-    // myubo uses a static <title>. Grab video title elsewhere.
-    props.setTitle(
-        Util::subStr(pageContent,
-            "<div id=\"movieDetail\"><h1>",
-            "</h1>")
-    );
-
-    const char *begin = "writeFlashPlayer(\'";
-    const char *end   = "\'";
-
-    props.setLink( Util::subStr(pageContent, begin, end) );
+    std::string lnk;
+    partialMatch("(?i)writeflashplayer\\('(.*?)'", &lnk);
+    props.setLink(lnk);
 }
+
+

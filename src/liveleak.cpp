@@ -30,33 +30,39 @@ LiveleakHandler::LiveleakHandler()
 
 void
 LiveleakHandler::parseId() {
-    props.setId( Util::subStr(pageContent, "token=", "'") );
+    std::string id;
+    partialMatch("(?i)token=(.*?)'", &id);
+    props.setId(id);
 }
 
 void
 LiveleakHandler::parseTitle() {
-    std::string title = Util::htmlTitle(pageContent);
+    std::string title;
+    partialMatch("(?i)<title>(.*?)</", &title);
     Util::subStrReplace(title, "LiveLeak.com - ", "");
     props.setTitle(title);
 }
 
 void
 LiveleakHandler::parseLink() {
-    std::string confPath =
-        Util::subStr(pageContent, "'config','", "'");
 
+    std::string confPath;
+    partialMatch("(?i)'config','(.*?)'", &confPath);
     curlmgr.unescape(confPath);
 
     std::string config =
         curlmgr.fetchToMem(confPath, "config");
 
-    std::string plPath =
-        Util::subStr(config, "<file>", "</file>");
-
+    std::string plPath;
+    partialMatch("(?i)<file>(.*?)</", &plPath, config);
     curlmgr.unescape(plPath);
 
     std::string playlist =
         curlmgr.fetchToMem(plPath, "playlist");
 
-    props.setLink( Util::subStr(playlist, "<location>", "</location>") );
+    std::string lnk;
+    partialMatch("(?i)<location>(.*?)</", &lnk, playlist);
+    props.setLink(lnk);
 }
+
+

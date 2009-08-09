@@ -29,16 +29,23 @@ EvisorHandler::EvisorHandler()
 
 void
 EvisorHandler::parseId() {
-    props.setId( Util::subStr(pageContent, "unit_long", "\"") );
+    std::string id;
+    partialMatch("(?i)unit_long(.*?)\"", &id);
+    props.setId(id);
 }
 
 void
 EvisorHandler::parseTitle() {
-    props.setTitle(
-        Util::subStr(pageContent, "<center><h1>", "</h1>"));
+    std::string title;
+    partialMatch("(?i)<center><h1>(.*?)</", &title);
+    props.setTitle(title);
 }
 
 void
 EvisorHandler::parseLink() {
-    props.setLink( Util::subStr(pageContent, "file=", "\"") );
+    std::string lnk;
+    partialMatch("(?i)file=(.*?)\"", &lnk);
+    props.setLink(lnk);
 }
+
+

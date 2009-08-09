@@ -30,27 +30,35 @@ YoutubeHandler::YoutubeHandler()
 
 void
 YoutubeHandler::parseId() {
-    props.setId( Util::subStr(pageContent, "\"video_id\": \"", "\"") );
+    std::string id;
+    partialMatch("(?i)\"video_id\": \"(.*?)\"", &id);
+    props.setId(id);
 }
 
 void
 YoutubeHandler::parseTitle() {
-    props.setTitle(
-        Util::subStr(pageContent, "<meta name=\"title\" content=\"", "\""));
+    std::string title;
+    partialMatch("(?i)<meta name=\"title\" content=\"(.*?)\"", &title);
+    props.setTitle(title);
 }
 
 void
 YoutubeHandler::parseLink() {
-    std::string t =
-        Util::subStr(pageContent, "\"t\": \"", "\"");
+
+    std::string t;
+    partialMatch("(?i)\"t\": \"(.*?)\"", &t);
 
     std::string lnk =
-        "http://youtube.com/get_video?video_id=" + props.getId() + "&t=" + t;
+        "http://youtube.com/get_video?video_id=" +props.getId()+ "&t=" +t;
 
-    std::string fmt = optsmgr.getOptions().format_arg;
+    std::string fmt =
+        optsmgr.getOptions().format_arg;
 
-    if (fmt == "best")
-        lnk += "&fmt=" + Util::subStr(pageContent, "\"fmt_map\": \"", "/");
+    if (fmt == "best") {
+        std::string best;
+        partialMatch("(?i)\"fmt_map\": \"(.*?)\\/", &best);
+        lnk += "&fmt=" + best;
+    }
     else {
 
         /*
