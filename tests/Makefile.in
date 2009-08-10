@@ -35,7 +35,7 @@ target_triplet = @target@
 check_PROGRAMS = youtube$(EXEEXT) break$(EXEEXT) liveleak$(EXEEXT) \
 	dailymotion$(EXEEXT) evisor$(EXEEXT) google$(EXEEXT) \
 	sevenload$(EXEEXT) golem$(EXEEXT) clipfish$(EXEEXT) \
-	funnyhub$(EXEEXT) myubo$(EXEEXT) vimeo$(EXEEXT)
+	funnyhub$(EXEEXT) myubo$(EXEEXT) cctv$(EXEEXT) vimeo$(EXEEXT)
 subdir = tests
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -49,6 +49,9 @@ am__objects_1 = test.$(OBJEXT)
 am_break_OBJECTS = break.$(OBJEXT) $(am__objects_1)
 break_OBJECTS = $(am_break_OBJECTS)
 break_LDADD = $(LDADD)
+am_cctv_OBJECTS = cctv.$(OBJEXT) $(am__objects_1)
+cctv_OBJECTS = $(am_cctv_OBJECTS)
+cctv_LDADD = $(LDADD)
 am_clipfish_OBJECTS = clipfish.$(OBJEXT) $(am__objects_1)
 clipfish_OBJECTS = $(am_clipfish_OBJECTS)
 clipfish_LDADD = $(LDADD)
@@ -89,11 +92,12 @@ COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
 LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
-SOURCES = $(break_SOURCES) $(clipfish_SOURCES) $(dailymotion_SOURCES) \
-	$(evisor_SOURCES) $(funnyhub_SOURCES) $(golem_SOURCES) \
-	$(google_SOURCES) $(liveleak_SOURCES) $(myubo_SOURCES) \
-	$(sevenload_SOURCES) $(vimeo_SOURCES) $(youtube_SOURCES)
-DIST_SOURCES = $(break_SOURCES) $(clipfish_SOURCES) \
+SOURCES = $(break_SOURCES) $(cctv_SOURCES) $(clipfish_SOURCES) \
+	$(dailymotion_SOURCES) $(evisor_SOURCES) $(funnyhub_SOURCES) \
+	$(golem_SOURCES) $(google_SOURCES) $(liveleak_SOURCES) \
+	$(myubo_SOURCES) $(sevenload_SOURCES) $(vimeo_SOURCES) \
+	$(youtube_SOURCES)
+DIST_SOURCES = $(break_SOURCES) $(cctv_SOURCES) $(clipfish_SOURCES) \
 	$(dailymotion_SOURCES) $(evisor_SOURCES) $(funnyhub_SOURCES) \
 	$(golem_SOURCES) $(google_SOURCES) $(liveleak_SOURCES) \
 	$(myubo_SOURCES) $(sevenload_SOURCES) $(vimeo_SOURCES) \
@@ -229,6 +233,7 @@ golem_SOURCES = golem.c $(common)
 clipfish_SOURCES = clipfish.c $(common)
 funnyhub_SOURCES = funnyhub.c $(common)
 myubo_SOURCES = myubo.c $(common)
+cctv_SOURCES = cctv.c $(common)
 all: all-am
 
 .SUFFIXES:
@@ -268,6 +273,9 @@ clean-checkPROGRAMS:
 break$(EXEEXT): $(break_OBJECTS) $(break_DEPENDENCIES) 
 	@rm -f break$(EXEEXT)
 	$(LINK) $(break_OBJECTS) $(break_LDADD) $(LIBS)
+cctv$(EXEEXT): $(cctv_OBJECTS) $(cctv_DEPENDENCIES) 
+	@rm -f cctv$(EXEEXT)
+	$(LINK) $(cctv_OBJECTS) $(cctv_LDADD) $(LIBS)
 clipfish$(EXEEXT): $(clipfish_OBJECTS) $(clipfish_DEPENDENCIES) 
 	@rm -f clipfish$(EXEEXT)
 	$(LINK) $(clipfish_OBJECTS) $(clipfish_LDADD) $(LIBS)
@@ -309,6 +317,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/break.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cctv.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/clipfish.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dailymotion.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/evisor.Po@am__quote@

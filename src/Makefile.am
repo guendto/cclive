@@ -25,6 +25,7 @@ golem.cpp\
 clipfish.cpp\
 funnyhub.cpp\
 myubo.cpp\
+cctv.cpp\
 google.cpp
 
 hdr=\

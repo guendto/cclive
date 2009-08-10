@@ -54,7 +54,8 @@ am__objects_1 = main.$(OBJEXT) app.$(OBJEXT) except.$(OBJEXT) \
 am__objects_2 = youtube.$(OBJEXT) break.$(OBJEXT) evisor.$(OBJEXT) \
 	sevenload.$(OBJEXT) liveleak.$(OBJEXT) dailymotion.$(OBJEXT) \
 	vimeo.$(OBJEXT) golem.$(OBJEXT) clipfish.$(OBJEXT) \
-	funnyhub.$(OBJEXT) myubo.$(OBJEXT) google.$(OBJEXT)
+	funnyhub.$(OBJEXT) myubo.$(OBJEXT) cctv.$(OBJEXT) \
+	google.$(OBJEXT)
 am__objects_3 =
 am_cclive_OBJECTS = $(am__objects_1) $(am__objects_2) $(am__objects_3)
 cclive_OBJECTS = $(am_cclive_OBJECTS)
@@ -164,6 +165,7 @@ golem.cpp\
 clipfish.cpp\
 funnyhub.cpp\
 myubo.cpp\
+cctv.cpp\
 google.cpp
 
 host_alias = @host_alias@
@@ -303,6 +305,7 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/app.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/break.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cctv.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/clipfish.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cmdline.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/curl.Po@am__quote@

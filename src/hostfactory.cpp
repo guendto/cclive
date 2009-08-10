@@ -66,6 +66,7 @@ HostHandlerFactory::createHandler(const HandlerType& type) {
     case Clipfish:   return SHP<ClipfishHandler>   (new ClipfishHandler);
     case Funnyhub:   return SHP<FunnyhubHandler>   (new FunnyhubHandler);
 	case Myubo:		 return SHP<MyuboHandler>	   (new MyuboHandler);
+	case Cctv:		 return SHP<CctvHandler>	   (new CctvHandler);
     // Keeps -Weffc++ quiet.
     case _last_type: break;
     }

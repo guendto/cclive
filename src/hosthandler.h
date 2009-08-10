@@ -177,4 +177,14 @@ public:
     virtual void parseLink ();
 };
 
+// Cctv
+
+class CctvHandler : public HostHandler {
+public:
+	CctvHandler();
+    virtual void parseId   ();
+    virtual void parseTitle();
+    virtual void parseLink ();
+};
+
 #endif

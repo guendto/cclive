@@ -13,6 +13,7 @@ golem\
 clipfish\
 funnyhub\
 myubo\
+cctv\
 vimeo
 
 TESTS= $(check_PROGRAMS)
@@ -33,3 +34,4 @@ golem_SOURCES=		golem.c $(common)
 clipfish_SOURCES=	clipfish.c $(common)
 funnyhub_SOURCES=	funnyhub.c $(common)
 myubo_SOURCES=		myubo.c $(common)
+cctv_SOURCES=		cctv.c $(common)

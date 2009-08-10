@@ -86,6 +86,7 @@ VideoProperties::setContentType(const std::string& contentType) {
         // set to "flv" for these:
         if (suffix.find("octet") != std::string::npos
             || suffix.find("swf") != std::string::npos
+            || suffix.find("flash") != std::string::npos
             || suffix.find("plain") != std::string::npos)
         {
             suffix = "flv";
