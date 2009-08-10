@@ -240,7 +240,7 @@ reaches 20%.
 
 =item cclive -s URL
 
-Alternate to streaming with Adobe Flash. C<vlc(1)> and C<totem(1)> have been
+Alternative to streaming with Adobe Flash. C<vlc(1)> and C<totem(1)> have been
 reported to work also.
 
 =item cclive -F "%t.%s" -r "(\w+)" URL
