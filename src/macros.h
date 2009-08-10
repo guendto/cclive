@@ -32,4 +32,7 @@
 #define _TOMB(n) \
     (n/1024/1024)
 
+#define zeropad(n,v) \
+    std::setw(n) << std::setfill('0') << v
+
 #endif

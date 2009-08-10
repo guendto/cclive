@@ -35,7 +35,8 @@ target_triplet = @target@
 check_PROGRAMS = youtube$(EXEEXT) break$(EXEEXT) liveleak$(EXEEXT) \
 	dailymotion$(EXEEXT) evisor$(EXEEXT) google$(EXEEXT) \
 	sevenload$(EXEEXT) golem$(EXEEXT) clipfish$(EXEEXT) \
-	funnyhub$(EXEEXT) myubo$(EXEEXT) cctv$(EXEEXT) vimeo$(EXEEXT)
+	funnyhub$(EXEEXT) myubo$(EXEEXT) cctv$(EXEEXT) \
+	ehrensenf$(EXEEXT) vimeo$(EXEEXT)
 subdir = tests
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -58,6 +59,9 @@ clipfish_LDADD = $(LDADD)
 am_dailymotion_OBJECTS = dailymotion.$(OBJEXT) $(am__objects_1)
 dailymotion_OBJECTS = $(am_dailymotion_OBJECTS)
 dailymotion_LDADD = $(LDADD)
+am_ehrensenf_OBJECTS = ehrensenf.$(OBJEXT) $(am__objects_1)
+ehrensenf_OBJECTS = $(am_ehrensenf_OBJECTS)
+ehrensenf_LDADD = $(LDADD)
 am_evisor_OBJECTS = evisor.$(OBJEXT) $(am__objects_1)
 evisor_OBJECTS = $(am_evisor_OBJECTS)
 evisor_LDADD = $(LDADD)
@@ -93,15 +97,15 @@ COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 CCLD = $(CC)
 LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 SOURCES = $(break_SOURCES) $(cctv_SOURCES) $(clipfish_SOURCES) \
-	$(dailymotion_SOURCES) $(evisor_SOURCES) $(funnyhub_SOURCES) \
-	$(golem_SOURCES) $(google_SOURCES) $(liveleak_SOURCES) \
-	$(myubo_SOURCES) $(sevenload_SOURCES) $(vimeo_SOURCES) \
-	$(youtube_SOURCES)
+	$(dailymotion_SOURCES) $(ehrensenf_SOURCES) $(evisor_SOURCES) \
+	$(funnyhub_SOURCES) $(golem_SOURCES) $(google_SOURCES) \
+	$(liveleak_SOURCES) $(myubo_SOURCES) $(sevenload_SOURCES) \
+	$(vimeo_SOURCES) $(youtube_SOURCES)
 DIST_SOURCES = $(break_SOURCES) $(cctv_SOURCES) $(clipfish_SOURCES) \
-	$(dailymotion_SOURCES) $(evisor_SOURCES) $(funnyhub_SOURCES) \
-	$(golem_SOURCES) $(google_SOURCES) $(liveleak_SOURCES) \
-	$(myubo_SOURCES) $(sevenload_SOURCES) $(vimeo_SOURCES) \
-	$(youtube_SOURCES)
+	$(dailymotion_SOURCES) $(ehrensenf_SOURCES) $(evisor_SOURCES) \
+	$(funnyhub_SOURCES) $(golem_SOURCES) $(google_SOURCES) \
+	$(liveleak_SOURCES) $(myubo_SOURCES) $(sevenload_SOURCES) \
+	$(vimeo_SOURCES) $(youtube_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -234,6 +238,7 @@ clipfish_SOURCES = clipfish.c $(common)
 funnyhub_SOURCES = funnyhub.c $(common)
 myubo_SOURCES = myubo.c $(common)
 cctv_SOURCES = cctv.c $(common)
+ehrensenf_SOURCES = ehrensenf.c $(common)
 all: all-am
 
 .SUFFIXES:
@@ -282,6 +287,9 @@ clipfish$(EXEEXT): $(clipfish_OBJECTS) $(clipfish_DEPENDENCIES)
 dailymotion$(EXEEXT): $(dailymotion_OBJECTS) $(dailymotion_DEPENDENCIES) 
 	@rm -f dailymotion$(EXEEXT)
 	$(LINK) $(dailymotion_OBJECTS) $(dailymotion_LDADD) $(LIBS)
+ehrensenf$(EXEEXT): $(ehrensenf_OBJECTS) $(ehrensenf_DEPENDENCIES) 
+	@rm -f ehrensenf$(EXEEXT)
+	$(LINK) $(ehrensenf_OBJECTS) $(ehrensenf_LDADD) $(LIBS)
 evisor$(EXEEXT): $(evisor_OBJECTS) $(evisor_DEPENDENCIES) 
 	@rm -f evisor$(EXEEXT)
 	$(LINK) $(evisor_OBJECTS) $(evisor_LDADD) $(LIBS)
@@ -320,6 +328,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cctv.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/clipfish.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dailymotion.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ehrensenf.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/evisor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/funnyhub.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/golem.Po@am__quote@

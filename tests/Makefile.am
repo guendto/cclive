@@ -14,6 +14,7 @@ clipfish\
 funnyhub\
 myubo\
 cctv\
+ehrensenf\
 vimeo
 
 TESTS= $(check_PROGRAMS)
@@ -35,3 +36,4 @@ clipfish_SOURCES=	clipfish.c $(common)
 funnyhub_SOURCES=	funnyhub.c $(common)
 myubo_SOURCES=		myubo.c $(common)
 cctv_SOURCES=		cctv.c $(common)
+ehrensenf_SOURCES=	ehrensenf.c $(common)

@@ -187,4 +187,14 @@ public:
     virtual void parseLink ();
 };
 
+// Ehrensenf
+
+class EhrensenfHandler : public HostHandler {
+public:
+	EhrensenfHandler();
+    virtual void parseId   ();
+    virtual void parseTitle();
+    virtual void parseLink ();
+};
+
 #endif
