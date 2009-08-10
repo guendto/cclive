@@ -1,10 +1,5 @@
 
 
-            Installation
-
- Typically "./configure && make install".
-
-
             Prerequisites
 
  * libcurl  (7.18.0+)  <http://curl.haxx.se/>
@@ -15,17 +10,11 @@
 
    Some operating systems have iconv in the C library, for example glibc.
    Some have it in a separate library libiconv, for example OSF/1 or FreeBSD.
-   Regardless of the operating system, GNU libiconv might have been installed.
-   In that case, it should be used instead of the operating system's native
-   iconv. 
 
 
-            Notable ./configure options
+            Installation
 
- --enable-sigwinch
-    If enabled, cclive will handle the SIGWINCH to resize the
-    "progressbar" to match the terminal width. This is known
-    to work on at least BSD and Linux systems.
+ Typically "./configure && make install". See also "./configure --help".
 
  --enable-tests
     Enable tests that can be run by typing "make check". Note that
@@ -35,12 +24,6 @@
 
  --without-man
     Do not install cclive.1 manual page.
-
-
-            Example
-
- # ./configure --enable-sigwinch
- # make install
 
  See also:
    http://code.google.com/p/cclive/wiki/HowtoInstall
