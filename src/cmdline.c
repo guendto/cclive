@@ -51,7 +51,7 @@ const char *gengetopt_args_info_help[] = {
   "  -c, --continue                resume partially downloaded file",
   "  -l, --limit-rate=kb/s         limit download speed to KB/s",
   "  -O, --output-video=file       write video to file",
-  "  -f, --format=format           download video format  (possible \n                                  values=\"flv\", \"best\", \"fmt17\", \n                                  \"fmt18\", \"fmt22\", \"fmt35\", \"hq\", \n                                  \"3gp\", \"spark-mini\", \"vp6-hq\", \n                                  \"vp6-hd\", \"vp6\", \"h264\", \"hd\", \n                                  \"mp4\", \"high\", \"ipod\" default=`flv')",
+  "  -f, --format=format           download video format  (possible \n                                  values=\"flv\", \"best\", \"fmt17\", \n                                  \"fmt18\", \"fmt22\", \"fmt35\", \"hq\", \n                                  \"3gp\", \"spark-mini\", \"vp6-hq\", \n                                  \"vp6-hd\", \"vp6\", \"h264\", \"hd\", \n                                  \"mp4\", \"high\", \"ipod\", \"vp6_64\", \n                                  \"vp6_576\", \"vp6_928\", \"h264_1400\", \n                                  \"small\", \"iphone\", \"podcast\" \n                                  default=`flv')",
   "\nFilename formatting:",
   "  -N, --number-videos           prepend a numeric prefix to output filenames",
   "  -r, --regexp=expr             regular expression to filter video title",
@@ -108,7 +108,7 @@ free_cmd_list(void)
 }
 
 
-const char *cmdline_parser_format_values[] = {"flv", "best", "fmt17", "fmt18", "fmt22", "fmt35", "hq", "3gp", "spark-mini", "vp6-hq", "vp6-hd", "vp6", "h264", "hd", "mp4", "high", "ipod", 0}; /*< Possible values for format. */
+const char *cmdline_parser_format_values[] = {"flv", "best", "fmt17", "fmt18", "fmt22", "fmt35", "hq", "3gp", "spark-mini", "vp6-hq", "vp6-hd", "vp6", "h264", "hd", "mp4", "high", "ipod", "vp6_64", "vp6_576", "vp6_928", "h264_1400", "small", "iphone", "podcast", 0}; /*< Possible values for format. */
 
 static char *
 gengetopt_strdup (const char *s);

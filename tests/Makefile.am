@@ -15,6 +15,7 @@ funnyhub\
 myubo\
 cctv\
 ehrensenf\
+spiegel\
 vimeo
 
 TESTS= $(check_PROGRAMS)
@@ -37,3 +38,4 @@ funnyhub_SOURCES=	funnyhub.c $(common)
 myubo_SOURCES=		myubo.c $(common)
 cctv_SOURCES=		cctv.c $(common)
 ehrensenf_SOURCES=	ehrensenf.c $(common)
+spiegel_SOURCES=	spiegel.c $(common)

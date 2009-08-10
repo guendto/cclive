@@ -27,6 +27,7 @@ funnyhub.cpp\
 myubo.cpp\
 cctv.cpp\
 ehrensenf.cpp\
+spiegel.cpp\
 google.cpp
 
 hdr=\

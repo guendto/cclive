@@ -197,4 +197,14 @@ public:
     virtual void parseLink ();
 };
 
+// Spiegel
+
+class SpiegelHandler : public HostHandler {
+public:
+	SpiegelHandler();
+    virtual void parseId   ();
+    virtual void parseTitle();
+    virtual void parseLink ();
+};
+
 #endif
