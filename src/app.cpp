@@ -31,7 +31,7 @@
 #include <algorithm>
 #include <tr1/memory>
 
-#ifdef USE_SIGWINCH
+#ifdef HAVE_SIGNAL_H
 #include <signal.h>
 #endif
 
@@ -195,7 +195,7 @@ App::run() {
     }
 
     logmgr.cout().setf(std::ios::fixed);
-#ifdef USE_SIGWINCH
+#ifdef SIGWINCH
     signal(SIGWINCH, handle_sigwinch);
 #endif
     std::for_each(tokens.begin(), tokens.end(), handleURL);
@@ -252,7 +252,7 @@ static const char copyr_notice[] =
 #ifdef HAVE_ICONV
         << "iconv "
 #endif
-#ifdef USE_SIGWINCH
+#ifdef SIGWINCH
         << "sigwinch "
 #endif
         << "\n  Home    : "       << "<http://cclive.googlecode.com/>"

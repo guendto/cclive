@@ -41,13 +41,12 @@
 
 #include <time.h>
 
-#ifdef USE_SIGWINCH
- #ifdef HAVE_SIGNAL_H
-  #include <signal.h>
- #endif
- #ifdef HAVE_SYS_IOCTL_H
-  #include <sys/ioctl.h>
- #endif
+#ifdef HAVE_SIGNAL_H
+#include <signal.h>
+#endif
+
+#ifdef HAVE_SYS_IOCTL_H
+#include <sys/ioctl.h>
 #endif
 
 #include "except.h"
@@ -59,7 +58,7 @@
 #include "log.h"
 #include "progressbar.h"
 
-#ifdef USE_SIGWINCH
+#ifdef SIGWINCH
 static volatile sig_atomic_t recv_sigwinch;
 
 RETSIGTYPE
@@ -100,7 +99,7 @@ ProgressBar::init(const VideoProperties& props) {
     if (initial > total)
         total = initial;
 
-#ifdef USE_SIGWINCH
+#ifdef SIGWINCH
     if (!termWidth || recv_sigwinch) {
         termWidth = getTermWidth();
         if (!termWidth)
@@ -117,7 +116,7 @@ void
 ProgressBar::update(double now) {
     static const double REFRESH_INTERVAL = 0.2;
     bool force_update = false;
-#ifdef USE_SIGWINCH
+#ifdef SIGWINCH
     if (recv_sigwinch) {
         const int old_width = termWidth;
         termWidth = getTermWidth();

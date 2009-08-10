@@ -77,16 +77,6 @@ AC_PROG_GCC_TRADITIONAL
 AC_TYPE_SIGNAL
 AC_CHECK_FUNCS([memset strchr strcspn strspn strtol])
 
-# --enable-sigwinch
-AC_ARG_ENABLE([sigwinch],
-    [AS_HELP_STRING([--enable-sigwinch],
-        [enable SIGWINCH handling @<:@default=no@:>@])],
-    [],
-    [enable_sigwinch=no])
-if [ test x"$enable_sigwinch" = "xyes" ]; then
-    AC_DEFINE([USE_SIGWINCH], [1], [Define to enable SIGWINCH handling])
-fi
-
 # --enable-tests
 AC_ARG_ENABLE([tests],
     [AS_HELP_STRING([--enable-tests],

@@ -764,7 +764,6 @@ enable_dependency_tracking
 with_gnu_ld
 enable_rpath
 with_libiconv_prefix
-enable_sigwinch
 enable_tests
 with_man
 '
@@ -1419,7 +1418,6 @@ Optional Features:
   --disable-dependency-tracking  speeds up one-time build
   --enable-dependency-tracking   do not reject slow dependency extractors
   --disable-rpath         do not hardcode runtime library paths
-  --enable-sigwinch       enable SIGWINCH handling [default=no]
   --enable-tests          enable "make check" tests [default=no]
 
 Optional Packages:
@@ -8986,22 +8984,6 @@ _ACEOF
 fi
 done
 
-
-# --enable-sigwinch
-# Check whether --enable-sigwinch was given.
-if test "${enable_sigwinch+set}" = set; then
-  enableval=$enable_sigwinch;
-else
-  enable_sigwinch=no
-fi
-
-if  test x"$enable_sigwinch" = "xyes" ; then
-
-cat >>confdefs.h <<\_ACEOF
-#define USE_SIGWINCH 1
-_ACEOF
-
-fi
 
 # --enable-tests
 # Check whether --enable-tests was given.
