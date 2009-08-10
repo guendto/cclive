@@ -252,6 +252,19 @@ Grab the first "word" character from video title for output filename.
 Grab all "word" and "whitespace" characters from the video title and
 use them for the output filename.
 
+=item cat E<gt> url.lst
+
+  http://en.sevenload.com/videos/IUL3gda-Funny-Football-Clips
+  http://youtube.com/watch?v=3HD220e0bx4
+  http://break.com/index/beach-tackle-whip-lash.html
+  http://www.liveleak.com/view?i=704_1228511265
+
+=item cclive E<lt> url.lst
+
+=item cat url.lst | cclive
+
+Alternative to passing multiple links to cclive as command line arguments.
+
 =back
 
 =head1 FORMATS
