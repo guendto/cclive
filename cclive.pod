@@ -236,7 +236,7 @@ Copy audio from downloaded video to ogg with C<ffmpeg(1)>.
 Start playing the video being downloaded with C<mplayer(1)> when the transfer
 reaches 20%.
 
-=item echo 'stream-exec = "mplayer -really-quiet %i"' >> ~/.ccliverc
+=item echo 'stream-exec = "mplayer -really-quiet %i"' E<gt>E<gt> ~/.ccliverc
 
 =item cclive -s URL
 
