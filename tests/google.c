@@ -1,7 +1,7 @@
+#include "test.h"
+
 #include <stdio.h>
 #include <stdlib.h>
-
-#include "test.h"
 
 #define TEST_URL \
     "http://video.google.com/videoplay?docid=-8669127848070159803"

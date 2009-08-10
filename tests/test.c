@@ -1,6 +1,7 @@
 #include "config.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
@@ -12,7 +13,7 @@ int
 runtest_host (const char *opts, const char *url) {
     const char *no_inet = getenv("NO_INTERNET");
     const char *extra_opts = getenv("CCLIVE_TEST_OPTS");
-    register int i=0, rc=0;
+    register int rc=0;
     char *cmd = 0, *tmp = 0;
 
     if (no_inet) {

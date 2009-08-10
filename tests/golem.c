@@ -1,7 +1,7 @@
+#include "test.h"
+
 #include <stdio.h>
 #include <stdlib.h>
-
-#include "test.h"
 
 #define TEST_URL\
     "http://video.golem.de/internet/2174/firefox-3.5-test.html"
