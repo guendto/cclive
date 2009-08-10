@@ -132,7 +132,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2009-08-09" "0.5.0" "cclive manual"
+.TH cclive 1 "2009-08-10" "0.5.0" "cclive manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -319,7 +319,7 @@ reaches 20%.
 .IP "cclive \-s \s-1URL\s0" 4
 .IX Item "cclive -s URL"
 .PD
-Alternate to streaming with Adobe Flash. \f(CWvlc(1)\fR and \f(CWtotem(1)\fR have been
+Alternative to streaming with Adobe Flash. \f(CWvlc(1)\fR and \f(CWtotem(1)\fR have been
 reported to work also.
 .ie n .IP "cclive \-F ""%t.%s"" \-r ""(\ew+)"" \s-1URL\s0" 4
 .el .IP "cclive \-F ``%t.%s'' \-r ``(\ew+)'' \s-1URL\s0" 4
@@ -330,6 +330,21 @@ Grab the first \*(L"word\*(R" character from video title for output filename.
 .IX Item "cclive -F %t.%s -gr (w|s) URL"
 Grab all \*(L"word\*(R" and \*(L"whitespace\*(R" characters from the video title and
 use them for the output filename.
+.IP "cat > url.lst" 4
+.IX Item "cat > url.lst"
+.Vb 4
+\&  http://en.sevenload.com/videos/IUL3gda\-Funny\-Football\-Clips
+\&  http://youtube.com/watch?v=3HD220e0bx4
+\&  http://break.com/index/beach\-tackle\-whip\-lash.html
+\&  http://www.liveleak.com/view?i=704_1228511265
+.Ve
+.IP "cclive < url.lst" 4
+.IX Item "cclive < url.lst"
+.PD 0
+.IP "cat url.lst | cclive" 4
+.IX Item "cat url.lst | cclive"
+.PD
+Alternative to passing multiple links to cclive as command line arguments.
 .SH "FORMATS"
 .IX Header "FORMATS"
 \&\*(L"flv\*(R" is downloaded by default if \fB\-\-format\fR is not defined. Some
