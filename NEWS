@@ -41,3 +41,6 @@ Additionally, cclive now parses the video pages with PCRE.
 
   Note  : Amounts are approximates. cclive was built with "-O2 -march=pentium4"
   Tested: FreeBSD 7.2, readings collected from top(1)
+
+configure no longer supports --enable-sigwinch. The support is now compiled
+into the program if signal.h is found and it defines SIGWINCH.
