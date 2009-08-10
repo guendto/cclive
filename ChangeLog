@@ -4,8 +4,9 @@ Version 0.5.0
   * Add: --regexp, --find-all options
   * Add: cctv.com website support (port from clive)
   * Add: ehrensenf.de  website support (port from clive)
+  * Fix: --hosts: dailymotion: spak-mini -> spark-mini
   * Remove: --title, --cclass, --no-cclass
-  * Zeropad: ETA
+  * Progressbar: zeropad ETA
 
  Developer-visible changes:
   * Update NEWS, manual
