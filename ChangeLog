@@ -10,7 +10,7 @@ Version 0.5.0
   * Progressbar: zeropad ETA
 
  Developer-visible changes:
-  * Update NEWS, manual
+  * Update NEWS, manual, INSTALL
   * $host.cpp: re-impl. using pcre
   * New prerequisites:
     # libiconv
@@ -19,7 +19,9 @@ Version 0.5.0
     # Add: make checkpod (replaces tests/pod.pl)
     # Remove: --with-perl
     # Remove: --enable-sigwinch (rely on signal.h SIGWINCH definition)
-  * tests/test.c: set CCLIVE_NO_CONFIG
+  * tests/test.c:
+    # set CCLIVE_NO_CONFIG to ignore ~/.ccliverc (src/opts.cpp)
+    # add support for CCLIVE_TEST_OPTS
   * Remove: tests/pod.pl
 
 

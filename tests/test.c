@@ -11,9 +11,9 @@
 int
 runtest_host (const char *opts, const char *url) {
     const char *no_inet = getenv("NO_INTERNET");
-    register int i = 0;
-    char *path = 0;
-    int rc = 0;
+    const char *extra_opts = getenv("CCLIVE_TEST_OPTS");
+    register int i=0, rc=0;
+    char *cmd = 0, *tmp = 0;
 
     if (no_inet) {
         puts("SKIP: No internet during package build");
@@ -22,16 +22,25 @@ runtest_host (const char *opts, const char *url) {
 
     setenv("CCLIVE_NO_CONFIG", "1", 1);
 
-    printf("# ");
     if (opts)
-        asprintf(&path, "%s -n %s %s", CCLIVE_PATH, opts, url);
+        asprintf(&tmp, "%s -n %s %s", CCLIVE_PATH, opts, url);
     else
-        asprintf(&path, "%s -n %s", CCLIVE_PATH, url);
-    puts(path);
+        asprintf(&tmp, "%s -n %s", CCLIVE_PATH, url);
 
-    rc = system(path);
+    if (extra_opts)
+        asprintf(&cmd, "%s %s", tmp, extra_opts);
+    else
+        cmd = tmp;
 
-    free(path);
+    printf("# ");
+    puts(cmd);
+
+    rc = system(cmd);
+
+    if (extra_opts)
+        free(cmd);
+
+    free(tmp);
 
     return (rc >> 8);
 }
