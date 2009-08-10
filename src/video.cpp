@@ -42,7 +42,6 @@ VideoProperties::VideoProperties()
 void
 VideoProperties::setId(const std::string& id) {
     this->id = id;
-    Util::subStrReplace(this->id, "-", "_");
 }
 
 void
@@ -215,8 +214,11 @@ VideoProperties::customOutputFilenameFormatter(
     const Options opts  = optsmgr.getOptions();
     std::string fmt     = opts.filename_format_arg;
 
-    Util::subStrReplace(fmt, "%t", title.empty() ? id : title);
-    Util::subStrReplace(fmt, "%i", id);
+    std::string _id = this->id;
+    Util::subStrReplace(_id, "-", "_");
+
+    Util::subStrReplace(fmt, "%t", title.empty() ? _id : title);
+    Util::subStrReplace(fmt, "%i", _id);
     Util::subStrReplace(fmt, "%h", host);
     Util::subStrReplace(fmt, "%s", suffix);
 
