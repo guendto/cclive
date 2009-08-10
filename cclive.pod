@@ -344,6 +344,10 @@ mp4 may not always be available.
 
 =item myubo.com
 
+=item tv.cctv.com
+
+=item ehrensenf.de
+
 Format: flv
 
 =back
