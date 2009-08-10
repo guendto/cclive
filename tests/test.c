@@ -10,7 +10,7 @@
 
 int
 runtest_host (const char *opts, const char *url) {
-    const char *no_inet = (const char *)getenv("NO_INTERNET");
+    const char *no_inet = getenv("NO_INTERNET");
     register int i = 0;
     char *path = 0;
     int rc = 0;
@@ -19,6 +19,8 @@ runtest_host (const char *opts, const char *url) {
         puts("SKIP: No internet during package build");
         return(0);
     }
+
+    setenv("CCLIVE_NO_CONFIG", "1", 1);
 
     printf("# ");
     if (opts)

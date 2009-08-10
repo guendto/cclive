@@ -19,6 +19,7 @@ Version 0.5.0
     # Add: make checkpod (replaces tests/pod.pl)
     # Remove: --with-perl
     # Remove: --enable-sigwinch (rely on signal.h SIGWINCH definition)
+  * tests/test.c: set CCLIVE_NO_CONFIG
   * Remove: tests/pod.pl
 
 

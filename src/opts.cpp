@@ -42,6 +42,8 @@ OptionsMgr::~OptionsMgr() {
 void
 OptionsMgr::init(const int& argc, char * const *argv) {
 
+    const char *no_config = getenv("CCLIVE_NO_CONFIG");
+
     const char *home = getenv("CCLIVE_HOME");
     if (!home)
         home = getenv("HOME");
@@ -55,7 +57,7 @@ OptionsMgr::init(const int& argc, char * const *argv) {
 
     bool no_conf = true;
 
-    if (home) {
+    if (home && !no_config) {
         path = std::string(home) + fname;
 
         if (Util::fileExists(path) > 0) {
