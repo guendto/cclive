@@ -27,7 +27,7 @@
 
 const char *gengetopt_args_info_purpose = "";
 
-const char *gengetopt_args_info_usage = "Usage: " CMDLINE_PARSER_PACKAGE " [-h|--help] [-v|--version] [--hosts] [-q|--quiet] [--debug] \n         [--emit-csv] [--print-fname] [--agent=string] \n         [--proxy=proxyhost[:port]] [--no-proxy] [--connect-timeout=seconds] \n         [--connect-timeout-socks=s] [-n|--no-extract] [-c|--continue] \n         [-lkb/s|--limit-rate=kb/s] [-Ofile|--output-video=file] \n         [-fformat|--format=format] [-N|--number-videos] [-rexpr|--regexp=expr] \n         [-g|--find-all] [-Fstring|--filename-format=string] [--exec=expr[;|+]] \n         [-e|--exec-run] [--stream-exec=expr] [-s|--stream-pass] \n         [--stream=percent] [URL]...";
+const char *gengetopt_args_info_usage = "Usage: " CMDLINE_PARSER_PACKAGE " [-h|--help] [-v|--version] [--hosts] [-q|--quiet] [--debug] \n         [--emit-csv] [--print-fname] [--agent=string] \n         [--proxy=proxyhost[:port]] [--no-proxy] [--connect-timeout=seconds] \n         [--connect-timeout-socks=s] [-n|--no-extract] [-c|--continue] \n         [-lkb/s|--limit-rate=kb/s] [-Ofile|--output-video=file] \n         [-fformat|--format=format] [-Mmapstring|--format-map=mapstring] \n         [-N|--number-videos] [-rexpr|--regexp=expr] [-g|--find-all] \n         [-Fstring|--filename-format=string] [--exec=expr[;|+]] [-e|--exec-run] \n         [--stream-exec=expr] [-s|--stream-pass] [--stream=percent] [URL]...";
 
 const char *gengetopt_args_info_description = "";
 
@@ -51,7 +51,8 @@ const char *gengetopt_args_info_help[] = {
   "  -c, --continue                resume partially downloaded file",
   "  -l, --limit-rate=kb/s         limit download speed to KB/s",
   "  -O, --output-video=file       write video to file",
-  "  -f, --format=format           download video format  (possible \n                                  values=\"flv\", \"best\", \"fmt17\", \n                                  \"fmt18\", \"fmt22\", \"fmt35\", \"hq\", \n                                  \"3gp\", \"spark-mini\", \"vp6-hq\", \n                                  \"vp6-hd\", \"vp6\", \"h264\", \"hd\", \n                                  \"mp4\", \"high\", \"ipod\", \"vp6_64\", \n                                  \"vp6_576\", \"vp6_928\", \"h264_1400\", \n                                  \"small\", \"iphone\", \"podcast\" \n                                  default=`flv')",
+  "  -f, --format=format           download video format  (possible \n                                  values=\"flv\", \"best\", \"fmt17\", \n                                  \"fmt18\", \"fmt22\", \"fmt35\", \"hq\", \n                                  \"3gp\", \"spark-mini\", \"vp6-hq\", \n                                  \"vp6-hd\", \"vp6\", \"h264\", \"hd\", \n                                  \"mp4\", \"high\", \"ipod\", \"vp6_64\", \n                                  \"vp6_576\", \"vp6_928\", \"h264_1400\" \n                                  default=`flv')",
+  "  -M, --format-map=mapstring    specify format for multiple hosts in a string",
   "\nFilename formatting:",
   "  -N, --number-videos           prepend a numeric prefix to output filenames",
   "  -r, --regexp=expr             regular expression to filter video title",
@@ -108,7 +109,7 @@ free_cmd_list(void)
 }
 
 
-const char *cmdline_parser_format_values[] = {"flv", "best", "fmt17", "fmt18", "fmt22", "fmt35", "hq", "3gp", "spark-mini", "vp6-hq", "vp6-hd", "vp6", "h264", "hd", "mp4", "high", "ipod", "vp6_64", "vp6_576", "vp6_928", "h264_1400", "small", "iphone", "podcast", 0}; /*< Possible values for format. */
+const char *cmdline_parser_format_values[] = {"flv", "best", "fmt17", "fmt18", "fmt22", "fmt35", "hq", "3gp", "spark-mini", "vp6-hq", "vp6-hd", "vp6", "h264", "hd", "mp4", "high", "ipod", "vp6_64", "vp6_576", "vp6_928", "h264_1400", 0}; /*< Possible values for format. */
 
 static char *
 gengetopt_strdup (const char *s);
@@ -133,6 +134,7 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->limit_rate_given = 0 ;
   args_info->output_video_given = 0 ;
   args_info->format_given = 0 ;
+  args_info->format_map_given = 0 ;
   args_info->number_videos_given = 0 ;
   args_info->regexp_given = 0 ;
   args_info->find_all_given = 0 ;
@@ -161,6 +163,8 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->output_video_orig = NULL;
   args_info->format_arg = gengetopt_strdup ("flv");
   args_info->format_orig = NULL;
+  args_info->format_map_arg = NULL;
+  args_info->format_map_orig = NULL;
   args_info->regexp_arg = NULL;
   args_info->regexp_orig = NULL;
   args_info->filename_format_arg = gengetopt_strdup ("%h_%i.%s");
@@ -195,15 +199,16 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->limit_rate_help = gengetopt_args_info_help[17] ;
   args_info->output_video_help = gengetopt_args_info_help[18] ;
   args_info->format_help = gengetopt_args_info_help[19] ;
-  args_info->number_videos_help = gengetopt_args_info_help[21] ;
-  args_info->regexp_help = gengetopt_args_info_help[22] ;
-  args_info->find_all_help = gengetopt_args_info_help[23] ;
-  args_info->filename_format_help = gengetopt_args_info_help[24] ;
-  args_info->exec_help = gengetopt_args_info_help[26] ;
-  args_info->exec_run_help = gengetopt_args_info_help[27] ;
-  args_info->stream_exec_help = gengetopt_args_info_help[29] ;
-  args_info->stream_pass_help = gengetopt_args_info_help[30] ;
-  args_info->stream_help = gengetopt_args_info_help[31] ;
+  args_info->format_map_help = gengetopt_args_info_help[20] ;
+  args_info->number_videos_help = gengetopt_args_info_help[22] ;
+  args_info->regexp_help = gengetopt_args_info_help[23] ;
+  args_info->find_all_help = gengetopt_args_info_help[24] ;
+  args_info->filename_format_help = gengetopt_args_info_help[25] ;
+  args_info->exec_help = gengetopt_args_info_help[27] ;
+  args_info->exec_run_help = gengetopt_args_info_help[28] ;
+  args_info->stream_exec_help = gengetopt_args_info_help[30] ;
+  args_info->stream_pass_help = gengetopt_args_info_help[31] ;
+  args_info->stream_help = gengetopt_args_info_help[32] ;
   
 }
 
@@ -298,6 +303,8 @@ cmdline_parser_release (struct gengetopt_args_info *args_info)
   free_string_field (&(args_info->output_video_orig));
   free_string_field (&(args_info->format_arg));
   free_string_field (&(args_info->format_orig));
+  free_string_field (&(args_info->format_map_arg));
+  free_string_field (&(args_info->format_map_orig));
   free_string_field (&(args_info->regexp_arg));
   free_string_field (&(args_info->regexp_orig));
   free_string_field (&(args_info->filename_format_arg));
@@ -417,6 +424,8 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "output-video", args_info->output_video_orig, 0);
   if (args_info->format_given)
     write_into_file(outfile, "format", args_info->format_orig, cmdline_parser_format_values);
+  if (args_info->format_map_given)
+    write_into_file(outfile, "format-map", args_info->format_map_orig, 0);
   if (args_info->number_videos_given)
     write_into_file(outfile, "number-videos", 0, 0 );
   if (args_info->regexp_given)
@@ -755,6 +764,7 @@ cmdline_parser_internal (
         { "limit-rate",	1, NULL, 'l' },
         { "output-video",	1, NULL, 'O' },
         { "format",	1, NULL, 'f' },
+        { "format-map",	1, NULL, 'M' },
         { "number-videos",	0, NULL, 'N' },
         { "regexp",	1, NULL, 'r' },
         { "find-all",	0, NULL, 'g' },
@@ -767,7 +777,7 @@ cmdline_parser_internal (
         { 0,  0, 0, 0 }
       };
 
-      c = getopt_long (argc, argv, "hvqncl:O:f:Nr:gF:es", long_options, &option_index);
+      c = getopt_long (argc, argv, "hvqncl:O:f:M:Nr:gF:es", long_options, &option_index);
 
       if (c == -1) break;	/* Exit from `while (1)' loop.  */
 
@@ -858,6 +868,18 @@ cmdline_parser_internal (
               &(local_args_info.format_given), optarg, cmdline_parser_format_values, "flv", ARG_STRING,
               check_ambiguity, override, 0, 0,
               "format", 'f',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 'M':	/* specify format for multiple hosts in a string.  */
+        
+        
+          if (update_arg( (void *)&(args_info->format_map_arg), 
+               &(args_info->format_map_orig), &(args_info->format_map_given),
+              &(local_args_info.format_map_given), optarg, 0, 0, ARG_STRING,
+              check_ambiguity, override, 0, 0,
+              "format-map", 'M',
               additional_error))
             goto failure;
         

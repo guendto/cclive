@@ -23,10 +23,12 @@
 #include "curl.h"
 #include "opts.h"
 
+#define HOST "vimeo"
+
 VimeoHandler::VimeoHandler()
     : HostHandler()
 {
-    props.setHost   ("vimeo");
+    props.setHost   (HOST);
     props.setDomain ("vimeo.com");
     props.setFormats("flv|hd");
 }
@@ -68,11 +70,10 @@ VimeoHandler::parseLink() {
         "http://vimeo.com/moogaloop/play/clip:" +props.getId()+
         "/" +sign+ "/" +exp;
 
-    const Options opts = optsmgr.getOptions();
+    const std::string format =
+        Util::parseFormatMap(HOST);
 
-    if (!strcmp(opts.format_arg, "best")
-        || !strcmp(opts.format_arg, "hd"))
-    {
+    if (format == "best" || format == "hd") {
         if (hd == "1")
             lnk += "/?q=hd";
     }

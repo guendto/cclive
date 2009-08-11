@@ -20,10 +20,12 @@
 #include "hosthandler.h"
 #include "opts.h"
 
+#define HOST "youtube"
+
 YoutubeHandler::YoutubeHandler()
     : HostHandler()
 {
-    props.setHost   ("youtube");
+    props.setHost   (HOST);
     props.setDomain ("youtube.com");
     props.setFormats("flv|3gp|mp4|hq|hd");
 }
@@ -52,7 +54,7 @@ YoutubeHandler::parseLink() {
         "http://youtube.com/get_video?video_id=" +props.getId()+ "&t=" +t;
 
     const std::string fmt =
-        optsmgr.getOptions().format_arg;
+        Util::parseFormatMap(HOST);
 
     if (fmt == "best") {
         std::string best;

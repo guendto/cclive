@@ -216,6 +216,11 @@ Download \fIformat\fR of the video. If set to \fIbest\fR, cclive
 attempts to download the best quality of the video.
 .Sp
 See also \*(L"\s-1FORMATS\s0\*(R".
+.IP "\fB\-M, \-\-format\-map\fR=\fIhostid:formatid|hostid:formatid...\fR" 4
+.IX Item "-M, --format-map=hostid:formatid|hostid:formatid..."
+Like \fB\-\-format\fR but allows specifying the format for multiple hosts
+in a string. \fB\-\-format\fR setting overrides the format id specified
+with this option. See also \*(L"\s-1EXAMPLES\s0\*(R".
 .PP
 \&\fBSubsequent\fR
 .IP "\fB\-\-exec\fR=\fIexpression\fR\fB;\fR" 4
@@ -345,6 +350,15 @@ use them for the output filename.
 .IX Item "cat url.lst | cclive"
 .PD
 Alternative to passing multiple links to cclive as command line arguments.
+.ie n .IP "echo 'format\-map = ""youtube:mp4|dailymotion:vp6_hq""' >> ~/.ccliverc" 4
+.el .IP "echo 'format\-map = ``youtube:mp4|dailymotion:vp6_hq''' >> ~/.ccliverc" 4
+.IX Item "echo 'format-map = youtube:mp4|dailymotion:vp6_hq' >> ~/.ccliverc"
+.PD 0
+.IP "cclive Youtube_URL Dailymotion_URL" 4
+.IX Item "cclive Youtube_URL Dailymotion_URL"
+.PD
+Would cause cclive to download mp4 of the Youtube video and vp6_hq of the
+Dailymotion video. We make the setting \*(L"permanent\*(R" by adding it to ~/.ccliverc.
 .SH "FORMATS"
 .IX Header "FORMATS"
 \&\*(L"flv\*(R" is downloaded by default if \fB\-\-format\fR is not defined. Some

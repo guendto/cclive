@@ -20,10 +20,12 @@
 #include "hosthandler.h"
 #include "opts.h"
 
+#define HOST "google"
+
 GoogleHandler::GoogleHandler()
     : HostHandler()
 {
-    props.setHost   ("google");
+    props.setHost   (HOST);
     props.setDomain ("video.google.");
     props.setFormats("flv|mp4");
 }
@@ -48,7 +50,8 @@ GoogleHandler::parseLink() {
     std::string lnk;
     partialMatch("(?i)videourl\\W+x3d(.*?)\\W+x26", &lnk);
 
-    const std::string fmt = optsmgr.getOptions().format_arg;
+    const std::string fmt =
+        Util::parseFormatMap(HOST);
 
     if (fmt == "mp4" || fmt == "best") {
         try   {

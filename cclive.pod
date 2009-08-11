@@ -114,6 +114,12 @@ attempts to download the best quality of the video.
 
 See also L</FORMATS>.
 
+=item B<-M, --format-map>=I<hostid:formatid|hostid:formatid...>
+
+Like B<--format> but allows specifying the format for multiple hosts
+in a string. B<--format> setting overrides the format id specified
+with this option. See also L</EXAMPLES>.
+
 =back
 
 B<Subsequent>
@@ -264,6 +270,13 @@ use them for the output filename.
 =item cat url.lst | cclive
 
 Alternative to passing multiple links to cclive as command line arguments.
+
+=item echo 'format-map = "youtube:mp4|dailymotion:vp6_hq"' E<gt>E<gt> ~/.ccliverc
+
+=item cclive Youtube_URL Dailymotion_URL
+
+Would cause cclive to download mp4 of the Youtube video and vp6_hq of the
+Dailymotion video. We make the setting "permanent" by adding it to ~/.ccliverc.
 
 =back
 

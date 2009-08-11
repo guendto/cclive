@@ -23,10 +23,12 @@
 #include "curl.h"
 #include "opts.h"
 
+#define HOST "spiegel"
+
 SpiegelHandler::SpiegelHandler()
     : HostHandler()
 {
-    props.setHost   ("spiegel");
+    props.setHost   (HOST);
     props.setDomain ("spiegel.de");
     props.setFormats("vp6_64|vp6_576|vp_928|h264_1400");
 }
@@ -67,7 +69,9 @@ SpiegelHandler::parseLink() {
     const std::string _re("(?i)_(\\d+)\\.");
     pcrecpp::RE re_rate(_re);
 
-    std::string format = optsmgr.getOptions().format_arg;
+    std::string format =
+        Util::parseFormatMap(HOST);
+
     if (format == "flv")
         format = "vp6_64";
 

@@ -23,10 +23,12 @@
 #include "curl.h"
 #include "opts.h"
 
+#define HOST "dailymotion"
+
 DailymotionHandler::DailymotionHandler()
     : HostHandler()
 {
-    props.setHost   ("dmotion");
+    props.setHost   (HOST);
     props.setDomain ("dailymotion.com");
     props.setFormats("flv|spark-mini|vp6-hq|vp6-hd|vp6|h264");
 }
@@ -59,7 +61,7 @@ DailymotionHandler::parseLink() {
         throw ParseException("unable to tokenize (\"||\")");
 
     std::string format =
-        optsmgr.getOptions().format_arg;
+        Util::parseFormatMap(HOST);
 
     if (format == "flv")
         format = "spark";

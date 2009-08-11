@@ -2,6 +2,7 @@ Version 0.5.0
 
  User-visible changes:
   * Add: --regexp, --find-all options
+  * Add: --format-map option
   * Add: cctv.com website support (port from clive)
   * Add: ehrensenf.de  website support (port from clive)
   * Add: spiegel.de  website support (port from clive)

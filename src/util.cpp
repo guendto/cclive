@@ -24,6 +24,7 @@
 #include <map>
 
 #include "hosthandler.h"
+#include "opts.h"
 
 const double
 Util::fileExists(const std::string& path) {
@@ -163,6 +164,25 @@ Util::tokenize(const std::string& src, const std::string& delims) {
         pos  = src.find_first_of(delims, last);
     }
     return v;
+}
+
+std::string
+Util::parseFormatMap(const std::string& host) {
+
+    const Options opts =
+        optsmgr.getOptions();
+
+    std::string fmt;
+
+    if (opts.format_map_given) {
+        pcrecpp::RE re(host + ":(.*?)(\\||$)");
+        re.PartialMatch(opts.format_map_arg, &fmt);
+    }
+
+    if (opts.format_given) // Override.
+        fmt = opts.format_arg;
+
+    return fmt;
 }
 
 

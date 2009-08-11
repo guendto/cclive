@@ -72,6 +72,9 @@ struct gengetopt_args_info
   char * format_arg;	/**< @brief download video format (default='flv').  */
   char * format_orig;	/**< @brief download video format original value given at command line.  */
   const char *format_help; /**< @brief download video format help description.  */
+  char * format_map_arg;	/**< @brief specify format for multiple hosts in a string.  */
+  char * format_map_orig;	/**< @brief specify format for multiple hosts in a string original value given at command line.  */
+  const char *format_map_help; /**< @brief specify format for multiple hosts in a string help description.  */
   const char *number_videos_help; /**< @brief prepend a numeric prefix to output filenames help description.  */
   char * regexp_arg;	/**< @brief regular expression to filter video title.  */
   char * regexp_orig;	/**< @brief regular expression to filter video title original value given at command line.  */
@@ -109,6 +112,7 @@ struct gengetopt_args_info
   unsigned int limit_rate_given ;	/**< @brief Whether limit-rate was given.  */
   unsigned int output_video_given ;	/**< @brief Whether output-video was given.  */
   unsigned int format_given ;	/**< @brief Whether format was given.  */
+  unsigned int format_map_given ;	/**< @brief Whether format-map was given.  */
   unsigned int number_videos_given ;	/**< @brief Whether number-videos was given.  */
   unsigned int regexp_given ;	/**< @brief Whether regexp was given.  */
   unsigned int find_all_given ;	/**< @brief Whether find-all was given.  */

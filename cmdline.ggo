@@ -77,6 +77,10 @@ option "format"
     default="flv"
     typestr="format"
     optional
+option "format-map"
+    M "specify format for multiple hosts in a string"
+    string typestr="mapstring"
+    optional
 
 section "Filename formatting"
 option "number-videos"

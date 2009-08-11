@@ -21,10 +21,12 @@
 #include "opts.h"
 #include "curl.h"
 
+#define HOST "golem"
+
 GolemHandler::GolemHandler()
     : HostHandler()
 {
-    props.setHost   ("golem");
+    props.setHost   (HOST);
     props.setDomain ("golem.de");
     props.setFormats("flv|ipod|high");
 }
@@ -55,23 +57,23 @@ GolemHandler::parseLink() {
     std::string link =
         "http://video.golem.de/download/" + props.getId();
 
-    std::string fmt =
-        optsmgr.getOptions().format_arg;
+    std::string format =
+        Util::parseFormatMap(HOST);
 
-    if (fmt == "best") {
+    if (format == "best") {
         // One should not simply assume "high" (or "hd")
         // is necessarily the best format available.
         // See clive (Golem.pm) for an example.
-        fmt = "high";
+        format = "high";
     }
     else {
         // host uses "medium" for default ("flv" in clive terms)
-        if (fmt == "flv")
-            fmt = ""; 
+        if (format == "flv")
+            format = ""; 
     }
 
-    if (!fmt.empty())
-        link += "?q=" + fmt;
+    if (!format.empty())
+        link += "?q=" + format;
 
     props.setLink(link);
 }
