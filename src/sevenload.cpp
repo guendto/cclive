@@ -23,7 +23,7 @@
 SevenloadHandler::SevenloadHandler()
     : HostHandler()
 {
-    props.setHost   ("7load");
+    props.setHost   ("sevenload");
     props.setDomain ("sevenload.com");
     props.setFormats("flv");
 }
