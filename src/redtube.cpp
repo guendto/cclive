@@ -56,7 +56,7 @@ digit(const long& num, const int& digit, const int& len) {
 }
 
 static std::vector<int>
-unpack_cstar(const char *str) { // perl: unpack('C*', '...')
+unpack_casterisk(const char *str) { // perl: unpack('C*', '...')
     std::vector<int> v;
     for (register int i=0; str[i]!='\0'; ++i) {
         std::stringstream b;
@@ -67,7 +67,7 @@ unpack_cstar(const char *str) { // perl: unpack('C*', '...')
 }
 
 static std::string
-pack_cstar(const std::vector<int>& v) { // perl: pack('C', ...)
+pack_casterisk(const std::vector<int>& v) { // perl: pack('C', ...)
     std::stringstream b;
     for (std::vector<int>::const_iterator iter = v.begin();
         iter != v.end(); ++iter)
@@ -98,7 +98,7 @@ RedtubeHandler::parseLink() {
         var2 += digit(var1, i, n);
 
     std::vector<int> map =
-        unpack_cstar("R15342O7K9HBCDXFGAIJ8LMZ6PQ0STUVWEYN");
+        unpack_casterisk("R15342O7K9HBCDXFGAIJ8LMZ6PQ0STUVWEYN");
 
     std::vector<int> mapping;
     mapping.push_back( map[digit(id,3,7) + var2 + 3] );
@@ -111,7 +111,7 @@ RedtubeHandler::parseLink() {
     mapping.push_back( map[digit(id,4,7) + var2 + 7] );
     mapping.push_back( map[digit(id,6,7) + var2 + 4] );
 
-    std::string tmp = pack_cstar(mapping);
+    std::string tmp = pack_casterisk(mapping);
 
     std::stringstream lnk;
     lnk << "http://dl.redtube.com/_videos_t4vn23s9jc5498tgj49icfj4678/"
