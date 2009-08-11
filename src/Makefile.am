@@ -28,6 +28,7 @@ myubo.cpp\
 cctv.cpp\
 ehrensenf.cpp\
 spiegel.cpp\
+redtube.cpp\
 google.cpp
 
 hdr=\

@@ -370,6 +370,8 @@ mp4 may not always be available.
 
 =item ehrensenf.de
 
+=item redtube.com
+
 Format: flv
 
 =back

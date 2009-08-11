@@ -36,7 +36,8 @@ check_PROGRAMS = youtube$(EXEEXT) break$(EXEEXT) liveleak$(EXEEXT) \
 	dailymotion$(EXEEXT) evisor$(EXEEXT) google$(EXEEXT) \
 	sevenload$(EXEEXT) golem$(EXEEXT) clipfish$(EXEEXT) \
 	funnyhub$(EXEEXT) myubo$(EXEEXT) cctv$(EXEEXT) \
-	ehrensenf$(EXEEXT) spiegel$(EXEEXT) vimeo$(EXEEXT)
+	ehrensenf$(EXEEXT) spiegel$(EXEEXT) redtube$(EXEEXT) \
+	vimeo$(EXEEXT)
 subdir = tests
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -80,6 +81,9 @@ liveleak_LDADD = $(LDADD)
 am_myubo_OBJECTS = myubo.$(OBJEXT) $(am__objects_1)
 myubo_OBJECTS = $(am_myubo_OBJECTS)
 myubo_LDADD = $(LDADD)
+am_redtube_OBJECTS = redtube.$(OBJEXT) $(am__objects_1)
+redtube_OBJECTS = $(am_redtube_OBJECTS)
+redtube_LDADD = $(LDADD)
 am_sevenload_OBJECTS = sevenload.$(OBJEXT) $(am__objects_1)
 sevenload_OBJECTS = $(am_sevenload_OBJECTS)
 sevenload_LDADD = $(LDADD)
@@ -102,13 +106,15 @@ LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 SOURCES = $(break_SOURCES) $(cctv_SOURCES) $(clipfish_SOURCES) \
 	$(dailymotion_SOURCES) $(ehrensenf_SOURCES) $(evisor_SOURCES) \
 	$(funnyhub_SOURCES) $(golem_SOURCES) $(google_SOURCES) \
-	$(liveleak_SOURCES) $(myubo_SOURCES) $(sevenload_SOURCES) \
-	$(spiegel_SOURCES) $(vimeo_SOURCES) $(youtube_SOURCES)
+	$(liveleak_SOURCES) $(myubo_SOURCES) $(redtube_SOURCES) \
+	$(sevenload_SOURCES) $(spiegel_SOURCES) $(vimeo_SOURCES) \
+	$(youtube_SOURCES)
 DIST_SOURCES = $(break_SOURCES) $(cctv_SOURCES) $(clipfish_SOURCES) \
 	$(dailymotion_SOURCES) $(ehrensenf_SOURCES) $(evisor_SOURCES) \
 	$(funnyhub_SOURCES) $(golem_SOURCES) $(google_SOURCES) \
-	$(liveleak_SOURCES) $(myubo_SOURCES) $(sevenload_SOURCES) \
-	$(spiegel_SOURCES) $(vimeo_SOURCES) $(youtube_SOURCES)
+	$(liveleak_SOURCES) $(myubo_SOURCES) $(redtube_SOURCES) \
+	$(sevenload_SOURCES) $(spiegel_SOURCES) $(vimeo_SOURCES) \
+	$(youtube_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -243,6 +249,7 @@ myubo_SOURCES = myubo.c $(common)
 cctv_SOURCES = cctv.c $(common)
 ehrensenf_SOURCES = ehrensenf.c $(common)
 spiegel_SOURCES = spiegel.c $(common)
+redtube_SOURCES = redtube.c $(common)
 all: all-am
 
 .SUFFIXES:
@@ -312,6 +319,9 @@ liveleak$(EXEEXT): $(liveleak_OBJECTS) $(liveleak_DEPENDENCIES)
 myubo$(EXEEXT): $(myubo_OBJECTS) $(myubo_DEPENDENCIES) 
 	@rm -f myubo$(EXEEXT)
 	$(LINK) $(myubo_OBJECTS) $(myubo_LDADD) $(LIBS)
+redtube$(EXEEXT): $(redtube_OBJECTS) $(redtube_DEPENDENCIES) 
+	@rm -f redtube$(EXEEXT)
+	$(LINK) $(redtube_OBJECTS) $(redtube_LDADD) $(LIBS)
 sevenload$(EXEEXT): $(sevenload_OBJECTS) $(sevenload_DEPENDENCIES) 
 	@rm -f sevenload$(EXEEXT)
 	$(LINK) $(sevenload_OBJECTS) $(sevenload_LDADD) $(LIBS)
@@ -342,6 +352,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/google.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liveleak.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/myubo.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/redtube.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sevenload.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/spiegel.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test.Po@am__quote@

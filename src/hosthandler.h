@@ -207,4 +207,14 @@ public:
     virtual void parseLink ();
 };
 
+// Redtube
+
+class RedtubeHandler : public HostHandler {
+public:
+	RedtubeHandler();
+    virtual void parseId   ();
+    virtual void parseTitle();
+    virtual void parseLink ();
+};
+
 #endif

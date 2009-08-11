@@ -6,6 +6,7 @@ Version 0.5.0
   * Add: cctv.com website support (port from clive)
   * Add: ehrensenf.de  website support (port from clive)
   * Add: spiegel.de  website support (port from clive)
+  * Add: redtube.com website support (port from clive)
   * Fix: --hosts: dailymotion: spak-mini -> spark-mini
   * Remove: --title, --cclass, --no-cclass
   * Progressbar: zeropad ETA

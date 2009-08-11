@@ -69,6 +69,7 @@ HostHandlerFactory::createHandler(const HandlerType& type) {
     case Cctv:       return SHP<CctvHandler>       (new CctvHandler);
     case Ehrensenf:  return SHP<EhrensenfHandler>  (new EhrensenfHandler);
     case Spiegel:    return SHP<SpiegelHandler>    (new SpiegelHandler);
+    case Redtube:    return SHP<RedtubeHandler>    (new RedtubeHandler);
     // Keeps -Weffc++ quiet.
     case _last_type: break;
     }
