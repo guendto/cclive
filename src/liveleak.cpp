@@ -23,7 +23,7 @@
 LiveleakHandler::LiveleakHandler()
     : HostHandler()
 {
-    props.setHost   ("lleak");
+    props.setHost   ("liveleak");
     props.setDomain ("liveleak.com");
     props.setFormats("flv");
 }
