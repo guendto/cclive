@@ -132,7 +132,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2009-08-10" "0.5.0" "cclive manual"
+.TH cclive 1 "2009-08-11" "0.5.0" "cclive manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -456,24 +456,23 @@ Most of the program options can be defined in the ~/.ccliverc config file.
 .IX Header "UNICODE"
 .IP "Q: Why am I seeing mangled video filenames?" 4
 .IX Item "Q: Why am I seeing mangled video filenames?"
-Make sure you have compiled cclive \-\-with\-iconv. Some of the websites may
-not use \s-1UTF\-8\s0. cclive converts data from such websites to \s-1UTF\-8\s0.
-.Sp
-Make also sure you have set the locale. For example (in csh/urxvt terms):
+Those characters in the filenames are likely unicode characters. 
+Make sure you have set appropriate locale. For example, in csh and
+rxvt terms:
 .Sp
 .Vb 2
 \&  % setenv LANG en_US.UTF\-8
 \&  % urxvt &
 .Ve
 .Sp
-You can get a list of supported locales on your typical Unix-like system with:
+You should be able to get a list of the supported locales on a typical
+Unix-like system with the command:
 .Sp
 .Vb 1
 \&  % locale \-a
 .Ve
-.ie n .IP "Q: Why are the \s-1UTF\-8\s0 characters missing with \-g \-\-regexp=""(\ew|\es)""?" 4
-.el .IP "Q: Why are the \s-1UTF\-8\s0 characters missing with \-g \-\-regexp=``(\ew|\es)''?" 4
-.IX Item "Q: Why are the UTF-8 characters missing with -g --regexp=(w|s)?"
+.IP "Q: Why don't I see any of the unicode characters in filenames?" 4
+.IX Item "Q: Why don't I see any of the unicode characters in filenames?"
 A quote from \*(L"man pcrepattern\*(R":
 .Sp
 \&\*(L"In \s-1UTF\-8\s0 mode, characters with values greater than 128 never match  \ed,
@@ -483,7 +482,13 @@ their original meanings from before \s-1UTF\-8\s0 support was available, mainly
 for efficiency reasons. Note that this also affects \eb, because  it  is
 defined in terms of \ew and \eW.\*(R"
 .Sp
-Try \-\-regexp=\*(L"(\ew|\es|\epL\*(R").
+Make sure the \-\-regexp includes \epL, e.g.:
+.Sp
+.Vb 1
+\& cclive \-\-regexp="(\ew|\es|\epL") URL
+.Ve
+.Sp
+See \*(L"man pcre\*(R" for more about the supported regular expressions.
 .SH "DEBUGGING"
 .IX Header "DEBUGGING"
 .IP "cclive \-\-debug \s-1URL\s0" 4

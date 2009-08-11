@@ -382,19 +382,19 @@ Most of the program options can be defined in the ~/.ccliverc config file.
 
 =item Q: Why am I seeing mangled video filenames?
 
-Make sure you have compiled cclive --with-iconv. Some of the websites may
-not use UTF-8. cclive converts data from such websites to UTF-8.
-
-Make also sure you have set the locale. For example (in csh/urxvt terms):
+Those characters in the filenames are likely unicode characters. 
+Make sure you have set appropriate locale. For example, in csh and
+rxvt terms:
 
   % setenv LANG en_US.UTF-8
   % urxvt &
 
-You can get a list of supported locales on your typical Unix-like system with:
+You should be able to get a list of the supported locales on a typical
+Unix-like system with the command:
 
   % locale -a
 
-=item Q: Why are the UTF-8 characters missing with -g --regexp="(\w|\s)"?
+=item Q: Why don't I see any of the unicode characters in filenames?
 
 A quote from "man pcrepattern":
 
@@ -405,7 +405,11 @@ their original meanings from before UTF-8 support was available, mainly
 for efficiency reasons. Note that this also affects \b, because  it  is
 defined in terms of \w and \W."
 
-Try --regexp="(\w|\s|\pL").
+Make sure the --regexp includes \pL, e.g.:
+
+ cclive --regexp="(\w|\s|\pL") URL
+
+See "man pcre" for more about the supported regular expressions.
 
 =back
 
