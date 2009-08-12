@@ -151,12 +151,14 @@ Util::toLower(std::string& src) {
     return src;
 }
 
-std::vector<std::string>
+typedef std::vector<std::string> STRV;
+
+STRV
 Util::tokenize(const std::string& src, const std::string& delims) {
     std::string::size_type last = src.find_first_not_of(delims);
     std::string::size_type pos  = src.find_first_of(delims, last);
 
-    std::vector<std::string> v;
+    STRV v;
 
     while (std::string::npos != pos || std::string::npos != last) {
         v.push_back( src.substr(last, pos-last) );
