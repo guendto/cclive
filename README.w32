@@ -18,7 +18,7 @@ README for MSWindows users
 * cclive attempts to parse config file ONLY if either CCLIVE_HOME or HOME
   environment variable has been defined
 
-* cclive looks for "ccliverc", not ".ccliverc"
+* cclive looks for "ccliverc", not ".ccliverc" as it does on Unix-like systems
 
 * Example:
 
