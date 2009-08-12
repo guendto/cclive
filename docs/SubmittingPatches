@@ -6,6 +6,7 @@ If you are using git:
 Otherwise:
   * Please use "diff -u" when generating the patches
 
-Submitting:
-  * See AUTHORS file for email
-  * Or submit them to cclive@googlegroups.com
+Submit to either:
+  * http://code.google.com/p/cclive/issues/
+Or:
+  * legatvs@gmail.com
