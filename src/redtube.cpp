@@ -83,7 +83,7 @@ RedtubeHandler::parseLink() {
     const long id = atol(props.getId().c_str());
 
     long var1 = 0;
-    register int i=0;
+    register unsigned int i=0;
 
     for (; i<7; ++i)
         var1 += (digit(id,i,7) * (i+1));
