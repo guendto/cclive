@@ -93,6 +93,8 @@ invokeCommand(const std::string& cmd, const char *what=0) {
     }
 }
 
+typedef std::vector<VideoProperties> VIDV;
+
 void
 ExecMgr::playPlus() {
     const Options opts = optsmgr.getOptions();
@@ -102,9 +104,7 @@ ExecMgr::playPlus() {
     Util::subStrReplace(cmd, "+",  "");
     cmd += " ";
 
-    typedef std::vector<VideoProperties> vv;
-
-    for (vv::const_iterator iter=queue->begin();
+    for (VIDV::const_iterator iter=queue->begin();
         iter != queue->end();
         ++iter)
     {
@@ -120,9 +120,7 @@ void
 ExecMgr::playSemi() {
     const Options opts = optsmgr.getOptions();
 
-    typedef std::vector<VideoProperties> vv;
-
-    for (vv::const_iterator iter = queue->begin();
+    for (VIDV::const_iterator iter = queue->begin();
         iter != queue->end();
         ++iter)
     {
