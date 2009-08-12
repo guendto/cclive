@@ -47,6 +47,8 @@ DailymotionHandler::parseTitle() {
     props.setTitle(title);
 }
 
+typedef std::vector<std::string> STRV;
+
 void
 DailymotionHandler::parseLink() {
 
@@ -54,7 +56,7 @@ DailymotionHandler::parseLink() {
     partialMatch("(?i)\"video\", \"(.*?)\"", &paths);
     curlmgr.unescape(paths);
 
-    const std::vector<std::string> tokens =
+    const STRV tokens =
         Util::tokenize(paths, "||");
 
     if (tokens.size() == 0)
@@ -69,11 +71,11 @@ DailymotionHandler::parseLink() {
     std::string link;
     std::map<std::string, std::string> width;
 
-    for (std::vector<std::string>::const_iterator iter = tokens.begin();
+    for (STRV::const_iterator iter = tokens.begin();
         iter != tokens.end();
         ++iter)
     {
-        const std::vector<std::string> v =
+        const STRV v =
             Util::tokenize(*iter, "@@");
 
         if (v.size() == 0)
