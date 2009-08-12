@@ -46,11 +46,13 @@
 #include "log.h"
 #include "app.h"
 
+#define SHP std::tr1::shared_ptr
+
 // singleton instances
-static std::tr1::shared_ptr<OptionsMgr> __optsmgr(new OptionsMgr);
-static std::tr1::shared_ptr<CurlMgr>    __curlmgr(new CurlMgr);
-static std::tr1::shared_ptr<ExecMgr>    __execmgr(new ExecMgr);
-static std::tr1::shared_ptr<LogMgr>     __logmgr (new LogMgr);
+static SHP<OptionsMgr> __optsmgr(new OptionsMgr);
+static SHP<CurlMgr>    __curlmgr(new CurlMgr);
+static SHP<ExecMgr>    __execmgr(new ExecMgr);
+static SHP<LogMgr>     __logmgr (new LogMgr);
 
 extern void handle_sigwinch(int); // src/progress.cpp
 
@@ -102,7 +104,7 @@ typedef HostHandlerFactory::UnsupportedHostException NoSupport;
 static void
 handleURL(const std::string& url) {
     try {
-        std::tr1::shared_ptr<HostHandler> handler = 
+        SHP<HostHandler> handler = 
             HostHandlerFactory::createHandler(url);
 
         const Options opts = optsmgr.getOptions();
@@ -145,6 +147,8 @@ handleURL(const std::string& url) {
     catch (const NoSupport& x) { logmgr.cerr(x, false); }
 }
 
+typedef std::vector<std::string> STRV;
+
 void
 App::run() {
     const Options opts = optsmgr.getOptions();
@@ -170,7 +174,7 @@ App::run() {
     }
 #endif
 
-    std::vector<std::string> tokens;
+    STRV tokens;
 
     if (!opts.inputs_num)
         tokens = parseInput();
@@ -179,7 +183,7 @@ App::run() {
             tokens.push_back(opts.inputs[i]);
     }
 
-    for (std::vector<std::string>::iterator iter=tokens.begin();
+    for (STRV::iterator iter=tokens.begin();
         iter != tokens.end();
         ++iter)
     {
@@ -204,7 +208,7 @@ App::run() {
         execmgr.playQueue();
 }
 
-std::vector<std::string>
+STRV
 App::parseInput() {
     std::string input;
 
@@ -213,12 +217,12 @@ App::parseInput() {
         input += ch;
 
     std::istringstream iss(input);
-    std::vector<std::string>tokens;
+    STRV tokens;
 
     std::copy(
         std::istream_iterator<std::string >(iss),
         std::istream_iterator<std::string >(),
-        std::back_inserter<std::vector<std::string> >(tokens)
+        std::back_inserter<STRV>(tokens)
     );
 
     return tokens;
