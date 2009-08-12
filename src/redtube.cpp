@@ -55,9 +55,11 @@ digit(const long& num, const int& digit, const int& len) {
     return atol(b.str().substr(digit,1).c_str());
 }
 
-static std::vector<int>
+typedef std::vector<int> INTV;
+
+static INTV
 unpack_casterisk(const char *str) { // perl: unpack('C*', '...')
-    std::vector<int> v;
+    INTV v;
     for (register int i=0; str[i]!='\0'; ++i) {
         std::stringstream b;
         b << zeropad(2, static_cast<int>(str[i]));
@@ -67,9 +69,9 @@ unpack_casterisk(const char *str) { // perl: unpack('C*', '...')
 }
 
 static std::string
-pack_casterisk(const std::vector<int>& v) { // perl: pack('C', ...)
+pack_casterisk(const INTV& v) { // perl: pack('C', ...)
     std::stringstream b;
-    for (std::vector<int>::const_iterator iter = v.begin();
+    for (INTV::const_iterator iter = v.begin();
         iter != v.end(); ++iter)
     {
         b << static_cast<char>(*iter);
@@ -97,10 +99,10 @@ RedtubeHandler::parseLink() {
     for (i=0; i<n; ++i)
         var2 += digit(var1, i, n);
 
-    std::vector<int> map =
+    INTV map =
         unpack_casterisk("R15342O7K9HBCDXFGAIJ8LMZ6PQ0STUVWEYN");
 
-    std::vector<int> mapping;
+    INTV mapping;
     mapping.push_back( map[digit(id,3,7) + var2 + 3] );
     mapping.push_back( 48 + var2 % 10 );
     mapping.push_back( map[digit(id,0,7) + var2 + 2] );
