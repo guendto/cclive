@@ -229,6 +229,21 @@ Download video from URL.
 
 Download fmt18 (mp4) format of the video.
 
+=item cclive -F "%t.%s" URL
+
+Use video titles in filenames. cclive uses "%i_%h.%s" by default.
+For reference, see the B<--filename-format> option.
+
+=item cclive -F "%t.%s" -r "(\w+)" URL
+
+Grab the first "word" character from video title and use it in the
+output filename.
+
+=item cclive -F "%t.%s" -gr "(\w|\s)" URL
+
+Grab all "word" and "whitespace" characters from the video title and
+use them in the output filename.
+
 =item cclive --exec="mplayer -really-quiet %i;" -e URL
 
 Play the downloaded video with C<mplayer(1)> subsequently.
@@ -246,17 +261,8 @@ reaches 20%.
 
 =item cclive -s URL
 
-Alternative to streaming with Adobe Flash. C<vlc(1)> and C<totem(1)> have been
-reported to work also.
-
-=item cclive -F "%t.%s" -r "(\w+)" URL
-
-Grab the first "word" character from video title for output filename.
-
-=item cclive -F "%t.%s" -gr "(\w|\s)" URL
-
-Grab all "word" and "whitespace" characters from the video title and
-use them for the output filename.
+Alternative to streaming with Adobe Flash plugin. C<vlc(1)> and C<totem(1)>
+have been reported to work also.
 
 =item cat E<gt> url.lst
 
