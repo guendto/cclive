@@ -51,7 +51,7 @@ Ignores B<--quiet> for CSV.
 
 =item B<--print-fname>
 
-Print filename on one line before download starts.
+Print filename on a separate line before download starts.
 
 =back
 
