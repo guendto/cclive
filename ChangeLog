@@ -9,6 +9,7 @@ Version 0.5.0
   * Add: redtube.com website support (port from clive)
   * Fix: --hosts: dailymotion: spak-mini -> spark-mini
   * Fix: ETA for resumed transfers
+  * Fix: Average rate for finished transfers
   * Remove: --title, --cclass, --no-cclass
   * Progressbar: zeropad ETA
 

@@ -193,13 +193,18 @@ ProgressBar::update(double now) {
 
     if (rate > 0) {
         std::string eta;
+
         if (!done) {
             double left = (total - (now+initial)) / rate;
             eta = timeToStr(static_cast<int>(left+0.5));
         }
-        else
-            eta = timeToStr(elapsed);
+        else {
+            rate = (total - initial) / elapsed;
+            eta  = timeToStr(elapsed);
+        }
+
         std::string unit = getUnit(rate);
+
         tmp << "  "
             << std::setw(4)
             << std::setprecision(1)
