@@ -262,7 +262,7 @@ ProgressBar::timeToStr(const int& secs) const {
 const std::string
 ProgressBar::getUnit(double& rate) const {
     static const char *units[] = {"K/s", "M/s", "G/s"};
-    register _uint i = 0;
+    int i = 0;
     if (rate < 1024*1024) {
         rate /= 1024;
     }
