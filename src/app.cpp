@@ -176,10 +176,12 @@ App::run() {
 
     STRV tokens;
 
+    typedef unsigned int _uint;
+
     if (!opts.inputs_num)
         tokens = parseInput();
     else {
-        for (register unsigned int i=0; i<opts.inputs_num; ++i)
+        for (register _uint i=0; i<opts.inputs_num; ++i)
             tokens.push_back(opts.inputs[i]);
     }
 

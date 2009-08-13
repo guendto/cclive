@@ -26,9 +26,11 @@
 
 #define SHP std::tr1::shared_ptr
 
+typedef unsigned int _uint;
+
 SHP<HostHandler>
 HostHandlerFactory::createHandler(const std::string& url) {
-    for (register int type=Youtube; type < _last_type; ++type) {
+    for (register _uint type=Youtube; type < _last_type; ++type) {
         SHP<HostHandler> p = createHandler((HandlerType)type);
         if (p->isHost(url))
             return p;
@@ -38,7 +40,7 @@ HostHandlerFactory::createHandler(const std::string& url) {
 
 void
 HostHandlerFactory::printHosts() {
-    for (register int type=Youtube; type < _last_type; ++type) {
+    for (register _uint type=Youtube; type < _last_type; ++type) {
         SHP<HostHandler> p = createHandler((HandlerType)type);
         VideoProperties props = p->getVideoProperties();
         std::cout << props.getDomain()

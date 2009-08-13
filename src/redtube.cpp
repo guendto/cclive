@@ -56,11 +56,12 @@ digit(const long& num, const int& digit, const int& len) {
 }
 
 typedef std::vector<int> INTV;
+typedef unsigned int _uint;
 
 static INTV
 unpack_casterisk(const char *str) { // perl: unpack('C*', '...')
     INTV v;
-    for (register int i=0; str[i]!='\0'; ++i) {
+    for (register _uint i=0; str[i]!='\0'; ++i) {
         std::stringstream b;
         b << zeropad(2, static_cast<int>(str[i]));
         v.push_back( atoi(b.str().c_str()) );
@@ -85,7 +86,7 @@ RedtubeHandler::parseLink() {
     const long id = atol(props.getId().c_str());
 
     long var1 = 0;
-    register unsigned int i=0;
+    register _uint i=0;
 
     for (; i<7; ++i)
         var1 += (digit(id,i,7) * (i+1));

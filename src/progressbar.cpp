@@ -112,6 +112,8 @@ ProgressBar::init(const VideoProperties& props) {
     time(&started);
 }
 
+typedef unsigned int _uint;
+
 void
 ProgressBar::update(double now) {
     static const double REFRESH_INTERVAL = 0.2;
@@ -147,7 +149,7 @@ ProgressBar::update(double now) {
     std::stringstream b;
     b.setf(std::ios::fixed);
 
-    register int l = 32;
+    register _uint l = 32;
     if (width > DEFAULT_TERM_WIDTH)
         l += width - DEFAULT_TERM_WIDTH;
     b << props.getFilename().substr(0,l);
@@ -208,7 +210,7 @@ ProgressBar::update(double now) {
         tmp << "  --.-K/s  --:--";
 
     l = width - tmp.str().length(); // pad to term width
-    for (register int i=b.str().length(); i<l; ++i)
+    for (register _uint i=b.str().length(); i<l; ++i)
         b << " ";
 
     b << tmp.str();
@@ -257,7 +259,7 @@ ProgressBar::timeToStr(const int& secs) const {
 const std::string
 ProgressBar::getUnit(double& rate) const {
     static const char *units[] = {"K/s", "M/s", "G/s"};
-    register int i = 0;
+    register _uint i = 0;
     if (rate < 1024*1024) {
         rate /= 1024;
     }

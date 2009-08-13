@@ -180,7 +180,9 @@ VideoProperties::formatOutputFilename() {
 
         filename = b.str();
 
-        for (register int i=1; i<INT_MAX; ++i) {
+        typedef unsigned int _uint;
+
+        for (register _uint i=1; i<INT_MAX; ++i) {
             initial = Util::fileExists(filename);
 
             if (initial == 0)
