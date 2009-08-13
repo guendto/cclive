@@ -207,8 +207,8 @@ Use repeated matching to find all occurences, like Perl's /g option.
 =item B<-F, --filename-format>=I<formatstring>
 
 Use the specified I<formatstring> to format the output filenames. cclive
-defaults to "%h_%i.%s". Any supported specifiers (below) appearing in the
-I<formatstring> will be replaced accordingly:
+defaults to "%h_%i.%s". Any of the following specifiers appearing in the
+format string will be replaced accordingly:
 
   %t = video title
   %i = video id
