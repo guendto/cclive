@@ -93,8 +93,8 @@ void
 ProgressBar::init(const VideoProperties& props) {
     this->props = props;
 
-    initial = props.getInitial();   // bytes dl previously
-    total = props.getLength();      // expected bytes
+    initial = props.getInitial(); // bytes dl previously
+    total   = props.getLength();  // expected bytes
 
     if (initial > total)
         total = initial;
@@ -137,13 +137,16 @@ ProgressBar::update(double now) {
     const time_t elapsed = tnow - started;
 
     if (!done) {
-        if ((elapsed - lastUpdate) < REFRESH_INTERVAL && !force_update)
+        if ((elapsed - lastUpdate) < REFRESH_INTERVAL
+            && !force_update)
+        {
             return;
+        }
     }
     else
         now = total;
 
-    lastUpdate = elapsed;
+    lastUpdate        = elapsed;
     const double size = initial+now;
 
     std::stringstream b;
@@ -191,8 +194,8 @@ ProgressBar::update(double now) {
     if (rate > 0) {
         std::string eta;
         if (!done) {
-            const int left = static_cast<int>((total-now)/rate);
-            eta = timeToStr(left);
+            double left = (total - (now+initial)) / rate;
+            eta = timeToStr(static_cast<int>(left+0.5));
         }
         else
             eta = timeToStr(elapsed);
