@@ -47,7 +47,7 @@ struct gengetopt_args_info
   const char *quiet_help; /**< @brief turn off all output help description.  */
   const char *debug_help; /**< @brief show curl debug messages help description.  */
   const char *emit_csv_help; /**< @brief emit video details as csv to stdout help description.  */
-  const char *print_fname_help; /**< @brief print output filename on a single line help description.  */
+  const char *print_fname_help; /**< @brief print filename before download starts help description.  */
   char * agent_arg;	/**< @brief identify as string (default='Mozilla/5.0').  */
   char * agent_orig;	/**< @brief identify as string original value given at command line.  */
   const char *agent_help; /**< @brief identify as string help description.  */

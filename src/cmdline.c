@@ -39,7 +39,7 @@ const char *gengetopt_args_info_help[] = {
   "  -q, --quiet                   turn off all output",
   "      --debug                   show curl debug messages",
   "      --emit-csv                emit video details as csv to stdout",
-  "      --print-fname             print output filename on a single line",
+  "      --print-fname             print filename before download starts",
   "\nHTTP:",
   "      --agent=string            identify as string  (default=`Mozilla/5.0')",
   "      --proxy=proxyhost[:port]  use specified proxy",
@@ -1000,7 +1000,7 @@ cmdline_parser_internal (
               goto failure;
           
           }
-          /* print output filename on a single line.  */
+          /* print filename before download starts.  */
           else if (strcmp (long_options[option_index].name, "print-fname") == 0)
           {
           

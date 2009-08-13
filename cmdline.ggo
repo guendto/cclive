@@ -17,7 +17,7 @@ option "emit-csv"
     - "emit video details as csv to stdout"
     optional
 option "print-fname"
-    - "print output filename on a single line"
+    - "print filename before download starts"
     optional
 
 section "HTTP"
