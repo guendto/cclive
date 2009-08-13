@@ -244,7 +244,7 @@ static const char copyr_notice[] =
 
     const char *locale = getenv("LANG");
     if (!locale)
-        locale = "undefined";
+        locale = "LANG undefined";
 
     std::cout
         << CMDLINE_PARSER_PACKAGE << " version "
