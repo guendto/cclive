@@ -10,7 +10,7 @@ cclive is primarily a "video download tool" but it can also be used for
 emitting parsed video links for other software to use.
 
 cclive integrates with media player software, such as C<mplayer>, allowing it
-to be used instead of the Adobe flash plugin which is required by the websites
+to be used instead of the Adobe flash player which is required by the websites
 to view the streamed videos.
 
 For downloads and FAQ (in wiki), please visit:

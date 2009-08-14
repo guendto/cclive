@@ -18,7 +18,7 @@ cclive is primarily a "video download tool" but it can also be used for
 emitting parsed video links for other software to use.
 
 cclive integrates with media player software, such as C<mplayer>, allowing it to
-be used instead of the Adobe flash plugin which is required by the websites to
+be used instead of the Adobe flash player which is required by the websites to
 view the streamed videos.
 
 =head1 OPTIONS
@@ -279,7 +279,7 @@ keeping a local copy of the video.
 =item cclive -s URL
 
 Leaves streaming to C<mplayer(1)> altogether after cclive parses the link
-to the source. Serves as a "Adobe flash plugin" alternative for those who
+to the source. Serves as a "Adobe flash player" alternative for those who
 want to stream the videos rather than download them.
 
 Above, we save ourselves from repeated typing and save the stream-exec
