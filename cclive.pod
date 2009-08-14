@@ -495,16 +495,6 @@ cclive exits 0 on success, and E<gt>0 if an error occurs.
 
 =back
 
-=head1 HISTORY
-
-=over 4
-
-=item * cclive followed the release of clive2
-
-=item * It was originally written in C but later rewritten in C++
-
-=back
-
 =head1 SEE ALSO
 
 C<clive(1)>
