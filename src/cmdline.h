@@ -63,12 +63,12 @@ struct gengetopt_args_info
   const char *connect_timeout_socks_help; /**< @brief same but tries to work around SOCKS proxy bug in libcurl help description.  */
   const char *no_extract_help; /**< @brief do not actually extract video, simulate only help description.  */
   const char *continue_help; /**< @brief resume partially downloaded file help description.  */
-  int limit_rate_arg;	/**< @brief limit download speed to KB/s.  */
-  char * limit_rate_orig;	/**< @brief limit download speed to KB/s original value given at command line.  */
-  const char *limit_rate_help; /**< @brief limit download speed to KB/s help description.  */
   char * output_video_arg;	/**< @brief write video to file.  */
   char * output_video_orig;	/**< @brief write video to file original value given at command line.  */
   const char *output_video_help; /**< @brief write video to file help description.  */
+  int limit_rate_arg;	/**< @brief limit download speed to KB/s.  */
+  char * limit_rate_orig;	/**< @brief limit download speed to KB/s original value given at command line.  */
+  const char *limit_rate_help; /**< @brief limit download speed to KB/s help description.  */
   char * format_arg;	/**< @brief download video format (default='flv').  */
   char * format_orig;	/**< @brief download video format original value given at command line.  */
   const char *format_help; /**< @brief download video format help description.  */
@@ -109,8 +109,8 @@ struct gengetopt_args_info
   unsigned int connect_timeout_socks_given ;	/**< @brief Whether connect-timeout-socks was given.  */
   unsigned int no_extract_given ;	/**< @brief Whether no-extract was given.  */
   unsigned int continue_given ;	/**< @brief Whether continue was given.  */
-  unsigned int limit_rate_given ;	/**< @brief Whether limit-rate was given.  */
   unsigned int output_video_given ;	/**< @brief Whether output-video was given.  */
+  unsigned int limit_rate_given ;	/**< @brief Whether limit-rate was given.  */
   unsigned int format_given ;	/**< @brief Whether format was given.  */
   unsigned int format_map_given ;	/**< @brief Whether format-map was given.  */
   unsigned int number_videos_given ;	/**< @brief Whether number-videos was given.  */

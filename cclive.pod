@@ -98,14 +98,14 @@ By default, cclive appends a numeric suffix (e.g. ".1") to the
 filename if the file exists already, unless file is already completely
 retrieved, or either --continue --output-video is defined.
 
+=item B<-O, --output-video>=I<file>
+
+Write the downloaded video I<file>.
+
 =item B<l, --limit-rate>=I<amount>
 
 Limit download speed to I<amount> (KB/s). Video page fetches remain
 unaffected by this option.
-
-=item B<-O, --output-video>=I<file>
-
-Write the downloaded video I<file>.
 
 =item B<-f, --format>=I<format>
 

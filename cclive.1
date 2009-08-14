@@ -132,7 +132,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2009-08-13" "0.5.0" "cclive manual"
+.TH cclive 1 "2009-08-14" "0.5.0" "cclive manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -203,13 +203,13 @@ Continue a partially downloaded video file.
 By default, cclive appends a numeric suffix (e.g. \*(L".1\*(R") to the
 filename if the file exists already, unless file is already completely
 retrieved, or either \-\-continue \-\-output\-video is defined.
+.IP "\fB\-O, \-\-output\-video\fR=\fIfile\fR" 4
+.IX Item "-O, --output-video=file"
+Write the downloaded video \fIfile\fR.
 .IP "\fBl, \-\-limit\-rate\fR=\fIamount\fR" 4
 .IX Item "l, --limit-rate=amount"
 Limit download speed to \fIamount\fR (KB/s). Video page fetches remain
 unaffected by this option.
-.IP "\fB\-O, \-\-output\-video\fR=\fIfile\fR" 4
-.IX Item "-O, --output-video=file"
-Write the downloaded video \fIfile\fR.
 .IP "\fB\-f, \-\-format\fR=\fIformat\fR" 4
 .IX Item "-f, --format=format"
 Download \fIformat\fR of the video. If set to \fIbest\fR, cclive

@@ -51,13 +51,13 @@ option "no-extract"
 option "continue"
     c "resume partially downloaded file"
     optional
-option "limit-rate"
-    l "limit download speed to KB/s"
-    int typestr="kb/s"
-    optional
 option "output-video"
     O "write video to file"
     string typestr="file"
+    optional
+option "limit-rate"
+    l "limit download speed to KB/s"
+    int typestr="kb/s"
     optional
 option "format"
     f "download video format"
