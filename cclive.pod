@@ -96,7 +96,7 @@ Continue a partially downloaded video file.
 
 By default, cclive appends a numeric suffix (e.g. ".1") to the
 filename if the file exists already, unless file is already completely
-retrieved, or either --continue --output-video is defined.
+retrieved -- or either B<--continue> or  B<--output-video> is used.
 
 =item B<-O, --output-video>=I<file>
 
