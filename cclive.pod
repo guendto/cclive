@@ -113,9 +113,8 @@ unaffected by this option.
 =item B<-f, --format>=I<format>
 
 Download I<format> of the video. If set to I<best>, cclive
-attempts to download the best quality of the video.
-
-See also L</FORMATS>.
+attempts to download the best quality of the video. See also
+L</FORMATS>.
 
 =item B<-M, --format-map>=I<hostid:formatid|hostid:formatid...>
 
