@@ -2,26 +2,19 @@
 README for MSWindows users
 --------------------------
 
-* Mswindows binaries are experimental
-
-* We rely on users to report back any bugs:
-
+* Please report any bugs:
   <http://code.google.com/p/cclive/issues/>
 
 * Please read the manual page (cclive.1.html) if you are new to cclive
 
-* Contact us (legatvs@gmail.com) if you are interested to take over this port
+* Some features are unavailable (e.g. --stream-exec) due to OS limitations
 
-* Some features are not available in this port due to OS limitations,
-    e.g. --stream-exec.
-
-* cclive attempts to parse config file ONLY if either CCLIVE_HOME or HOME
+* cclive will try to parse config file ONLY if either CCLIVE_HOME or HOME
   environment variable has been defined
 
 * cclive looks for "ccliverc", not ".ccliverc" as it does on Unix-like systems
 
 * Example:
-
   > set CCLIVE_HOME c:\cclive
 
   > type c:\cclive\ccliverc
