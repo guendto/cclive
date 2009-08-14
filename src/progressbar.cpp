@@ -159,7 +159,7 @@ ProgressBar::update(double now) {
 
     if (total > 0) {
         const double _size = !done ? size:now;
-        const int percent = 100.0 * size / total;
+        const int percent  = static_cast<int>(100.0*size/total);
         if (percent < 100)
             b << "  " << std::setw(2) << percent << "% ";
         else
