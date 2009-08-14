@@ -216,9 +216,8 @@ unaffected by this option.
 .IP "\fB\-f, \-\-format\fR=\fIformat\fR" 4
 .IX Item "-f, --format=format"
 Download \fIformat\fR of the video. If set to \fIbest\fR, cclive
-attempts to download the best quality of the video.
-.Sp
-See also \*(L"\s-1FORMATS\s0\*(R".
+attempts to download the best quality of the video. See also
+\&\*(L"\s-1FORMATS\s0\*(R".
 .IP "\fB\-M, \-\-format\-map\fR=\fIhostid:formatid|hostid:formatid...\fR" 4
 .IX Item "-M, --format-map=hostid:formatid|hostid:formatid..."
 Like \fB\-\-format\fR but allows specifying the format for multiple hosts
@@ -313,30 +312,36 @@ Download fmt18 (mp4) format of the video.
 .el .IP "cclive \-F ``%t.%s'' \s-1URL\s0" 4
 .IX Item "cclive -F %t.%s URL"
 Use video titles in filenames. cclive uses \*(L"%i_%h.%s\*(R" by default.
-For reference, see the \fB\-\-filename\-format\fR option.
+For the supported specifiers, refer to the \fB\-\-filename\-format\fR description.
 .ie n .IP "cclive \-F ""%t.%s"" \-r ""(\ew+)"" \s-1URL\s0" 4
 .el .IP "cclive \-F ``%t.%s'' \-r ``(\ew+)'' \s-1URL\s0" 4
 .IX Item "cclive -F %t.%s -r (w+) URL"
-Grab the first \*(L"word\*(R" character from video title and use it in the
-output filename.
+Match a string of \*(L"word\*(R" character from the video title and use it in the
+filename replacing the \*(L"%t\*(R" specifier. cclive replaces the \*(L"%s\*(R" specifier
+with appropriate file suffix string (e.g. \*(L"flv\*(R").
 .ie n .IP "cclive \-F ""%t.%s"" \-gr ""(\ew|\es)"" \s-1URL\s0" 4
 .el .IP "cclive \-F ``%t.%s'' \-gr ``(\ew|\es)'' \s-1URL\s0" 4
 .IX Item "cclive -F %t.%s -gr (w|s) URL"
-Grab all \*(L"word\*(R" and \*(L"whitespace\*(R" characters from the video title and
-use them in the output filename.
+Match all \*(L"word\*(R" and \*(L"whitespace\*(R" characters, and use them in the filename
+replacing the \*(L"%t\*(R". Note the use of \*(L"\-g\*(R" (or \fB\-\-find\-all\fR) option.
 .ie n .IP "cclive \-\-exec=""mplayer \-really\-quiet %i;"" \-e \s-1URL\s0" 4
 .el .IP "cclive \-\-exec=``mplayer \-really\-quiet \f(CW%i\fR;'' \-e \s-1URL\s0" 4
 .IX Item "cclive --exec=mplayer -really-quiet %i; -e URL"
-Play the downloaded video with \f(CWmplayer(1)\fR subsequently.
+Play the downloaded video with \f(CWmplayer(1)\fR when download finishes.
 .ie n .IP "cclive \-\-exec=""ffmpeg \-i %i\fR \-acodec libvorbis \f(CW%i.ogg;"" \-e \s-1URL\s0" 4
 .el .IP "cclive \-\-exec=``ffmpeg \-i \f(CW%i\fR \-acodec libvorbis \f(CW%i\fR.ogg;'' \-e \s-1URL\s0" 4
 .IX Item "cclive --exec=ffmpeg -i %i -acodec libvorbis %i.ogg; -e URL"
-Copy audio from downloaded video to ogg with \f(CWffmpeg(1)\fR.
+Similar but re-encode audio from the video using \f(CWffmpeg(1)\fR to a vorbis
+file.
 .ie n .IP "cclive \-\-stream\-exec=""mplayer \-really\-quiet %i"" \-\-stream=20 \s-1URL\s0" 4
 .el .IP "cclive \-\-stream\-exec=``mplayer \-really\-quiet \f(CW%i\fR'' \-\-stream=20 \s-1URL\s0" 4
 .IX Item "cclive --stream-exec=mplayer -really-quiet %i --stream=20 URL"
-Start playing the video being downloaded with \f(CWmplayer(1)\fR when
-the transfer reaches 20%.
+Mimics \*(L"streaming\*(R" by forking the \f(CWmplayer(1)\fR when the progress hits
+20% complete. cclive continues to download the video file while
+\&\f(CWmplayer(1)\fR plays the video file.
+.Sp
+See the next example for a better solution if you are not interested in
+keeping a local copy of the video.
 .ie n .IP "echo 'stream\-exec = ""mplayer \-really\-quiet %i""' >> ~/.ccliverc" 4
 .el .IP "echo 'stream\-exec = ``mplayer \-really\-quiet \f(CW%i\fR''' >> ~/.ccliverc" 4
 .IX Item "echo 'stream-exec = mplayer -really-quiet %i' >> ~/.ccliverc"
@@ -344,8 +349,17 @@ the transfer reaches 20%.
 .IP "cclive \-s \s-1URL\s0" 4
 .IX Item "cclive -s URL"
 .PD
-Alternative to streaming with Adobe Flash plugin. \f(CWvlc(1)\fR and \f(CWtotem(1)\fR
-have been reported to work also.
+Leaves streaming to \f(CWmplayer(1)\fR altogether after cclive parses the link
+to the source. Serves as a \*(L"Adobe flash plugin\*(R" alternative for those who
+want to stream the videos rather than download them.
+.Sp
+Above, we save ourselves from repeated typing and save the stream-exec
+option to the ~/.ccliverc file so we can invoke cclive with the \*(L"\-s\*(R"
+(or \fB\-\-stream\-exec\fR) option whenever we want to use mplayer for
+viewing the streamed media.
+.Sp
+Reportedly other players such as \f(CWvlc(1)\fR and \f(CWtotem(1)\fR are known
+to work also.
 .IP "cat > url.lst" 4
 .IX Item "cat > url.lst"
 .Vb 4
@@ -368,9 +382,9 @@ Alternative to passing multiple links to cclive as command line arguments.
 .IP "cclive Youtube_URL Dailymotion_URL" 4
 .IX Item "cclive Youtube_URL Dailymotion_URL"
 .PD
-Would cause cclive to download mp4 of the Youtube video and vp6_hq of
-the Dailymotion video. We make the setting \*(L"permanent\*(R" by adding it
-to ~/.ccliverc.
+Causes cclive to download mp4 of the Youtube video and vp6_hq of
+the Dailymotion video. Note that the use of \-f (or \fB\-\-format\fR)
+overrides this setting.
 .SH "FORMATS"
 .IX Header "FORMATS"
 \&\*(L"flv\*(R" is downloaded by default if \fB\-\-format\fR is not specified. Some
@@ -381,7 +395,7 @@ websites support more than one video format.
 .IP "last.fm" 4
 .IX Item "last.fm"
 .PD
-Format: (flv|fmt17|fmt18|fmt22|fmt35)
+Format: flv|fmt17|fmt18|fmt22|fmt35
 .Sp
 flv (fmt34) and fmt18 (mp4) are usually available. Others may be
 available. At the time of writing this, the following formats
@@ -401,7 +415,7 @@ Some of the last.fm videos are actually hosted by Youtube.
 cclive can be used to download such videos.
 .IP "dailymotion.com" 4
 .IX Item "dailymotion.com"
-Format: (flv|spark\-mini|vp6\-hq|vp6\-hd|vp6|h264)
+Format: flv|spark\-mini|vp6\-hq|vp6\-hd|vp6|h264
 .Sp
 The \s-1HD\s0 and \s-1HQ\s0 videos may not always be available.
 .Sp
@@ -415,7 +429,7 @@ The \s-1HD\s0 and \s-1HQ\s0 videos may not always be available.
 .Ve
 .IP "spiegel.de" 4
 .IX Item "spiegel.de"
-Format: (vp6_(64|576|928)|h264_1400)
+Format: vp6_(64|576|928)|h264_1400
 .Sp
 .Vb 4
 \&  h264_1400 .. mp4 (996x560)
@@ -425,10 +439,10 @@ Format: (vp6_(64|576|928)|h264_1400)
 .Ve
 .IP "golem.de" 4
 .IX Item "golem.de"
-Format: (flv|high|ipod)
+Format: flv|high|ipod
 .IP "vimeo.com" 4
 .IX Item "vimeo.com"
-Format: (flv|hd)
+Format: flv|hd
 .Sp
 \&\s-1HD\s0 should be available for the vimeo.com/hd channel videos at least.
 Note that \*(L"flv\*(R" only means the \*(L"default flv\*(R". Some of the hosted
@@ -441,7 +455,7 @@ For further reading:
 .Ve
 .IP "video.google.com" 4
 .IX Item "video.google.com"
-Format: (flv|mp4)
+Format: flv|mp4
 .Sp
 mp4 may not always be available.
 .IP "sevenload.com" 4
