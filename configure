@@ -732,8 +732,6 @@ am__fastdepCC_FALSE
 CPP
 GREP
 EGREP
-LIBICONV
-LTLIBICONV
 GENGETOPT
 HAVE_GENGETOPT_TRUE
 HAVE_GENGETOPT_FALSE
@@ -751,6 +749,8 @@ libcurl_CFLAGS
 libcurl_LIBS
 libpcrecpp_CFLAGS
 libpcrecpp_LIBS
+LIBICONV
+LTLIBICONV
 LIBOBJS
 ENABLE_TESTS_TRUE
 ENABLE_TESTS_FALSE
@@ -5139,6 +5139,546 @@ _ACEOF
 
 
 
+# Extract the first word of "gengetopt", so it can be a program name with args.
+set dummy gengetopt; ac_word=$2
+{ $as_echo "$as_me:$LINENO: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_GENGETOPT+set}" = set; then
+  $as_echo_n "(cached) " >&6
+else
+  case $GENGETOPT in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_GENGETOPT="$GENGETOPT" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_GENGETOPT="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_GENGETOPT" && ac_cv_path_GENGETOPT="no"
+  ;;
+esac
+fi
+GENGETOPT=$ac_cv_path_GENGETOPT
+if test -n "$GENGETOPT"; then
+  { $as_echo "$as_me:$LINENO: result: $GENGETOPT" >&5
+$as_echo "$GENGETOPT" >&6; }
+else
+  { $as_echo "$as_me:$LINENO: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+ if test x"$GENGETOPT" != "xno"; then
+  HAVE_GENGETOPT_TRUE=
+  HAVE_GENGETOPT_FALSE='#'
+else
+  HAVE_GENGETOPT_TRUE='#'
+  HAVE_GENGETOPT_FALSE=
+fi
+
+
+
+# Extract the first word of "podchecker", so it can be a program name with args.
+set dummy podchecker; ac_word=$2
+{ $as_echo "$as_me:$LINENO: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_PODCHECKER+set}" = set; then
+  $as_echo_n "(cached) " >&6
+else
+  case $PODCHECKER in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_PODCHECKER="$PODCHECKER" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_PODCHECKER="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_PODCHECKER" && ac_cv_path_PODCHECKER="no"
+  ;;
+esac
+fi
+PODCHECKER=$ac_cv_path_PODCHECKER
+if test -n "$PODCHECKER"; then
+  { $as_echo "$as_me:$LINENO: result: $PODCHECKER" >&5
+$as_echo "$PODCHECKER" >&6; }
+else
+  { $as_echo "$as_me:$LINENO: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+ if test x"$PODCHECKER" != "xno"; then
+  HAVE_PODCHECKER_TRUE=
+  HAVE_PODCHECKER_FALSE='#'
+else
+  HAVE_PODCHECKER_TRUE='#'
+  HAVE_PODCHECKER_FALSE=
+fi
+
+
+
+# Extract the first word of "pod2man", so it can be a program name with args.
+set dummy pod2man; ac_word=$2
+{ $as_echo "$as_me:$LINENO: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_POD2MAN+set}" = set; then
+  $as_echo_n "(cached) " >&6
+else
+  case $POD2MAN in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_POD2MAN="$POD2MAN" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_POD2MAN="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_POD2MAN" && ac_cv_path_POD2MAN="no"
+  ;;
+esac
+fi
+POD2MAN=$ac_cv_path_POD2MAN
+if test -n "$POD2MAN"; then
+  { $as_echo "$as_me:$LINENO: result: $POD2MAN" >&5
+$as_echo "$POD2MAN" >&6; }
+else
+  { $as_echo "$as_me:$LINENO: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+ if test x"$POD2MAN" != "xno"; then
+  HAVE_POD2MAN_TRUE=
+  HAVE_POD2MAN_FALSE='#'
+else
+  HAVE_POD2MAN_TRUE='#'
+  HAVE_POD2MAN_FALSE=
+fi
+
+
+
+# Extract the first word of "pod2html", so it can be a program name with args.
+set dummy pod2html; ac_word=$2
+{ $as_echo "$as_me:$LINENO: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_POD2HTML+set}" = set; then
+  $as_echo_n "(cached) " >&6
+else
+  case $POD2HTML in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_POD2HTML="$POD2HTML" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_POD2HTML="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_POD2HTML" && ac_cv_path_POD2HTML="no"
+  ;;
+esac
+fi
+POD2HTML=$ac_cv_path_POD2HTML
+if test -n "$POD2HTML"; then
+  { $as_echo "$as_me:$LINENO: result: $POD2HTML" >&5
+$as_echo "$POD2HTML" >&6; }
+else
+  { $as_echo "$as_me:$LINENO: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+ if test x"$POD2HTML" != "xno"; then
+  HAVE_POD2HTML_TRUE=
+  HAVE_POD2HTML_FALSE='#'
+else
+  HAVE_POD2HTML_TRUE='#'
+  HAVE_POD2HTML_FALSE=
+fi
+
+
+
+# Checks for (mandatory) libraries.
+
+
+if test "x$ac_cv_env_PKG_CONFIG_set" != "xset"; then
+	if test -n "$ac_tool_prefix"; then
+  # Extract the first word of "${ac_tool_prefix}pkg-config", so it can be a program name with args.
+set dummy ${ac_tool_prefix}pkg-config; ac_word=$2
+{ $as_echo "$as_me:$LINENO: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_PKG_CONFIG+set}" = set; then
+  $as_echo_n "(cached) " >&6
+else
+  case $PKG_CONFIG in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_PKG_CONFIG="$PKG_CONFIG" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_PKG_CONFIG="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+IFS=$as_save_IFS
+
+  ;;
+esac
+fi
+PKG_CONFIG=$ac_cv_path_PKG_CONFIG
+if test -n "$PKG_CONFIG"; then
+  { $as_echo "$as_me:$LINENO: result: $PKG_CONFIG" >&5
+$as_echo "$PKG_CONFIG" >&6; }
+else
+  { $as_echo "$as_me:$LINENO: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+fi
+if test -z "$ac_cv_path_PKG_CONFIG"; then
+  ac_pt_PKG_CONFIG=$PKG_CONFIG
+  # Extract the first word of "pkg-config", so it can be a program name with args.
+set dummy pkg-config; ac_word=$2
+{ $as_echo "$as_me:$LINENO: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_ac_pt_PKG_CONFIG+set}" = set; then
+  $as_echo_n "(cached) " >&6
+else
+  case $ac_pt_PKG_CONFIG in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_ac_pt_PKG_CONFIG="$ac_pt_PKG_CONFIG" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_ac_pt_PKG_CONFIG="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+IFS=$as_save_IFS
+
+  ;;
+esac
+fi
+ac_pt_PKG_CONFIG=$ac_cv_path_ac_pt_PKG_CONFIG
+if test -n "$ac_pt_PKG_CONFIG"; then
+  { $as_echo "$as_me:$LINENO: result: $ac_pt_PKG_CONFIG" >&5
+$as_echo "$ac_pt_PKG_CONFIG" >&6; }
+else
+  { $as_echo "$as_me:$LINENO: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+  if test "x$ac_pt_PKG_CONFIG" = x; then
+    PKG_CONFIG=""
+  else
+    case $cross_compiling:$ac_tool_warned in
+yes:)
+{ $as_echo "$as_me:$LINENO: WARNING: In the future, Autoconf will not detect cross-tools
+whose name does not start with the host triplet.  If you think this
+configuration is useful to you, please write to autoconf@gnu.org." >&5
+$as_echo "$as_me: WARNING: In the future, Autoconf will not detect cross-tools
+whose name does not start with the host triplet.  If you think this
+configuration is useful to you, please write to autoconf@gnu.org." >&2;}
+ac_tool_warned=yes ;;
+esac
+    PKG_CONFIG=$ac_pt_PKG_CONFIG
+  fi
+else
+  PKG_CONFIG="$ac_cv_path_PKG_CONFIG"
+fi
+
+fi
+if test -n "$PKG_CONFIG"; then
+	_pkg_min_version=0.9.0
+	{ $as_echo "$as_me:$LINENO: checking pkg-config is at least version $_pkg_min_version" >&5
+$as_echo_n "checking pkg-config is at least version $_pkg_min_version... " >&6; }
+	if $PKG_CONFIG --atleast-pkgconfig-version $_pkg_min_version; then
+		{ $as_echo "$as_me:$LINENO: result: yes" >&5
+$as_echo "yes" >&6; }
+	else
+		{ $as_echo "$as_me:$LINENO: result: no" >&5
+$as_echo "no" >&6; }
+		PKG_CONFIG=""
+	fi
+
+fi
+
+pkg_failed=no
+{ $as_echo "$as_me:$LINENO: checking for libcurl" >&5
+$as_echo_n "checking for libcurl... " >&6; }
+
+if test -n "$libcurl_CFLAGS"; then
+    pkg_cv_libcurl_CFLAGS="$libcurl_CFLAGS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"libcurl >= 7.18.0\"") >&5
+  ($PKG_CONFIG --exists --print-errors "libcurl >= 7.18.0") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_libcurl_CFLAGS=`$PKG_CONFIG --cflags "libcurl >= 7.18.0" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+if test -n "$libcurl_LIBS"; then
+    pkg_cv_libcurl_LIBS="$libcurl_LIBS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"libcurl >= 7.18.0\"") >&5
+  ($PKG_CONFIG --exists --print-errors "libcurl >= 7.18.0") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_libcurl_LIBS=`$PKG_CONFIG --libs "libcurl >= 7.18.0" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        libcurl_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "libcurl >= 7.18.0" 2>&1`
+        else
+	        libcurl_PKG_ERRORS=`$PKG_CONFIG --print-errors "libcurl >= 7.18.0" 2>&1`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$libcurl_PKG_ERRORS" >&5
+
+	{ { $as_echo "$as_me:$LINENO: error: Package requirements (libcurl >= 7.18.0) were not met:
+
+$libcurl_PKG_ERRORS
+
+Consider adjusting the PKG_CONFIG_PATH environment variable if you
+installed software in a non-standard prefix.
+
+Alternatively, you may set the environment variables libcurl_CFLAGS
+and libcurl_LIBS to avoid the need to call pkg-config.
+See the pkg-config man page for more details.
+" >&5
+$as_echo "$as_me: error: Package requirements (libcurl >= 7.18.0) were not met:
+
+$libcurl_PKG_ERRORS
+
+Consider adjusting the PKG_CONFIG_PATH environment variable if you
+installed software in a non-standard prefix.
+
+Alternatively, you may set the environment variables libcurl_CFLAGS
+and libcurl_LIBS to avoid the need to call pkg-config.
+See the pkg-config man page for more details.
+" >&2;}
+   { (exit 1); exit 1; }; }
+elif test $pkg_failed = untried; then
+	{ { $as_echo "$as_me:$LINENO: error: The pkg-config script could not be found or is too old.  Make sure it
+is in your PATH or set the PKG_CONFIG environment variable to the full
+path to pkg-config.
+
+Alternatively, you may set the environment variables libcurl_CFLAGS
+and libcurl_LIBS to avoid the need to call pkg-config.
+See the pkg-config man page for more details.
+
+To get pkg-config, see <http://pkg-config.freedesktop.org/>.
+See \`config.log' for more details." >&5
+$as_echo "$as_me: error: The pkg-config script could not be found or is too old.  Make sure it
+is in your PATH or set the PKG_CONFIG environment variable to the full
+path to pkg-config.
+
+Alternatively, you may set the environment variables libcurl_CFLAGS
+and libcurl_LIBS to avoid the need to call pkg-config.
+See the pkg-config man page for more details.
+
+To get pkg-config, see <http://pkg-config.freedesktop.org/>.
+See \`config.log' for more details." >&2;}
+   { (exit 1); exit 1; }; }
+else
+	libcurl_CFLAGS=$pkg_cv_libcurl_CFLAGS
+	libcurl_LIBS=$pkg_cv_libcurl_LIBS
+        { $as_echo "$as_me:$LINENO: result: yes" >&5
+$as_echo "yes" >&6; }
+	:
+fi
+
+pkg_failed=no
+{ $as_echo "$as_me:$LINENO: checking for libpcrecpp" >&5
+$as_echo_n "checking for libpcrecpp... " >&6; }
+
+if test -n "$libpcrecpp_CFLAGS"; then
+    pkg_cv_libpcrecpp_CFLAGS="$libpcrecpp_CFLAGS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"libpcrecpp >= 7.8\"") >&5
+  ($PKG_CONFIG --exists --print-errors "libpcrecpp >= 7.8") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_libpcrecpp_CFLAGS=`$PKG_CONFIG --cflags "libpcrecpp >= 7.8" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+if test -n "$libpcrecpp_LIBS"; then
+    pkg_cv_libpcrecpp_LIBS="$libpcrecpp_LIBS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"libpcrecpp >= 7.8\"") >&5
+  ($PKG_CONFIG --exists --print-errors "libpcrecpp >= 7.8") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; then
+  pkg_cv_libpcrecpp_LIBS=`$PKG_CONFIG --libs "libpcrecpp >= 7.8" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        libpcrecpp_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "libpcrecpp >= 7.8" 2>&1`
+        else
+	        libpcrecpp_PKG_ERRORS=`$PKG_CONFIG --print-errors "libpcrecpp >= 7.8" 2>&1`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$libpcrecpp_PKG_ERRORS" >&5
+
+	{ { $as_echo "$as_me:$LINENO: error: Package requirements (libpcrecpp >= 7.8) were not met:
+
+$libpcrecpp_PKG_ERRORS
+
+Consider adjusting the PKG_CONFIG_PATH environment variable if you
+installed software in a non-standard prefix.
+
+Alternatively, you may set the environment variables libpcrecpp_CFLAGS
+and libpcrecpp_LIBS to avoid the need to call pkg-config.
+See the pkg-config man page for more details.
+" >&5
+$as_echo "$as_me: error: Package requirements (libpcrecpp >= 7.8) were not met:
+
+$libpcrecpp_PKG_ERRORS
+
+Consider adjusting the PKG_CONFIG_PATH environment variable if you
+installed software in a non-standard prefix.
+
+Alternatively, you may set the environment variables libpcrecpp_CFLAGS
+and libpcrecpp_LIBS to avoid the need to call pkg-config.
+See the pkg-config man page for more details.
+" >&2;}
+   { (exit 1); exit 1; }; }
+elif test $pkg_failed = untried; then
+	{ { $as_echo "$as_me:$LINENO: error: The pkg-config script could not be found or is too old.  Make sure it
+is in your PATH or set the PKG_CONFIG environment variable to the full
+path to pkg-config.
+
+Alternatively, you may set the environment variables libpcrecpp_CFLAGS
+and libpcrecpp_LIBS to avoid the need to call pkg-config.
+See the pkg-config man page for more details.
+
+To get pkg-config, see <http://pkg-config.freedesktop.org/>.
+See \`config.log' for more details." >&5
+$as_echo "$as_me: error: The pkg-config script could not be found or is too old.  Make sure it
+is in your PATH or set the PKG_CONFIG environment variable to the full
+path to pkg-config.
+
+Alternatively, you may set the environment variables libpcrecpp_CFLAGS
+and libpcrecpp_LIBS to avoid the need to call pkg-config.
+See the pkg-config man page for more details.
+
+To get pkg-config, see <http://pkg-config.freedesktop.org/>.
+See \`config.log' for more details." >&2;}
+   { (exit 1); exit 1; }; }
+else
+	libpcrecpp_CFLAGS=$pkg_cv_libpcrecpp_CFLAGS
+	libpcrecpp_LIBS=$pkg_cv_libpcrecpp_LIBS
+        { $as_echo "$as_me:$LINENO: result: yes" >&5
+$as_echo "yes" >&6; }
+	:
+fi
+
       if test "X$prefix" = "XNONE"; then
     acl_final_prefix="$ac_default_prefix"
   else
@@ -6135,546 +6675,6 @@ _ACEOF
 
   fi
 
-
-# Extract the first word of "gengetopt", so it can be a program name with args.
-set dummy gengetopt; ac_word=$2
-{ $as_echo "$as_me:$LINENO: checking for $ac_word" >&5
-$as_echo_n "checking for $ac_word... " >&6; }
-if test "${ac_cv_path_GENGETOPT+set}" = set; then
-  $as_echo_n "(cached) " >&6
-else
-  case $GENGETOPT in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_GENGETOPT="$GENGETOPT" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-  for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_GENGETOPT="$as_dir/$ac_word$ac_exec_ext"
-    $as_echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-done
-IFS=$as_save_IFS
-
-  test -z "$ac_cv_path_GENGETOPT" && ac_cv_path_GENGETOPT="no"
-  ;;
-esac
-fi
-GENGETOPT=$ac_cv_path_GENGETOPT
-if test -n "$GENGETOPT"; then
-  { $as_echo "$as_me:$LINENO: result: $GENGETOPT" >&5
-$as_echo "$GENGETOPT" >&6; }
-else
-  { $as_echo "$as_me:$LINENO: result: no" >&5
-$as_echo "no" >&6; }
-fi
-
-
- if test x"$GENGETOPT" != "xno"; then
-  HAVE_GENGETOPT_TRUE=
-  HAVE_GENGETOPT_FALSE='#'
-else
-  HAVE_GENGETOPT_TRUE='#'
-  HAVE_GENGETOPT_FALSE=
-fi
-
-
-
-# Extract the first word of "podchecker", so it can be a program name with args.
-set dummy podchecker; ac_word=$2
-{ $as_echo "$as_me:$LINENO: checking for $ac_word" >&5
-$as_echo_n "checking for $ac_word... " >&6; }
-if test "${ac_cv_path_PODCHECKER+set}" = set; then
-  $as_echo_n "(cached) " >&6
-else
-  case $PODCHECKER in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_PODCHECKER="$PODCHECKER" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-  for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_PODCHECKER="$as_dir/$ac_word$ac_exec_ext"
-    $as_echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-done
-IFS=$as_save_IFS
-
-  test -z "$ac_cv_path_PODCHECKER" && ac_cv_path_PODCHECKER="no"
-  ;;
-esac
-fi
-PODCHECKER=$ac_cv_path_PODCHECKER
-if test -n "$PODCHECKER"; then
-  { $as_echo "$as_me:$LINENO: result: $PODCHECKER" >&5
-$as_echo "$PODCHECKER" >&6; }
-else
-  { $as_echo "$as_me:$LINENO: result: no" >&5
-$as_echo "no" >&6; }
-fi
-
-
- if test x"$PODCHECKER" != "xno"; then
-  HAVE_PODCHECKER_TRUE=
-  HAVE_PODCHECKER_FALSE='#'
-else
-  HAVE_PODCHECKER_TRUE='#'
-  HAVE_PODCHECKER_FALSE=
-fi
-
-
-
-# Extract the first word of "pod2man", so it can be a program name with args.
-set dummy pod2man; ac_word=$2
-{ $as_echo "$as_me:$LINENO: checking for $ac_word" >&5
-$as_echo_n "checking for $ac_word... " >&6; }
-if test "${ac_cv_path_POD2MAN+set}" = set; then
-  $as_echo_n "(cached) " >&6
-else
-  case $POD2MAN in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_POD2MAN="$POD2MAN" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-  for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_POD2MAN="$as_dir/$ac_word$ac_exec_ext"
-    $as_echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-done
-IFS=$as_save_IFS
-
-  test -z "$ac_cv_path_POD2MAN" && ac_cv_path_POD2MAN="no"
-  ;;
-esac
-fi
-POD2MAN=$ac_cv_path_POD2MAN
-if test -n "$POD2MAN"; then
-  { $as_echo "$as_me:$LINENO: result: $POD2MAN" >&5
-$as_echo "$POD2MAN" >&6; }
-else
-  { $as_echo "$as_me:$LINENO: result: no" >&5
-$as_echo "no" >&6; }
-fi
-
-
- if test x"$POD2MAN" != "xno"; then
-  HAVE_POD2MAN_TRUE=
-  HAVE_POD2MAN_FALSE='#'
-else
-  HAVE_POD2MAN_TRUE='#'
-  HAVE_POD2MAN_FALSE=
-fi
-
-
-
-# Extract the first word of "pod2html", so it can be a program name with args.
-set dummy pod2html; ac_word=$2
-{ $as_echo "$as_me:$LINENO: checking for $ac_word" >&5
-$as_echo_n "checking for $ac_word... " >&6; }
-if test "${ac_cv_path_POD2HTML+set}" = set; then
-  $as_echo_n "(cached) " >&6
-else
-  case $POD2HTML in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_POD2HTML="$POD2HTML" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-  for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_POD2HTML="$as_dir/$ac_word$ac_exec_ext"
-    $as_echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-done
-IFS=$as_save_IFS
-
-  test -z "$ac_cv_path_POD2HTML" && ac_cv_path_POD2HTML="no"
-  ;;
-esac
-fi
-POD2HTML=$ac_cv_path_POD2HTML
-if test -n "$POD2HTML"; then
-  { $as_echo "$as_me:$LINENO: result: $POD2HTML" >&5
-$as_echo "$POD2HTML" >&6; }
-else
-  { $as_echo "$as_me:$LINENO: result: no" >&5
-$as_echo "no" >&6; }
-fi
-
-
- if test x"$POD2HTML" != "xno"; then
-  HAVE_POD2HTML_TRUE=
-  HAVE_POD2HTML_FALSE='#'
-else
-  HAVE_POD2HTML_TRUE='#'
-  HAVE_POD2HTML_FALSE=
-fi
-
-
-
-# Checks for (mandatory) libraries.
-
-
-if test "x$ac_cv_env_PKG_CONFIG_set" != "xset"; then
-	if test -n "$ac_tool_prefix"; then
-  # Extract the first word of "${ac_tool_prefix}pkg-config", so it can be a program name with args.
-set dummy ${ac_tool_prefix}pkg-config; ac_word=$2
-{ $as_echo "$as_me:$LINENO: checking for $ac_word" >&5
-$as_echo_n "checking for $ac_word... " >&6; }
-if test "${ac_cv_path_PKG_CONFIG+set}" = set; then
-  $as_echo_n "(cached) " >&6
-else
-  case $PKG_CONFIG in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_PKG_CONFIG="$PKG_CONFIG" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-  for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_PKG_CONFIG="$as_dir/$ac_word$ac_exec_ext"
-    $as_echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-done
-IFS=$as_save_IFS
-
-  ;;
-esac
-fi
-PKG_CONFIG=$ac_cv_path_PKG_CONFIG
-if test -n "$PKG_CONFIG"; then
-  { $as_echo "$as_me:$LINENO: result: $PKG_CONFIG" >&5
-$as_echo "$PKG_CONFIG" >&6; }
-else
-  { $as_echo "$as_me:$LINENO: result: no" >&5
-$as_echo "no" >&6; }
-fi
-
-
-fi
-if test -z "$ac_cv_path_PKG_CONFIG"; then
-  ac_pt_PKG_CONFIG=$PKG_CONFIG
-  # Extract the first word of "pkg-config", so it can be a program name with args.
-set dummy pkg-config; ac_word=$2
-{ $as_echo "$as_me:$LINENO: checking for $ac_word" >&5
-$as_echo_n "checking for $ac_word... " >&6; }
-if test "${ac_cv_path_ac_pt_PKG_CONFIG+set}" = set; then
-  $as_echo_n "(cached) " >&6
-else
-  case $ac_pt_PKG_CONFIG in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_ac_pt_PKG_CONFIG="$ac_pt_PKG_CONFIG" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-  for ac_exec_ext in '' $ac_executable_extensions; do
-  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
-    ac_cv_path_ac_pt_PKG_CONFIG="$as_dir/$ac_word$ac_exec_ext"
-    $as_echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-done
-IFS=$as_save_IFS
-
-  ;;
-esac
-fi
-ac_pt_PKG_CONFIG=$ac_cv_path_ac_pt_PKG_CONFIG
-if test -n "$ac_pt_PKG_CONFIG"; then
-  { $as_echo "$as_me:$LINENO: result: $ac_pt_PKG_CONFIG" >&5
-$as_echo "$ac_pt_PKG_CONFIG" >&6; }
-else
-  { $as_echo "$as_me:$LINENO: result: no" >&5
-$as_echo "no" >&6; }
-fi
-
-  if test "x$ac_pt_PKG_CONFIG" = x; then
-    PKG_CONFIG=""
-  else
-    case $cross_compiling:$ac_tool_warned in
-yes:)
-{ $as_echo "$as_me:$LINENO: WARNING: In the future, Autoconf will not detect cross-tools
-whose name does not start with the host triplet.  If you think this
-configuration is useful to you, please write to autoconf@gnu.org." >&5
-$as_echo "$as_me: WARNING: In the future, Autoconf will not detect cross-tools
-whose name does not start with the host triplet.  If you think this
-configuration is useful to you, please write to autoconf@gnu.org." >&2;}
-ac_tool_warned=yes ;;
-esac
-    PKG_CONFIG=$ac_pt_PKG_CONFIG
-  fi
-else
-  PKG_CONFIG="$ac_cv_path_PKG_CONFIG"
-fi
-
-fi
-if test -n "$PKG_CONFIG"; then
-	_pkg_min_version=0.9.0
-	{ $as_echo "$as_me:$LINENO: checking pkg-config is at least version $_pkg_min_version" >&5
-$as_echo_n "checking pkg-config is at least version $_pkg_min_version... " >&6; }
-	if $PKG_CONFIG --atleast-pkgconfig-version $_pkg_min_version; then
-		{ $as_echo "$as_me:$LINENO: result: yes" >&5
-$as_echo "yes" >&6; }
-	else
-		{ $as_echo "$as_me:$LINENO: result: no" >&5
-$as_echo "no" >&6; }
-		PKG_CONFIG=""
-	fi
-
-fi
-
-pkg_failed=no
-{ $as_echo "$as_me:$LINENO: checking for libcurl" >&5
-$as_echo_n "checking for libcurl... " >&6; }
-
-if test -n "$libcurl_CFLAGS"; then
-    pkg_cv_libcurl_CFLAGS="$libcurl_CFLAGS"
- elif test -n "$PKG_CONFIG"; then
-    if test -n "$PKG_CONFIG" && \
-    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"libcurl >= 7.18.0\"") >&5
-  ($PKG_CONFIG --exists --print-errors "libcurl >= 7.18.0") 2>&5
-  ac_status=$?
-  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; then
-  pkg_cv_libcurl_CFLAGS=`$PKG_CONFIG --cflags "libcurl >= 7.18.0" 2>/dev/null`
-else
-  pkg_failed=yes
-fi
- else
-    pkg_failed=untried
-fi
-if test -n "$libcurl_LIBS"; then
-    pkg_cv_libcurl_LIBS="$libcurl_LIBS"
- elif test -n "$PKG_CONFIG"; then
-    if test -n "$PKG_CONFIG" && \
-    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"libcurl >= 7.18.0\"") >&5
-  ($PKG_CONFIG --exists --print-errors "libcurl >= 7.18.0") 2>&5
-  ac_status=$?
-  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; then
-  pkg_cv_libcurl_LIBS=`$PKG_CONFIG --libs "libcurl >= 7.18.0" 2>/dev/null`
-else
-  pkg_failed=yes
-fi
- else
-    pkg_failed=untried
-fi
-
-
-
-if test $pkg_failed = yes; then
-
-if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
-        _pkg_short_errors_supported=yes
-else
-        _pkg_short_errors_supported=no
-fi
-        if test $_pkg_short_errors_supported = yes; then
-	        libcurl_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "libcurl >= 7.18.0" 2>&1`
-        else
-	        libcurl_PKG_ERRORS=`$PKG_CONFIG --print-errors "libcurl >= 7.18.0" 2>&1`
-        fi
-	# Put the nasty error message in config.log where it belongs
-	echo "$libcurl_PKG_ERRORS" >&5
-
-	{ { $as_echo "$as_me:$LINENO: error: Package requirements (libcurl >= 7.18.0) were not met:
-
-$libcurl_PKG_ERRORS
-
-Consider adjusting the PKG_CONFIG_PATH environment variable if you
-installed software in a non-standard prefix.
-
-Alternatively, you may set the environment variables libcurl_CFLAGS
-and libcurl_LIBS to avoid the need to call pkg-config.
-See the pkg-config man page for more details.
-" >&5
-$as_echo "$as_me: error: Package requirements (libcurl >= 7.18.0) were not met:
-
-$libcurl_PKG_ERRORS
-
-Consider adjusting the PKG_CONFIG_PATH environment variable if you
-installed software in a non-standard prefix.
-
-Alternatively, you may set the environment variables libcurl_CFLAGS
-and libcurl_LIBS to avoid the need to call pkg-config.
-See the pkg-config man page for more details.
-" >&2;}
-   { (exit 1); exit 1; }; }
-elif test $pkg_failed = untried; then
-	{ { $as_echo "$as_me:$LINENO: error: The pkg-config script could not be found or is too old.  Make sure it
-is in your PATH or set the PKG_CONFIG environment variable to the full
-path to pkg-config.
-
-Alternatively, you may set the environment variables libcurl_CFLAGS
-and libcurl_LIBS to avoid the need to call pkg-config.
-See the pkg-config man page for more details.
-
-To get pkg-config, see <http://pkg-config.freedesktop.org/>.
-See \`config.log' for more details." >&5
-$as_echo "$as_me: error: The pkg-config script could not be found or is too old.  Make sure it
-is in your PATH or set the PKG_CONFIG environment variable to the full
-path to pkg-config.
-
-Alternatively, you may set the environment variables libcurl_CFLAGS
-and libcurl_LIBS to avoid the need to call pkg-config.
-See the pkg-config man page for more details.
-
-To get pkg-config, see <http://pkg-config.freedesktop.org/>.
-See \`config.log' for more details." >&2;}
-   { (exit 1); exit 1; }; }
-else
-	libcurl_CFLAGS=$pkg_cv_libcurl_CFLAGS
-	libcurl_LIBS=$pkg_cv_libcurl_LIBS
-        { $as_echo "$as_me:$LINENO: result: yes" >&5
-$as_echo "yes" >&6; }
-	:
-fi
-
-pkg_failed=no
-{ $as_echo "$as_me:$LINENO: checking for libpcrecpp" >&5
-$as_echo_n "checking for libpcrecpp... " >&6; }
-
-if test -n "$libpcrecpp_CFLAGS"; then
-    pkg_cv_libpcrecpp_CFLAGS="$libpcrecpp_CFLAGS"
- elif test -n "$PKG_CONFIG"; then
-    if test -n "$PKG_CONFIG" && \
-    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"libpcrecpp >= 7.8\"") >&5
-  ($PKG_CONFIG --exists --print-errors "libpcrecpp >= 7.8") 2>&5
-  ac_status=$?
-  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; then
-  pkg_cv_libpcrecpp_CFLAGS=`$PKG_CONFIG --cflags "libpcrecpp >= 7.8" 2>/dev/null`
-else
-  pkg_failed=yes
-fi
- else
-    pkg_failed=untried
-fi
-if test -n "$libpcrecpp_LIBS"; then
-    pkg_cv_libpcrecpp_LIBS="$libpcrecpp_LIBS"
- elif test -n "$PKG_CONFIG"; then
-    if test -n "$PKG_CONFIG" && \
-    { ($as_echo "$as_me:$LINENO: \$PKG_CONFIG --exists --print-errors \"libpcrecpp >= 7.8\"") >&5
-  ($PKG_CONFIG --exists --print-errors "libpcrecpp >= 7.8") 2>&5
-  ac_status=$?
-  $as_echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; then
-  pkg_cv_libpcrecpp_LIBS=`$PKG_CONFIG --libs "libpcrecpp >= 7.8" 2>/dev/null`
-else
-  pkg_failed=yes
-fi
- else
-    pkg_failed=untried
-fi
-
-
-
-if test $pkg_failed = yes; then
-
-if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
-        _pkg_short_errors_supported=yes
-else
-        _pkg_short_errors_supported=no
-fi
-        if test $_pkg_short_errors_supported = yes; then
-	        libpcrecpp_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors "libpcrecpp >= 7.8" 2>&1`
-        else
-	        libpcrecpp_PKG_ERRORS=`$PKG_CONFIG --print-errors "libpcrecpp >= 7.8" 2>&1`
-        fi
-	# Put the nasty error message in config.log where it belongs
-	echo "$libpcrecpp_PKG_ERRORS" >&5
-
-	{ { $as_echo "$as_me:$LINENO: error: Package requirements (libpcrecpp >= 7.8) were not met:
-
-$libpcrecpp_PKG_ERRORS
-
-Consider adjusting the PKG_CONFIG_PATH environment variable if you
-installed software in a non-standard prefix.
-
-Alternatively, you may set the environment variables libpcrecpp_CFLAGS
-and libpcrecpp_LIBS to avoid the need to call pkg-config.
-See the pkg-config man page for more details.
-" >&5
-$as_echo "$as_me: error: Package requirements (libpcrecpp >= 7.8) were not met:
-
-$libpcrecpp_PKG_ERRORS
-
-Consider adjusting the PKG_CONFIG_PATH environment variable if you
-installed software in a non-standard prefix.
-
-Alternatively, you may set the environment variables libpcrecpp_CFLAGS
-and libpcrecpp_LIBS to avoid the need to call pkg-config.
-See the pkg-config man page for more details.
-" >&2;}
-   { (exit 1); exit 1; }; }
-elif test $pkg_failed = untried; then
-	{ { $as_echo "$as_me:$LINENO: error: The pkg-config script could not be found or is too old.  Make sure it
-is in your PATH or set the PKG_CONFIG environment variable to the full
-path to pkg-config.
-
-Alternatively, you may set the environment variables libpcrecpp_CFLAGS
-and libpcrecpp_LIBS to avoid the need to call pkg-config.
-See the pkg-config man page for more details.
-
-To get pkg-config, see <http://pkg-config.freedesktop.org/>.
-See \`config.log' for more details." >&5
-$as_echo "$as_me: error: The pkg-config script could not be found or is too old.  Make sure it
-is in your PATH or set the PKG_CONFIG environment variable to the full
-path to pkg-config.
-
-Alternatively, you may set the environment variables libpcrecpp_CFLAGS
-and libpcrecpp_LIBS to avoid the need to call pkg-config.
-See the pkg-config man page for more details.
-
-To get pkg-config, see <http://pkg-config.freedesktop.org/>.
-See \`config.log' for more details." >&2;}
-   { (exit 1); exit 1; }; }
-else
-	libpcrecpp_CFLAGS=$pkg_cv_libpcrecpp_CFLAGS
-	libpcrecpp_LIBS=$pkg_cv_libpcrecpp_LIBS
-        { $as_echo "$as_me:$LINENO: result: yes" >&5
-$as_echo "yes" >&6; }
-	:
-fi
 
 # Checks for header files.
 { $as_echo "$as_me:$LINENO: checking for ANSI C header files" >&5

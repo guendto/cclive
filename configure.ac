@@ -30,7 +30,6 @@ AC_PROG_CC
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 AC_GNU_SOURCE
-AM_ICONV
 
 AC_PATH_PROG(GENGETOPT, gengetopt, no)
 AM_CONDITIONAL([HAVE_GENGETOPT], [test x"$GENGETOPT" != "xno"])
@@ -51,6 +50,7 @@ AC_SUBST(POD2HTML)
 # Checks for (mandatory) libraries.
 PKG_CHECK_MODULES(libcurl, libcurl >= 7.18.0)
 PKG_CHECK_MODULES(libpcrecpp, libpcrecpp >= 7.8)
+AM_ICONV
 
 # Checks for header files.
 AC_HEADER_STDC
