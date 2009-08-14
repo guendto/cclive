@@ -11,7 +11,7 @@ static const char
 
 int
 main (int argc, char *argv[]) {
-    register int i,rc;
+    int i,rc;
 
     for (i=0,rc=0; urls[i] && !rc; ++i)
         rc = runtest_host(NULL, urls[i]);
