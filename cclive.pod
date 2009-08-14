@@ -317,7 +317,7 @@ websites support more than one video format.
 
 =item last.fm
 
-Format: (flv|fmt17|fmt18|fmt22|fmt35)
+Format: flv|fmt17|fmt18|fmt22|fmt35
 
 flv (fmt34) and fmt18 (mp4) are usually available. Others may be
 available. At the time of writing this, the following formats
@@ -336,7 +336,7 @@ cclive can be used to download such videos.
 
 =item dailymotion.com
 
-Format: (flv|spark-mini|vp6-hq|vp6-hd|vp6|h264)
+Format: flv|spark-mini|vp6-hq|vp6-hd|vp6|h264
 
 The HD and HQ videos may not always be available.
 
@@ -349,7 +349,7 @@ The HD and HQ videos may not always be available.
 
 =item spiegel.de
 
-Format: (vp6_(64|576|928)|h264_1400)
+Format: vp6_(64|576|928)|h264_1400
 
   h264_1400 .. mp4 (996x560)
   vp6_928   .. flv (996x560)
@@ -358,11 +358,11 @@ Format: (vp6_(64|576|928)|h264_1400)
 
 =item golem.de
 
-Format: (flv|high|ipod)
+Format: flv|high|ipod
 
 =item vimeo.com
 
-Format: (flv|hd)
+Format: flv|hd
 
 HD should be available for the vimeo.com/hd channel videos at least.
 Note that "flv" only means the "default flv". Some of the hosted
@@ -374,7 +374,7 @@ For further reading:
 
 =item video.google.com
 
-Format: (flv|mp4)
+Format: flv|mp4
 
 mp4 may not always be available.
 
