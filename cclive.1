@@ -144,9 +144,16 @@ cclive \- lightweight video extraction tool
 cclive [options] [url...]
 .SH "DESCRIPTION"
 .IX Header "DESCRIPTION"
-cclive is lightweight command line video extraction tool for Youtube and
-other similar video-sharing websites. It resembles clive in many aspects
-but has lower requirements.
+cclive is a lightweight command line video extraction tool for Youtube and other
+similar video websites. It is a rewrite of the clive software in \*(C+ with lower
+system footprint and fewer dependencies.
+.PP
+cclive is primarily a \*(L"video download tool\*(R" but it can also be used for
+emitting parsed video links for other software to use.
+.PP
+cclive integrates with media player software, such as \f(CW\*(C`mplayer\*(C'\fR, allowing it to
+be used instead of the Adobe flash plugin which is required by the websites to
+view the streamed videos.
 .SH "OPTIONS"
 .IX Header "OPTIONS"
 .IP "\fB\-h, \-\-help\fR" 4
