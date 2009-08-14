@@ -119,10 +119,11 @@ Util::embedToPage(std::string& url) {
 
     mapstr m;
 
-    m["/v/"]                = "/watch?v=";  // youtube
-    m["googleplayer.swf"]   = "videoplay";  // google
-    m["/pl/"]               = "/videos/";   // sevenload
-    m["/e/"]                = "/view?i=";   // liveleak
+    m["/v/"]                     = "/watch?v="; // youtube
+    m["googleplayer.swf"]        = "videoplay"; // google
+    m["/pl/"]                    = "/videos/";  // sevenload
+    m["/e/"]                     = "/view?i=";  // liveleak
+    m["/moogaloop.swf?clip_id="] = "/";         // vimeo
 
     for (mapstr::const_iterator iter = m.begin();
         iter != m.end();

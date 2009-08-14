@@ -7,6 +7,7 @@ Version 0.5.0
   * Add: ehrensenf.de  website support (port from clive)
   * Add: spiegel.de  website support (port from clive)
   * Add: redtube.com website support (port from clive)
+  * Add: support for embedded vimeo links
   * Fix: --hosts: dailymotion: spak-mini -> spark-mini
   * Fix: ETA for resumed transfers
   * Fix: Average rate for finished transfers
