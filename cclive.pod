@@ -69,16 +69,18 @@ Use the specified HTTP proxy. Overrides http_proxy definition.
 
 =item B<--no-proxy>
 
-Do not use HTTP proxy, even if http_proxy environment variable is defined.
+Do not use HTTP proxy, even if http_proxy environment variable
+is defined.
 
 =item B<--connect-timeout>=I<seconds>
 
-Maximum time in I<seconds> allowed for connection to take. Defaults to 30.
+Maximum time in I<seconds> allowed for connection to take.
+Defaults to 30.
 
 =item B<--connect-timeout-socks>=I<seconds>
 
-Otherwise identical to the above option but works around the known SOCKS
-proxy bug in libcurl. Defaults to 30.
+Otherwise identical to the above option but works around the
+known SOCKS proxy bug in libcurl. Defaults to 30.
 
 =back
 
@@ -95,8 +97,9 @@ Do not actually extract any videos, simulate only.
 Continue a partially downloaded video file.
 
 By default, cclive appends a numeric suffix (e.g. ".1") to the
-filename if the file exists already, unless file is already completely
-retrieved -- or either B<--continue> or  B<--output-video> is used.
+filename if the file exists already, unless file is already
+completely retrieved -- or either B<--continue> or
+B<--output-video> is specified.
 
 =item B<-O, --output-video>=I<file>
 
@@ -128,21 +131,23 @@ B<Subsequent>
 
 =item B<--exec>=I<expression>B<;>
 
-Execute I<expression> after each file transfer. Optional arguments may be passed
-to the command. The expression must be terminated by a semicolon (";").
+Execute I<expression> after each file transfer. Optional arguments
+may be passed to the command. The expression must be terminated by
+a semicolon (";").
 
-If the specifier "%i" appears anywhere in I<expression> name or the arguments
-it is replaced by the pathname of the extracted video file.
+If the specifier "%i" appears anywhere in I<expression> name or
+the arguments it is replaced by the pathname of the extracted
+video file.
 
 =item B<--exec>=I<expression>B<+>
 
-Same as B<--exec>, except that "%i" is replaced with as many pathnames
-as possible for the invocation of I<expression>.
+Same as B<--exec>, except that "%i" is replaced with as many
+pathnames as possible for the invocation of I<expression>.
 
 =item B<-e, --exec-run>
 
-Causes cclive to invoke the command defined with B<--exec> when download
-finishes.
+Causes cclive to invoke the command specified with B<--exec>
+when download finishes.
 
 =back
 
@@ -154,14 +159,14 @@ B<Streaming>
 
 Define the command to be invoked with B<--stream> and B<--stream-pass>.
 
-If a "%i" specifier is used in the I<expression>, it will be replaced with
-either a video file path name (B<--stream>) or a parsed video link
+If a "%i" specifier is used in the I<expression>, it will be replaced
+with either a video file path name (B<--stream>) or a parsed video link
 (B<--stream-pass>).
 
 =item B<-s, --stream-pass>
 
 Otherwise the same as B<--stream> but instead of starting the download,
-cclive passes the parsed video link to the command defined with
+cclive passes the parsed video link to the command specified with
 B<--stream-exec>. See also L</EXAMPLES>.
 
 This option was inspired by a C<clive(1)> wrapper script contributed
@@ -170,16 +175,16 @@ by Bill Squire.
 =item B<--stream>=I<percentage>
 
 Causes cclive to fetch, parse, start download and eventually invoke
-the command defined with B<--stream-exec> when the transfer reaches
-the I<percentage> defined with this option. See also L</EXAMPLES>.
+the command specified with B<--stream-exec> when the transfer reaches
+the I<percentage> specified with this option. See also L</EXAMPLES>.
 
 Note that cclive does nothing to check if there is enough data buffered
-before invoking the B<--stream-exec> defined I<expression>. If the transfer
-rate drops significantly after starting the process and it runs out of data,
-cclive does nothing to fix this.
+before invoking the B<--stream-exec> specified I<expression>. If the
+transfer rate drops significantly after starting the process and it
+runs out of data, cclive does nothing to fix this.
 
-Also note that cclive will not continue to download another file before the
-child process exits.
+Also note that cclive will not continue to download another file
+before the child process exits.
 
 This mode is supported for historical reasons. Consider using
 B<--stream-pass> instead.
@@ -206,9 +211,9 @@ Use repeated matching to find all occurences, like Perl's /g option.
 
 =item B<-F, --filename-format>=I<formatstring>
 
-Use the specified I<formatstring> to format the output filenames. cclive
-defaults to "%h_%i.%s". Any of the following specifiers appearing in the
-format string will be replaced accordingly:
+Use the specified I<formatstring> to format the output filenames.
+cclive defaults to "%h_%i.%s". Any of the following specifiers
+appearing in the format string will be replaced accordingly:
 
   %t = video title
   %i = video id
@@ -254,8 +259,8 @@ Copy audio from downloaded video to ogg with C<ffmpeg(1)>.
 
 =item cclive --stream-exec="mplayer -really-quiet %i" --stream=20 URL
 
-Start playing the video being downloaded with C<mplayer(1)> when the transfer
-reaches 20%.
+Start playing the video being downloaded with C<mplayer(1)> when
+the transfer reaches 20%.
 
 =item echo 'stream-exec = "mplayer -really-quiet %i"' E<gt>E<gt> ~/.ccliverc
 
@@ -281,14 +286,15 @@ Alternative to passing multiple links to cclive as command line arguments.
 
 =item cclive Youtube_URL Dailymotion_URL
 
-Would cause cclive to download mp4 of the Youtube video and vp6_hq of the
-Dailymotion video. We make the setting "permanent" by adding it to ~/.ccliverc.
+Would cause cclive to download mp4 of the Youtube video and vp6_hq of
+the Dailymotion video. We make the setting "permanent" by adding it
+to ~/.ccliverc.
 
 =back
 
 =head1 FORMATS
 
-"flv" is downloaded by default if B<--format> is not defined. Some
+"flv" is downloaded by default if B<--format> is not specified. Some
 websites support more than one video format.
 
 =over 4
@@ -393,7 +399,8 @@ Format: flv
  limit-rate = 50                # --limit-rate=...
  no-extract                     # --no-extract
 
-Most of the program options can be defined in the ~/.ccliverc config file.
+Most of the program options can be specified in the ~/.ccliverc
+config file.
 
 =back
 
