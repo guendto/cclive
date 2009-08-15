@@ -148,10 +148,9 @@ cclive is a lightweight command line video extraction tool for Youtube and other
 similar video websites. It is a rewrite of the clive software in \*(C+ with lower
 system footprint and fewer dependencies.
 .PP
-cclive is primarily a \*(L"video download tool\*(R" but it can be used for emitting
-parsed video links for other software to use. It can also integrate with video
-player software, such as \f(CW\*(C`mplayer\*(C'\fR, making it possible to work around the
-Adobe flash player requirement for streamed video.
+cclive is primarily a \*(L"video download tool\*(R" but it can also be used along side
+with video player software, like \f(CW\*(C`mplayer\*(C'\fR, for streaming instead of the Adobe
+flash player.
 .SH "OPTIONS"
 .IX Header "OPTIONS"
 .IP "\fB\-h, \-\-help\fR" 4
@@ -170,15 +169,15 @@ Print supported hosts and exit.
 Turn off all output.
 .IP "\fB\-\-debug\fR" 4
 .IX Item "--debug"
-Turn on libcurl verbose mode. The output is printed to stderr.
+Turn on libcurl verbose mode.
 .IP "\fB\-\-emit\-csv\fR" 4
 .IX Item "--emit-csv"
-Print video details in \s-1CSV\s0 format to stdout. Implies \f(CW\*(C`\-\-no\-extract\*(C'\fR.
-Ignores \f(CW\*(C`\-\-quiet\*(C'\fR for \s-1CSV\s0. Prepends \*(L"csv:\*(R".
+Print video details in \s-1CSV\s0 format and exit. Prepends \*(L"csv:\*(R" for each video.
+Ignores \f(CW\*(C`\-\-quiet\*(C'\fR for \s-1CSV\s0.
 .IP "\fB\-\-print\-fname\fR" 4
 .IX Item "--print-fname"
 Print filename on a separate line before each download starts.
-Prepends \*(L"file:\*(R".
+Prepends \*(L"file:\*(R" for each video.
 .PP
 \&\fB\s-1HTTP\s0\fR
 .IP "\fB\-\-agent\fR=\fIagentstring\fR" 4
@@ -201,21 +200,28 @@ Otherwise identical to the above option but works around the known
 \&\*(L"\s-1SOCKS\s0 proxy connect timeout\*(R" bug in libcurl. Defaults to 30.
 .PP
 \&\fBDownload\fR
-.IP "\fB\-n, \-\-no\-extract\fR" 4
-.IX Item "-n, --no-extract"
-Do not actually extract any videos, simulate only.
-.IP "\fB\-c, \-\-continue\fR" 4
-.IX Item "-c, --continue"
-Resume a partially downloaded video file. By default, cclive appends
-a numeric suffix (e.g. \*(L".1\*(R") to the filename if it exists already and
-starts the download from the beginning \*(-- if it isn't completely
-retrieved already.
+.PP
+cclive appends a numeric suffix (e.g. \*(L".1\*(R") to the filename, if the video file
+exists already. If the local file length matches the server returned
+content-length for the video file, cclive skips the download and ignores any
+attempts to resume the transfer.
 .IP "\fB\-O, \-\-output\-video\fR=\fIfile\fR" 4
 .IX Item "-O, --output-video=file"
-Write the downloaded video to \fIfile\fR. Overwrites the existing file.
+Write the video to \fIfile\fR. Overrides \f(CW\*(C`\-\-filename\-format\*(C'\fR.
+.IP "\fB\-c, \-\-continue\fR" 4
+.IX Item "-c, --continue"
+Resume a partially downloaded video file.
+.IP "\fB\-W, \-\-overwrite\fR" 4
+.IX Item "-W, --overwrite"
+Overwrite the existing file. Negates \f(CW\*(C`\-\-continue\*(C'\fR.
+.IP "\fB\-n, \-\-no\-extract\fR" 4
+.IX Item "-n, --no-extract"
+Do not actually extract any videos, simulate only. cclive parses,
+verifies the video link and exits without downloading the video.
 .IP "\fBl, \-\-limit\-rate\fR=\fIamount\fR" 4
 .IX Item "l, --limit-rate=amount"
-Limit download speed to \fIamount\fR (KB/s). Ignored for video page fetches.
+Limit download speed to \fIamount\fR (KB/s). Ignored for video page
+fetches.
 .IP "\fB\-f, \-\-format\fR=\fIformatid\fR" 4
 .IX Item "-f, --format=formatid"
 Download \fIformatid\fR of the video. If set to \f(CW\*(C`best\*(C'\fR, cclive
@@ -232,9 +238,9 @@ Note that \f(CW\*(C`\-\-format\*(C'\fR setting overrides this setting. See also 
 Prepend a numeric prefix (e.g. \*(L"001_\*(R") to the output filenames.
 .IP "\fB\-r, \-\-regexp\fR=\fIexpression\fR" 4
 .IX Item "-r, --regexp=expression"
-Regular expression to cleanup the video titles before using them for
-output filenames. Used in conjunction with the \f(CW\*(C`\-\-filename\-format\*(C'\fR option.
-Refer to the \s-1PCRE\s0 manual page for the supported regular expression syntax,
+Regular expression to cleanup the video titles before using them for output
+filenames. Used in conjunction with the \f(CW\*(C`\-\-filename\-format\*(C'\fR option. Refer
+to the \s-1PCRE\s0 manual page for the supported regular expression syntax,
 patterns, etc. See also \*(L"\s-1EXAMPLES\s0\*(R".
 .IP "\fB\-g, \-\-find\-all\fR" 4
 .IX Item "-g, --find-all"

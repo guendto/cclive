@@ -14,10 +14,9 @@ cclive is a lightweight command line video extraction tool for Youtube and other
 similar video websites. It is a rewrite of the clive software in C++ with lower
 system footprint and fewer dependencies.
 
-cclive is primarily a "video download tool" but it can be used for emitting
-parsed video links for other software to use. It can also integrate with video
-player software, such as C<mplayer>, making it possible to work around the
-Adobe flash player requirement for streamed video.
+cclive is primarily a "video download tool" but it can also be used along side
+with video player software, like C<mplayer>, for streaming instead of the Adobe
+flash player.
 
 =head1 OPTIONS
 
@@ -47,17 +46,17 @@ Turn off all output.
 
 =item B<--debug>
 
-Turn on libcurl verbose mode. The output is printed to stderr.
+Turn on libcurl verbose mode.
 
 =item B<--emit-csv>
 
-Print video details in CSV format to stdout. Implies C<--no-extract>.
-Ignores C<--quiet> for CSV. Prepends "csv:".
+Print video details in CSV format and exit. Prepends "csv:" for each video.
+Ignores C<--quiet> for CSV.
 
 =item B<--print-fname>
 
 Print filename on a separate line before each download starts.
-Prepends "file:".
+Prepends "file:" for each video.
 
 =back
 
@@ -92,26 +91,34 @@ Otherwise identical to the above option but works around the known
 
 B<Download>
 
+cclive appends a numeric suffix (e.g. ".1") to the filename, if the video file
+exists already. If the local file length matches the server returned
+content-length for the video file, cclive skips the download and ignores any
+attempts to resume the transfer.
+
 =over 4
-
-=item B<-n, --no-extract>
-
-Do not actually extract any videos, simulate only.
-
-=item B<-c, --continue>
-
-Resume a partially downloaded video file. By default, cclive appends
-a numeric suffix (e.g. ".1") to the filename if it exists already and
-starts the download from the beginning -- if it isn't completely
-retrieved already.
 
 =item B<-O, --output-video>=I<file>
 
-Write the downloaded video to I<file>. Overwrites the existing file.
+Write the video to I<file>. Overrides C<--filename-format>.
+
+=item B<-c, --continue>
+
+Resume a partially downloaded video file.
+
+=item B<-W, --overwrite>
+
+Overwrite the existing file. Negates C<--continue>.
+
+=item B<-n, --no-extract>
+
+Do not actually extract any videos, simulate only. cclive parses,
+verifies the video link and exits without downloading the video.
 
 =item B<l, --limit-rate>=I<amount>
 
-Limit download speed to I<amount> (KB/s). Ignored for video page fetches.
+Limit download speed to I<amount> (KB/s). Ignored for video page
+fetches.
 
 =item B<-f, --format>=I<formatid>
 
@@ -136,9 +143,9 @@ Prepend a numeric prefix (e.g. "001_") to the output filenames.
 
 =item B<-r, --regexp>=I<expression>
 
-Regular expression to cleanup the video titles before using them for
-output filenames. Used in conjunction with the C<--filename-format> option.
-Refer to the PCRE manual page for the supported regular expression syntax,
+Regular expression to cleanup the video titles before using them for output
+filenames. Used in conjunction with the C<--filename-format> option. Refer
+to the PCRE manual page for the supported regular expression syntax,
 patterns, etc. See also L</EXAMPLES>.
 
 =item B<-g, --find-all>
