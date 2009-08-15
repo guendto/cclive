@@ -200,7 +200,7 @@ VideoProperties::formatOutputFilename() {
     }
     else {
         initial = Util::fileExists(opts.output_video_arg);
-        if (initial == length)
+        if (initial >= length)
             throw NothingToDoException();
         filename = opts.output_video_arg;
     }
