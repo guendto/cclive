@@ -4,5 +4,8 @@
 
 int
 main (int argc, char *argv[]) {
-    return (runtest_host(NULL, "http://www.redtube.com/115732"));
+    int rc = runtest_host(NULL, "http://www.redtube.com/115732");
+    if (rc == 0)
+        rc = runtest_host(NULL, "http://www.redtube.com/embed/115732");
+    return (rc);
 }

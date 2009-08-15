@@ -124,6 +124,7 @@ Util::embedToPage(std::string& url) {
     m["/pl/"]                    = "/videos/";  // sevenload
     m["/e/"]                     = "/view?i=";  // liveleak
     m["/moogaloop.swf?clip_id="] = "/";         // vimeo
+    m["/embed/"]                 = "/";         // redtube
 
     for (mapstr::const_iterator iter = m.begin();
         iter != m.end();
