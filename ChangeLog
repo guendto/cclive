@@ -30,6 +30,7 @@ Version 0.5.0
   * tests/test.c:
     # set CCLIVE_NO_CONFIG to ignore ~/.ccliverc (src/opts.cpp)
     # add support for CCLIVE_TEST_OPTS
+  * tests/redtube.c: new test link
   * Remove: tests/pod.pl
 
 
