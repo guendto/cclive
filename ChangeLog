@@ -3,6 +3,7 @@ Version 0.5.0
  User-visible changes:
   * Add: --regexp, --find-all options
   * Add: --format-map option
+  * Add: --overwrite option
   * Add: cctv.com website support (port from clive)
   * Add: ehrensenf.de  website support (port from clive)
   * Add: spiegel.de  website support (port from clive)
@@ -12,6 +13,7 @@ Version 0.5.0
   * Fix: --hosts: dailymotion: spak-mini -> spark-mini
   * Fix: ETA for resumed transfers
   * Fix: Average rate for finished transfers
+  * Fix: --continue with local_length >= content_length
   * Remove: --title, --cclass, --no-cclass
   * Progressbar: zeropad ETA
 
