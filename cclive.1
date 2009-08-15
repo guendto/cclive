@@ -148,12 +148,10 @@ cclive is a lightweight command line video extraction tool for Youtube and other
 similar video websites. It is a rewrite of the clive software in \*(C+ with lower
 system footprint and fewer dependencies.
 .PP
-cclive is primarily a \*(L"video download tool\*(R" but it can also be used for
-emitting parsed video links for other software to use.
-.PP
-cclive integrates with media player software, such as \f(CW\*(C`mplayer\*(C'\fR, allowing it to
-be used instead of the Adobe flash player which is required by the websites to
-view the streamed videos.
+cclive is primarily a \*(L"video download tool\*(R" but it can be used for emitting
+parsed video links for other software to use. It can also integrate with video
+player software, such as \f(CW\*(C`mplayer\*(C'\fR, making it possible to work around the
+Adobe flash player requirement for streamed video.
 .SH "OPTIONS"
 .IX Header "OPTIONS"
 .IP "\fB\-h, \-\-help\fR" 4
@@ -172,19 +170,20 @@ Print supported hosts and exit.
 Turn off all output.
 .IP "\fB\-\-debug\fR" 4
 .IX Item "--debug"
-Print libcurl debug messages to stderr.
+Turn on libcurl verbose mode. The output is printed to stderr.
 .IP "\fB\-\-emit\-csv\fR" 4
 .IX Item "--emit-csv"
-Print video details in \s-1CSV\s0. Implies \fB\-\-no\-extract\fR.
-Ignores \fB\-\-quiet\fR for \s-1CSV\s0.
+Print video details in \s-1CSV\s0 format to stdout. Implies \f(CW\*(C`\-\-no\-extract\*(C'\fR.
+Ignores \f(CW\*(C`\-\-quiet\*(C'\fR for \s-1CSV\s0. Prepends \*(L"csv:\*(R".
 .IP "\fB\-\-print\-fname\fR" 4
 .IX Item "--print-fname"
-Print filename on a separate line before download starts.
+Print filename on a separate line before each download starts.
+Prepends \*(L"file:\*(R".
 .PP
 \&\fB\s-1HTTP\s0\fR
-.IP "\fB\-\-agent\fR=\fIstring\fR" 4
-.IX Item "--agent=string"
-Identify cclive as \fIstring\fR to the \s-1HTTP\s0 servers.
+.IP "\fB\-\-agent\fR=\fIagentstring\fR" 4
+.IX Item "--agent=agentstring"
+Identify cclive as \fIagentstring\fR to the \s-1HTTP\s0 servers.
 .IP "\fB\-\-proxy\fR=\fIproxyhost[:port]\fR" 4
 .IX Item "--proxy=proxyhost[:port]"
 Use the specified \s-1HTTP\s0 proxy. Overrides http_proxy definition.
@@ -198,8 +197,8 @@ Maximum time in \fIseconds\fR allowed for connection to take.
 Defaults to 30.
 .IP "\fB\-\-connect\-timeout\-socks\fR=\fIseconds\fR" 4
 .IX Item "--connect-timeout-socks=seconds"
-Otherwise identical to the above option but works around the
-known \s-1SOCKS\s0 proxy bug in libcurl. Defaults to 30.
+Otherwise identical to the above option but works around the known
+\&\*(L"\s-1SOCKS\s0 proxy connect timeout\*(R" bug in libcurl. Defaults to 30.
 .PP
 \&\fBDownload\fR
 .IP "\fB\-n, \-\-no\-extract\fR" 4
@@ -207,81 +206,25 @@ known \s-1SOCKS\s0 proxy bug in libcurl. Defaults to 30.
 Do not actually extract any videos, simulate only.
 .IP "\fB\-c, \-\-continue\fR" 4
 .IX Item "-c, --continue"
-Continue a partially downloaded video file.
-.Sp
-By default, cclive appends a numeric suffix (e.g. \*(L".1\*(R") to the
-filename if the file exists already, unless file is already
-completely retrieved \*(-- or either \fB\-\-continue\fR or
-\&\fB\-\-output\-video\fR is specified.
+Resume a partially downloaded video file. By default, cclive appends
+a numeric suffix (e.g. \*(L".1\*(R") to the filename if it exists already and
+starts the download from the beginning \*(-- if it isn't completely
+retrieved already.
 .IP "\fB\-O, \-\-output\-video\fR=\fIfile\fR" 4
 .IX Item "-O, --output-video=file"
-Write the downloaded video \fIfile\fR.
+Write the downloaded video to \fIfile\fR. Overwrites the existing file.
 .IP "\fBl, \-\-limit\-rate\fR=\fIamount\fR" 4
 .IX Item "l, --limit-rate=amount"
-Limit download speed to \fIamount\fR (KB/s). Video page fetches remain
-unaffected by this option.
-.IP "\fB\-f, \-\-format\fR=\fIformat\fR" 4
-.IX Item "-f, --format=format"
-Download \fIformat\fR of the video. If set to \fIbest\fR, cclive
+Limit download speed to \fIamount\fR (KB/s). Ignored for video page fetches.
+.IP "\fB\-f, \-\-format\fR=\fIformatid\fR" 4
+.IX Item "-f, --format=formatid"
+Download \fIformatid\fR of the video. If set to \f(CW\*(C`best\*(C'\fR, cclive
 attempts to download the best quality of the video. See also
 \&\*(L"\s-1FORMATS\s0\*(R".
 .IP "\fB\-M, \-\-format\-map\fR=\fIhostid:formatid|hostid:formatid...\fR" 4
 .IX Item "-M, --format-map=hostid:formatid|hostid:formatid..."
-Like \fB\-\-format\fR but allows specifying the format for multiple hosts
-in a string. \fB\-\-format\fR setting overrides the format id specified
-with this option. See also \*(L"\s-1EXAMPLES\s0\*(R".
-.PP
-\&\fBSubsequent\fR
-.IP "\fB\-\-exec\fR=\fIexpression\fR\fB;\fR" 4
-.IX Item "--exec=expression;"
-Execute \fIexpression\fR after each file transfer. Optional arguments
-may be passed to the command. The expression must be terminated by
-a semicolon (\*(L";\*(R").
-.Sp
-If the specifier \*(L"%i\*(R" appears anywhere in \fIexpression\fR name or
-the arguments it is replaced by the pathname of the extracted
-video file.
-.IP "\fB\-\-exec\fR=\fIexpression\fR\fB+\fR" 4
-.IX Item "--exec=expression+"
-Same as \fB\-\-exec\fR, except that \*(L"%i\*(R" is replaced with as many
-pathnames as possible for the invocation of \fIexpression\fR.
-.IP "\fB\-e, \-\-exec\-run\fR" 4
-.IX Item "-e, --exec-run"
-Causes cclive to invoke the command specified with \fB\-\-exec\fR
-when download finishes.
-.PP
-\&\fBStreaming\fR
-.IP "\fB\-\-stream\-exec\fR=\fIexpression\fR" 4
-.IX Item "--stream-exec=expression"
-Define the command to be invoked with \fB\-\-stream\fR and \fB\-\-stream\-pass\fR.
-.Sp
-If a \*(L"%i\*(R" specifier is used in the \fIexpression\fR, it will be replaced
-with either a video file path name (\fB\-\-stream\fR) or a parsed video link
-(\fB\-\-stream\-pass\fR).
-.IP "\fB\-s, \-\-stream\-pass\fR" 4
-.IX Item "-s, --stream-pass"
-Otherwise the same as \fB\-\-stream\fR but instead of starting the download,
-cclive passes the parsed video link to the command specified with
-\&\fB\-\-stream\-exec\fR. See also \*(L"\s-1EXAMPLES\s0\*(R".
-.Sp
-This option was inspired by a \f(CWclive(1)\fR wrapper script contributed
-by Bill Squire.
-.IP "\fB\-\-stream\fR=\fIpercentage\fR" 4
-.IX Item "--stream=percentage"
-Causes cclive to fetch, parse, start download and eventually invoke
-the command specified with \fB\-\-stream\-exec\fR when the transfer reaches
-the \fIpercentage\fR specified with this option. See also \*(L"\s-1EXAMPLES\s0\*(R".
-.Sp
-Note that cclive does nothing to check if there is enough data buffered
-before invoking the \fB\-\-stream\-exec\fR specified \fIexpression\fR. If the
-transfer rate drops significantly after starting the process and it
-runs out of data, cclive does nothing to fix this.
-.Sp
-Also note that cclive will not continue to download another file
-before the child process exits.
-.Sp
-This mode is supported for historical reasons. Consider using
-\&\fB\-\-stream\-pass\fR instead.
+Like \f(CW\*(C`\-\-format\*(C'\fR but allows specifying the format for multiple hosts.
+Note that \f(CW\*(C`\-\-format\*(C'\fR setting overrides this setting. See also \*(L"\s-1EXAMPLES\s0\*(R".
 .PP
 \&\fBFilename formatting\fR
 .IP "\fB\-N, \-\-number\-videos\fR" 4
@@ -289,12 +232,14 @@ This mode is supported for historical reasons. Consider using
 Prepend a numeric prefix (e.g. \*(L"001_\*(R") to the output filenames.
 .IP "\fB\-r, \-\-regexp\fR=\fIexpression\fR" 4
 .IX Item "-r, --regexp=expression"
-A regular expression to filter the video titles before using them for
-output filenames. See also \s-1PCRE\s0 manual page for syntax, patterns, etc.
-See also \fB\-\-filename\-format\fR.
+Regular expression to cleanup the video titles before using them for
+output filenames. Used in conjunction with the \f(CW\*(C`\-\-filename\-format\*(C'\fR option.
+Refer to the \s-1PCRE\s0 manual page for the supported regular expression syntax,
+patterns, etc. See also \*(L"\s-1EXAMPLES\s0\*(R".
 .IP "\fB\-g, \-\-find\-all\fR" 4
 .IX Item "-g, --find-all"
 Use repeated matching to find all occurences, like Perl's /g option.
+See also \*(L"\s-1EXAMPLES\s0\*(R".
 .IP "\fB\-F, \-\-filename\-format\fR=\fIformatstring\fR" 4
 .IX Item "-F, --filename-format=formatstring"
 Use the specified \fIformatstring\fR to format the output filenames.
@@ -307,6 +252,54 @@ appearing in the format string will be replaced accordingly:
 \&  %h = website id
 \&  %s = file suffix
 .Ve
+.Sp
+See also \*(L"\s-1EXAMPLES\s0\*(R".
+.PP
+\&\fBSubsequent\fR
+.IP "\fB\-\-exec\fR=\fIexpression\fR\fB;\fR" 4
+.IX Item "--exec=expression;"
+Execute \fIexpression\fR after each file transfer. Optional arguments
+may be passed to the command. The expression must be terminated by
+a semicolon (\*(L";\*(R").
+.Sp
+If the specifier \*(L"%i\*(R" appears anywhere in \fIexpression\fR it will be
+replaced with the pathname of the extracted video file.
+.IP "\fB\-\-exec\fR=\fIexpression\fR\fB+\fR" 4
+.IX Item "--exec=expression+"
+Same as \f(CW\*(C`\-\-exec\*(C'\fR, except that \*(L"%i\*(R" will be replaced with as many
+pathnames as possible for the invocation of \fIexpression\fR.
+.IP "\fB\-e, \-\-exec\-run\fR" 4
+.IX Item "-e, --exec-run"
+Invokes the expression specified with \f(CW\*(C`\-\-exec\*(C'\fR when download finishes.
+.PP
+\&\fBStreaming\fR
+.IP "\fB\-\-stream\-exec\fR=\fIexpression\fR" 4
+.IX Item "--stream-exec=expression"
+Expression to be invoked with \f(CW\*(C`\-\-stream\*(C'\fR and \f(CW\*(C`\-\-stream\-pass\*(C'\fR.
+.Sp
+If a \*(L"%i\*(R" specifier is used in the \fIexpression\fR, it will be replaced
+with either the video pathname (\f(CW\*(C`\-\-stream\*(C'\fR) or the parsed video link
+(\f(CW\*(C`\-\-stream\-pass\*(C'\fR).
+.IP "\fB\-s, \-\-stream\-pass\fR" 4
+.IX Item "-s, --stream-pass"
+Pass parsed video link to the expression specified with \f(CW\*(C`\-\-stream\-exec\*(C'\fR.
+See also \*(L"\s-1EXAMPLES\s0\*(R". Inspired by a \f(CWclive(1)\fR wrapper script contributed
+by Bill Squire.
+.IP "\fB\-\-stream\fR=\fIpercentage\fR" 4
+.IX Item "--stream=percentage"
+Mimics \*(L"streaming\*(R" by forking the expression specified with \f(CW\*(C`\-\-stream\-exec\*(C'\fR
+when the progress reaches \fIpercentage\fR. cclive continues to download the
+video while the child process works (e.g. plays) in the background.
+See also \*(L"\s-1EXAMPLES\s0\*(R".
+.Sp
+Note that this feature is very simple. For example, it does not check if
+the child process runs out of data.
+.Sp
+If there are more than one video in the batch, cclive continues to download
+the next video only when the child process terminates.
+.Sp
+This mode is supported for historical reasons only and should be considered
+\&\fIdeprecated\fR. See \f(CW\*(C`\-\-stream\-pass\*(C'\fR for a better solution.
 .SH "EXAMPLES"
 .IX Header "EXAMPLES"
 .IP "cclive \s-1URL\s0" 4
@@ -319,7 +312,7 @@ Download fmt18 (mp4) format of the video.
 .el .IP "cclive \-F ``%t.%s'' \s-1URL\s0" 4
 .IX Item "cclive -F %t.%s URL"
 Use video titles in filenames. cclive uses \*(L"%i_%h.%s\*(R" by default.
-For the supported specifiers, refer to the \fB\-\-filename\-format\fR description.
+For the supported specifiers, refer to the \f(CW\*(C`\-\-filename\-format\*(C'\fR description.
 .ie n .IP "cclive \-F ""%t.%s"" \-r ""(\ew+)"" \s-1URL\s0" 4
 .el .IP "cclive \-F ``%t.%s'' \-r ``(\ew+)'' \s-1URL\s0" 4
 .IX Item "cclive -F %t.%s -r (w+) URL"
@@ -330,7 +323,7 @@ with appropriate file suffix string (e.g. \*(L"flv\*(R").
 .el .IP "cclive \-F ``%t.%s'' \-gr ``(\ew|\es)'' \s-1URL\s0" 4
 .IX Item "cclive -F %t.%s -gr (w|s) URL"
 Match all \*(L"word\*(R" and \*(L"whitespace\*(R" characters, and use them in the filename
-replacing the \*(L"%t\*(R". Note the use of \*(L"\-g\*(R" (or \fB\-\-find\-all\fR) option.
+replacing the \*(L"%t\*(R". Note the use of \*(L"\-g\*(R" (or \f(CW\*(C`\-\-find\-all\*(C'\fR) option.
 .ie n .IP "cclive \-\-exec=""mplayer \-really\-quiet %i;"" \-e \s-1URL\s0" 4
 .el .IP "cclive \-\-exec=``mplayer \-really\-quiet \f(CW%i\fR;'' \-e \s-1URL\s0" 4
 .IX Item "cclive --exec=mplayer -really-quiet %i; -e URL"
@@ -343,9 +336,9 @@ file.
 .ie n .IP "cclive \-\-stream\-exec=""mplayer \-really\-quiet %i"" \-\-stream=20 \s-1URL\s0" 4
 .el .IP "cclive \-\-stream\-exec=``mplayer \-really\-quiet \f(CW%i\fR'' \-\-stream=20 \s-1URL\s0" 4
 .IX Item "cclive --stream-exec=mplayer -really-quiet %i --stream=20 URL"
-Mimics \*(L"streaming\*(R" by forking the \f(CWmplayer(1)\fR when the progress hits
-20% complete. cclive continues to download the video file while
-\&\f(CWmplayer(1)\fR plays the video file.
+Mimics \*(L"streaming\*(R" by forking the \f(CWmplayer(1)\fR when the progress reaches
+20% complete. cclive continues to download the video file while \f(CWmplayer(1)\fR
+plays the video file.
 .Sp
 See the next example for a better solution if you are not interested in
 keeping a local copy of the video.
@@ -362,8 +355,8 @@ want to stream the videos rather than download them.
 .Sp
 Above, we save ourselves from repeated typing and save the stream-exec
 option to the ~/.ccliverc file so we can invoke cclive with the \*(L"\-s\*(R"
-(or \fB\-\-stream\-exec\fR) option whenever we want to use mplayer for
-viewing the streamed media.
+(or \f(CW\*(C`\-\-stream\-exec\*(C'\fR) option whenever we want to use mplayer for
+viewing the streamed video.
 .Sp
 Reportedly other players such as \f(CWvlc(1)\fR and \f(CWtotem(1)\fR are known
 to work also.
@@ -390,11 +383,11 @@ Alternative to passing multiple links to cclive as command line arguments.
 .IX Item "cclive Youtube_URL Dailymotion_URL"
 .PD
 Causes cclive to download mp4 of the Youtube video and vp6_hq of
-the Dailymotion video. Note that the use of \-f (or \fB\-\-format\fR)
+the Dailymotion video. Note that the use of \-f (or \f(CW\*(C`\-\-format\*(C'\fR)
 overrides this setting.
 .SH "FORMATS"
 .IX Header "FORMATS"
-\&\*(L"flv\*(R" is downloaded by default if \fB\-\-format\fR is not specified. Some
+\&\*(L"flv\*(R" is downloaded by default if \f(CW\*(C`\-\-format\*(C'\fR is not specified. Some
 websites support more than one video format.
 .IP "youtube.com" 4
 .IX Item "youtube.com"
@@ -504,56 +497,46 @@ Most of the program options can be specified in the ~/.ccliverc
 config file.
 .SH "UNICODE"
 .IX Header "UNICODE"
-.IP "Q: Why am I seeing mangled video filenames?" 4
-.IX Item "Q: Why am I seeing mangled video filenames?"
-Those characters in the filenames are likely unicode characters. 
-Make sure you have set appropriate locale. For example, in csh and
-rxvt terms:
-.Sp
-.Vb 2
-\&  % setenv LANG en_US.UTF\-8
-\&  % urxvt &
-.Ve
-.Sp
-You should be able to get a list of the supported locales on a typical
-Unix-like system with the command:
-.Sp
-.Vb 1
-\&  % locale \-a
-.Ve
-.IP "Q: Why don't I see any of the unicode characters in filenames?" 4
-.IX Item "Q: Why don't I see any of the unicode characters in filenames?"
-A quote from \*(L"man pcrepattern\*(R":
-.Sp
-\&\*(L"In \s-1UTF\-8\s0 mode, characters with values greater than 128 never match  \ed,
-\&\es, or \ew, and always match \eD, \eS, and \eW. This is true even when Uni\-
-code character property support is available.  These  sequences  retain
-their original meanings from before \s-1UTF\-8\s0 support was available, mainly
-for efficiency reasons. Note that this also affects \eb, because  it  is
-defined in terms of \ew and \eW.\*(R"
-.Sp
-Make sure the \-\-regexp includes \epL, e.g.:
-.Sp
-.Vb 1
-\& cclive \-\-regexp="(\ew|\es|\epL") URL
-.Ve
-.Sp
-See \*(L"man pcre\*(R" for more about the supported regular expressions.
-.SH "DEBUGGING"
-.IX Header "DEBUGGING"
-.IP "cclive \-\-debug \s-1URL\s0" 4
-.IX Item "cclive --debug URL"
-Causes libcurl to be verbose.
-.IP "cclive \-n \s-1URL\s0" 4
-.IX Item "cclive -n URL"
-Simulates video extraction only.
-.SH "BUGS"
-.IX Header "BUGS"
-Sure to be some. Please report them:
+If you are seeing mangled characters in output filenames, this is likely
+likely result of an invalid locale setting or terminal incapable of displaying
+unicode characters. On a typical Unix-like system, try running \*(L"locale \-a\*(R" to
+get a list of the available locale names.
+.PP
+For example, in bash and urxvt terms this can be corrected with:
 .PP
 .Vb 1
-\&  <http://code.google.com/p/cclive/issues/>
+\&  % LANG=en_US.UTF8 urxvt&
 .Ve
+.PP
+If you are missing the unicode characters when using \f(CW\*(C`\-\-regexp\*(C'\fR and
+\&\f(CW\*(C`\-\-filename\-format\*(C'\fR, make sure the regular expression includes \*(L"\epL\*(R".
+For example:
+.PP
+.Vb 1
+\&  % cclive \-F "%t.%s" \-gr "(\ew|\es|\epL") URL
+.Ve
+.PP
+\&\*(L"In \s-1UTF\-8\s0 mode, characters with values greater than 128 never match \ed,
+\&\es, or \ew, and always match \eD, \eS, and \eW. This is true even when Uni\-
+code character property support is available. These sequences retain
+their original meanings from before \s-1UTF\-8\s0 support was available, mainly
+for efficiency reasons. Note that this also affects \eb, because it is
+defined in terms of \ew and \eW.\*(R" \*(-- man pcrepattern
+.SH "BUGS"
+.IX Header "BUGS"
+.IP "Sure to be some. Please report them:" 4
+.IX Item "Sure to be some. Please report them:"
+<http://code.google.com/p/cclive/issues/>
+.SH "DEBUGGING"
+.IX Header "DEBUGGING"
+Useful options for debugging cclive.
+.IP "cclive \-\-debug \s-1URL\s0" 4
+.IX Item "cclive --debug URL"
+Turn on libcurl verbose mode.
+.IP "cclive \-n \s-1URL\s0" 4
+.IX Item "cclive -n URL"
+Simulate only; cclive will parse and verify the video link without
+downloading the video.
 .SH "EXIT STATUS"
 .IX Header "EXIT STATUS"
 cclive exits 0 on success, and >0 if an error occurs.
@@ -573,11 +556,11 @@ cclive exits 0 on success, and >0 if an error occurs.
 .Ve
 .SH "OTHER"
 .IX Header "OTHER"
-.IP "Project page" 4
-.IX Item "Project page"
+.IP "Project page:" 4
+.IX Item "Project page:"
 <http://cclive.googlecode.com/>
-.IP "Front-end" 4
-.IX Item "Front-end"
+.IP "Front-end:" 4
+.IX Item "Front-end:"
 <http://abby.googlecode.com/>
 .IP "Development code:" 4
 .IX Item "Development code:"
