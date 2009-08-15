@@ -61,11 +61,12 @@ struct gengetopt_args_info
   int connect_timeout_socks_arg;	/**< @brief Same but works around 'SOCKS proxy connect timeout' bug in libcurl (default='30').  */
   char * connect_timeout_socks_orig;	/**< @brief Same but works around 'SOCKS proxy connect timeout' bug in libcurl original value given at command line.  */
   const char *connect_timeout_socks_help; /**< @brief Same but works around 'SOCKS proxy connect timeout' bug in libcurl help description.  */
-  const char *no_extract_help; /**< @brief Do not actually extract video, simulate only help description.  */
-  const char *continue_help; /**< @brief Resume partially downloaded file help description.  */
   char * output_video_arg;	/**< @brief Write video to file.  */
   char * output_video_orig;	/**< @brief Write video to file original value given at command line.  */
   const char *output_video_help; /**< @brief Write video to file help description.  */
+  const char *continue_help; /**< @brief Resume partially downloaded file help description.  */
+  const char *overwrite_help; /**< @brief Overwrite existing file help description.  */
+  const char *no_extract_help; /**< @brief Do not actually extract video, simulate only help description.  */
   int limit_rate_arg;	/**< @brief Limit download speed to amount KB/s.  */
   char * limit_rate_orig;	/**< @brief Limit download speed to amount KB/s original value given at command line.  */
   const char *limit_rate_help; /**< @brief Limit download speed to amount KB/s help description.  */
@@ -107,9 +108,10 @@ struct gengetopt_args_info
   unsigned int no_proxy_given ;	/**< @brief Whether no-proxy was given.  */
   unsigned int connect_timeout_given ;	/**< @brief Whether connect-timeout was given.  */
   unsigned int connect_timeout_socks_given ;	/**< @brief Whether connect-timeout-socks was given.  */
-  unsigned int no_extract_given ;	/**< @brief Whether no-extract was given.  */
-  unsigned int continue_given ;	/**< @brief Whether continue was given.  */
   unsigned int output_video_given ;	/**< @brief Whether output-video was given.  */
+  unsigned int continue_given ;	/**< @brief Whether continue was given.  */
+  unsigned int overwrite_given ;	/**< @brief Whether overwrite was given.  */
+  unsigned int no_extract_given ;	/**< @brief Whether no-extract was given.  */
   unsigned int limit_rate_given ;	/**< @brief Whether limit-rate was given.  */
   unsigned int format_given ;	/**< @brief Whether format was given.  */
   unsigned int format_map_given ;	/**< @brief Whether format-map was given.  */

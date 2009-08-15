@@ -182,7 +182,8 @@ VideoProperties::formatOutputFilename() {
 
         typedef unsigned int _uint;
 
-        for (register _uint i=1; i<INT_MAX; ++i) {
+        for (register _uint i=1; i<INT_MAX && !opts.overwrite_given; ++i) {
+
             initial = Util::fileExists(filename);
 
             if (initial == 0)
@@ -193,6 +194,7 @@ VideoProperties::formatOutputFilename() {
                 if (opts.continue_given)
                     break;
             }
+
             std::stringstream tmp;
             tmp << b.str() << "." << i;
             filename = tmp.str();
@@ -200,8 +202,13 @@ VideoProperties::formatOutputFilename() {
     }
     else {
         initial = Util::fileExists(opts.output_video_arg);
+
         if (initial >= length)
             throw NothingToDoException();
+
+        if (opts.overwrite_given)
+            initial = 0;
+
         filename = opts.output_video_arg;
     }
 

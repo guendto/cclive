@@ -47,9 +47,10 @@ const char *gengetopt_args_info_help[] = {
   "      --connect-timeout=<seconds>\n                                Max time allowed connection to server take  \n                                  (default=`30')",
   "      --connect-timeout-socks=<seconds>\n                                Same but works around 'SOCKS proxy connect \n                                  timeout' bug in libcurl  (default=`30')",
   "\nDownload:",
-  "  -n, --no-extract              Do not actually extract video, simulate only",
-  "  -c, --continue                Resume partially downloaded file",
   "  -O, --output-video=<file>     Write video to file",
+  "  -c, --continue                Resume partially downloaded file",
+  "  -W, --overwrite               Overwrite existing file",
+  "  -n, --no-extract              Do not actually extract video, simulate only",
   "  -l, --limit-rate=<amount>     Limit download speed to amount KB/s",
   "  -f, --format=<formatid>       Download format of video  (possible \n                                  values=\"flv\", \"best\", \"fmt17\", \n                                  \"fmt18\", \"fmt22\", \"fmt35\", \"hq\", \n                                  \"3gp\", \"spark-mini\", \"vp6-hq\", \n                                  \"vp6-hd\", \"vp6\", \"h264\", \"hd\", \n                                  \"mp4\", \"high\", \"ipod\", \"vp6_64\", \n                                  \"vp6_576\", \"vp6_928\", \"h264_1400\" \n                                  default=`flv')",
   "  -M, --format-map=<mapstring>  Specify format for multiple hosts in a string",
@@ -130,9 +131,10 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->no_proxy_given = 0 ;
   args_info->connect_timeout_given = 0 ;
   args_info->connect_timeout_socks_given = 0 ;
-  args_info->no_extract_given = 0 ;
-  args_info->continue_given = 0 ;
   args_info->output_video_given = 0 ;
+  args_info->continue_given = 0 ;
+  args_info->overwrite_given = 0 ;
+  args_info->no_extract_given = 0 ;
   args_info->limit_rate_given = 0 ;
   args_info->format_given = 0 ;
   args_info->format_map_given = 0 ;
@@ -195,21 +197,22 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->no_proxy_help = gengetopt_args_info_help[11] ;
   args_info->connect_timeout_help = gengetopt_args_info_help[12] ;
   args_info->connect_timeout_socks_help = gengetopt_args_info_help[13] ;
-  args_info->no_extract_help = gengetopt_args_info_help[15] ;
+  args_info->output_video_help = gengetopt_args_info_help[15] ;
   args_info->continue_help = gengetopt_args_info_help[16] ;
-  args_info->output_video_help = gengetopt_args_info_help[17] ;
-  args_info->limit_rate_help = gengetopt_args_info_help[18] ;
-  args_info->format_help = gengetopt_args_info_help[19] ;
-  args_info->format_map_help = gengetopt_args_info_help[20] ;
-  args_info->number_videos_help = gengetopt_args_info_help[22] ;
-  args_info->regexp_help = gengetopt_args_info_help[23] ;
-  args_info->find_all_help = gengetopt_args_info_help[24] ;
-  args_info->filename_format_help = gengetopt_args_info_help[25] ;
-  args_info->exec_help = gengetopt_args_info_help[27] ;
-  args_info->exec_run_help = gengetopt_args_info_help[28] ;
-  args_info->stream_exec_help = gengetopt_args_info_help[30] ;
-  args_info->stream_pass_help = gengetopt_args_info_help[31] ;
-  args_info->stream_help = gengetopt_args_info_help[32] ;
+  args_info->overwrite_help = gengetopt_args_info_help[17] ;
+  args_info->no_extract_help = gengetopt_args_info_help[18] ;
+  args_info->limit_rate_help = gengetopt_args_info_help[19] ;
+  args_info->format_help = gengetopt_args_info_help[20] ;
+  args_info->format_map_help = gengetopt_args_info_help[21] ;
+  args_info->number_videos_help = gengetopt_args_info_help[23] ;
+  args_info->regexp_help = gengetopt_args_info_help[24] ;
+  args_info->find_all_help = gengetopt_args_info_help[25] ;
+  args_info->filename_format_help = gengetopt_args_info_help[26] ;
+  args_info->exec_help = gengetopt_args_info_help[28] ;
+  args_info->exec_run_help = gengetopt_args_info_help[29] ;
+  args_info->stream_exec_help = gengetopt_args_info_help[31] ;
+  args_info->stream_pass_help = gengetopt_args_info_help[32] ;
+  args_info->stream_help = gengetopt_args_info_help[33] ;
   
 }
 
@@ -415,12 +418,14 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "connect-timeout", args_info->connect_timeout_orig, 0);
   if (args_info->connect_timeout_socks_given)
     write_into_file(outfile, "connect-timeout-socks", args_info->connect_timeout_socks_orig, 0);
-  if (args_info->no_extract_given)
-    write_into_file(outfile, "no-extract", 0, 0 );
-  if (args_info->continue_given)
-    write_into_file(outfile, "continue", 0, 0 );
   if (args_info->output_video_given)
     write_into_file(outfile, "output-video", args_info->output_video_orig, 0);
+  if (args_info->continue_given)
+    write_into_file(outfile, "continue", 0, 0 );
+  if (args_info->overwrite_given)
+    write_into_file(outfile, "overwrite", 0, 0 );
+  if (args_info->no_extract_given)
+    write_into_file(outfile, "no-extract", 0, 0 );
   if (args_info->limit_rate_given)
     write_into_file(outfile, "limit-rate", args_info->limit_rate_orig, 0);
   if (args_info->format_given)
@@ -760,9 +765,10 @@ cmdline_parser_internal (
         { "no-proxy",	0, NULL, 0 },
         { "connect-timeout",	1, NULL, 0 },
         { "connect-timeout-socks",	1, NULL, 0 },
-        { "no-extract",	0, NULL, 'n' },
-        { "continue",	0, NULL, 'c' },
         { "output-video",	1, NULL, 'O' },
+        { "continue",	0, NULL, 'c' },
+        { "overwrite",	0, NULL, 'W' },
+        { "no-extract",	0, NULL, 'n' },
         { "limit-rate",	1, NULL, 'l' },
         { "format",	1, NULL, 'f' },
         { "format-map",	1, NULL, 'M' },
@@ -778,7 +784,7 @@ cmdline_parser_internal (
         { 0,  0, 0, 0 }
       };
 
-      c = getopt_long (argc, argv, "hvqncO:l:f:M:Nr:gF:es", long_options, &option_index);
+      c = getopt_long (argc, argv, "hvqO:cWnl:f:M:Nr:gF:es", long_options, &option_index);
 
       if (c == -1) break;	/* Exit from `while (1)' loop.  */
 
@@ -813,14 +819,14 @@ cmdline_parser_internal (
             goto failure;
         
           break;
-        case 'n':	/* Do not actually extract video, simulate only.  */
+        case 'O':	/* Write video to file.  */
         
         
-          if (update_arg( 0 , 
-               0 , &(args_info->no_extract_given),
-              &(local_args_info.no_extract_given), optarg, 0, 0, ARG_NO,
+          if (update_arg( (void *)&(args_info->output_video_arg), 
+               &(args_info->output_video_orig), &(args_info->output_video_given),
+              &(local_args_info.output_video_given), optarg, 0, 0, ARG_STRING,
               check_ambiguity, override, 0, 0,
-              "no-extract", 'n',
+              "output-video", 'O',
               additional_error))
             goto failure;
         
@@ -837,14 +843,26 @@ cmdline_parser_internal (
             goto failure;
         
           break;
-        case 'O':	/* Write video to file.  */
+        case 'W':	/* Overwrite existing file.  */
         
         
-          if (update_arg( (void *)&(args_info->output_video_arg), 
-               &(args_info->output_video_orig), &(args_info->output_video_given),
-              &(local_args_info.output_video_given), optarg, 0, 0, ARG_STRING,
+          if (update_arg( 0 , 
+               0 , &(args_info->overwrite_given),
+              &(local_args_info.overwrite_given), optarg, 0, 0, ARG_NO,
               check_ambiguity, override, 0, 0,
-              "output-video", 'O',
+              "overwrite", 'W',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 'n':	/* Do not actually extract video, simulate only.  */
+        
+        
+          if (update_arg( 0 , 
+               0 , &(args_info->no_extract_given),
+              &(local_args_info.no_extract_given), optarg, 0, 0, ARG_NO,
+              check_ambiguity, override, 0, 0,
+              "no-extract", 'n',
               additional_error))
             goto failure;
         

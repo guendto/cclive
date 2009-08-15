@@ -45,15 +45,18 @@ option "connect-timeout-socks"
     optional
 
 section "Download"
-option "no-extract"
-    n "Do not actually extract video, simulate only"
+option "output-video"
+    O "Write video to file"
+    string typestr="<file>"
     optional
 option "continue"
     c "Resume partially downloaded file"
     optional
-option "output-video"
-    O "Write video to file"
-    string typestr="<file>"
+option "overwrite"
+    W "Overwrite existing file"
+    optional
+option "no-extract"
+    n "Do not actually extract video, simulate only"
     optional
 option "limit-rate"
     l "Limit download speed to amount KB/s"
