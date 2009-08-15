@@ -1,66 +1,66 @@
 
 option "version"
-    v "print version and exit"
+    v "Print version and exit"
     optional
 option "hosts"
-    - "list supported hosts"
+    - "List supported hosts"
     optional
 
 section "Output"
 option "quiet"
-    q "turn off all output"
+    q "Turn off all output"
     optional
 option "debug"
-    - "show curl debug messages"
+    - "Turn on libcurl verbose mode"
     optional
 option "emit-csv"
-    - "emit video details as csv to stdout"
+    - "Print video details in csv format to stdout"
     optional
 option "print-fname"
-    - "print filename before download starts"
+    - "Print filename before each download starts"
     optional
 
 section "HTTP"
 option "agent"
-    - "identify as string"
-    string typestr="string"
+    - "Identify cclive as agentstring to servers"
+    string typestr="<agentstring>"
     default="Mozilla/5.0"
     optional
 option "proxy"
-    - "use specified proxy"
+    - "Use specified proxy"
     string typestr="proxyhost[:port]"
     optional
 option "no-proxy"
-    - "do not use proxy even if http_proxy is defined"
+    - "Do not use proxy even if http_proxy is defined"
     optional
 option "connect-timeout"
-    - "max time allowed connection to server take"
-    int typestr="seconds"
+    - "Max time allowed connection to server take"
+    int typestr="<seconds>"
     default="30"
     optional
 option "connect-timeout-socks"
-    - "same but tries to work around SOCKS proxy bug in libcurl"
-    int typestr="s"
+    - "Same but works around 'SOCKS proxy connect timeout' bug in libcurl"
+    int typestr="<seconds>"
     default="30"
     optional
 
 section "Download"
 option "no-extract"
-    n "do not actually extract video, simulate only"
+    n "Do not actually extract video, simulate only"
     optional
 option "continue"
-    c "resume partially downloaded file"
+    c "Resume partially downloaded file"
     optional
 option "output-video"
-    O "write video to file"
-    string typestr="file"
+    O "Write video to file"
+    string typestr="<file>"
     optional
 option "limit-rate"
-    l "limit download speed to KB/s"
-    int typestr="kb/s"
+    l "Limit download speed to amount KB/s"
+    int typestr="<amount>"
     optional
 option "format"
-    f "download video format"
+    f "Download format of video"
     values="flv","best",
         # youtube:
         "fmt17","fmt18","fmt22","fmt35","hq","3gp",
@@ -75,52 +75,54 @@ option "format"
         # spiegel:
         "vp6_64", "vp6_576", "vp6_928", "h264_1400"
     default="flv"
-    typestr="format"
+    typestr="<formatid>"
     optional
 option "format-map"
-    M "specify format for multiple hosts in a string"
-    string typestr="mapstring"
+    M "Specify format for multiple hosts in a string"
+    string typestr="<mapstring>"
     optional
 
 section "Filename formatting"
 option "number-videos"
-    N "prepend a numeric prefix to output filenames"
+    N "Prepend a numeric prefix to output filenames"
     optional
 option "regexp"
-    r "regular expression to filter video title"
-    string typestr="expr"
+    r "Regular expression to cleanup video title"
+    string typestr="<expr>"
     optional
 option "find-all"
-    g "use repeated matching to find all occurences, like Perl's /g option"
+    g "Match all occurences, like Perl's /g option"
     optional
     dependon="regexp"
 option "filename-format"
-    F "output filename format"
-    string typestr="string"
+    F "Output filename format"
+    string typestr="<formatstring>"
     default="%h_%i.%s"
     optional
 
 section "Subsequent"
 option "exec"
-    - "command to invoke when transfer finishes"
-    string typestr="expr[;|+]"
+    - "Command to invoke when transfer finishes"
+    string typestr="<expr[;|+]>"
     optional
 option "exec-run"
-    e "invoke command defined with --exec"
+    e "Invoke command specified with --exec"
     optional
     dependon="exec"
 
 section "Streaming"
 option "stream-exec"
-    - "stream command to be invoked"
-    string typestr="expr"
+    - "Stream command to be invoked"
+    string typestr="<expr>"
     optional
 option "stream-pass"
-    s "pass video link to --stream-exec command"
+    s "Pass video link to --stream-exec command"
     optional
     dependon="stream-exec"
 option "stream"
-    - "invoke --stream-exec when transfer reaches %"
-    int typestr="percent"
+    - "Invoke --stream-exec when transfer reaches %"
+    int typestr="<percent>"
     optional
     dependon="stream-exec"
+
+text "\nSee the manual page for examples."

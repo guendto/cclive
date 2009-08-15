@@ -42,58 +42,58 @@ extern "C" {
 struct gengetopt_args_info
 {
   const char *help_help; /**< @brief Print help and exit help description.  */
-  const char *version_help; /**< @brief print version and exit help description.  */
-  const char *hosts_help; /**< @brief list supported hosts help description.  */
-  const char *quiet_help; /**< @brief turn off all output help description.  */
-  const char *debug_help; /**< @brief show curl debug messages help description.  */
-  const char *emit_csv_help; /**< @brief emit video details as csv to stdout help description.  */
-  const char *print_fname_help; /**< @brief print filename before download starts help description.  */
-  char * agent_arg;	/**< @brief identify as string (default='Mozilla/5.0').  */
-  char * agent_orig;	/**< @brief identify as string original value given at command line.  */
-  const char *agent_help; /**< @brief identify as string help description.  */
-  char * proxy_arg;	/**< @brief use specified proxy.  */
-  char * proxy_orig;	/**< @brief use specified proxy original value given at command line.  */
-  const char *proxy_help; /**< @brief use specified proxy help description.  */
-  const char *no_proxy_help; /**< @brief do not use proxy even if http_proxy is defined help description.  */
-  int connect_timeout_arg;	/**< @brief max time allowed connection to server take (default='30').  */
-  char * connect_timeout_orig;	/**< @brief max time allowed connection to server take original value given at command line.  */
-  const char *connect_timeout_help; /**< @brief max time allowed connection to server take help description.  */
-  int connect_timeout_socks_arg;	/**< @brief same but tries to work around SOCKS proxy bug in libcurl (default='30').  */
-  char * connect_timeout_socks_orig;	/**< @brief same but tries to work around SOCKS proxy bug in libcurl original value given at command line.  */
-  const char *connect_timeout_socks_help; /**< @brief same but tries to work around SOCKS proxy bug in libcurl help description.  */
-  const char *no_extract_help; /**< @brief do not actually extract video, simulate only help description.  */
-  const char *continue_help; /**< @brief resume partially downloaded file help description.  */
-  char * output_video_arg;	/**< @brief write video to file.  */
-  char * output_video_orig;	/**< @brief write video to file original value given at command line.  */
-  const char *output_video_help; /**< @brief write video to file help description.  */
-  int limit_rate_arg;	/**< @brief limit download speed to KB/s.  */
-  char * limit_rate_orig;	/**< @brief limit download speed to KB/s original value given at command line.  */
-  const char *limit_rate_help; /**< @brief limit download speed to KB/s help description.  */
-  char * format_arg;	/**< @brief download video format (default='flv').  */
-  char * format_orig;	/**< @brief download video format original value given at command line.  */
-  const char *format_help; /**< @brief download video format help description.  */
-  char * format_map_arg;	/**< @brief specify format for multiple hosts in a string.  */
-  char * format_map_orig;	/**< @brief specify format for multiple hosts in a string original value given at command line.  */
-  const char *format_map_help; /**< @brief specify format for multiple hosts in a string help description.  */
-  const char *number_videos_help; /**< @brief prepend a numeric prefix to output filenames help description.  */
-  char * regexp_arg;	/**< @brief regular expression to filter video title.  */
-  char * regexp_orig;	/**< @brief regular expression to filter video title original value given at command line.  */
-  const char *regexp_help; /**< @brief regular expression to filter video title help description.  */
-  const char *find_all_help; /**< @brief use repeated matching to find all occurences, like Perl's /g option help description.  */
-  char * filename_format_arg;	/**< @brief output filename format (default='%h_%i.%s').  */
-  char * filename_format_orig;	/**< @brief output filename format original value given at command line.  */
-  const char *filename_format_help; /**< @brief output filename format help description.  */
-  char * exec_arg;	/**< @brief command to invoke when transfer finishes.  */
-  char * exec_orig;	/**< @brief command to invoke when transfer finishes original value given at command line.  */
-  const char *exec_help; /**< @brief command to invoke when transfer finishes help description.  */
-  const char *exec_run_help; /**< @brief invoke command defined with --exec help description.  */
-  char * stream_exec_arg;	/**< @brief stream command to be invoked.  */
-  char * stream_exec_orig;	/**< @brief stream command to be invoked original value given at command line.  */
-  const char *stream_exec_help; /**< @brief stream command to be invoked help description.  */
-  const char *stream_pass_help; /**< @brief pass video link to --stream-exec command help description.  */
-  int stream_arg;	/**< @brief invoke --stream-exec when transfer reaches %.  */
-  char * stream_orig;	/**< @brief invoke --stream-exec when transfer reaches % original value given at command line.  */
-  const char *stream_help; /**< @brief invoke --stream-exec when transfer reaches % help description.  */
+  const char *version_help; /**< @brief Print version and exit help description.  */
+  const char *hosts_help; /**< @brief List supported hosts help description.  */
+  const char *quiet_help; /**< @brief Turn off all output help description.  */
+  const char *debug_help; /**< @brief Turn on libcurl verbose mode help description.  */
+  const char *emit_csv_help; /**< @brief Print video details in csv format to stdout help description.  */
+  const char *print_fname_help; /**< @brief Print filename before each download starts help description.  */
+  char * agent_arg;	/**< @brief Identify cclive as agentstring to servers (default='Mozilla/5.0').  */
+  char * agent_orig;	/**< @brief Identify cclive as agentstring to servers original value given at command line.  */
+  const char *agent_help; /**< @brief Identify cclive as agentstring to servers help description.  */
+  char * proxy_arg;	/**< @brief Use specified proxy.  */
+  char * proxy_orig;	/**< @brief Use specified proxy original value given at command line.  */
+  const char *proxy_help; /**< @brief Use specified proxy help description.  */
+  const char *no_proxy_help; /**< @brief Do not use proxy even if http_proxy is defined help description.  */
+  int connect_timeout_arg;	/**< @brief Max time allowed connection to server take (default='30').  */
+  char * connect_timeout_orig;	/**< @brief Max time allowed connection to server take original value given at command line.  */
+  const char *connect_timeout_help; /**< @brief Max time allowed connection to server take help description.  */
+  int connect_timeout_socks_arg;	/**< @brief Same but works around 'SOCKS proxy connect timeout' bug in libcurl (default='30').  */
+  char * connect_timeout_socks_orig;	/**< @brief Same but works around 'SOCKS proxy connect timeout' bug in libcurl original value given at command line.  */
+  const char *connect_timeout_socks_help; /**< @brief Same but works around 'SOCKS proxy connect timeout' bug in libcurl help description.  */
+  const char *no_extract_help; /**< @brief Do not actually extract video, simulate only help description.  */
+  const char *continue_help; /**< @brief Resume partially downloaded file help description.  */
+  char * output_video_arg;	/**< @brief Write video to file.  */
+  char * output_video_orig;	/**< @brief Write video to file original value given at command line.  */
+  const char *output_video_help; /**< @brief Write video to file help description.  */
+  int limit_rate_arg;	/**< @brief Limit download speed to amount KB/s.  */
+  char * limit_rate_orig;	/**< @brief Limit download speed to amount KB/s original value given at command line.  */
+  const char *limit_rate_help; /**< @brief Limit download speed to amount KB/s help description.  */
+  char * format_arg;	/**< @brief Download format of video (default='flv').  */
+  char * format_orig;	/**< @brief Download format of video original value given at command line.  */
+  const char *format_help; /**< @brief Download format of video help description.  */
+  char * format_map_arg;	/**< @brief Specify format for multiple hosts in a string.  */
+  char * format_map_orig;	/**< @brief Specify format for multiple hosts in a string original value given at command line.  */
+  const char *format_map_help; /**< @brief Specify format for multiple hosts in a string help description.  */
+  const char *number_videos_help; /**< @brief Prepend a numeric prefix to output filenames help description.  */
+  char * regexp_arg;	/**< @brief Regular expression to cleanup video title.  */
+  char * regexp_orig;	/**< @brief Regular expression to cleanup video title original value given at command line.  */
+  const char *regexp_help; /**< @brief Regular expression to cleanup video title help description.  */
+  const char *find_all_help; /**< @brief Match all occurences, like Perl's /g option help description.  */
+  char * filename_format_arg;	/**< @brief Output filename format (default='%h_%i.%s').  */
+  char * filename_format_orig;	/**< @brief Output filename format original value given at command line.  */
+  const char *filename_format_help; /**< @brief Output filename format help description.  */
+  char * exec_arg;	/**< @brief Command to invoke when transfer finishes.  */
+  char * exec_orig;	/**< @brief Command to invoke when transfer finishes original value given at command line.  */
+  const char *exec_help; /**< @brief Command to invoke when transfer finishes help description.  */
+  const char *exec_run_help; /**< @brief Invoke command specified with --exec help description.  */
+  char * stream_exec_arg;	/**< @brief Stream command to be invoked.  */
+  char * stream_exec_orig;	/**< @brief Stream command to be invoked original value given at command line.  */
+  const char *stream_exec_help; /**< @brief Stream command to be invoked help description.  */
+  const char *stream_pass_help; /**< @brief Pass video link to --stream-exec command help description.  */
+  int stream_arg;	/**< @brief Invoke --stream-exec when transfer reaches %.  */
+  char * stream_orig;	/**< @brief Invoke --stream-exec when transfer reaches % original value given at command line.  */
+  const char *stream_help; /**< @brief Invoke --stream-exec when transfer reaches % help description.  */
   
   unsigned int help_given ;	/**< @brief Whether help was given.  */
   unsigned int version_given ;	/**< @brief Whether version was given.  */

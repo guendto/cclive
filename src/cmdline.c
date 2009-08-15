@@ -33,38 +33,39 @@ const char *gengetopt_args_info_description = "";
 
 const char *gengetopt_args_info_help[] = {
   "  -h, --help                    Print help and exit",
-  "  -v, --version                 print version and exit",
-  "      --hosts                   list supported hosts",
+  "  -v, --version                 Print version and exit",
+  "      --hosts                   List supported hosts",
   "\nOutput:",
-  "  -q, --quiet                   turn off all output",
-  "      --debug                   show curl debug messages",
-  "      --emit-csv                emit video details as csv to stdout",
-  "      --print-fname             print filename before download starts",
+  "  -q, --quiet                   Turn off all output",
+  "      --debug                   Turn on libcurl verbose mode",
+  "      --emit-csv                Print video details in csv format to stdout",
+  "      --print-fname             Print filename before each download starts",
   "\nHTTP:",
-  "      --agent=string            identify as string  (default=`Mozilla/5.0')",
-  "      --proxy=proxyhost[:port]  use specified proxy",
-  "      --no-proxy                do not use proxy even if http_proxy is defined",
-  "      --connect-timeout=seconds max time allowed connection to server take  \n                                  (default=`30')",
-  "      --connect-timeout-socks=s same but tries to work around SOCKS proxy bug \n                                  in libcurl  (default=`30')",
+  "      --agent=<agentstring>     Identify cclive as agentstring to servers  \n                                  (default=`Mozilla/5.0')",
+  "      --proxy=proxyhost[:port]  Use specified proxy",
+  "      --no-proxy                Do not use proxy even if http_proxy is defined",
+  "      --connect-timeout=<seconds>\n                                Max time allowed connection to server take  \n                                  (default=`30')",
+  "      --connect-timeout-socks=<seconds>\n                                Same but works around 'SOCKS proxy connect \n                                  timeout' bug in libcurl  (default=`30')",
   "\nDownload:",
-  "  -n, --no-extract              do not actually extract video, simulate only",
-  "  -c, --continue                resume partially downloaded file",
-  "  -O, --output-video=file       write video to file",
-  "  -l, --limit-rate=kb/s         limit download speed to KB/s",
-  "  -f, --format=format           download video format  (possible \n                                  values=\"flv\", \"best\", \"fmt17\", \n                                  \"fmt18\", \"fmt22\", \"fmt35\", \"hq\", \n                                  \"3gp\", \"spark-mini\", \"vp6-hq\", \n                                  \"vp6-hd\", \"vp6\", \"h264\", \"hd\", \n                                  \"mp4\", \"high\", \"ipod\", \"vp6_64\", \n                                  \"vp6_576\", \"vp6_928\", \"h264_1400\" \n                                  default=`flv')",
-  "  -M, --format-map=mapstring    specify format for multiple hosts in a string",
+  "  -n, --no-extract              Do not actually extract video, simulate only",
+  "  -c, --continue                Resume partially downloaded file",
+  "  -O, --output-video=<file>     Write video to file",
+  "  -l, --limit-rate=<amount>     Limit download speed to amount KB/s",
+  "  -f, --format=<formatid>       Download format of video  (possible \n                                  values=\"flv\", \"best\", \"fmt17\", \n                                  \"fmt18\", \"fmt22\", \"fmt35\", \"hq\", \n                                  \"3gp\", \"spark-mini\", \"vp6-hq\", \n                                  \"vp6-hd\", \"vp6\", \"h264\", \"hd\", \n                                  \"mp4\", \"high\", \"ipod\", \"vp6_64\", \n                                  \"vp6_576\", \"vp6_928\", \"h264_1400\" \n                                  default=`flv')",
+  "  -M, --format-map=<mapstring>  Specify format for multiple hosts in a string",
   "\nFilename formatting:",
-  "  -N, --number-videos           prepend a numeric prefix to output filenames",
-  "  -r, --regexp=expr             regular expression to filter video title",
-  "  -g, --find-all                use repeated matching to find all occurences, \n                                  like Perl's /g option",
-  "  -F, --filename-format=string  output filename format  (default=`%h_%i.%s')",
+  "  -N, --number-videos           Prepend a numeric prefix to output filenames",
+  "  -r, --regexp=<expr>           Regular expression to cleanup video title",
+  "  -g, --find-all                Match all occurences, like Perl's /g option",
+  "  -F, --filename-format=<formatstring>\n                                Output filename format  (default=`%h_%i.%s')",
   "\nSubsequent:",
-  "      --exec=expr[;|+]          command to invoke when transfer finishes",
-  "  -e, --exec-run                invoke command defined with --exec",
+  "      --exec=<expr[;|+]>        Command to invoke when transfer finishes",
+  "  -e, --exec-run                Invoke command specified with --exec",
   "\nStreaming:",
-  "      --stream-exec=expr        stream command to be invoked",
-  "  -s, --stream-pass             pass video link to --stream-exec command",
-  "      --stream=percent          invoke --stream-exec when transfer reaches %",
+  "      --stream-exec=<expr>      Stream command to be invoked",
+  "  -s, --stream-pass             Pass video link to --stream-exec command",
+  "      --stream=<percent>        Invoke --stream-exec when transfer reaches %",
+  "\nSee the manual page for examples.",
     0
 };
 
@@ -788,7 +789,7 @@ cmdline_parser_internal (
           cmdline_parser_free (&local_args_info);
           exit (EXIT_SUCCESS);
 
-        case 'v':	/* print version and exit.  */
+        case 'v':	/* Print version and exit.  */
         
         
           if (update_arg( 0 , 
@@ -800,7 +801,7 @@ cmdline_parser_internal (
             goto failure;
         
           break;
-        case 'q':	/* turn off all output.  */
+        case 'q':	/* Turn off all output.  */
         
         
           if (update_arg( 0 , 
@@ -812,7 +813,7 @@ cmdline_parser_internal (
             goto failure;
         
           break;
-        case 'n':	/* do not actually extract video, simulate only.  */
+        case 'n':	/* Do not actually extract video, simulate only.  */
         
         
           if (update_arg( 0 , 
@@ -824,7 +825,7 @@ cmdline_parser_internal (
             goto failure;
         
           break;
-        case 'c':	/* resume partially downloaded file.  */
+        case 'c':	/* Resume partially downloaded file.  */
         
         
           if (update_arg( 0 , 
@@ -836,7 +837,7 @@ cmdline_parser_internal (
             goto failure;
         
           break;
-        case 'O':	/* write video to file.  */
+        case 'O':	/* Write video to file.  */
         
         
           if (update_arg( (void *)&(args_info->output_video_arg), 
@@ -848,7 +849,7 @@ cmdline_parser_internal (
             goto failure;
         
           break;
-        case 'l':	/* limit download speed to KB/s.  */
+        case 'l':	/* Limit download speed to amount KB/s.  */
         
         
           if (update_arg( (void *)&(args_info->limit_rate_arg), 
@@ -860,7 +861,7 @@ cmdline_parser_internal (
             goto failure;
         
           break;
-        case 'f':	/* download video format.  */
+        case 'f':	/* Download format of video.  */
         
         
           if (update_arg( (void *)&(args_info->format_arg), 
@@ -872,7 +873,7 @@ cmdline_parser_internal (
             goto failure;
         
           break;
-        case 'M':	/* specify format for multiple hosts in a string.  */
+        case 'M':	/* Specify format for multiple hosts in a string.  */
         
         
           if (update_arg( (void *)&(args_info->format_map_arg), 
@@ -884,7 +885,7 @@ cmdline_parser_internal (
             goto failure;
         
           break;
-        case 'N':	/* prepend a numeric prefix to output filenames.  */
+        case 'N':	/* Prepend a numeric prefix to output filenames.  */
         
         
           if (update_arg( 0 , 
@@ -896,7 +897,7 @@ cmdline_parser_internal (
             goto failure;
         
           break;
-        case 'r':	/* regular expression to filter video title.  */
+        case 'r':	/* Regular expression to cleanup video title.  */
         
         
           if (update_arg( (void *)&(args_info->regexp_arg), 
@@ -908,7 +909,7 @@ cmdline_parser_internal (
             goto failure;
         
           break;
-        case 'g':	/* use repeated matching to find all occurences, like Perl's /g option.  */
+        case 'g':	/* Match all occurences, like Perl's /g option.  */
         
         
           if (update_arg( 0 , 
@@ -920,7 +921,7 @@ cmdline_parser_internal (
             goto failure;
         
           break;
-        case 'F':	/* output filename format.  */
+        case 'F':	/* Output filename format.  */
         
         
           if (update_arg( (void *)&(args_info->filename_format_arg), 
@@ -932,7 +933,7 @@ cmdline_parser_internal (
             goto failure;
         
           break;
-        case 'e':	/* invoke command defined with --exec.  */
+        case 'e':	/* Invoke command specified with --exec.  */
         
         
           if (update_arg( 0 , 
@@ -944,7 +945,7 @@ cmdline_parser_internal (
             goto failure;
         
           break;
-        case 's':	/* pass video link to --stream-exec command.  */
+        case 's':	/* Pass video link to --stream-exec command.  */
         
         
           if (update_arg( 0 , 
@@ -958,7 +959,7 @@ cmdline_parser_internal (
           break;
 
         case 0:	/* Long option with no short option */
-          /* list supported hosts.  */
+          /* List supported hosts.  */
           if (strcmp (long_options[option_index].name, "hosts") == 0)
           {
           
@@ -972,7 +973,7 @@ cmdline_parser_internal (
               goto failure;
           
           }
-          /* show curl debug messages.  */
+          /* Turn on libcurl verbose mode.  */
           else if (strcmp (long_options[option_index].name, "debug") == 0)
           {
           
@@ -986,7 +987,7 @@ cmdline_parser_internal (
               goto failure;
           
           }
-          /* emit video details as csv to stdout.  */
+          /* Print video details in csv format to stdout.  */
           else if (strcmp (long_options[option_index].name, "emit-csv") == 0)
           {
           
@@ -1000,7 +1001,7 @@ cmdline_parser_internal (
               goto failure;
           
           }
-          /* print filename before download starts.  */
+          /* Print filename before each download starts.  */
           else if (strcmp (long_options[option_index].name, "print-fname") == 0)
           {
           
@@ -1014,7 +1015,7 @@ cmdline_parser_internal (
               goto failure;
           
           }
-          /* identify as string.  */
+          /* Identify cclive as agentstring to servers.  */
           else if (strcmp (long_options[option_index].name, "agent") == 0)
           {
           
@@ -1028,7 +1029,7 @@ cmdline_parser_internal (
               goto failure;
           
           }
-          /* use specified proxy.  */
+          /* Use specified proxy.  */
           else if (strcmp (long_options[option_index].name, "proxy") == 0)
           {
           
@@ -1042,7 +1043,7 @@ cmdline_parser_internal (
               goto failure;
           
           }
-          /* do not use proxy even if http_proxy is defined.  */
+          /* Do not use proxy even if http_proxy is defined.  */
           else if (strcmp (long_options[option_index].name, "no-proxy") == 0)
           {
           
@@ -1056,7 +1057,7 @@ cmdline_parser_internal (
               goto failure;
           
           }
-          /* max time allowed connection to server take.  */
+          /* Max time allowed connection to server take.  */
           else if (strcmp (long_options[option_index].name, "connect-timeout") == 0)
           {
           
@@ -1070,7 +1071,7 @@ cmdline_parser_internal (
               goto failure;
           
           }
-          /* same but tries to work around SOCKS proxy bug in libcurl.  */
+          /* Same but works around 'SOCKS proxy connect timeout' bug in libcurl.  */
           else if (strcmp (long_options[option_index].name, "connect-timeout-socks") == 0)
           {
           
@@ -1084,7 +1085,7 @@ cmdline_parser_internal (
               goto failure;
           
           }
-          /* command to invoke when transfer finishes.  */
+          /* Command to invoke when transfer finishes.  */
           else if (strcmp (long_options[option_index].name, "exec") == 0)
           {
           
@@ -1098,7 +1099,7 @@ cmdline_parser_internal (
               goto failure;
           
           }
-          /* stream command to be invoked.  */
+          /* Stream command to be invoked.  */
           else if (strcmp (long_options[option_index].name, "stream-exec") == 0)
           {
           
@@ -1112,7 +1113,7 @@ cmdline_parser_internal (
               goto failure;
           
           }
-          /* invoke --stream-exec when transfer reaches %.  */
+          /* Invoke --stream-exec when transfer reaches %.  */
           else if (strcmp (long_options[option_index].name, "stream") == 0)
           {
           
