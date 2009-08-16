@@ -165,11 +165,11 @@ App::run() {
 
     execmgr.verifyExecArgument();
 
-#ifdef HOST_W32
+#if !defined(HAVE_FORK) || !defined(HAVE_WORKING_FORK)
     if (opts.stream_exec_given) {
         logmgr.cerr()
-            << "warn: system does not support fork/waitpid: "
-            << "ignoring --stream-exec"
+            << "warn: this system does not have a working fork.\n"
+            << "warn: --stream-exec ignored."
             << std::endl;
     }
 #endif
