@@ -80,59 +80,65 @@ void
 HostHandler::toUnicode() {
 #ifdef HAVE_ICONV
     std::string charset;
-    try {
-        charset =
-            Util::subStr(pageContent, "charset=", "\"");
 
-        iconv_t cd =
-            iconv_open( "UTF-8", charset.c_str() );
+    // Skip if charset was not found.
+    try   { partialMatch("(?i)charset=\"?(.*?)([\"\\/>\\s]|$)", &charset); }
+    catch (const HostHandler::ParseException& x) { return; }
 
-        if (cd == (iconv_t)-1) {
-            if (errno == EINVAL) {
-                logmgr.cerr()
-                    << "warn: conversion from "
-                    << charset
-                    << " to UTF-8 not available"
-                    << std::endl;
-            }
-            else
-                perror("iconv_popen");
-            return;
-        }
+    std::string from = charset;
+    std::string to   = "UTF-8//TRANSLIT";
 
-        char inbuf[256];
-        ICONV_CONST char *inptr = inbuf;
-        size_t insize = props.getTitle().length();
+    iconv_t cd =
+        iconv_open( to.c_str(), from.c_str() );
 
-        if (insize >= sizeof(inbuf))
-            insize = sizeof(inbuf);
-
-        snprintf(inbuf, sizeof(inbuf),
-            "%s", props.getTitle().c_str());
-
-        char outbuf[256];
-        size_t avail = sizeof(outbuf);
-        char *wptr   = (char *)outbuf;
-        memset(wptr, 0, sizeof(outbuf));
-
-        const size_t rc =
-            iconv(cd, &inptr, &insize, &wptr, &avail);
-
-        if (rc == (size_t)-1) {
+    if (cd == (iconv_t)-1) {
+        if (errno == EINVAL) {
             logmgr.cerr()
-                << "error while converting characters from "
-                << charset
-                << " to UTF-8"
+                << "error: conversion from \""
+                << from
+                << "\" to \""
+                << to
+                << "\" unavailable"
                 << std::endl;
-            return;
         }
-
-        iconv_close(cd);
-        cd = 0;
-
-        props.setTitle(outbuf);
+        else {
+            perror("iconv_popen");
+                return;
+        }
     }
-    catch (const HostHandler::ParseException&) { }
+
+    char inbuf[256];
+    ICONV_CONST char *inptr = inbuf;
+    size_t insize = props.getTitle().length();
+
+    if (insize >= sizeof(inbuf))
+        insize = sizeof(inbuf);
+
+    snprintf(inbuf, sizeof(inbuf),
+        "%s", props.getTitle().c_str());
+
+    char outbuf[256];
+    size_t avail = sizeof(outbuf);
+    char *wptr   = (char *)outbuf;
+    memset(wptr, 0, sizeof(outbuf));
+
+    const size_t rc =
+        iconv(cd, &inptr, &insize, &wptr, &avail);
+
+    iconv_close(cd);
+    cd = 0;
+
+    if (rc == (size_t)-1) {
+        logmgr.cerr()
+            << "error: converting characters from \""
+            << from
+            << "\" to \""
+            << to
+            << "\" failed"
+            << std::endl;
+    }
+
+    props.setTitle(outbuf);
 #endif
 }
 
