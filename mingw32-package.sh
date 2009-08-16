@@ -6,7 +6,7 @@
 # Create cclive-$release.7z archive.
 
 # Edit these as needed:
-CURL_PATH="/usr/home/legatvs/src/curl-7.19.5"
+CURL_PATH="/usr/home/legatvs/src/curl-7.19.6"
 CURL_DLL="$CURL_PATH/dist/bin/libcurl-4.dll"
 CURL_COPYING="$CURL_PATH/COPYING"
 

@@ -10,7 +10,7 @@
 #
 # libcurl:
 # * wget $curl_url ; tar xjf $curl_release.tar.bz2; cd $curl_release
-# * CFLAGS="-O2 -pipe -march=i586" ./configure --host=mingw32 --prefix=`pwd`/dist --without-ssl --without-ipv6 --without-random --disable-ldap && make install-trip
+# * CFLAGS="-O2 -pipe -march=i586" ./configure --host=mingw32 --prefix=`pwd`/dist --without-ssl --without-ipv6 --without-random --disable-ldap && make install-strip
 # libiconv:
 # * wget $iconv_url ; tar xjf $iconv_release.tar.bz2; cd $iconv_release
 # * ./configure --host=mingw32 --prefix=`pwd`/dist && make install
@@ -24,7 +24,7 @@
 # * Run this script
 
 # Edit as needed:
-curl_config="/usr/home/legatvs/src/curl-7.19.5/dist/bin/curl-config"
+curl_config="/usr/home/legatvs/src/curl-7.19.6/dist/bin/curl-config"
 iconv_prefix="/usr/home/legatvs/src/libiconv-1.13.1/dist"
 pcre_config="/usr/home/legatvs/src/pcre-7.9/dist/bin/pcre-config"
 
