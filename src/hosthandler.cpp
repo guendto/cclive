@@ -86,10 +86,16 @@ HostHandler::toUnicode() {
     catch (const HostHandler::ParseException& x) { return; }
 
     std::string from = charset;
-    std::string to   = "UTF-8//TRANSLIT";
+    std::string to   = "UTF-8";
 
+    // Try with TRANSLIT first.
     iconv_t cd =
-        iconv_open( to.c_str(), from.c_str() );
+        iconv_open( to.c_str(), std::string(from+"//TRANSLIT").c_str() );
+
+    if (cd == (iconv_t)-1) {
+        // Without TRANSLIT.
+        cd = iconv_open( to.c_str(), from.c_str());
+    }
 
     if (cd == (iconv_t)-1) {
         if (errno == EINVAL) {
