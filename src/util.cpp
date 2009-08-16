@@ -186,6 +186,9 @@ Util::parseFormatMap(const std::string& host) {
     if (opts.format_given) // Override.
         fmt = opts.format_arg;
 
+    if (fmt.empty())
+        fmt = "flv";
+
     return fmt;
 }
 
