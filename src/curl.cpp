@@ -254,6 +254,8 @@ CurlMgr::queryFileLength(VideoProperties& props) {
 
     if (!errmsg.empty())
         throw FetchException(errmsg);
+
+    props.formatOutputFilename();
 }
 
 struct write_s {

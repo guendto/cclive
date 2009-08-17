@@ -103,24 +103,23 @@ typedef HostHandlerFactory::UnsupportedHostException NoSupport;
 
 static void
 handleURL(const std::string& url) {
-    try {
+    try
+    {
         SHP<HostHandler> handler = 
             HostHandlerFactory::createHandler(url);
 
         const Options opts = optsmgr.getOptions();
 
-        try {
+        try
+        {
             handler->parsePage(url);
 
             VideoProperties props =
                 handler->getVideoProperties();
 
-            try {
+            try
+            {
                 curlmgr.queryFileLength(props);
-
-                // Must be called here since the above parses the file
-                // content-type and figures out the file suffix.
-                props.formatOutputFilename();
 
                 if (opts.no_extract_given)
                     printVideo(props);
@@ -128,8 +127,7 @@ handleURL(const std::string& url) {
                     printCSV(props);
                 else if (opts.stream_pass_given)
                     execmgr.passStream(props);
-                else
-                {
+                else {
                     if (opts.print_fname_given)
                         printVideo(props);
 
