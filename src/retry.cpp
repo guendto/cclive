@@ -19,6 +19,7 @@
 
 #include <string>
 #include <sstream>
+#include <climits>
 
 #include "except.h"
 #include "video.h"
@@ -52,12 +53,16 @@ RetryMgr::handle(const CurlMgr::FetchException& x) {
         const Options opts =
             optsmgr.getOptions();
 
-        if (++retries <= opts.retry_arg) {
+        if (++retries <= opts.retry_arg || opts.retry_arg == 0) {
+
             logmgr.cout()
                 << "retry #"
                 << retries
                 << " ..."
                 << std::endl;
+
+            if (retries == INT_MAX-1)
+                retries = 0;
         }
         else
             throw x;
