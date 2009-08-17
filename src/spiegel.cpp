@@ -53,14 +53,14 @@ SpiegelHandler::parseLink() {
         "asset=flashvideo/mode=id/id=" + props.getId();
 
     const std::string pl =
-        curlmgr.fetchToMem(playlist_url, "playlist");
+        fetch(playlist_url, "playlist");
 
     std::string headline;
     partialMatch("(?i)<headline>(.*?)</", &headline, pl);
     props.setTitle(headline);
 
     const std::string config =
-        curlmgr.fetchToMem("http://video.spiegel.de/flash/"
+        fetch("http://video.spiegel.de/flash/"
             + props.getId() + ".xml", "config");
 
     pcrecpp::StringPiece tmp(config);

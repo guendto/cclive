@@ -52,7 +52,7 @@ CctvHandler::parseLink() {
         "http://" + host + "/playcfg/flv_info_new.jsp?videoId=" + props.getId();
 
     const std::string config =
-        curlmgr.fetchToMem(confpath, "config");
+        fetch(confpath, "config");
 
     std::string path;
     partialMatch("url\":\"(.*?)\"", &path, config);

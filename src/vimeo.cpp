@@ -54,7 +54,7 @@ VimeoHandler::parseLink() {
         "http://vimeo.com/moogaloop/load/clip:" + props.getId();
 
     const std::string config = 
-        curlmgr.fetchToMem(config_path, "config");
+        fetch(config_path, "config");
 
     std::string sign;
     partialMatch("(?i)<request_signature>(.*?)</", &sign, config);

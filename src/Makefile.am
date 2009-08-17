@@ -9,6 +9,7 @@ video.cpp\
 curl.cpp\
 progressbar.cpp\
 exec.cpp\
+retry.cpp\
 log.cpp	\
 cmdline.c\
 hostfactory.cpp
@@ -43,6 +44,7 @@ macros.h\
 curl.h\
 progressbar.h\
 exec.h\
+retry.h\
 error.h\
 log.h\
 cmdline.h\

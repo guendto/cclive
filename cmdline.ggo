@@ -43,6 +43,11 @@ option "connect-timeout-socks"
     int typestr="<seconds>"
     default="30"
     optional
+option "retry"
+    t "Number of retries"
+    int typestr="<number>"
+    default="5"
+    optional
 
 section "Download"
 option "output-video"

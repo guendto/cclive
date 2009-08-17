@@ -18,7 +18,6 @@
  */
 
 #include "hosthandler.h"
-#include "curl.h"
 
 ClipfishHandler::ClipfishHandler()
     : HostHandler()
@@ -53,8 +52,8 @@ ClipfishHandler::parseLink() {
     std::string config_url =
         "http://www.clipfish.de/video_n.php?p=0|DE&vid=" + props.getId();
 
-    std::string config =
-        curlmgr.fetchToMem(config_url, "config");
+    const std::string config =
+        fetch(config_url, "config");
 
     std::string lnk;
     partialMatch("(?i)&url=(.*?)&", &lnk, config);

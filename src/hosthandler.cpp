@@ -32,6 +32,7 @@
 #include "opts.h"
 #include "log.h"
 #include "curl.h"
+#include "retry.h"
 
 HostHandler::HostHandler()
     : pageContent(""), props(VideoProperties())
@@ -74,6 +75,21 @@ HostHandler::parsePage(const std::string& url) {
     props.setTitle(title);
 
     pageContent.clear();
+}
+
+typedef CurlMgr::FetchException FetchError;
+
+std::string
+HostHandler::fetch(const std::string& url,
+                    const std::string& what)
+{
+    std::string tmp;
+    try   { tmp = curlmgr.fetchToMem(url,what); }
+    catch (const FetchError& x) {
+        retrymgr.handle(x);
+        fetch(url,what);
+    }
+    return tmp;
 }
 
 void

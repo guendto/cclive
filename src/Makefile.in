@@ -49,7 +49,7 @@ PROGRAMS = $(bin_PROGRAMS)
 am__objects_1 = main.$(OBJEXT) app.$(OBJEXT) except.$(OBJEXT) \
 	util.$(OBJEXT) hosthandler.$(OBJEXT) opts.$(OBJEXT) \
 	video.$(OBJEXT) curl.$(OBJEXT) progressbar.$(OBJEXT) \
-	exec.$(OBJEXT) log.$(OBJEXT) cmdline.$(OBJEXT) \
+	exec.$(OBJEXT) retry.$(OBJEXT) log.$(OBJEXT) cmdline.$(OBJEXT) \
 	hostfactory.$(OBJEXT)
 am__objects_2 = youtube.$(OBJEXT) break.$(OBJEXT) evisor.$(OBJEXT) \
 	sevenload.$(OBJEXT) liveleak.$(OBJEXT) dailymotion.$(OBJEXT) \
@@ -218,6 +218,7 @@ video.cpp\
 curl.cpp\
 progressbar.cpp\
 exec.cpp\
+retry.cpp\
 log.cpp	\
 cmdline.c\
 hostfactory.cpp
@@ -234,6 +235,7 @@ macros.h\
 curl.h\
 progressbar.h\
 exec.h\
+retry.h\
 error.h\
 log.h\
 cmdline.h\
@@ -330,6 +332,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/opts.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/progressbar.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/redtube.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/retry.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sevenload.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/spiegel.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/util.Po@am__quote@

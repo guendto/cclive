@@ -64,12 +64,14 @@ formatError (const CURLcode& code) {
 }
 
 CurlMgr::CurlMgr()
+    : httpcode(0)
 {
     curl = NULL;
 }
 
 // Keeps -Weffc++ happy.
-CurlMgr::CurlMgr(const CurlMgr&)
+CurlMgr::CurlMgr(const CurlMgr& o)
+    : httpcode(o.httpcode)
 {
     curl = NULL;
 }
@@ -172,8 +174,9 @@ CurlMgr::fetchToMem(const std::string& url, const std::string &what) {
 
     std::string errmsg;
 
+    httpcode = 0;
+
     if (CURLE_OK == rc) {
-        long httpcode = 0;
         curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpcode);
         if (200 == httpcode)
             logmgr.cout() << "done." << std::endl;
@@ -191,7 +194,7 @@ CurlMgr::fetchToMem(const std::string& url, const std::string &what) {
     }
 
     if (!errmsg.empty())
-        throw FetchException(errmsg);
+        throw FetchException(errmsg, httpcode);
 
     return content;
 }
@@ -227,9 +230,10 @@ CurlMgr::queryFileLength(VideoProperties& props) {
 
     std::string errmsg;
 
+    httpcode = 0;
+
     if (CURLE_OK == rc)
     {
-        long httpcode = 0;
         curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpcode);
 
         if (200 == httpcode || 206 == httpcode)
@@ -253,7 +257,7 @@ CurlMgr::queryFileLength(VideoProperties& props) {
         errmsg = formatError(rc);
 
     if (!errmsg.empty())
-        throw FetchException(errmsg);
+        throw FetchException(errmsg, httpcode);
 
     props.formatOutputFilename();
 }
@@ -355,8 +359,11 @@ CurlMgr::fetchToFile(const VideoProperties& props) {
         fclose(write.file);
     }
 
+    httpcode = 0;
+    curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpcode);
+
     if (CURLE_OK != rc)
-        throw FetchException(curl_easy_strerror(rc));
+        throw FetchException(curl_easy_strerror(rc), httpcode);
 
     pb.finish();
 
@@ -371,7 +378,14 @@ CurlMgr::unescape(std::string& url) const {
     return url;
 }
 
-CurlMgr::FetchException::FetchException(const std::string& error)
-    : RuntimeException(CCLIVE_FETCH, error)
+CurlMgr::FetchException::FetchException(
+    const std::string& error,
+    const long& httpcode)
+    : RuntimeException(CCLIVE_FETCH, error), httpcode(httpcode)
 {
+}
+
+const long&
+CurlMgr::FetchException::getHTTPCode() const {
+    return httpcode;
 }

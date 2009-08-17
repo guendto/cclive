@@ -43,16 +43,18 @@
 #include "opts.h"
 #include "curl.h"
 #include "exec.h"
+#include "retry.h"
 #include "log.h"
 #include "app.h"
 
 #define SHP std::tr1::shared_ptr
 
 // singleton instances
-static SHP<OptionsMgr> __optsmgr(new OptionsMgr);
-static SHP<CurlMgr>    __curlmgr(new CurlMgr);
-static SHP<ExecMgr>    __execmgr(new ExecMgr);
-static SHP<LogMgr>     __logmgr (new LogMgr);
+static SHP<OptionsMgr> __optsmgr (new OptionsMgr);
+static SHP<CurlMgr>    __curlmgr (new CurlMgr);
+static SHP<ExecMgr>    __execmgr (new ExecMgr);
+static SHP<RetryMgr>   __retrymgr(new RetryMgr);
+static SHP<LogMgr>     __logmgr  (new LogMgr);
 
 extern void handle_sigwinch(int); // src/progress.cpp
 
@@ -102,47 +104,81 @@ typedef HostHandler::ParseException                  ParseError;
 typedef HostHandlerFactory::UnsupportedHostException NoSupport;
 
 static void
+fetchPage(SHP<HostHandler> handler, const std::string& url) {
+    try   { handler->parsePage(url); }
+    catch (const FetchError& x) {
+        retrymgr.handle(x);
+        fetchPage(handler, url);
+    }
+    catch (const ParseError& x) { logmgr.cerr(x, false); }
+}
+
+static void
+fetchFile(const VideoProperties& props) {
+    try   { curlmgr.fetchToFile(props); }
+    catch (const FetchError& x) {
+        retrymgr.handle(x);
+        fetchFile(props);
+    }
+}
+
+static void
+queryLength(VideoProperties& props) {
+    try   { curlmgr.queryFileLength(props); }
+    catch (const FetchError& x) {
+        retrymgr.handle(x);
+        queryLength(props);
+    }
+}
+
+static void
+processVideo(VideoProperties& props) {
+    try
+    {
+        queryLength(props);
+
+        const Options opts =
+            optsmgr.getOptions();
+
+        if (opts.no_extract_given)
+            printVideo(props);
+        else if (opts.emit_csv_given)
+            printCSV(props);
+        else if (opts.stream_pass_given)
+            execmgr.passStream(props);
+        else
+        {
+            if (opts.print_fname_given)
+                printVideo(props);
+
+            retrymgr.reset();
+            fetchFile(props);
+        }
+    }
+    catch (const NothingTodo& x) { logmgr.cerr(x, false); }
+}
+
+static void
 handleURL(const std::string& url) {
     try
     {
         SHP<HostHandler> handler = 
             HostHandlerFactory::createHandler(url);
 
-        const Options opts = optsmgr.getOptions();
+        retrymgr.reset();
+        fetchPage(handler, url);
 
-        try
-        {
-            handler->parsePage(url);
+        VideoProperties props =
+            handler->getVideoProperties();
 
-            VideoProperties props =
-                handler->getVideoProperties();
+        retrymgr.reset();
+        processVideo(props);
 
-            try
-            {
-                curlmgr.queryFileLength(props);
-
-                if (opts.no_extract_given)
-                    printVideo(props);
-                else if (opts.emit_csv_given)
-                    printCSV(props);
-                else if (opts.stream_pass_given)
-                    execmgr.passStream(props);
-                else {
-                    if (opts.print_fname_given)
-                        printVideo(props);
-
-                    curlmgr.fetchToFile(props);
-                }
-            }
-            catch (const NothingTodo& x) { logmgr.cerr(x, false); }
-
-            if (opts.exec_run_given) 
-                execmgr.append(props);
-        }
-        catch (const FetchError& x) { logmgr.cerr(x); }
-        catch (const ParseError& x) { logmgr.cerr(x, false); }
+        if (optsmgr.getOptions().exec_run_given) 
+            execmgr.append(props);
     }
-    catch (const NoSupport& x) { logmgr.cerr(x, false); }
+    catch (const NoSupport& x)  { logmgr.cerr(x, false); }
+    catch (const FetchError& x) { /* printed already */ }
 }
 
 typedef std::vector<std::string> STRV;

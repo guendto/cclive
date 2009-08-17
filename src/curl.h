@@ -35,10 +35,15 @@ public:
     void         queryFileLength(VideoProperties&);
     void         fetchToFile    (const VideoProperties&);
     const std::string& unescape (std::string& url) const;
+private:
+    long httpcode;
 public:
     class FetchException : public RuntimeException {
     public:
-        FetchException(const std::string&);
+        FetchException(const std::string&, const long& httpcode);
+        const long& getHTTPCode() const;
+    protected:
+        long httpcode;
     };
 };
 

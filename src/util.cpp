@@ -25,6 +25,7 @@
 
 #include "hosthandler.h"
 #include "opts.h"
+#include "log.h"
 
 const double
 Util::fileExists(const std::string& path) {
@@ -191,5 +192,3 @@ Util::parseFormatMap(const std::string& host) {
 
     return fmt;
 }
-
-
