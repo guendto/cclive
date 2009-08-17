@@ -47,6 +47,7 @@ const char *gengetopt_args_info_help[] = {
   "      --connect-timeout=<seconds>\n                                Max time allowed connection to server take  \n                                  (default=`30')",
   "      --connect-timeout-socks=<seconds>\n                                Same but works around 'SOCKS proxy connect \n                                  timeout' bug in libcurl  (default=`30')",
   "  -t, --retry=<number>          Number of retries  (default=`5')",
+  "      --retry-wait=<seconds>    wait 1..seconds between retries  (default=`1')",
   "\nDownload:",
   "  -O, --output-video=<file>     Write video to file",
   "  -c, --continue                Resume partially downloaded file",
@@ -133,6 +134,7 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->connect_timeout_given = 0 ;
   args_info->connect_timeout_socks_given = 0 ;
   args_info->retry_given = 0 ;
+  args_info->retry_wait_given = 0 ;
   args_info->output_video_given = 0 ;
   args_info->continue_given = 0 ;
   args_info->overwrite_given = 0 ;
@@ -165,6 +167,8 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->connect_timeout_socks_orig = NULL;
   args_info->retry_arg = 5;
   args_info->retry_orig = NULL;
+  args_info->retry_wait_arg = 1;
+  args_info->retry_wait_orig = NULL;
   args_info->output_video_arg = NULL;
   args_info->output_video_orig = NULL;
   args_info->limit_rate_orig = NULL;
@@ -202,22 +206,23 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->connect_timeout_help = gengetopt_args_info_help[12] ;
   args_info->connect_timeout_socks_help = gengetopt_args_info_help[13] ;
   args_info->retry_help = gengetopt_args_info_help[14] ;
-  args_info->output_video_help = gengetopt_args_info_help[16] ;
-  args_info->continue_help = gengetopt_args_info_help[17] ;
-  args_info->overwrite_help = gengetopt_args_info_help[18] ;
-  args_info->no_extract_help = gengetopt_args_info_help[19] ;
-  args_info->limit_rate_help = gengetopt_args_info_help[20] ;
-  args_info->format_help = gengetopt_args_info_help[21] ;
-  args_info->format_map_help = gengetopt_args_info_help[22] ;
-  args_info->number_videos_help = gengetopt_args_info_help[24] ;
-  args_info->regexp_help = gengetopt_args_info_help[25] ;
-  args_info->find_all_help = gengetopt_args_info_help[26] ;
-  args_info->filename_format_help = gengetopt_args_info_help[27] ;
-  args_info->exec_help = gengetopt_args_info_help[29] ;
-  args_info->exec_run_help = gengetopt_args_info_help[30] ;
-  args_info->stream_exec_help = gengetopt_args_info_help[32] ;
-  args_info->stream_pass_help = gengetopt_args_info_help[33] ;
-  args_info->stream_help = gengetopt_args_info_help[34] ;
+  args_info->retry_wait_help = gengetopt_args_info_help[15] ;
+  args_info->output_video_help = gengetopt_args_info_help[17] ;
+  args_info->continue_help = gengetopt_args_info_help[18] ;
+  args_info->overwrite_help = gengetopt_args_info_help[19] ;
+  args_info->no_extract_help = gengetopt_args_info_help[20] ;
+  args_info->limit_rate_help = gengetopt_args_info_help[21] ;
+  args_info->format_help = gengetopt_args_info_help[22] ;
+  args_info->format_map_help = gengetopt_args_info_help[23] ;
+  args_info->number_videos_help = gengetopt_args_info_help[25] ;
+  args_info->regexp_help = gengetopt_args_info_help[26] ;
+  args_info->find_all_help = gengetopt_args_info_help[27] ;
+  args_info->filename_format_help = gengetopt_args_info_help[28] ;
+  args_info->exec_help = gengetopt_args_info_help[30] ;
+  args_info->exec_run_help = gengetopt_args_info_help[31] ;
+  args_info->stream_exec_help = gengetopt_args_info_help[33] ;
+  args_info->stream_pass_help = gengetopt_args_info_help[34] ;
+  args_info->stream_help = gengetopt_args_info_help[35] ;
   
 }
 
@@ -308,6 +313,7 @@ cmdline_parser_release (struct gengetopt_args_info *args_info)
   free_string_field (&(args_info->connect_timeout_orig));
   free_string_field (&(args_info->connect_timeout_socks_orig));
   free_string_field (&(args_info->retry_orig));
+  free_string_field (&(args_info->retry_wait_orig));
   free_string_field (&(args_info->output_video_arg));
   free_string_field (&(args_info->output_video_orig));
   free_string_field (&(args_info->limit_rate_orig));
@@ -426,6 +432,8 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "connect-timeout-socks", args_info->connect_timeout_socks_orig, 0);
   if (args_info->retry_given)
     write_into_file(outfile, "retry", args_info->retry_orig, 0);
+  if (args_info->retry_wait_given)
+    write_into_file(outfile, "retry-wait", args_info->retry_wait_orig, 0);
   if (args_info->output_video_given)
     write_into_file(outfile, "output-video", args_info->output_video_orig, 0);
   if (args_info->continue_given)
@@ -774,6 +782,7 @@ cmdline_parser_internal (
         { "connect-timeout",	1, NULL, 0 },
         { "connect-timeout-socks",	1, NULL, 0 },
         { "retry",	1, NULL, 't' },
+        { "retry-wait",	1, NULL, 0 },
         { "output-video",	1, NULL, 'O' },
         { "continue",	0, NULL, 'c' },
         { "overwrite",	0, NULL, 'W' },
@@ -1120,6 +1129,20 @@ cmdline_parser_internal (
                 &(local_args_info.connect_timeout_socks_given), optarg, 0, "30", ARG_INT,
                 check_ambiguity, override, 0, 0,
                 "connect-timeout-socks", '-',
+                additional_error))
+              goto failure;
+          
+          }
+          /* wait 1..seconds between retries.  */
+          else if (strcmp (long_options[option_index].name, "retry-wait") == 0)
+          {
+          
+          
+            if (update_arg( (void *)&(args_info->retry_wait_arg), 
+                 &(args_info->retry_wait_orig), &(args_info->retry_wait_given),
+                &(local_args_info.retry_wait_given), optarg, 0, "1", ARG_INT,
+                check_ambiguity, override, 0, 0,
+                "retry-wait", '-',
                 additional_error))
               goto failure;
           

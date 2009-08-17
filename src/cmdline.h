@@ -64,6 +64,9 @@ struct gengetopt_args_info
   int retry_arg;	/**< @brief Number of retries (default='5').  */
   char * retry_orig;	/**< @brief Number of retries original value given at command line.  */
   const char *retry_help; /**< @brief Number of retries help description.  */
+  int retry_wait_arg;	/**< @brief wait 1..seconds between retries (default='1').  */
+  char * retry_wait_orig;	/**< @brief wait 1..seconds between retries original value given at command line.  */
+  const char *retry_wait_help; /**< @brief wait 1..seconds between retries help description.  */
   char * output_video_arg;	/**< @brief Write video to file.  */
   char * output_video_orig;	/**< @brief Write video to file original value given at command line.  */
   const char *output_video_help; /**< @brief Write video to file help description.  */
@@ -112,6 +115,7 @@ struct gengetopt_args_info
   unsigned int connect_timeout_given ;	/**< @brief Whether connect-timeout was given.  */
   unsigned int connect_timeout_socks_given ;	/**< @brief Whether connect-timeout-socks was given.  */
   unsigned int retry_given ;	/**< @brief Whether retry was given.  */
+  unsigned int retry_wait_given ;	/**< @brief Whether retry-wait was given.  */
   unsigned int output_video_given ;	/**< @brief Whether output-video was given.  */
   unsigned int continue_given ;	/**< @brief Whether continue was given.  */
   unsigned int overwrite_given ;	/**< @brief Whether overwrite was given.  */

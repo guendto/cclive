@@ -17,9 +17,15 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "config.h"
+
 #include <string>
 #include <sstream>
 #include <climits>
+
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 
 #include "except.h"
 #include "video.h"
@@ -58,7 +64,14 @@ RetryMgr::handle(const CurlMgr::FetchException& x) {
             logmgr.cout()
                 << "retry #"
                 << retries
-                << " ..."
+                << " ... wait "
+                << opts.retry_wait_arg
+                << "s"
+                << std::flush;
+
+            sleep(opts.retry_wait_arg);
+
+            logmgr.cout()
                 << std::endl;
 
             if (retries == INT_MAX-1)

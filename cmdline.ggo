@@ -48,6 +48,11 @@ option "retry"
     int typestr="<number>"
     default="5"
     optional
+option "retry-wait"
+    - "wait 1..seconds between retries"
+    int typestr="<seconds>"
+    default="1"
+    optional
 
 section "Download"
 option "output-video"
