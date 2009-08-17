@@ -27,6 +27,11 @@
 #include <unistd.h>
 #endif
 
+#ifdef HOST_W32
+#include <windows.h>
+#define sleep(n) Sleep(n*1000)
+#endif
+
 #include "except.h"
 #include "video.h"
 #include "curl.h"
