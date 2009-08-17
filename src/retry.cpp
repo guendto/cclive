@@ -60,19 +60,19 @@ RetryMgr::handle(const CurlMgr::FetchException& x) {
             optsmgr.getOptions();
 
         if (++retries <= opts.retry_arg || opts.retry_arg == 0) {
+            std::stringstream b;
 
-            logmgr.cout()
-                << "retry #"
-                << retries
-                << " ... wait "
-                << opts.retry_wait_arg
-                << "s"
-                << std::flush;
+            b << "retry #"
+              << retries
+              << " ... wait "
+              << opts.retry_wait_arg
+              << " second(s).";
+
+            logmgr.cerr(b.str(), false, false, false);
 
             sleep(opts.retry_wait_arg);
 
-            logmgr.cout()
-                << std::endl;
+            logmgr.cerr() << std::endl;
 
             if (retries == INT_MAX-1)
                 retries = 0;

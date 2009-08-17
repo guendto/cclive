@@ -145,6 +145,28 @@ LogMgr::cerr(const RuntimeException& except,
     return *_cerr;
 }
 
+std::ostream&
+LogMgr::cerr(const std::string& what,
+             const bool& prepend_newline, /*=true*/
+             const bool& prepend_error, /*=true*/
+             const bool& append_newline /*=true*/)
+{
+    if (prepend_newline)
+        *_cerr << "\n";
+
+    if (prepend_error)
+        *_cerr << "error: ";
+        
+    *_cerr << what;
+    
+    if (append_newline)
+        *_cerr << std::endl;
+    else
+        *_cerr << std::flush;
+
+    return *_cerr;
+}
+
 const ReturnCode&
 LogMgr::getRC() const {
     return rc;
