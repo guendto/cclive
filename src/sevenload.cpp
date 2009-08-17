@@ -53,7 +53,7 @@ SevenloadHandler::parseLink() {
     curlmgr.unescape(cpath);
 
     const std::string config =
-        fetch(cpath, "config");
+        fetch(cpath, "config", true);
 
     std::string id;
     partialMatch("(?i)item id=\"(.*?)\"", &id, config);

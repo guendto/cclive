@@ -81,8 +81,12 @@ typedef CurlMgr::FetchException FetchError;
 
 std::string
 HostHandler::fetch(const std::string& url,
-                    const std::string& what)
+                    const std::string& what,
+                    const bool& reset/*=false*/)
 {
+    if (reset)
+        retrymgr.reset();
+
     std::string tmp;
     try   { tmp = curlmgr.fetchToMem(url,what); }
     catch (const FetchError& x) {

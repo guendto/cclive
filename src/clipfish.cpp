@@ -53,7 +53,7 @@ ClipfishHandler::parseLink() {
         "http://www.clipfish.de/video_n.php?p=0|DE&vid=" + props.getId();
 
     const std::string config =
-        fetch(config_url, "config");
+        fetch(config_url, "config", true);
 
     std::string lnk;
     partialMatch("(?i)&url=(.*?)&", &lnk, config);

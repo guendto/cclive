@@ -52,7 +52,7 @@ GolemHandler::parseLink() {
         "http://video.golem.de/xml/" + props.getId();
 
     const std::string config =
-        fetch(config_url, "config");
+        fetch(config_url, "config", true);
 
     std::string link =
         "http://video.golem.de/download/" + props.getId();

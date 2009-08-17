@@ -17,15 +17,7 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// A peculiar thing this one. If commented out or included *after* "config.h",
-// mingw32-g++ returns: error: '::malloc' has not been declared
-#include <cstdlib>
-
 #include "config.h"
-
-//#ifndef HAVE_REALLOC
-//#error Cannot compile without realloc() support
-//#endif
 
 #include <iostream>
 #include <iomanip>
@@ -46,6 +38,7 @@
 #include "progressbar.h"
 #include "log.h"
 #include "curl.h"
+#include "retry.h"
 
 static CURL *curl;
 
@@ -297,10 +290,16 @@ callback_progress(
 
 void
 CurlMgr::fetchToFile(const VideoProperties& props) {
-    const Options opts = optsmgr.getOptions();
+    const Options opts   = optsmgr.getOptions();
     const double initial = props.getInitial();
 
-    if (opts.continue_given && initial > 0) {
+    bool continue_given =
+        static_cast<bool>(opts.continue_given);
+
+    if (retrymgr.getRetryUntilRetrievedFlag())
+        continue_given = true;
+
+    if (continue_given && initial > 0) {
         double remaining = props.getLength() - initial;
         logmgr.cout()
             << "from: "

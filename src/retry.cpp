@@ -35,13 +35,14 @@
 #include "retry.h"
 
 RetryMgr::RetryMgr()
-    : retries(0)
+    : retries(0), retryUntilRetrievedFlag(false)
 {
 }
 
 void
 RetryMgr::reset() {
     retries = 0;
+    retryUntilRetrievedFlag = false;
 }
 
 void
@@ -59,7 +60,12 @@ RetryMgr::handle(const CurlMgr::FetchException& x) {
         const Options opts =
             optsmgr.getOptions();
 
-        if (++retries <= opts.retry_arg || opts.retry_arg == 0) {
+        int retry = opts.retry_arg;
+
+        if (retryUntilRetrievedFlag)
+            retry = 0; // Overrides --retry setting if we are downloading a file
+
+        if (++retries <= opts.retry_arg || retry == 0) {
             std::stringstream b;
 
             b << "retry #"
@@ -80,4 +86,14 @@ RetryMgr::handle(const CurlMgr::FetchException& x) {
         else
             throw x;
     }
+}
+
+void
+RetryMgr::setRetryUntilRetrievedFlag() {
+    retryUntilRetrievedFlag = true;
+}
+
+const bool&
+RetryMgr::getRetryUntilRetrievedFlag() const {
+    return retryUntilRetrievedFlag;
 }

@@ -21,12 +21,15 @@
 
 class RetryMgr : public Singleton<RetryMgr> {
 public:
-    RetryMgr         ();
+    RetryMgr();
 public:
-    void reset  ();
-    void handle (const CurlMgr::FetchException&);
+    void        reset                     ();
+    void        handle                    (const CurlMgr::FetchException&);
+    void        setRetryUntilRetrievedFlag();
+    const bool& getRetryUntilRetrievedFlag() const;
 private:
     int retries;
+    bool retryUntilRetrievedFlag;
 };
 
 #define retrymgr RetryMgr::getInstance()

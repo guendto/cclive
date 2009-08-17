@@ -51,14 +51,14 @@ LiveleakHandler::parseLink() {
     curlmgr.unescape(confPath);
 
     const std::string config =
-        fetch(confPath, "config");
+        fetch(confPath, "config", true);
 
     std::string plPath;
     partialMatch("(?i)<file>(.*?)</", &plPath, config);
     curlmgr.unescape(plPath);
 
     const std::string playlist =
-        fetch(plPath, "playlist");
+        fetch(plPath, "playlist", true);
 
     std::string lnk;
     partialMatch("(?i)<location>(.*?)</", &lnk, playlist);

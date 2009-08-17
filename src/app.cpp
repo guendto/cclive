@@ -104,7 +104,12 @@ typedef HostHandler::ParseException                  ParseError;
 typedef HostHandlerFactory::UnsupportedHostException NoSupport;
 
 static void
-fetchPage(SHP<HostHandler> handler, const std::string& url) {
+fetchPage(SHP<HostHandler> handler,
+          const std::string& url,
+          const bool& reset=false)
+{
+    if (reset)
+        retrymgr.reset();
     try   { handler->parsePage(url); }
     catch (const FetchError& x) {
         retrymgr.handle(x);
@@ -114,16 +119,21 @@ fetchPage(SHP<HostHandler> handler, const std::string& url) {
 }
 
 static void
-fetchFile(const VideoProperties& props) {
+fetchFile(const VideoProperties& props, const bool& reset=false) {
+    if (reset)
+        retrymgr.reset();
     try   { curlmgr.fetchToFile(props); }
     catch (const FetchError& x) {
+        retrymgr.setRetryUntilRetrievedFlag();
         retrymgr.handle(x);
         fetchFile(props);
     }
 }
 
 static void
-queryLength(VideoProperties& props) {
+queryLength(VideoProperties& props, const bool& reset=false) {
+    if (reset)
+        retrymgr.reset();
     try   { curlmgr.queryFileLength(props); }
     catch (const FetchError& x) {
         retrymgr.handle(x);
@@ -135,7 +145,7 @@ static void
 processVideo(VideoProperties& props) {
     try
     {
-        queryLength(props);
+        queryLength(props, true);
 
         const Options opts =
             optsmgr.getOptions();
@@ -151,8 +161,7 @@ processVideo(VideoProperties& props) {
             if (opts.print_fname_given)
                 printVideo(props);
 
-            retrymgr.reset();
-            fetchFile(props);
+            fetchFile(props, true);
         }
     }
     catch (const NothingTodo& x) { logmgr.cerr(x, false); }
@@ -165,13 +174,11 @@ handleURL(const std::string& url) {
         SHP<HostHandler> handler = 
             HostHandlerFactory::createHandler(url);
 
-        retrymgr.reset();
-        fetchPage(handler, url);
+        fetchPage(handler, url, true);
 
         VideoProperties props =
             handler->getVideoProperties();
 
-        retrymgr.reset();
         processVideo(props);
 
         if (optsmgr.getOptions().exec_run_given) 

@@ -48,7 +48,9 @@ private:
     void toUnicode   ();
     void applyRegexp (std::string& title);
 protected:
-    std::string fetch(const std::string& url, const std::string& what);
+    std::string fetch(const std::string& url,
+                        const std::string& what,
+                        const bool& reset=false);
 protected:
     std::string     pageContent;
     VideoProperties props;
