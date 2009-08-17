@@ -91,11 +91,6 @@ Otherwise identical to the above option but works around the known
 
 B<Download>
 
-cclive appends a numeric suffix (e.g. ".1") to the filename, if the video file
-exists already. If the local file length matches the server returned
-content-length for the video file, cclive skips the download and ignores any
-attempts to resume the transfer.
-
 =over 4
 
 =item B<-O, --output-video>=I<file>
@@ -104,7 +99,10 @@ Write the video to I<file>. Overrides C<--filename-format>.
 
 =item B<-c, --continue>
 
-Resume a partially downloaded video file.
+Resume a partially downloaded video file. Affects the file transfers
+prior to this invocation of cclive. You do not need to specify this
+option if you want the current invocation of cclive to retry downloading
+should the connection be lost midway through. This is the default behaviour.
 
 =item B<-W, --overwrite>
 
