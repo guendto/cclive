@@ -132,7 +132,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2009-08-15" "0.5.0" "cclive manual"
+.TH cclive 1 "2009-08-18" "0.5.0" "cclive manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -198,19 +198,23 @@ Defaults to 30.
 .IX Item "--connect-timeout-socks=seconds"
 Otherwise identical to the above option but works around the known
 \&\*(L"\s-1SOCKS\s0 proxy connect timeout\*(R" bug in libcurl. Defaults to 30.
+.IP "\fB\-t, \-\-retry\fR=\fInumber\fR" 4
+.IX Item "-t, --retry=number"
+\&\fInumber\fR of retries. Specify 0 for infinite. Default is 5.
+.IP "\fB\-\-retry\-wait\fR=\fIseconds\fR" 4
+.IX Item "--retry-wait=seconds"
+Wait 1..seconds between the retries. Default is 1.
 .PP
 \&\fBDownload\fR
-.PP
-cclive appends a numeric suffix (e.g. \*(L".1\*(R") to the filename, if the video file
-exists already. If the local file length matches the server returned
-content-length for the video file, cclive skips the download and ignores any
-attempts to resume the transfer.
 .IP "\fB\-O, \-\-output\-video\fR=\fIfile\fR" 4
 .IX Item "-O, --output-video=file"
 Write the video to \fIfile\fR. Overrides \f(CW\*(C`\-\-filename\-format\*(C'\fR.
 .IP "\fB\-c, \-\-continue\fR" 4
 .IX Item "-c, --continue"
-Resume a partially downloaded video file.
+Resume a partially downloaded video file. Affects the file transfers
+prior to this invocation of cclive. You do not need to specify this
+option if you want the current invocation of cclive to retry downloading
+should the connection be lost midway through. This is the default behaviour.
 .IP "\fB\-W, \-\-overwrite\fR" 4
 .IX Item "-W, --overwrite"
 Overwrite the existing file. Negates \f(CW\*(C`\-\-continue\*(C'\fR.

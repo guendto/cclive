@@ -87,6 +87,14 @@ Defaults to 30.
 Otherwise identical to the above option but works around the known
 "SOCKS proxy connect timeout" bug in libcurl. Defaults to 30.
 
+=item B<-t, --retry>=I<number>
+
+I<number> of retries. Specify 0 for infinite. Default is 5.
+
+=item B<--retry-wait>=I<seconds>
+
+Wait 1..seconds between the retries. Default is 1.
+
 =back
 
 B<Download>
