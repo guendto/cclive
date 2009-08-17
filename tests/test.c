@@ -21,7 +21,9 @@ runtest_host (const char *opts, const char *url) {
         return(0);
     }
 
+#ifdef HAVE_SETENV
     setenv("CCLIVE_NO_CONFIG", "1", 1);
+#endif
 
     if (opts)
         asprintf(&tmp, "%s -n %s %s", CCLIVE_PATH, opts, url);
