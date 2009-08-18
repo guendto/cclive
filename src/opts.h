@@ -33,9 +33,13 @@ public:
     void                init        (const int& argc, char *const *argv);
     const Options&      getOptions  () const;
     const std::string&  getPath     () const;
+    const std::string&  getLocale   () const;
+    const bool&         getToUnicodeFlag() const;
 private:
     Options opts;
     std::string path;
+    std::string locale;
+    bool toUnicodeFlag;
 };
 
 #define optsmgr OptionsMgr::getInstance()

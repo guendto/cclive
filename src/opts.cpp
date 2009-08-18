@@ -31,7 +31,8 @@
 #include "opts.h"
 
 OptionsMgr::OptionsMgr()
-    : opts(Options()), path("")
+    : opts(Options()), path(""),
+        locale("undefined"), toUnicodeFlag(false)
 {
 }
 
@@ -41,8 +42,13 @@ OptionsMgr::~OptionsMgr() {
 
 void
 OptionsMgr::init(const int& argc, char * const *argv) {
+    const char *tmp = setlocale(LC_ALL, "");
+    if (tmp)
+        locale = tmp;
+    this->toUnicodeFlag = tmp != 0;
 
-    const char *no_config = getenv("CCLIVE_NO_CONFIG");
+    const char *no_config =
+        getenv("CCLIVE_NO_CONFIG");
 
     const char *home = getenv("CCLIVE_HOME");
     if (!home)
@@ -94,4 +100,14 @@ OptionsMgr::getOptions() const {
 const std::string&
 OptionsMgr::getPath() const {
     return path;
+}
+
+const std::string&
+OptionsMgr::getLocale() const {
+    return locale;
+}
+
+const bool&
+OptionsMgr::getToUnicodeFlag() const {
+    return toUnicodeFlag;
 }

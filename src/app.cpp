@@ -31,6 +31,10 @@
 #include <algorithm>
 #include <tr1/memory>
 
+#ifdef HAVE_LOCALE_H
+#include <locale.h>
+#endif
+
 #ifdef HAVE_SIGNAL_H
 #include <signal.h>
 #endif
@@ -272,18 +276,13 @@ App::parseInput() {
 void
 App::printVersion() {
 static const char copyr_notice[] =
-"Copyright (C) 2009 Toni Gundogdu.\n\n"
+"Copyright (C) 2009 Toni Gundogdu. "
 "License GPLv3+: GNU GPL version 3 or later\n"
-"  <http://www.gnu.org/licenses/>\n\n"
-"This is free software: you are free to change and redistribute it.\n"
-"There is NO WARRANTY, to the extent permitted by law.";
+"This is free software; see the  source for  copying conditions.  There is NO\n"
+"warranty;  not even for MERCHANTABILITY or FITNESS FOR A  PARTICULAR PURPOSE.";
 
     const curl_version_info_data *c =
         curl_version_info(CURLVERSION_NOW);
-
-    const char *locale = getenv("LANG");
-    if (!locale)
-        locale = "LANG undefined";
 
     std::cout
         << CMDLINE_PARSER_PACKAGE << " version "
@@ -291,7 +290,7 @@ static const char copyr_notice[] =
         << c->version             << "  ["
         << CANONICAL_TARGET       << "]\n"
         << copyr_notice           << "\n"
-        << "\n  Locale  : "       << locale
+        << "\n  Locale  : "       << optsmgr.getLocale()
         << "\n  Config  : "       << optsmgr.getPath()
         << "\n  Features: pcre "
 #ifdef HAVE_ICONV
