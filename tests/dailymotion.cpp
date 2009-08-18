@@ -15,8 +15,8 @@ static const char *formats[] = {
 };
 
 MAIN_BEGIN
-    int rc;
-    for (int i=0,rc=0; formats[i] && !rc; ++i) {
+    int i,rc;
+    for (i=0,rc=0; formats[i] && !rc; ++i) {
         std::stringstream b;
         b << "-f " << formats[i];
         rc = runtest_host( TEST_URL, b.str() );
