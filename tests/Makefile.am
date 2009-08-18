@@ -2,6 +2,7 @@
 EXTRA_DIST=
 
 check_PROGRAMS=\
+multi\
 youtube\
 break\
 liveleak\
@@ -19,25 +20,29 @@ spiegel\
 redtube\
 vimeo
 
-TESTS= $(check_PROGRAMS)
+TESTS=		$(check_PROGRAMS)
+common=		test.cpp test.h
+AM_CXXFLAGS=	-DCCLIVE_PATH="\"$(top_srcdir)/src/cclive\""
 
-common= test.c test.h
+youtube_SOURCES=	youtube.cpp $(common)
+break_SOURCES=		break.cpp $(common)
+liveleak_SOURCES=	liveleak.cpp $(common)
+dailymotion_SOURCES=	dailymotion.cpp $(common)
+evisor_SOURCES=		evisor.cpp $(common)
+google_SOURCES=		google.cpp $(common)
+vimeo_SOURCES=		vimeo.cpp $(common)
+sevenload_SOURCES=	sevenload.cpp $(common)
+golem_SOURCES=		golem.cpp $(common)
+clipfish_SOURCES=	clipfish.cpp $(common)
+funnyhub_SOURCES=	funnyhub.cpp $(common)
+myubo_SOURCES=		myubo.cpp $(common)
+cctv_SOURCES=		cctv.cpp $(common)
+ehrensenf_SOURCES=	ehrensenf.cpp $(common)
+spiegel_SOURCES=	spiegel.cpp $(common)
+redtube_SOURCES=	redtube.cpp $(common)
+multi_SOURCES=		multi.cpp $(common)
 
-AM_CFLAGS= -DCCLIVE_PATH="\"$(top_srcdir)/src/cclive\""
+local-clean:
+	@rm -rf *.core
 
-youtube_SOURCES=	youtube.c $(common)
-break_SOURCES=		break.c $(common)
-liveleak_SOURCES=	liveleak.c $(common)
-dailymotion_SOURCES=	dailymotion.c $(common)
-evisor_SOURCES=		evisor.c $(common)
-google_SOURCES=		google.c $(common)
-vimeo_SOURCES=		vimeo.c $(common)
-sevenload_SOURCES=	sevenload.c $(common)
-golem_SOURCES=		golem.c $(common)
-clipfish_SOURCES=	clipfish.c $(common)
-funnyhub_SOURCES=	funnyhub.c $(common)
-myubo_SOURCES=		myubo.c $(common)
-cctv_SOURCES=		cctv.c $(common)
-ehrensenf_SOURCES=	ehrensenf.c $(common)
-spiegel_SOURCES=	spiegel.c $(common)
-redtube_SOURCES=	redtube.c $(common)
+distclean-local: local-clean

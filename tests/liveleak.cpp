@@ -1,5 +1,3 @@
-#include <stdio.h>
-
 #include "test.h"
 
 static const char
@@ -9,12 +7,11 @@ static const char
     NULL
 };
 
-int
-main (int argc, char *argv[]) {
+MAIN_BEGIN
     int i,rc;
-
     for (i=0,rc=0; urls[i] && !rc; ++i)
-        rc = runtest_host(NULL, urls[i]);
-
+        rc = runtest_host(urls[i]);
     return(rc);
-}
+MAIN_END
+
+

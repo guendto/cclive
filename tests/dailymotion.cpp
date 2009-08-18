@@ -1,8 +1,5 @@
 #include "test.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-
 #define TEST_URL \
     "http://www.dailymotion.com/hd/video/" \
         "x9fkzj_battlefield-1943-coral-sea-trailer_videogames"
@@ -17,16 +14,14 @@ static const char *formats[] = {
     NULL
 };
 
-int
-main (int argc, char *argv[]) {
-    int i,rc;
-    char *opts;
-
-    for (i=0,rc=0,opts=0; formats[i] && !rc; ++i) {
-        asprintf(&opts, "-f %s", formats[i]);
-        rc = runtest_host(opts, TEST_URL);
-        free(opts);
+MAIN_BEGIN
+    int rc;
+    for (int i=0,rc=0; formats[i] && !rc; ++i) {
+        std::stringstream b;
+        b << "-f " << formats[i];
+        rc = runtest_host( TEST_URL, b.str() );
     }
-
     return(rc);
-}
+MAIN_END
+
+

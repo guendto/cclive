@@ -1,8 +1,5 @@
 #include "test.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-
 static const char *
 formats[] = {
     "flv",
@@ -22,20 +19,19 @@ urls[] = {
     NULL
 };
 
-int
-main (int argc, char *argv[]) {
+MAIN_BEGIN
     int i, rc;
-    char *opts;
 
-    for (i=0,rc=0,opts=0; formats[i] && !rc; ++i) {
-        asprintf(&opts, "-f %s", formats[i]);
-        rc = runtest_host(opts, urls[0]);
-        free(opts);
+    for (i=0,rc=0; formats[i] && !rc; ++i) {
+        std::stringstream b;
+        b << "-f " << formats[i];
+        rc = runtest_host( urls[0], b.str() );
     }
 
-    for (i=0,opts=0; urls[i] && !rc; ++i)
-        rc = runtest_host(NULL, urls[i]);
+    for (i=0; urls[i] && !rc; ++i)
+        rc = runtest_host(urls[i]);
 
-    return(rc);
-}
+    return (rc);
+MAIN_END
+
 

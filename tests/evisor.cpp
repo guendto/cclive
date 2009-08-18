@@ -1,14 +1,9 @@
-#include <stdio.h>
-
 #include "test.h"
 
-int
-main (int argc, char *argv[]) {
-    int rc;
-    
-    rc = runtest_host(NULL,
+MAIN_BEGIN
+    return runtest_host(
         "http://www.evisor.tv/tv/rennstrecken/"
         "1-runde-oschersleben-14082008--6985.htm");
+MAIN_END
 
-    return (rc);
-}
+

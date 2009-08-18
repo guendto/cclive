@@ -1,14 +1,9 @@
-#include <stdio.h>
-
 #include "test.h"
 
-int
-main (int argc, char *argv[]) {
-    int rc;
-
-    rc = runtest_host(NULL,
+MAIN_BEGIN
+    return runtest_host(
         "http://www.ehrensenf.de/shows/ehrensenf/"
         "getarnte-bienen-schaukelmotorrad-devitohorror");
+MAIN_END
 
-    return(rc);
-}
+
