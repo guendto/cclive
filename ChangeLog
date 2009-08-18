@@ -34,6 +34,7 @@ Version 0.5.0
     # add support for CCLIVE_TEST_OPTS
   * tests/redtube.c: new test link
   * tests/: rewrite in c++
+  * tests/multi.cpp: added
   * Remove: tests/pod.pl
 
 
