@@ -250,9 +250,9 @@ const std::string
 ProgressBar::timeToStr(const int& secs) const {
     std::stringstream s;
 
-    if (secs < 100)
+    if (secs < 60)
         s << secs << "s";
-    else if (secs < 100 * 60)
+    else if (secs < 60 * 60)
         s << zeropad(2,secs/60) << "m" << zeropad(2,secs%60) << "s";
     else if (secs < 48 * 3600)
         s << zeropad(2,secs/3600) << "h" << zeropad(2,(secs/60)%60) << "m";
