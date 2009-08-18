@@ -23,11 +23,6 @@
 #include <string>
 #include <vector>
 
-#ifdef HAVE_ICONV
-#include <cerrno>
-#include <iconv.h>
-#endif
-
 #include "hosthandler.h"
 #include "opts.h"
 #include "log.h"
@@ -59,8 +54,17 @@ HostHandler::parsePage(const std::string& url) {
     parseId   ();
     parseLink ();
 
-    // Handle title encoding. Done here since we still have page html.
-    toUnicode();
+#ifdef HAVE_ICONV
+    // Convert character set encoding to utf8. Skip if charset was not found.
+    try   {
+        std::string charset;
+        partialMatch("(?i)charset=\"?(.*?)([\"\\/>\\s]|$)", &charset);
+
+        std::string tmp = props.getTitle();
+        props.setTitle( Util::toUnicode(tmp, charset) );
+    }
+    catch (const HostHandler::ParseException& x) { }
+#endif
 
     // Apply regexp.
     std::string title = props.getTitle();
@@ -94,78 +98,6 @@ HostHandler::fetch(const std::string& url,
         fetch(url,what);
     }
     return tmp;
-}
-
-void
-HostHandler::toUnicode() {
-#ifdef HAVE_ICONV
-    std::string charset;
-
-    // Skip if charset was not found.
-    try   { partialMatch("(?i)charset=\"?(.*?)([\"\\/>\\s]|$)", &charset); }
-    catch (const HostHandler::ParseException& x) { return; }
-
-    std::string from = charset;
-    std::string to   = "UTF-8";
-
-    // Try with TRANSLIT first.
-    iconv_t cd =
-        iconv_open( to.c_str(), std::string(from+"//TRANSLIT").c_str() );
-
-    if (cd == (iconv_t)-1) {
-        // Without TRANSLIT.
-        cd = iconv_open( to.c_str(), from.c_str());
-    }
-
-    if (cd == (iconv_t)-1) {
-        if (errno == EINVAL) {
-            logmgr.cerr()
-                << "error: conversion from \""
-                << from
-                << "\" to \""
-                << to
-                << "\" unavailable"
-                << std::endl;
-        }
-        else {
-            perror("iconv_popen");
-                return;
-        }
-    }
-
-    char inbuf[256];
-    ICONV_CONST char *inptr = inbuf;
-    size_t insize = props.getTitle().length();
-
-    if (insize >= sizeof(inbuf))
-        insize = sizeof(inbuf);
-
-    snprintf(inbuf, sizeof(inbuf),
-        "%s", props.getTitle().c_str());
-
-    char outbuf[256];
-    size_t avail = sizeof(outbuf);
-    char *wptr   = (char *)outbuf;
-    memset(wptr, 0, sizeof(outbuf));
-
-    const size_t rc =
-        iconv(cd, &inptr, &insize, &wptr, &avail);
-
-    iconv_close(cd);
-    cd = 0;
-
-    if (rc == (size_t)-1) {
-        logmgr.cerr()
-            << "error: converting characters from \""
-            << from
-            << "\" to \""
-            << to
-            << "\" failed"
-            << std::endl;
-    }
-
-    props.setTitle(outbuf);
-#endif
 }
 
 void

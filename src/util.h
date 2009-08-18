@@ -44,6 +44,8 @@ public:
                         tokenize     (const std::string& src,
                                         const std::string& delims);
     static std::string parseFormatMap(const std::string& host);
+    static const std::string& toUnicode(std::string& src,
+                                    const std::string& from);
 };
 
 #endif

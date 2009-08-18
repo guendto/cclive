@@ -17,11 +17,18 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "config.h"
+
 #include <algorithm>
 #include <fstream>
 #include <string>
 #include <vector>
 #include <map>
+
+#ifdef HAVE_ICONV
+#include <cerrno>
+#include <iconv.h>
+#endif
 
 #include "hosthandler.h"
 #include "opts.h"
@@ -191,4 +198,68 @@ Util::parseFormatMap(const std::string& host) {
         fmt = "flv";
 
     return fmt;
+}
+
+const std::string&
+Util::toUnicode(std::string& src, const std::string& from) {
+#ifdef HAVE_ICONV
+    const std::string to = "UTF-8";
+
+    // Try with TRANSLIT first.
+    iconv_t cd =
+        iconv_open( to.c_str(), std::string(from+"//TRANSLIT").c_str() );
+
+    if (cd == (iconv_t)-1) // Then without TRANSLIT.
+        cd = iconv_open( to.c_str(), from.c_str());
+
+    if (cd == (iconv_t)-1) {
+        if (errno == EINVAL) {
+            logmgr.cerr()
+                << "error: conversion from \""
+                << from
+                << "\" to \""
+                << to
+                << "\" unavailable"
+                << std::endl;
+        }
+        else {
+            perror("iconv_popen");
+            return src;
+        }
+    }
+
+    char inbuf[1024];
+    ICONV_CONST char *inptr = inbuf;
+    size_t insize = src.length();
+
+    if (insize >= sizeof(inbuf))
+        insize = sizeof(inbuf);
+
+    snprintf(inbuf, sizeof(inbuf),
+        "%s", src.c_str());
+
+    char outbuf[1024];
+    size_t avail = sizeof(outbuf);
+    char *wptr   = (char *)outbuf;
+    memset(wptr, 0, sizeof(outbuf));
+
+    const size_t rc =
+        iconv(cd, &inptr, &insize, &wptr, &avail);
+
+    iconv_close(cd);
+    cd = 0;
+
+    if (rc == (size_t)-1) {
+        logmgr.cerr()
+            << "error: converting characters from \""
+            << from
+            << "\" to \""
+            << to
+            << "\" failed"
+            << std::endl;
+    }
+    else
+        src = outbuf;
+#endif
+    return src;
 }

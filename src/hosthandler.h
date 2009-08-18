@@ -45,7 +45,6 @@ public:
                                                 const pcrecpp::Arg& dst,
                                                 const std::string& data="");
 private:
-    void toUnicode   ();
     void applyRegexp (std::string& title);
 protected:
     std::string fetch(const std::string& url,
