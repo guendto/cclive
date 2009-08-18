@@ -17,6 +17,7 @@ Version 0.5.0
   * Fix: --continue with local_length >= content_length
   * Remove: --title, --cclass, --no-cclass
   * Progressbar: zeropad ETA
+  * Progressbar: tweak calculations to use 60s instead of 100s
 
  Developer-visible changes:
   * Update NEWS, manual, INSTALL
@@ -32,6 +33,7 @@ Version 0.5.0
     # set CCLIVE_NO_CONFIG to ignore ~/.ccliverc (src/opts.cpp)
     # add support for CCLIVE_TEST_OPTS
   * tests/redtube.c: new test link
+  * tests/: rewrite in c++
   * Remove: tests/pod.pl
 
 
