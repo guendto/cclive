@@ -1,6 +1,7 @@
 
 #include "test.h"
 
+#include <cstdio>
 #include <cstdlib>
 #include <stdexcept>
 
