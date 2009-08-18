@@ -170,6 +170,7 @@ appearing in the format string will be replaced accordingly:
   %h = website id
   %s = file suffix
 
+Note that cclive converts any dashes ('-') to underscores ('_') in video IDs.
 See also L</EXAMPLES>.
 
 =back
