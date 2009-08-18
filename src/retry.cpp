@@ -59,7 +59,7 @@ RetryMgr::handle(const CurlMgr::FetchException& x) {
 
     case 403: // Forbidden
     case 404: // Not found
-        break;
+        throw x;
 
     default:
         const Options opts =
