@@ -98,10 +98,7 @@ printCSV(const VideoProperties& props) {
         << std::endl;
 }
 
-typedef VideoProperties::NothingToDoException        NothingTodo;
-typedef CurlMgr::FetchException                      FetchError;
-typedef HostHandler::ParseException                  ParseError;
-typedef HostHandlerFactory::UnsupportedHostException NoSupport;
+typedef CurlMgr::FetchException FetchError;
 
 static void
 fetchPage(SHP<HostHandler> handler,
@@ -115,7 +112,6 @@ fetchPage(SHP<HostHandler> handler,
         retrymgr.handle(x);
         fetchPage(handler, url);
     }
-    catch (const ParseError& x) { logmgr.cerr(x, false); }
 }
 
 static void
@@ -143,29 +139,29 @@ queryLength(VideoProperties& props, const bool& reset=false) {
 
 static void
 processVideo(VideoProperties& props) {
-    try
+    queryLength(props, true);
+
+    const Options opts =
+        optsmgr.getOptions();
+
+    if (opts.no_extract_given)
+        printVideo(props);
+    else if (opts.emit_csv_given)
+        printCSV(props);
+    else if (opts.stream_pass_given)
+        execmgr.passStream(props);
+    else
     {
-        queryLength(props, true);
-
-        const Options opts =
-            optsmgr.getOptions();
-
-        if (opts.no_extract_given)
+        if (opts.print_fname_given)
             printVideo(props);
-        else if (opts.emit_csv_given)
-            printCSV(props);
-        else if (opts.stream_pass_given)
-            execmgr.passStream(props);
-        else
-        {
-            if (opts.print_fname_given)
-                printVideo(props);
 
-            fetchFile(props, true);
-        }
+        fetchFile(props, true);
     }
-    catch (const NothingTodo& x) { logmgr.cerr(x, false); }
 }
+
+typedef HostHandlerFactory::UnsupportedHostException NoSupport;
+typedef HostHandler::ParseException                  ParseError;
+typedef VideoProperties::NothingToDoException        NothingTodo;
 
 static void
 handleURL(const std::string& url) {
@@ -179,13 +175,15 @@ handleURL(const std::string& url) {
         VideoProperties props =
             handler->getVideoProperties();
 
-        processVideo(props);
+        try   { processVideo(props); }
+        catch (const NothingTodo& x) { logmgr.cerr(x, false); }
 
         if (optsmgr.getOptions().exec_run_given) 
             execmgr.append(props);
     }
-    catch (const NoSupport& x)  { logmgr.cerr(x, false); }
-    catch (const FetchError& x) { /* printed already */ }
+    catch (const NoSupport& x)   { logmgr.cerr(x, false); }
+    catch (const FetchError& x)  { /* printed by retrymgr.handle already */ }
+    catch (const ParseError& x)  { logmgr.cerr(x, false); }
 }
 
 typedef std::vector<std::string> STRV;
