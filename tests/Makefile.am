@@ -2,7 +2,7 @@
 EXTRA_DIST=
 
 check_PROGRAMS=\
-multi\
+returncode\
 youtube\
 break\
 liveleak\
@@ -18,12 +18,14 @@ cctv\
 ehrensenf\
 spiegel\
 redtube\
-vimeo
+vimeo\
+multi
 
 TESTS=		$(check_PROGRAMS)
 common=		test.cpp test.h
 AM_CXXFLAGS=	-DCCLIVE_PATH="\"$(top_srcdir)/src/cclive\""
 
+returncode_SOURCES=	returncode.cpp $(common)
 youtube_SOURCES=	youtube.cpp $(common)
 break_SOURCES=		break.cpp $(common)
 liveleak_SOURCES=	liveleak.cpp $(common)

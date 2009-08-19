@@ -18,11 +18,14 @@
 #endif
 
 static void
-init (std::stringstream &b, const std::string& opts="") {
+init (std::stringstream &b,
+        const std::string& opts="",
+        const bool& ignore_no_inet=false)
+{
     const char *no_inet =
         getenv("NO_INTERNET");
 
-    if (no_inet)
+    if (no_inet && !ignore_no_inet)
         throw std::runtime_error("SKIP: No internet during package build");
 
     const char *extra_opts =
@@ -77,6 +80,28 @@ run (std::stringstream& b) {
 }
 
 int
+runtest_returncode (const std::string& url) {
+    std::stringstream b;
+    init(b, "", true);
+    b << url;
+    return run(b);
+}
+
+int
+runtest_host (const std::string& url, const std::string& opts/*=""*/) {
+    std::stringstream b;
+    try {
+        init(b, opts);
+        b << "-n \"" << url << "\" ";
+        return run(b);
+    }
+    catch (const std::runtime_error& x) {
+        std::cerr << x.what() << std::endl;
+    }
+    return 0;
+}
+
+int
 runtest_multi (const std::string& url, const std::string& url2) {
     std::stringstream b;
     try {
@@ -94,16 +119,4 @@ runtest_multi (const std::string& url, const std::string& url2) {
     return 0;
 }
 
-int
-runtest_host (const std::string& url, const std::string& opts/*=""*/) {
-    std::stringstream b;
-    try {
-        init(b, opts);
-        b << "-n \"" << url << "\" ";
-        return run(b);
-    }
-    catch (const std::runtime_error& x) {
-        std::cerr << x.what() << std::endl;
-    }
-    return 0;
-}
+

@@ -13,6 +13,9 @@
 #define MAIN_END }
 
 int
+runtest_returncode (const std::string& url);
+
+int
 runtest_host (const std::string& url, const std::string& opts="");
 
 int
