@@ -8,6 +8,7 @@ formats[] = {
     "flv",
     "high",
     "ipod",
+    "best",
     NULL
 };
 

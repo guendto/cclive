@@ -7,6 +7,7 @@ formats[] = {
     "fmt18",
     "fmt22",
     "fmt35",
+    "best",
     NULL
 };
 

@@ -6,10 +6,11 @@
 #define TEST_EMBED_URL \
     "http://video.google.com/googleplayer.swf?docid=-8669127848070159803"
 
-static const char
-*formats[] = {
+static const char *
+formats[] = {
     "flv",
     "mp4",
+    "best",
     NULL
 };
 

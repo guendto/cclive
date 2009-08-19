@@ -1,8 +1,10 @@
 #include "test.h"
 
-static const char *formats[] = {
+static const char *
+formats[] = {
     "flv",
     "hd",
+    "best",
     NULL
 };
 
