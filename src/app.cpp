@@ -162,6 +162,15 @@ processVideo(VideoProperties& props) {
     }
 }
 
+static void
+reportNotice() {
+    static const char report_notice[] =
+    "error: Please report the above output to the issue tracker:\n"
+    "error:     <http://code.google.com/p/cclive/issues/>\n"
+    "error: Thanks!";
+    logmgr.cerr() << report_notice << std::endl;
+}
+
 typedef HostHandlerFactory::UnsupportedHostException NoSupport;
 typedef HostHandler::ParseException                  ParseError;
 typedef VideoProperties::NothingToDoException        NothingTodo;
@@ -186,7 +195,7 @@ handleURL(const std::string& url) {
     }
     catch (const NoSupport& x)   { logmgr.cerr(x, false); }
     catch (const FetchError& x)  { /* printed by retrymgr.handle already */ }
-    catch (const ParseError& x)  { logmgr.cerr(x, false); }
+    catch (const ParseError& x)  { logmgr.cerr(x, false); reportNotice(); }
 }
 
 typedef std::vector<std::string> STRV;
