@@ -116,6 +116,7 @@ fetchPage(SHP<HostHandler> handler,
         retrymgr.handle(x);
         fetchPage(handler, url);
     }
+    logmgr.resetReturnCode();
 }
 
 static void
@@ -128,6 +129,7 @@ fetchFile(const VideoProperties& props, const bool& reset=false) {
         retrymgr.handle(x);
         fetchFile(props);
     }
+    logmgr.resetReturnCode();
 }
 
 static void
@@ -139,6 +141,7 @@ queryLength(VideoProperties& props, const bool& reset=false) {
         retrymgr.handle(x);
         queryLength(props);
     }
+    logmgr.resetReturnCode();
 }
 
 static void

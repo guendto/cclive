@@ -60,13 +60,14 @@ public:
                             const bool& prepend_newline=true,
                             const bool& prepend_error=true,
                             const bool& append_newline=true);
-    const ReturnCode&  getRC() const;
+    const ReturnCode&  getReturnCode() const;
+    void               resetReturnCode();
 protected:
     void            _init();
 private:
-    LogBuffer *_out, *_err;
+    LogBuffer    *_out, *_err;
     std::ostream *_cout, *_cerr;
-    ReturnCode rc;
+    ReturnCode   rc;
 };
 
 #define logmgr LogMgr::getInstance()

@@ -30,7 +30,7 @@ public:
     virtual ~RuntimeException();
 public:
     const std::string   what()  const;
-    const ReturnCode&   getRC() const;
+    const ReturnCode&   getReturnCode() const;
 private:
     ReturnCode rc;
     std::string error;

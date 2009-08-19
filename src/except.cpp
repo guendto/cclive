@@ -77,7 +77,7 @@ RuntimeException::what() const {
 }
 
 const ReturnCode&
-RuntimeException::getRC() const {
+RuntimeException::getReturnCode() const {
     return rc;
 }
 

@@ -140,7 +140,7 @@ LogMgr::cerr(const RuntimeException& except,
 
     *_cerr << "error: " << except.what() << std::endl;
 
-    rc = except.getRC();
+    rc = except.getReturnCode();
 
     return *_cerr;
 }
@@ -168,6 +168,11 @@ LogMgr::cerr(const std::string& what,
 }
 
 const ReturnCode&
-LogMgr::getRC() const {
+LogMgr::getReturnCode() const {
     return rc;
+}
+
+void
+LogMgr::resetReturnCode() {
+    rc = CCLIVE_OK;
 }

@@ -35,5 +35,5 @@ main (const int argc, char * const *argv) {
     catch (const RuntimeException& x) {
         logmgr.cerr(x, false);
     }
-    return logmgr.getRC();
+    return static_cast<int>(logmgr.getReturnCode());
 }
