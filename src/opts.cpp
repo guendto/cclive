@@ -24,6 +24,14 @@
 #include <string>
 #include <vector>
 
+#ifdef HAVE_LOCALE_H
+#include <locale.h>
+#endif
+
+#ifdef HAVE_LANGINFO_H
+#include <langinfo.h>
+#endif
+
 #include "except.h"
 #include "macros.h"
 #include "util.h"
@@ -43,8 +51,15 @@ OptionsMgr::~OptionsMgr() {
 void
 OptionsMgr::init(const int& argc, char * const *argv) {
     const char *tmp = setlocale(LC_ALL, "");
-    if (tmp)
+    if (tmp) {
         locale = tmp;
+#ifdef HAVE_NL_LANGINFO
+        const char *tocode =
+            nl_langinfo(CODESET);
+        if (tocode)
+            locale = tocode;
+#endif
+    }
     this->toUnicodeFlag = tmp != 0;
 
     const char *no_config =

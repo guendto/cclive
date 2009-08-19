@@ -31,10 +31,6 @@
 #include <algorithm>
 #include <tr1/memory>
 
-#ifdef HAVE_LOCALE_H
-#include <locale.h>
-#endif
-
 #ifdef HAVE_SIGNAL_H
 #include <signal.h>
 #endif
@@ -293,15 +289,15 @@ static const char copyr_notice[] =
         << c->version             << "  ["
         << CANONICAL_TARGET       << "]\n"
         << copyr_notice           << "\n"
-        << "\n  Locale  : "       << optsmgr.getLocale()
-        << "\n  Config  : "       << optsmgr.getPath()
-        << "\n  Features: pcre "
+        << "\n  Locale/codeset  : "       << optsmgr.getLocale()
+        << "\n  Config          : "       << optsmgr.getPath()
+        << "\n  Features        : pcre "
 #ifdef HAVE_ICONV
         << "iconv "
 #endif
 #ifdef SIGWINCH
         << "sigwinch "
 #endif
-        << "\n  Home    : "       << "<http://cclive.googlecode.com/>"
+        << "\n  Home            : "       << "<http://cclive.googlecode.com/>"
         << std::endl;
 }
