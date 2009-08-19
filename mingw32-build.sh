@@ -47,6 +47,6 @@ export libpcrecpp_LIBS="`$pcre_config --libs` -lpcrecpp"
 ./configure --host=mingw32 --prefix=`pwd`/dist --with-libiconv-prefix="$iconv_prefix" --without-man \
     && make \
     && echo "'make install' installs the binaries to ./dist" \
-    && echo "'./mingw32-package.sh' creates zip archive containing the binaries"
+    && echo "'./mingw32-package.sh' creates an archive containing the binaries"
 exit $?
 
