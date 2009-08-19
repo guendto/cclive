@@ -284,13 +284,13 @@ static const char copyr_notice[] =
         curl_version_info(CURLVERSION_NOW);
 
     std::cout
-        << CMDLINE_PARSER_PACKAGE << " version "
-        << CMDLINE_PARSER_VERSION << " with libcurl version "
-        << c->version             << "  ["
-        << CANONICAL_TARGET       << "]\n"
-        << copyr_notice           << "\n"
-        << "\n  Locale/codeset  : "       << optsmgr.getLocale()
-        << "\n  Config          : "       << optsmgr.getPath()
+        << CMDLINE_PARSER_PACKAGE       << " version "
+        << CMDLINE_PARSER_VERSION       << " with libcurl version "
+        << c->version                   << "  ["
+        << CANONICAL_TARGET             << "]\n"
+        << copyr_notice                 << "\n"
+        << "\n  Locale/codeset  : "     << optsmgr.getLocale()
+        << "\n  Config          : "     << optsmgr.getPath()
         << "\n  Features        : pcre "
 #ifdef HAVE_ICONV
         << "iconv "
@@ -298,6 +298,6 @@ static const char copyr_notice[] =
 #ifdef SIGWINCH
         << "sigwinch "
 #endif
-        << "\n  Home            : "       << "<http://cclive.googlecode.com/>"
+        << "\n  Home            : "     << "<http://cclive.googlecode.com/>"
         << std::endl;
 }
