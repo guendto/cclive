@@ -65,8 +65,8 @@ public:
 protected:
     void            _init();
 private:
-    LogBuffer    *_out, *_err;
-    std::ostream *_cout, *_cerr;
+    LogBuffer    *lbout, *lberr;
+    std::ostream *oscout, *oscerr;
     ReturnCode   rc;
 };
 

@@ -80,14 +80,14 @@ LogBuffer::sync() {
 // LogMgr
 
 LogMgr::LogMgr()
-    : _out(NULL), _err(NULL), _cout(NULL), _cerr(NULL), rc(CCLIVE_OK)
+    : lbout(NULL), lberr(NULL), oscout(NULL), oscerr(NULL), rc(CCLIVE_OK)
 {
     _init();
 }
 
     // Keeps -Weffc++ happy.
 LogMgr::LogMgr(const LogMgr&)
-    : _out(NULL), _err(NULL), _cout(NULL), _cerr(NULL), rc(CCLIVE_OK)
+    : lbout(NULL), lberr(NULL), oscout(NULL), oscerr(NULL), rc(CCLIVE_OK)
 {
     _init();
 }
@@ -100,35 +100,35 @@ LogMgr::operator=(const LogMgr&) {
 
 void
 LogMgr::_init() {
-    _out = new LogBuffer( fileno(stdout) );
-    _err = new LogBuffer( fileno(stderr) );
+    lbout = new LogBuffer( fileno(stdout) );
+    lberr = new LogBuffer( fileno(stderr) );
 
-    _cout = new std::ostream(_out);
-    _cerr = new std::ostream(_err);
+    oscout = new std::ostream(lbout);
+    oscerr = new std::ostream(lberr);
 }
 
 void
 LogMgr::init() {
     const Options opts = optsmgr.getOptions();
-    _out->setVerbose(!opts.quiet_given);
-    _err->setVerbose(!opts.quiet_given);
+    lbout->setVerbose(!opts.quiet_given);
+    lberr->setVerbose(!opts.quiet_given);
 }
 
 LogMgr::~LogMgr() {
-    _DELETE(_cerr);
-    _DELETE(_cout);
-    _DELETE(_err);
-    _DELETE(_out);
+    _DELETE(oscerr);
+    _DELETE(oscout);
+    _DELETE(lberr);
+    _DELETE(lbout);
 }
 
 std::ostream&
 LogMgr::cout() const {
-    return *_cout;
+    return *oscout;
 }
 
 std::ostream&
 LogMgr::cerr() const {
-    return *_cerr;
+    return *oscerr;
 }
 
 std::ostream&
@@ -136,13 +136,13 @@ LogMgr::cerr(const RuntimeException& except,
              const bool& prepend_newline /*=true*/)
 {
     if (prepend_newline)
-        *_cerr << "\n";
+        *oscerr << "\n";
 
-    *_cerr << "error: " << except.what() << std::endl;
+    *oscerr << "error: " << except.what() << std::endl;
 
     rc = except.getReturnCode();
 
-    return *_cerr;
+    return *oscerr;
 }
 
 std::ostream&
@@ -152,19 +152,19 @@ LogMgr::cerr(const std::string& what,
              const bool& append_newline /*=true*/)
 {
     if (prepend_newline)
-        *_cerr << "\n";
+        *oscerr << "\n";
 
     if (prepend_error)
-        *_cerr << "error: ";
+        *oscerr << "error: ";
         
-    *_cerr << what;
+    *oscerr << what;
     
     if (append_newline)
-        *_cerr << std::endl;
+        *oscerr << std::endl;
     else
-        *_cerr << std::flush;
+        *oscerr << std::flush;
 
-    return *_cerr;
+    return *oscerr;
 }
 
 const ReturnCode&
