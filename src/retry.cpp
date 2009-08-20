@@ -58,7 +58,7 @@ RetryMgr::handle(const CurlMgr::FetchException& x) {
     const long httpcode = x.getHTTPCode();
 
     if (httpcode >= 400 && httpcode < 500)
-        throw x; // Pass the exception without retrying.
+        throw x; // Pass the exception without retrying
 
     const Options opts =
         optsmgr.getOptions();
@@ -86,8 +86,8 @@ RetryMgr::handle(const CurlMgr::FetchException& x) {
         if (retries == INT_MAX-1)
             retries = 0;
     }
-
-    throw x; // Pass the exception, retries not within our range.
+    else
+        throw x; // Pass the exception, retries count not within our range
 }
 
 void
