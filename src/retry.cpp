@@ -55,42 +55,37 @@ RetryMgr::handle(const CurlMgr::FetchException& x) {
 
     logmgr.cerr(x);
 
-    switch ( x.getHTTPCode() ) {
+    const long httpcode = x.getHTTPCode();
 
-    case 403: // Forbidden
-    case 404: // Not found
-        throw x; // Pass the exception
+    if (httpcode >= 400 && httpcode < 500)
+        throw x; // Pass the exception without retrying.
 
-    default:
-        const Options opts =
-            optsmgr.getOptions();
+    const Options opts =
+        optsmgr.getOptions();
 
-        int retry = opts.retry_arg;
+    int retry = opts.retry_arg;
 
-        if (retryUntilRetrievedFlag)
-            retry = 0; // Override --retry limit for file downloads
+    if (retryUntilRetrievedFlag)
+        retry = 0; // Override --retry limit for file downloads
 
-        if (++retries <= opts.retry_arg || retry == 0) {
-            std::stringstream b;
+    if (++retries <= opts.retry_arg || retry == 0) {
+        std::stringstream b;
 
-            b << "retry #"
-              << retries
-              << " ... wait "
-              << opts.retry_wait_arg
-              << " second(s).";
+        b << "retry #"
+          << retries
+          << " ... wait "
+          << opts.retry_wait_arg
+          << " second(s).";
 
-            logmgr.cerr(b.str(), false, false, false);
+        logmgr.cerr(b.str(), false, false, false);
+        sleep(opts.retry_wait_arg);
+        logmgr.cerr() << std::endl;
 
-            sleep(opts.retry_wait_arg);
-
-            logmgr.cerr() << std::endl;
-
-            if (retries == INT_MAX-1)
-                retries = 0;
-        }
-        else // Pass the exception
-            throw x;
+        if (retries == INT_MAX-1)
+            retries = 0;
     }
+
+    throw x; // Pass the exception, retries not within our range.
 }
 
 void
