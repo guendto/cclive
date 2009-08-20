@@ -119,7 +119,7 @@ Overwrite the existing file. Negates C<--continue>.
 =item B<-n, --no-extract>
 
 Do not actually extract any videos, simulate only. cclive parses,
-verifies the video link and exits without downloading the video.
+verifies the video link and exits without downloading it.
 
 =item B<l, --limit-rate>=I<amount>
 
@@ -274,9 +274,9 @@ file.
 
 =item cclive --stream-exec="mplayer -really-quiet %i" --stream=20 URL
 
-Mimics "streaming" by forking the C<mplayer(1)> when the progress reaches
-20% complete. cclive continues to download the video file while C<mplayer(1)>
-plays the video file.
+Mimics "streaming" by starting a child process (C<mplayer(1)>) when the
+progress reaches 20% complete. cclive then continues to download the video
+file while C<mplayer(1)> plays the video file in the background.
 
 See the next example for a better solution if you are not interested in
 keeping a local copy of the video.
@@ -285,17 +285,16 @@ keeping a local copy of the video.
 
 =item cclive -s URL
 
-Leaves streaming to C<mplayer(1)> altogether after cclive parses the link
-to the source. Serves as a "Adobe flash player" alternative for those who
-want to stream the videos rather than download them.
+Leaves streaming to C<mplayer(1)> altogether. cclive only parses the video link
+and passes it to the command specified with C<--stream-exec>. This can be used
+as an alternative to the Adobe flash player by those who only want to stream
+the videos.
 
-Above, we save ourselves from repeated typing and save the stream-exec
-option to the ~/.ccliverc file so we can invoke cclive with the "-s"
-(or C<--stream-exec>) option whenever we want to use mplayer for
-viewing the streamed video.
+In this example we have added C<--stream-exec> to the config file to save
+ourselves from retyping it later, allowing us to stream the video by just
+typing C<-s>.
 
-Reportedly other players such as C<vlc(1)> and C<totem(1)> are known
-to work also.
+Other player software, e.g. C<vlc(1)> and C<totem(1)>, should work also.
 
 =item cat E<gt> url.lst
 
@@ -434,14 +433,18 @@ config file.
 
 =head1 UNICODE
 
-If you are seeing mangled characters in output filenames, this is likely
-likely result of an invalid locale setting or terminal incapable of displaying
-unicode characters. On a typical Unix-like system, try running "locale -a" to
-get a list of the available locale names.
+If you are seeing mangled characters in output filenames (titles), this may
+be because of an invalid locale setting or a sign of terminal incapable of
+displaying unicode characters. On a typical Unix-like system, try running
+"locale -a" to get a list of the available locale names.
 
-For example, in bash and urxvt terms this can be corrected with:
+For example, in bash and urxvt terms:
 
   % LANG=en_US.UTF8 urxvt&
+  % cclive ... # in new terminal
+
+cclive converts the characters to unicode if the video HTML specifies
+charset meta tag. Otherwise the characters are copied as they are.
 
 If you are missing the unicode characters when using C<--regexp> and
 C<--filename-format>, make sure the regular expression includes "\pL".
@@ -479,7 +482,7 @@ Turn on libcurl verbose mode.
 =item cclive -n URL
 
 Simulate only; cclive will parse and verify the video link without
-downloading the video.
+downloading it.
 
 =back
 

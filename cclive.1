@@ -132,7 +132,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2009-08-18" "0.5.0" "cclive manual"
+.TH cclive 1 "2009-08-20" "0.5.0" "cclive manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -221,7 +221,7 @@ Overwrite the existing file. Negates \f(CW\*(C`\-\-continue\*(C'\fR.
 .IP "\fB\-n, \-\-no\-extract\fR" 4
 .IX Item "-n, --no-extract"
 Do not actually extract any videos, simulate only. cclive parses,
-verifies the video link and exits without downloading the video.
+verifies the video link and exits without downloading it.
 .IP "\fBl, \-\-limit\-rate\fR=\fIamount\fR" 4
 .IX Item "l, --limit-rate=amount"
 Limit download speed to \fIamount\fR (KB/s). Ignored for video page
@@ -347,9 +347,9 @@ file.
 .ie n .IP "cclive \-\-stream\-exec=""mplayer \-really\-quiet %i"" \-\-stream=20 \s-1URL\s0" 4
 .el .IP "cclive \-\-stream\-exec=``mplayer \-really\-quiet \f(CW%i\fR'' \-\-stream=20 \s-1URL\s0" 4
 .IX Item "cclive --stream-exec=mplayer -really-quiet %i --stream=20 URL"
-Mimics \*(L"streaming\*(R" by forking the \f(CWmplayer(1)\fR when the progress reaches
-20% complete. cclive continues to download the video file while \f(CWmplayer(1)\fR
-plays the video file.
+Mimics \*(L"streaming\*(R" by starting a child process (\f(CWmplayer(1)\fR) when the
+progress reaches 20% complete. cclive then continues to download the video
+file while \f(CWmplayer(1)\fR plays the video file in the background.
 .Sp
 See the next example for a better solution if you are not interested in
 keeping a local copy of the video.
@@ -360,17 +360,16 @@ keeping a local copy of the video.
 .IP "cclive \-s \s-1URL\s0" 4
 .IX Item "cclive -s URL"
 .PD
-Leaves streaming to \f(CWmplayer(1)\fR altogether after cclive parses the link
-to the source. Serves as a \*(L"Adobe flash player\*(R" alternative for those who
-want to stream the videos rather than download them.
+Leaves streaming to \f(CWmplayer(1)\fR altogether. cclive only parses the video link
+and passes it to the command specified with \f(CW\*(C`\-\-stream\-exec\*(C'\fR. This can be used
+as an alternative to the Adobe flash player by those who only want to stream
+the videos.
 .Sp
-Above, we save ourselves from repeated typing and save the stream-exec
-option to the ~/.ccliverc file so we can invoke cclive with the \*(L"\-s\*(R"
-(or \f(CW\*(C`\-\-stream\-exec\*(C'\fR) option whenever we want to use mplayer for
-viewing the streamed video.
+In this example we have added \f(CW\*(C`\-\-stream\-exec\*(C'\fR to the config file to save
+ourselves from retyping it later, allowing us to stream the video by just
+typing \f(CW\*(C`\-s\*(C'\fR.
 .Sp
-Reportedly other players such as \f(CWvlc(1)\fR and \f(CWtotem(1)\fR are known
-to work also.
+Other player software, e.g. \f(CWvlc(1)\fR and \f(CWtotem(1)\fR, should work also.
 .IP "cat > url.lst" 4
 .IX Item "cat > url.lst"
 .Vb 4
@@ -508,16 +507,20 @@ Most of the program options can be specified in the ~/.ccliverc
 config file.
 .SH "UNICODE"
 .IX Header "UNICODE"
-If you are seeing mangled characters in output filenames, this is likely
-likely result of an invalid locale setting or terminal incapable of displaying
-unicode characters. On a typical Unix-like system, try running \*(L"locale \-a\*(R" to
-get a list of the available locale names.
+If you are seeing mangled characters in output filenames (titles), this may
+be because of an invalid locale setting or a sign of terminal incapable of
+displaying unicode characters. On a typical Unix-like system, try running
+\&\*(L"locale \-a\*(R" to get a list of the available locale names.
 .PP
-For example, in bash and urxvt terms this can be corrected with:
+For example, in bash and urxvt terms:
 .PP
-.Vb 1
+.Vb 2
 \&  % LANG=en_US.UTF8 urxvt&
+\&  % cclive ... # in new terminal
 .Ve
+.PP
+cclive converts the characters to unicode if the video \s-1HTML\s0 specifies
+charset meta tag. Otherwise the characters are copied as they are.
 .PP
 If you are missing the unicode characters when using \f(CW\*(C`\-\-regexp\*(C'\fR and
 \&\f(CW\*(C`\-\-filename\-format\*(C'\fR, make sure the regular expression includes \*(L"\epL\*(R".
@@ -547,7 +550,7 @@ Turn on libcurl verbose mode.
 .IP "cclive \-n \s-1URL\s0" 4
 .IX Item "cclive -n URL"
 Simulate only; cclive will parse and verify the video link without
-downloading the video.
+downloading it.
 .SH "EXIT STATUS"
 .IX Header "EXIT STATUS"
 cclive exits 0 on success, and >0 if an error occurs.
