@@ -63,16 +63,18 @@ RetryMgr::handle(const CurlMgr::FetchException& x) {
     const Options opts =
         optsmgr.getOptions();
 
-    int retry = opts.retry_arg;
+    int maxRetry = opts.retry_arg;
 
     if (retryUntilRetrievedFlag)
-        retry = 0; // Override --retry limit for file downloads
+        maxRetry = 0; // Override --retry limit for file downloads
 
-    if (++retries <= opts.retry_arg || retry == 0) {
+    if (++retries <= opts.retry_arg || maxRetry == 0) {
         std::stringstream b;
 
         b << "retry #"
           << retries
+          << "/"
+          << maxRetry
           << " ... wait "
           << opts.retry_wait_arg
           << " second(s).";
