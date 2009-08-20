@@ -59,7 +59,7 @@ RetryMgr::handle(const CurlMgr::FetchException& x) {
 
     case 403: // Forbidden
     case 404: // Not found
-        throw x;
+        throw x; // Pass the exception
 
     default:
         const Options opts =
@@ -68,7 +68,7 @@ RetryMgr::handle(const CurlMgr::FetchException& x) {
         int retry = opts.retry_arg;
 
         if (retryUntilRetrievedFlag)
-            retry = 0; // Overrides --retry setting if we are downloading a file
+            retry = 0; // Override --retry limit for file downloads
 
         if (++retries <= opts.retry_arg || retry == 0) {
             std::stringstream b;
@@ -88,7 +88,7 @@ RetryMgr::handle(const CurlMgr::FetchException& x) {
             if (retries == INT_MAX-1)
                 retries = 0;
         }
-        else
+        else // Pass the exception
             throw x;
     }
 }
@@ -102,3 +102,5 @@ const bool&
 RetryMgr::getRetryUntilRetrievedFlag() const {
     return retryUntilRetrievedFlag;
 }
+
+
