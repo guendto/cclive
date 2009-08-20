@@ -89,7 +89,8 @@ Otherwise identical to the above option but works around the known
 
 =item B<-t, --retry>=I<number>
 
-I<number> of retries. Specify 0 for infinite. Default is 5.
+I<number> of retries. Specify 0 for infinite. Default is 5 times, with
+the exception of errors such as "forbidden" (403) or "not found" (404).
 
 =item B<--retry-wait>=I<seconds>
 

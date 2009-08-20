@@ -200,7 +200,8 @@ Otherwise identical to the above option but works around the known
 \&\*(L"\s-1SOCKS\s0 proxy connect timeout\*(R" bug in libcurl. Defaults to 30.
 .IP "\fB\-t, \-\-retry\fR=\fInumber\fR" 4
 .IX Item "-t, --retry=number"
-\&\fInumber\fR of retries. Specify 0 for infinite. Default is 5.
+\&\fInumber\fR of retries. Specify 0 for infinite. Default is 5 times, with
+the exception of errors such as \*(L"forbidden\*(R" (403) or \*(L"not found\*(R" (404).
 .IP "\fB\-\-retry\-wait\fR=\fIseconds\fR" 4
 .IX Item "--retry-wait=seconds"
 Wait 1..seconds between the retries. Default is 1.
