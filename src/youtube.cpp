@@ -58,7 +58,7 @@ YoutubeHandler::parseLink() {
 
     if (fmt == "best") {
         std::string best;
-        partialMatch("(?i)\"fmt_map\": \"(.*?)\\/", &best);
+        partialMatch("(?i)\"fmt_map\": \"(\\d+)", &best);
         lnk += "&fmt=" + best;
     }
     else {
