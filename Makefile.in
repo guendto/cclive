@@ -694,7 +694,7 @@ uninstall-man: uninstall-man1
 .PHONY: cmdline man checkpod
 cmdline:
 @HAVE_GENGETOPT_TRUE@	@GENGETOPT@ < cmdline.ggo -C --unamed-opts=URL \
-@HAVE_GENGETOPT_TRUE@		--output-dir ./src --no-version
+@HAVE_GENGETOPT_TRUE@		--output-dir ./src --no-version -c cpp
 @HAVE_GENGETOPT_FALSE@	@echo "error: configure did not find 'gengetopt' command"
 man:
 @HAVE_POD2MAN_TRUE@	@POD2MAN@ -c "cclive manual" -n cclive \

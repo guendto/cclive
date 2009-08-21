@@ -11,7 +11,7 @@ progressbar.cpp\
 exec.cpp\
 retry.cpp\
 log.cpp	\
-cmdline.c\
+cmdline.cpp\
 hostfactory.cpp
 
 host=\
