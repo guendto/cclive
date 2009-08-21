@@ -28,8 +28,8 @@ Additionally, cclive now parses the video pages with PCRE.
   Example:
     cclive -gr "(\w|\s)" URL
 
-  Comparisons:
-  ------------
+  Comparison:
+  -----------
                               SIZE     RES      Notes
   clive  2.2.4              ~13924k  ~10388k    Perl all the way
   cclive 0.4.7 (w/ perl)     ~8300k   ~6908k    Video titles enabled
