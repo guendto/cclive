@@ -341,7 +341,7 @@ CurlMgr::fetchToFile(const VideoProperties& props) {
 
     curl_easy_setopt(curl, CURLOPT_ENCODING, "identity");
     curl_easy_setopt(curl, CURLOPT_HEADER, 0L);
-    curl_easy_setopt(curl, CURLOPT_RESUME_FROM, (long)initial);
+    curl_easy_setopt(curl, CURLOPT_RESUME_FROM, static_cast<long>(initial));
     curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT,
                      opts.connect_timeout_arg);
 
