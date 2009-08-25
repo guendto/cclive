@@ -34,7 +34,7 @@ export libcurl_LIBS="`$curl_config --libs`"
 #echo $libcurl_LIBS
 
 export CXXFLAGS="-Wall -O2 -march=i586 -fno-strict-aliasing -pipe"
-export CFLAGS="$CXXFLAGS"
+#export CFLAGS="$CXXFLAGS"
 #echo $CXXFLAGS
 #echo $CFLAGS
 
