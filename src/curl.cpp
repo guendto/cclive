@@ -300,7 +300,10 @@ CurlMgr::fetchToFile(const VideoProperties& props) {
         continue_given = true;
 
     if (continue_given && initial > 0) {
-        double remaining = props.getLength() - initial;
+
+        const double remaining =
+            props.getLength() - initial;
+
         logmgr.cout()
             << "from: "
             << std::setprecision(0)
