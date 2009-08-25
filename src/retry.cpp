@@ -70,12 +70,12 @@ RetryMgr::handle(const CurlMgr::FetchException& x) {
 
     if (++retries <= opts.retry_arg || maxRetry == 0) {
         std::stringstream b;
+        b << "retry #" << retries;
 
-        b << "retry #"
-          << retries
-          << "/"
-          << maxRetry
-          << " ... wait "
+        if (maxRetry > 0)
+            b << "/" << maxRetry;
+
+        b << " ... wait "
           << opts.retry_wait_arg
           << " second(s).";
 
