@@ -116,7 +116,7 @@ fetchPage(SHP<HostHandler> handler,
 }
 
 static void
-fetchFile(const VideoProperties& props, const bool& reset=false) {
+fetchFile(VideoProperties& props, const bool& reset=false) {
     if (reset)
         retrymgr.reset();
     try   { curlmgr.fetchToFile(props); }

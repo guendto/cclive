@@ -51,6 +51,7 @@ public:
     const std::string&  getPageLink     () const;
 public:
     void formatOutputFilename           ();
+    void updateInitial                  ();
 private:
     void customOutputFilenameFormatter  (std::stringstream&);
 private:

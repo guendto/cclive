@@ -33,7 +33,7 @@ public:
     std::string  fetchToMem     (const std::string& url,
                                     const std::string& what="");
     void         queryFileLength(VideoProperties&);
-    void         fetchToFile    (const VideoProperties&);
+    void         fetchToFile    (VideoProperties&);
     const std::string& unescape (std::string& url) const;
 private:
     long httpcode;

@@ -30,6 +30,7 @@
 #include "util.h"
 #include "opts.h"
 #include "curl.h"
+#include "retry.h"
 #include "video.h"
 
 VideoProperties::VideoProperties()
@@ -159,6 +160,14 @@ VideoProperties::getFilename() const {
     return filename;
 }
 
+void
+VideoProperties::updateInitial() {
+    initial = Util::fileExists(filename);
+
+    if (initial >= length)
+        throw NothingToDoException();
+}
+
 static int video_num = 0;
 
 void
@@ -182,13 +191,14 @@ VideoProperties::formatOutputFilename() {
 
         typedef unsigned int _uint;
 
-        for (register _uint i=1; i<INT_MAX && !opts.overwrite_given; ++i) {
+        for (register _uint i=1;
+            i<INT_MAX && !opts.overwrite_given; ++i) {
 
             initial = Util::fileExists(filename);
 
             if (initial == 0)
                 break;
-            else if (initial == length)
+            else if (initial >= length)
                 throw NothingToDoException();
             else {
                 if (opts.continue_given)

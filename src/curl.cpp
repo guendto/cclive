@@ -289,15 +289,18 @@ callback_progress(
 }
 
 void
-CurlMgr::fetchToFile(const VideoProperties& props) {
+CurlMgr::fetchToFile(VideoProperties& props) {
     const Options opts   = optsmgr.getOptions();
-    const double initial = props.getInitial();
 
     bool continue_given =
         static_cast<bool>(opts.continue_given);
 
-    if (retrymgr.getRetryUntilRetrievedFlag())
+    if (retrymgr.getRetryUntilRetrievedFlag()) {
+        props.updateInitial();
         continue_given = true;
+    }
+
+    const double initial = props.getInitial();
 
     if (continue_given && initial > 0) {
 
@@ -361,14 +364,22 @@ CurlMgr::fetchToFile(const VideoProperties& props) {
         fclose(write.file);
     }
 
-    httpcode = 0;
-    curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpcode);
+    std::string errmsg;
 
-    if (CURLE_OK != rc)
-        throw FetchException(curl_easy_strerror(rc), httpcode);
+    httpcode = 0;
+
+    if (CURLE_OK == rc) {
+        curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpcode);
+        if (200 != httpcode)
+            errmsg = formatError(httpcode);
+    }
+    else
+        errmsg = formatError(rc);
+
+    if (!errmsg.empty())
+        throw FetchException(errmsg, httpcode);
 
     pb.finish();
-
     logmgr.cout() << std::endl;
 }
 
