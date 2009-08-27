@@ -38,7 +38,7 @@ LiveleakHandler::parseId() {
 void
 LiveleakHandler::parseTitle() {
     std::string title;
-    partialMatch("(?i)<title>(.*?)</", &title);
+    partialMatch("(?i)<title>(.*?)</title>", &title);
     Util::subStrReplace(title, "LiveLeak.com - ", "");
     props.setTitle(title);
 }
@@ -54,14 +54,15 @@ LiveleakHandler::parseLink() {
         fetch(confPath, "config", true);
 
     std::string plPath;
-    partialMatch("(?i)<file>(.*?)</", &plPath, config);
+    partialMatch("(?i)<file>(.*?)</file>", &plPath, config);
     curlmgr.unescape(plPath);
 
     const std::string playlist =
         fetch(plPath, "playlist", true);
 
     std::string lnk;
-    partialMatch("(?i)<location>(.*?)</", &lnk, playlist);
+    partialMatch("(?i)<location>(.*?)</location>", &lnk, playlist);
+    Util::subStrReplace(lnk, " ", "");
     props.setLink(lnk);
 }
 
