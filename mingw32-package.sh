@@ -3,7 +3,7 @@
 # NOTE: Run mingw32-build.sh first. You may also want to comment
 # out the last line "sigre ...".
 
-# Create cclive-$release.7z archive.
+# Create cclive-$release-win32-bin.7z archive.
 
 # Edit these as needed:
 CURL_PATH="/usr/home/legatvs/src/curl-7.19.6"
@@ -20,7 +20,7 @@ PCRECPP_DLL="$PCRE_PATH/dist/bin/libpcrecpp-0.dll"
 PCRE_LICENSE="$PCRE_PATH/License"
 
 VERSION=`awk '/PACKAGE_VERSION = / {print $3}' Makefile`
-ARCHIVE="cclive-$VERSION-win32.7z"
+ARCHIVE="cclive-$VERSION-win32-bin.7z"
 DISTDIR="cclive-$VERSION"
 
 rm -rf dist cclive-$VERSION $ARCHIVE
