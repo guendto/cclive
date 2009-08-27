@@ -165,8 +165,8 @@ processVideo(VideoProperties& props) {
 static void
 reportNotice() {
     static const char report_notice[] =
-    "error: Please report the above output to the issue tracker\n"
-    "error: if the bug can be reproduced, thanks.\n"
+    "error: Looks like a bug. Please report the above output to the issue\n"
+    "error: tracker if you can reproduce it. Thanks.\n"
     "error:     <http://code.google.com/p/cclive/issues/>\n";
     logmgr.cerr() << report_notice << std::endl;
 }
