@@ -16,6 +16,7 @@ Version 0.5.0
     # vimeo
     # redtube
   * Fix:
+    # Liveleak support: Unsupported protocol (rc=1) [whitespace in links]
     # --hosts: dailymotion: spak-mini -> spark-mini
     # ETA for resumed transfers
     # Average rate for finished transfers
