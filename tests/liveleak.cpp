@@ -9,13 +9,8 @@ urls[] = {
 
 MAIN_BEGIN
     int i,rc;
-    for (i=0,rc=0; urls[i] && !rc; ++i) {
+    for (i=0,rc=0; urls[i] && !rc; ++i)
         rc = runtest_host(urls[i]);
-        if (rc == 0 && i == 0) {
-            std::cout << "# wait 10s." << std::endl;
-            sleep(10);
-        }
-    }
     return(rc);
 MAIN_END
 
