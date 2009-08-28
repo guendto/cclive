@@ -4,24 +4,27 @@ News about cclive releases
 Release 0.5.0
 -------------
 
-The dependency of Perl HTML::Tokenizer Perl module have been replaced with
-libiconv and PCRE for significantly lower system footprint. Perl was used to
-parse and cleanup the video titles before using them for filenames.
+The dependency of Perl and HTML::Tokenizer module have been replaced with
+libiconv and PCRE for significantly lower system footprint. Perl was previously
+used for parsing video titles and cleaning them up.
 
-Additionally, cclive now parses the video pages with PCRE.
+configure no longer supports --enable-sigwinch. The support is now compiled
+into the program automatically if signal.h is found and defines SIGWINCH.
+
+Other notable changes:
 
   Removed options:
   --title
-    - obsolete since 0.4.1 by --filename-format
+    - obsoleted by --filename-format since 0.4.1 
   --cclass, --no-cclass
     - obsoleted by --regexp and --find-all (below)
 
   New options:
-  -r, --regexp [req. pcrecpp]
+  -r, --regexp
     - Defines the regular expression that can be used to "filter"
       video titles before they are used for filenames
 
-  -g, --find-all [req. pcrecpp]
+  -g, --find-all
     - Used together with the above to repeat the matching to find
       all occurences, similar to Perl's /g option
 
@@ -39,8 +42,5 @@ Additionally, cclive now parses the video pages with PCRE.
   SIZE = total size of the process (text, data, and stack)
   RES  = current amount of resident memory
 
-  Note  : Amounts are approximates. cclive was built with "-O2 -march=pentium4"
-  Tested: FreeBSD 7.2, readings collected from top(1)
-
-configure no longer supports --enable-sigwinch. The support is now compiled
-into the program if signal.h is found and it defines SIGWINCH.
+  Note  : Figures are approximates. cclive was built with "-O2 -march=pentium4"
+  Tested: FreeBSD 7.2, numbers provided by top(1), numbers vary slightly per URL
