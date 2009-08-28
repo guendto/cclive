@@ -11,6 +11,8 @@ used for parsing video titles and cleaning them up.
 configure no longer supports --enable-sigwinch. The support is now compiled
 into the program automatically if signal.h is found and defines SIGWINCH.
 
+tests/ have been rewritten in C++.
+
 Other notable changes:
 
   Removed options:
