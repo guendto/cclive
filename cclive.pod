@@ -288,12 +288,11 @@ keeping a local copy of the video.
 
 Leaves streaming to C<mplayer(1)> altogether. cclive only parses the video link
 and passes it to the command specified with C<--stream-exec>. This can be used
-as an alternative to the Adobe flash player by those who only want to stream
-the videos.
+as an alternative to the Adobe flash player if you only want to view the streamed
+videos without getting a local copy of the video file.
 
-In this example we have added C<--stream-exec> to the config file to save
-ourselves from retyping it later, allowing us to stream the video by just
-typing C<-s>.
+We have added C<--stream-exec> to the config file to save ourselves from retyping it
+later, allowing us to stream the video by just typing C<-s>.
 
 Other player software, e.g. C<vlc(1)> and C<totem(1)>, should work also.
 

@@ -132,7 +132,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2009-08-20" "0.5.0" "cclive manual"
+.TH cclive 1 "2009-08-28" "0.5.0" "cclive manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -149,8 +149,8 @@ similar video websites. It is a rewrite of the clive software in \*(C+ with lowe
 system footprint and fewer dependencies.
 .PP
 cclive is primarily a \*(L"video download tool\*(R" but it can also be used along side
-with video player software, like \f(CW\*(C`mplayer\*(C'\fR, for streaming instead of the Adobe
-flash player.
+with video player software, like \f(CW\*(C`mplayer\*(C'\fR, for viewing streamed videos instead
+of the Adobe flash player.
 .SH "OPTIONS"
 .IX Header "OPTIONS"
 .IP "\fB\-h, \-\-help\fR" 4
@@ -363,12 +363,11 @@ keeping a local copy of the video.
 .PD
 Leaves streaming to \f(CWmplayer(1)\fR altogether. cclive only parses the video link
 and passes it to the command specified with \f(CW\*(C`\-\-stream\-exec\*(C'\fR. This can be used
-as an alternative to the Adobe flash player by those who only want to stream
-the videos.
+as an alternative to the Adobe flash player if you only want to view the streamed
+videos without getting a local copy of the video file.
 .Sp
-In this example we have added \f(CW\*(C`\-\-stream\-exec\*(C'\fR to the config file to save
-ourselves from retyping it later, allowing us to stream the video by just
-typing \f(CW\*(C`\-s\*(C'\fR.
+We have added \f(CW\*(C`\-\-stream\-exec\*(C'\fR to the config file to save ourselves from retyping it
+later, allowing us to stream the video by just typing \f(CW\*(C`\-s\*(C'\fR.
 .Sp
 Other player software, e.g. \f(CWvlc(1)\fR and \f(CWtotem(1)\fR, should work also.
 .IP "cat > url.lst" 4
@@ -521,7 +520,7 @@ For example, in bash and urxvt terms:
 .Ve
 .PP
 cclive converts the characters to unicode if the video \s-1HTML\s0 specifies
-charset meta tag. Otherwise the characters are copied as they are.
+the charset meta tag. Otherwise the characters are copied as they are.
 .PP
 If you are missing the unicode characters when using \f(CW\*(C`\-\-regexp\*(C'\fR and
 \&\f(CW\*(C`\-\-filename\-format\*(C'\fR, make sure the regular expression includes \*(L"\epL\*(R".
