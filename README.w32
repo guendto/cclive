@@ -2,19 +2,25 @@
 README for MSWindows users
 --------------------------
 
-* Please report any bugs:
-  <http://code.google.com/p/cclive/issues/>
+* Please report bugs to:
+    <http://code.google.com/p/cclive/issues/>
 
-* Please read the manual page (cclive.1.html) if you are new to cclive
+* Read the manual page (cclive.1.html) if you are new to cclive,
+  the examples section covers the most basic usage
 
-* Some features are unavailable (e.g. --stream-exec) due to OS limitations
+* Some features have been excluded from these binaries (e.g. --stream-exec)
+  due to OS limitations
 
-* cclive will try to parse config file ONLY if either CCLIVE_HOME or HOME
-  environment variable has been defined
+* To use a config file with cclive, define either CCLIVE_HOME or HOME
+  environment variable, see the example below
 
-* cclive looks for "ccliverc", not ".ccliverc" as it does on Unix-like systems
+* Unlike on Unix-like systems, on Windows cclive looks for "ccliverc" config
+  file instead of ".ccliverc", see the example below
 
-* Example:
+
+Example: With config file
+-------------------------
+
   > set CCLIVE_HOME c:\cclive
 
   > type c:\cclive\ccliverc
