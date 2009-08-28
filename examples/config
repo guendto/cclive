@@ -1,6 +1,9 @@
-# Most of the program options can be defined in the ~/.ccliverc config file.
+# Default location: $HOME/.ccliverc
+
+# You can define most of the command line options in this file.
 # For example:
-agent      = Furball/1.0       # --agent=...
-proxy      = http://foo:1234   # --proxy=...
-limit-rate = 50                # --limit-rate=...
-no-extract                     # --no-extract
+
+agent      = foo/0.1.0       # --agent
+proxy      = http://foo:1234 # --proxy
+limit-rate = 50              # --limit-rate
+no-extract                   # --no-extract
