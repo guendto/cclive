@@ -3,9 +3,7 @@
             Prerequisites
 
  * libcurl  (7.18.0+)  <http://curl.haxx.se/>
-
  * libpcre  (7.8+)     <http://pcre.org/>
-
  * libiconv (1.12.0+)  <http://www.gnu.org/software/libiconv/>
 
    Some operating systems have iconv in the C library, for example glibc.
@@ -14,12 +12,13 @@
 
             Installation
 
- Typically "./configure && make install". See also "./configure --help".
+ Typically "./configure && make install". See `./configure --help' for
+ additional options.
 
  --enable-tests
     Enable tests that can be run by typing "make check". Ignores ~/.ccliverc.
 
-    The following environment variables can be used:
+    `make check' respects the following environment variables:
       - NO_INTERNET     =1   (skip internet based tests)
       - CCLIVE_TEST_OPTS=... (any extra cclive command line options to use)
 
@@ -29,7 +28,7 @@
  --without-man
     Skip manual (cclive.1) installation.
 
- See also:
+ Platform specific and other additional information available at:
    http://code.google.com/p/cclive/wiki/HowtoInstall
 
 
@@ -38,6 +37,6 @@
  Typical use:
     % cclive "http://youtube.com/watch?v=3HD220e0bx4"
 
- Be sure to read the manual also and see examples/config.
+ Be sure to read the manual also and see also examples/config.
 
 
