@@ -445,7 +445,7 @@ For example, in bash and urxvt terms:
   % cclive ... # in new terminal
 
 cclive converts the characters to unicode if the video HTML specifies
-charset meta tag. Otherwise the characters are copied as they are.
+the charset meta tag. Otherwise the characters are copied as they are.
 
 If you are missing the unicode characters when using C<--regexp> and
 C<--filename-format>, make sure the regular expression includes "\pL".
