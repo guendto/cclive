@@ -3,7 +3,7 @@
 
 m4_define([vmaj], [0])
 m4_define([vmin], [5])
-m4_define([vmic], [0])
+m4_define([vmic], [1])
 
 AC_PREREQ(2.62)
 AC_INIT([cclive], vmaj[.]vmin[.]vmic)
