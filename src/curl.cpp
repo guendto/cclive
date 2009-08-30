@@ -171,7 +171,7 @@ CurlMgr::fetchToMem(const std::string& url, const std::string &what) {
 
     if (CURLE_OK == rc) {
         curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpcode);
-        if (200 == httpcode)
+        if (httpcode == 200 || httpcode == 206)
             logmgr.cout() << "done." << std::endl;
         else
             errmsg = formatError(httpcode);
@@ -229,7 +229,7 @@ CurlMgr::queryFileLength(VideoProperties& props) {
     {
         curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpcode);
 
-        if (200 == httpcode || 206 == httpcode)
+        if (httpcode == 200 || httpcode == 206)
         {
             const char *ct = NULL;
             curl_easy_getinfo(curl, CURLINFO_CONTENT_TYPE, &ct);
@@ -370,7 +370,7 @@ CurlMgr::fetchToFile(VideoProperties& props) {
 
     if (CURLE_OK == rc) {
         curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpcode);
-        if (200 != httpcode)
+        if (httpcode != 200 && httpcode != 206)
             errmsg = formatError(httpcode);
     }
     else
