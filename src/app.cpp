@@ -35,6 +35,10 @@
 #include <signal.h>
 #endif
 
+#ifdef HAVE_SYS_IOCTL_H
+#include <sys/ioctl.h>
+#endif
+
 #include <curl/curl.h>
 
 #include "hosthandler.h"
@@ -46,6 +50,10 @@
 #include "retry.h"
 #include "log.h"
 #include "app.h"
+
+#if defined (SIGWINCH) && defined (TIOCGWINSZ)
+#define WITH_RESIZE
+#endif
 
 #define SHP std::tr1::shared_ptr
 
@@ -252,7 +260,7 @@ App::run() {
     }
 
     logmgr.cout().setf(std::ios::fixed);
-#ifdef SIGWINCH
+#ifdef WITH_RESIZE
     signal(SIGWINCH, handle_sigwinch);
 #endif
     std::for_each(tokens.begin(), tokens.end(), handleURL);
@@ -304,7 +312,7 @@ static const char copyr_notice[] =
 #ifdef HAVE_ICONV
         << "iconv "
 #endif
-#ifdef SIGWINCH
+#ifdef WITH_RESIZE
         << "sigwinch "
 #endif
         << "\n  Home            : "     << "<http://cclive.googlecode.com/>"
