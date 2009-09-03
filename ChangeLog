@@ -1,6 +1,10 @@
 Version 0.5.1
 
+ User-visible changes:
+  * Fix: google support (title parsing)
+
  Developer-visible changes:
+  * Fix: error: 'winsize' was not declared in this scope (add TIOCGWINSZ check)
   * Treat HTTP code 206 as success
     # Fixes: (invalid) "error: fetch failed: server returned http/206"
 
