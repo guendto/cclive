@@ -40,7 +40,7 @@ GoogleHandler::parseId() {
 void
 GoogleHandler::parseTitle() {
     std::string title;
-    partialMatch("(?i)<div class=titlebar-title>(.*?)</", &title);
+    partialMatch("(?i)id=video-title>(.*?)</", &title);
     props.setTitle(title);
 }
 
