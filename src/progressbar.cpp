@@ -58,7 +58,11 @@
 #include "log.h"
 #include "progressbar.h"
 
-#ifdef SIGWINCH
+#if defined (SIGWINCH) && defined (TIOCGWINSZ)
+#define WITH_RESIZE
+#endif
+
+#ifdef WITH_RESIZE
 static volatile sig_atomic_t recv_sigwinch;
 
 RETSIGTYPE
@@ -69,7 +73,7 @@ handle_sigwinch(int sig) {
 
 static int
 getTermWidth() {
-    int fd = fileno(stderr);
+    const int fd = fileno(stderr);
     winsize wsz;
 
     if (ioctl(fd, TIOCGWINSZ, &wsz) < 0)
@@ -99,7 +103,7 @@ ProgressBar::init(const VideoProperties& props) {
     if (initial > total)
         total = initial;
 
-#ifdef SIGWINCH
+#ifdef WITH_RESIZE
     if (!termWidth || recv_sigwinch) {
         termWidth = getTermWidth();
         if (!termWidth)
@@ -118,7 +122,7 @@ void
 ProgressBar::update(double now) {
     static const double REFRESH_INTERVAL = 0.2;
     bool force_update = false;
-#ifdef SIGWINCH
+#ifdef WITH_RESIZE
     if (recv_sigwinch) {
         const int old_width = termWidth;
         termWidth = getTermWidth();
