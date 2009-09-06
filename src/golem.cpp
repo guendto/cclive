@@ -18,7 +18,6 @@
  */
 
 #include "hosthandler.h"
-#include "opts.h"
 #include "curl.h"
 
 #define HOST "golem"

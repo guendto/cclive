@@ -18,7 +18,6 @@
  */
 
 #include "hosthandler.h"
-#include "opts.h"
 
 #define HOST "youtube"
 

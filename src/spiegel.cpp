@@ -21,7 +21,6 @@
 
 #include "hosthandler.h"
 #include "curl.h"
-#include "opts.h"
 
 #define HOST "spiegel"
 
