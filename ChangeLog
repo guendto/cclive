@@ -2,11 +2,13 @@ Version 0.5.1
 
  User-visible changes:
   * Fix: google support (title parsing)
+  * Fix: break support (http/403, thanks to Werner Elsler for the fix)
+    # <http://code.google.com/p/clive/issues/detail?id=38>
 
  Developer-visible changes:
   * Cleanup: remove unnecessary opts.h includes
   * Fix: error: 'winsize' was not declared in this scope (add TIOCGWINSZ check)
-  * Treat HTTP code 206 as success
+  * Handle HTTP/206 properly
     # Fixes: (invalid) "error: fetch failed: server returned http/206"
 
 
