@@ -51,7 +51,7 @@ BreakHandler::parseLink() {
     partialMatch("(?i)filename='(.*?)'", &fname);
 
     std::string lnk =
-        "http://media1.break.com/dnet/media/" +fpath+ "/" +fname+ ".flv";
+        "http://video1.break.com/dnet/media/" +fpath+ "/" +fname+ ".flv";
 
     props.setLink(lnk);
 }
