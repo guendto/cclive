@@ -3,9 +3,9 @@
 
 m4_define([vmaj], [0])
 m4_define([vmin], [5])
-m4_define([vmic], [1])
+m4_define([vmic], [2])
 
-AC_PREREQ(2.62)
+AC_PREREQ(2.64)
 AC_INIT([cclive], vmaj[.]vmin[.]vmic)
 AC_CONFIG_SRCDIR([src/main.cpp])
 AC_CONFIG_HEADERS([config.h])

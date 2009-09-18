@@ -1,3 +1,9 @@
+Version 0.5.2
+
+ Developer-visible changes:
+  * Bump autoconf prereq to 2.64
+
+
 Version 0.5.1
 (September 14, 2009)
 
