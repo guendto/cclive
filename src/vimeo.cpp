@@ -41,9 +41,7 @@ VimeoHandler::parseId() {
 
 void
 VimeoHandler::parseTitle() {
-    std::string title;
-    partialMatch("(?i)<meta name=\"title\" content=\"(.*?)\"", &title);
-    props.setTitle(title);
+    // See parseLink.
 }
 
 void
@@ -54,6 +52,10 @@ VimeoHandler::parseLink() {
 
     const std::string config = 
         fetch(config_path, "config", true);
+
+    std::string title;
+    partialMatch("(?i)<caption>(.*?)</caption>", &title, config);
+    props.setTitle(title);
 
     std::string sign;
     partialMatch("(?i)<request_signature>(.*?)</", &sign, config);

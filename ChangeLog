@@ -1,6 +1,7 @@
 Version 0.5.2
 
  User-visible changes:
+  * vimeo: fix title parsing (related to clive issue 37 "accented chars")
   * golem: Disable unnecessary config fetch
 
  Developer-visible changes:
