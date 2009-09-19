@@ -47,11 +47,13 @@ GolemHandler::parseTitle() {
 void
 GolemHandler::parseLink() {
 
+#ifdef _1_ // Currently unused.
     std::string config_url =
         "http://video.golem.de/xml/" + props.getId();
 
     const std::string config =
         fetch(config_url, "config", true);
+#endif
 
     std::string link =
         "http://video.golem.de/download/" + props.getId();

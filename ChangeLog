@@ -1,5 +1,8 @@
 Version 0.5.2
 
+ User-visible changes:
+  * golem: Disable unnecessary config fetch
+
  Developer-visible changes:
   * Bump autoconf prereq to 2.64
 
