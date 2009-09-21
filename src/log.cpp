@@ -50,9 +50,9 @@ LogBuffer::setVerbose(const bool& verbose) {
 
 int
 LogBuffer::flushBuffer() {
-    const int n = pptr() - pbase();
     if (!verbose)
-        return n;
+        return EOF;
+    const int n = pptr() - pbase();
     if (write(fd,buffer,n) != n)
         return EOF;
     pbump(-n);
