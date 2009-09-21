@@ -250,9 +250,6 @@ EXTRA_DIST = \
 cmdline.ggo\
 cclive.pod\
 examples/config\
-w32/README.w32\
-w32/mingw32-build.sh\
-w32/mingw32-package.sh\
 docs/AddingSupport\
 docs/SubmittingPatches
 
