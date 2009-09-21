@@ -51,6 +51,13 @@ AC_PATH_PROG(POD2HTML, pod2html, no)
 AM_CONDITIONAL([HAVE_POD2HTML], [test x"$POD2HTML" != "xno"])
 AC_SUBST(POD2HTML)
 
+build_date=
+AC_PATH_PROG(DATE, date, no)
+if [ test x"$DATE" != "xno" ]; then
+    build_date=`"$DATE" +%Y%m%d`
+fi
+AC_DEFINE_UNQUOTED([BUILD_DATE], "$build_date", [...])
+
 # Checks for (mandatory) libraries.
 PKG_CHECK_MODULES(libcurl, libcurl >= 7.18.0)
 PKG_CHECK_MODULES(libpcrecpp, libpcrecpp >= 7.8)

@@ -146,6 +146,7 @@ CXX = @CXX@
 CXXDEPMODE = @CXXDEPMODE@
 CXXFLAGS = @CXXFLAGS@
 CYGPATH_W = @CYGPATH_W@
+DATE = @DATE@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
 ECHO_C = @ECHO_C@
@@ -249,9 +250,9 @@ EXTRA_DIST = \
 cmdline.ggo\
 cclive.pod\
 examples/config\
-README.w32\
-mingw32-build.sh\
-mingw32-package.sh\
+w32/README.w32\
+w32/mingw32-build.sh\
+w32/mingw32-package.sh\
 docs/AddingSupport\
 docs/SubmittingPatches
 

@@ -13,6 +13,7 @@ Version 0.5.2
     # Add AC_CONFIG_MACRO_DIR
     # Add AC_PROG_CPP
     # Add AC_PROG_MKDIR_P
+    # Add BUILD_DATE
     # Remove AC_C_CONST
 
 

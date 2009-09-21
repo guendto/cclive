@@ -1,5 +1,8 @@
 /* config.h.in.  Generated from configure.ac by autoheader.  */
 
+/* ... */
+#undef BUILD_DATE
+
 /* Canonical host */
 #undef CANONICAL_HOST
 

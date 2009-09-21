@@ -304,6 +304,9 @@ static const char copyr_notice[] =
         << CMDLINE_PARSER_PACKAGE       << " version "
         << CMDLINE_PARSER_VERSION       << " with libcurl version "
         << c->version                   << "  ["
+#ifdef BUILD_DATE
+        << BUILD_DATE << "-"
+#endif
         << CANONICAL_TARGET             << "]\n"
         << copyr_notice                 << "\n"
         << "\n  Locale/codeset  : "     << optsmgr.getLocale()
