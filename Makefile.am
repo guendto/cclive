@@ -7,9 +7,9 @@ EXTRA_DIST=\
 cmdline.ggo\
 cclive.pod\
 examples/config\
-README.w32\
-mingw32-build.sh\
-mingw32-package.sh\
+w32/README.w32\
+w32/mingw32-build.sh\
+w32/mingw32-package.sh\
 docs/AddingSupport\
 docs/SubmittingPatches
 
