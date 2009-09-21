@@ -1,20 +1,23 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-m4_define([vmaj], [0])
-m4_define([vmin], [5])
-m4_define([vmic], [2])
-
 AC_PREREQ(2.64)
-AC_INIT([cclive], vmaj[.]vmin[.]vmic)
+
+m4_include([m4/version.m4])
+AC_INIT([cclive], [_CCLIVE_VERSION], [legatvs@gmail.com])
+
 AC_CONFIG_SRCDIR([src/main.cpp])
 AC_CONFIG_HEADERS([config.h])
+AC_CONFIG_AUX_DIR([config.aux])
+AC_CONFIG_MACRO_DIR([m4])
 
 AC_CANONICAL_SYSTEM
+AC_GNU_SOURCE
+
 AC_DEFINE_UNQUOTED(CANONICAL_TARGET, "$target", [Canonical target])
 AC_DEFINE_UNQUOTED(CANONICAL_HOST, "$host", [Canonical host])
 
-AM_INIT_AUTOMAKE()
+AM_INIT_AUTOMAKE([-Wall -Werror foreign dist-bzip2])
 
 # Check host.
 case "$host" in
@@ -27,9 +30,10 @@ esac
 AC_PROG_AWK
 AC_PROG_CXX
 AC_PROG_CC
+AC_PROG_CPP
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
-AC_GNU_SOURCE
+AC_PROG_MKDIR_P
 
 AC_PATH_PROG(GENGETOPT, gengetopt, no)
 AM_CONDITIONAL([HAVE_GENGETOPT], [test x"$GENGETOPT" != "xno"])
@@ -59,7 +63,6 @@ AC_CHECK_HEADERS([stdlib.h string.h sys/ioctl.h unistd.h sys/wait.h signal.h loc
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_HEADER_STDBOOL
-AC_C_CONST
 AC_TYPE_PID_T
 AC_TYPE_SIZE_T
 AC_CHECK_TYPES([ptrdiff_t])

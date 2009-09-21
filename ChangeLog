@@ -6,6 +6,14 @@ Version 0.5.2
 
  Developer-visible changes:
   * Bump autoconf prereq to 2.64
+  * configure.ac:
+    # New m4/version.m4
+    # New AM_INIT_AUTOMAKE([-Wall -Werror foreign dist-bzip2])
+    # Add AC_CONFIG_AUX_DIR
+    # Add AC_CONFIG_MACRO_DIR
+    # Add AC_PROG_CPP
+    # Add AC_PROG_MKDIR_P
+    # Remove AC_C_CONST
 
 
 Version 0.5.1

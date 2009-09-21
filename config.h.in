@@ -175,9 +175,6 @@
 /* Define to 1 if you need to in order for `stat' and other things to work. */
 #undef _POSIX_SOURCE
 
-/* Define to empty if `const' does not conform to ANSI C. */
-#undef const
-
 /* Define to rpl_malloc if the replacement function should be used. */
 #undef malloc
 
