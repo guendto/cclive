@@ -39,21 +39,21 @@ GolemHandler::parseId() {
 
 void
 GolemHandler::parseTitle() {
-    std::string title;
-    partialMatch("(?i)<h1 class=\"headlinenormal\">video:(.*?)</", &title);
-    props.setTitle(title);
+    // See below.
 }
 
 void
 GolemHandler::parseLink() {
 
-#ifdef _1_ // Currently unused.
     std::string config_url =
         "http://video.golem.de/xml/" + props.getId();
 
     const std::string config =
         fetch(config_url, "config", true);
-#endif
+
+    std::string title;
+    partialMatch("(?i)<title>(.*?)</title>", &title, config);
+    props.setTitle(title);
 
     std::string link =
         "http://video.golem.de/download/" + props.getId();
