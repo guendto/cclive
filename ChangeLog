@@ -2,8 +2,8 @@ Version 0.5.2
 
  User-visible changes:
   * Fix: Segmentation fault with -q switch (closes issue #3)
-  * vimeo: fix title parsing (related to clive issue 37 "accented chars")
-  * golem: Disable unnecessary config fetch
+  * vimeo: Fix title parsing (related to clive issue 37 "accented chars")
+  * golem: Parse title from fetch config xml instead
 
  Developer-visible changes:
   * Bump autoconf prereq to 2.64
