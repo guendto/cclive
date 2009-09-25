@@ -2,10 +2,11 @@ Version 0.5.2
 
  User-visible changes:
   * Fix: Segmentation fault with -q switch (closes issue #3)
-  * vimeo: Fix title parsing (related to clive issue 37 "accented chars")
-  * golem: Parse title from fetch config xml instead
+  * Vimeo: Fix title parsing (related to clive issue 37 "accented chars")
+  * Golem: Parse title from fetch config xml instead
 
  Developer-visible changes:
+  * "make check": ADULT_OK env.var. enables redtube test
   * Bump autoconf prereq to 2.64
   * configure.ac:
     # New m4/version.m4
@@ -16,6 +17,9 @@ Version 0.5.2
     # Add AC_PROG_MKDIR_P
     # Add BUILD_DATE
     # Remove AC_C_CONST
+
+ Known issues:
+   * Redtube: broken
 
 
 Version 0.5.1
