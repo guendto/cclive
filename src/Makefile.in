@@ -49,27 +49,21 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am__objects_1 = cclive-main.$(OBJEXT) cclive-app.$(OBJEXT) \
-	cclive-except.$(OBJEXT) cclive-util.$(OBJEXT) \
-	cclive-hosthandler.$(OBJEXT) cclive-opts.$(OBJEXT) \
-	cclive-video.$(OBJEXT) cclive-curl.$(OBJEXT) \
-	cclive-progressbar.$(OBJEXT) cclive-exec.$(OBJEXT) \
-	cclive-retry.$(OBJEXT) cclive-log.$(OBJEXT) \
-	cclive-cmdline.$(OBJEXT) cclive-hostfactory.$(OBJEXT)
-am__objects_2 = cclive-youtube.$(OBJEXT) cclive-break.$(OBJEXT) \
-	cclive-evisor.$(OBJEXT) cclive-sevenload.$(OBJEXT) \
-	cclive-liveleak.$(OBJEXT) cclive-dailymotion.$(OBJEXT) \
-	cclive-vimeo.$(OBJEXT) cclive-golem.$(OBJEXT) \
-	cclive-clipfish.$(OBJEXT) cclive-funnyhub.$(OBJEXT) \
-	cclive-myubo.$(OBJEXT) cclive-cctv.$(OBJEXT) \
-	cclive-ehrensenf.$(OBJEXT) cclive-spiegel.$(OBJEXT) \
-	cclive-redtube.$(OBJEXT) cclive-google.$(OBJEXT)
+am__objects_1 = main.$(OBJEXT) app.$(OBJEXT) except.$(OBJEXT) \
+	util.$(OBJEXT) hosthandler.$(OBJEXT) opts.$(OBJEXT) \
+	video.$(OBJEXT) curl.$(OBJEXT) progressbar.$(OBJEXT) \
+	exec.$(OBJEXT) retry.$(OBJEXT) log.$(OBJEXT) cmdline.$(OBJEXT) \
+	hostfactory.$(OBJEXT)
+am__objects_2 = youtube.$(OBJEXT) break.$(OBJEXT) evisor.$(OBJEXT) \
+	sevenload.$(OBJEXT) liveleak.$(OBJEXT) dailymotion.$(OBJEXT) \
+	vimeo.$(OBJEXT) golem.$(OBJEXT) clipfish.$(OBJEXT) \
+	funnyhub.$(OBJEXT) myubo.$(OBJEXT) cctv.$(OBJEXT) \
+	ehrensenf.$(OBJEXT) spiegel.$(OBJEXT) redtube.$(OBJEXT) \
+	google.$(OBJEXT)
 am__objects_3 =
 am_cclive_OBJECTS = $(am__objects_1) $(am__objects_2) $(am__objects_3)
 cclive_OBJECTS = $(am_cclive_OBJECTS)
 cclive_LDADD = $(LDADD)
-cclive_LINK = $(CXXLD) $(cclive_CXXFLAGS) $(CXXFLAGS) \
-	$(cclive_LDFLAGS) $(LDFLAGS) -o $@
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/config.aux/depcomp
 am__depfiles_maybe = depfiles
@@ -121,7 +115,12 @@ INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
 LDFLAGS = @LDFLAGS@
 LIBICONV = @LIBICONV@
 LIBOBJS = @LIBOBJS@
-LIBS = @LIBS@
+LIBS = \
+$(libcurl_LIBS) \
+$(LIBICONV) \
+$(LTLIBICONV) \
+$(libpcrecpp_LIBS)
+
 LTLIBICONV = @LTLIBICONV@
 LTLIBOBJS = @LTLIBOBJS@
 MAKEINFO = @MAKEINFO@
@@ -254,15 +253,9 @@ cmdline.h \
 hostfactory.h
 
 cclive_SOURCES = $(src) $(host) $(hdr)
-cclive_CXXFLAGS = \
+AM_CPPFLAGS = \
 $(libcurl_CFLAGS) \
 $(libpcrecpp_CFLAGS)
-
-cclive_LDFLAGS = \
-$(libcurl_LIBS) \
-$(LIBICONV) \
-$(LTLIBICONV) \
-$(libpcrecpp_LIBS)
 
 all: all-am
 
@@ -337,7 +330,7 @@ clean-binPROGRAMS:
 	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
 cclive$(EXEEXT): $(cclive_OBJECTS) $(cclive_DEPENDENCIES) 
 	@rm -f cclive$(EXEEXT)
-	$(cclive_LINK) $(cclive_OBJECTS) $(cclive_LDADD) $(LIBS)
+	$(CXXLINK) $(cclive_OBJECTS) $(cclive_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -345,36 +338,36 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cclive-app.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cclive-break.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cclive-cctv.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cclive-clipfish.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cclive-cmdline.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cclive-curl.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cclive-dailymotion.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cclive-ehrensenf.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cclive-evisor.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cclive-except.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cclive-exec.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cclive-funnyhub.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cclive-golem.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cclive-google.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cclive-hostfactory.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cclive-hosthandler.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cclive-liveleak.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cclive-log.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cclive-main.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cclive-myubo.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cclive-opts.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cclive-progressbar.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cclive-redtube.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cclive-retry.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cclive-sevenload.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cclive-spiegel.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cclive-util.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cclive-video.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cclive-vimeo.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cclive-youtube.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/app.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/break.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cctv.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/clipfish.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cmdline.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/curl.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dailymotion.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ehrensenf.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/evisor.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/except.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/exec.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/funnyhub.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/golem.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/google.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hostfactory.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hosthandler.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liveleak.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/log.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/myubo.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/opts.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/progressbar.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/redtube.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/retry.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sevenload.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/spiegel.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/util.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/video.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/vimeo.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/youtube.Po@am__quote@
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -389,426 +382,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
-
-cclive-main.o: main.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-main.o -MD -MP -MF $(DEPDIR)/cclive-main.Tpo -c -o cclive-main.o `test -f 'main.cpp' || echo '$(srcdir)/'`main.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-main.Tpo $(DEPDIR)/cclive-main.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='main.cpp' object='cclive-main.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-main.o `test -f 'main.cpp' || echo '$(srcdir)/'`main.cpp
-
-cclive-main.obj: main.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-main.obj -MD -MP -MF $(DEPDIR)/cclive-main.Tpo -c -o cclive-main.obj `if test -f 'main.cpp'; then $(CYGPATH_W) 'main.cpp'; else $(CYGPATH_W) '$(srcdir)/main.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-main.Tpo $(DEPDIR)/cclive-main.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='main.cpp' object='cclive-main.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-main.obj `if test -f 'main.cpp'; then $(CYGPATH_W) 'main.cpp'; else $(CYGPATH_W) '$(srcdir)/main.cpp'; fi`
-
-cclive-app.o: app.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-app.o -MD -MP -MF $(DEPDIR)/cclive-app.Tpo -c -o cclive-app.o `test -f 'app.cpp' || echo '$(srcdir)/'`app.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-app.Tpo $(DEPDIR)/cclive-app.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='app.cpp' object='cclive-app.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-app.o `test -f 'app.cpp' || echo '$(srcdir)/'`app.cpp
-
-cclive-app.obj: app.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-app.obj -MD -MP -MF $(DEPDIR)/cclive-app.Tpo -c -o cclive-app.obj `if test -f 'app.cpp'; then $(CYGPATH_W) 'app.cpp'; else $(CYGPATH_W) '$(srcdir)/app.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-app.Tpo $(DEPDIR)/cclive-app.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='app.cpp' object='cclive-app.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-app.obj `if test -f 'app.cpp'; then $(CYGPATH_W) 'app.cpp'; else $(CYGPATH_W) '$(srcdir)/app.cpp'; fi`
-
-cclive-except.o: except.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-except.o -MD -MP -MF $(DEPDIR)/cclive-except.Tpo -c -o cclive-except.o `test -f 'except.cpp' || echo '$(srcdir)/'`except.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-except.Tpo $(DEPDIR)/cclive-except.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='except.cpp' object='cclive-except.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-except.o `test -f 'except.cpp' || echo '$(srcdir)/'`except.cpp
-
-cclive-except.obj: except.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-except.obj -MD -MP -MF $(DEPDIR)/cclive-except.Tpo -c -o cclive-except.obj `if test -f 'except.cpp'; then $(CYGPATH_W) 'except.cpp'; else $(CYGPATH_W) '$(srcdir)/except.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-except.Tpo $(DEPDIR)/cclive-except.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='except.cpp' object='cclive-except.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-except.obj `if test -f 'except.cpp'; then $(CYGPATH_W) 'except.cpp'; else $(CYGPATH_W) '$(srcdir)/except.cpp'; fi`
-
-cclive-util.o: util.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-util.o -MD -MP -MF $(DEPDIR)/cclive-util.Tpo -c -o cclive-util.o `test -f 'util.cpp' || echo '$(srcdir)/'`util.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-util.Tpo $(DEPDIR)/cclive-util.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='util.cpp' object='cclive-util.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-util.o `test -f 'util.cpp' || echo '$(srcdir)/'`util.cpp
-
-cclive-util.obj: util.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-util.obj -MD -MP -MF $(DEPDIR)/cclive-util.Tpo -c -o cclive-util.obj `if test -f 'util.cpp'; then $(CYGPATH_W) 'util.cpp'; else $(CYGPATH_W) '$(srcdir)/util.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-util.Tpo $(DEPDIR)/cclive-util.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='util.cpp' object='cclive-util.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-util.obj `if test -f 'util.cpp'; then $(CYGPATH_W) 'util.cpp'; else $(CYGPATH_W) '$(srcdir)/util.cpp'; fi`
-
-cclive-hosthandler.o: hosthandler.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-hosthandler.o -MD -MP -MF $(DEPDIR)/cclive-hosthandler.Tpo -c -o cclive-hosthandler.o `test -f 'hosthandler.cpp' || echo '$(srcdir)/'`hosthandler.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-hosthandler.Tpo $(DEPDIR)/cclive-hosthandler.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='hosthandler.cpp' object='cclive-hosthandler.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-hosthandler.o `test -f 'hosthandler.cpp' || echo '$(srcdir)/'`hosthandler.cpp
-
-cclive-hosthandler.obj: hosthandler.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-hosthandler.obj -MD -MP -MF $(DEPDIR)/cclive-hosthandler.Tpo -c -o cclive-hosthandler.obj `if test -f 'hosthandler.cpp'; then $(CYGPATH_W) 'hosthandler.cpp'; else $(CYGPATH_W) '$(srcdir)/hosthandler.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-hosthandler.Tpo $(DEPDIR)/cclive-hosthandler.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='hosthandler.cpp' object='cclive-hosthandler.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-hosthandler.obj `if test -f 'hosthandler.cpp'; then $(CYGPATH_W) 'hosthandler.cpp'; else $(CYGPATH_W) '$(srcdir)/hosthandler.cpp'; fi`
-
-cclive-opts.o: opts.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-opts.o -MD -MP -MF $(DEPDIR)/cclive-opts.Tpo -c -o cclive-opts.o `test -f 'opts.cpp' || echo '$(srcdir)/'`opts.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-opts.Tpo $(DEPDIR)/cclive-opts.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='opts.cpp' object='cclive-opts.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-opts.o `test -f 'opts.cpp' || echo '$(srcdir)/'`opts.cpp
-
-cclive-opts.obj: opts.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-opts.obj -MD -MP -MF $(DEPDIR)/cclive-opts.Tpo -c -o cclive-opts.obj `if test -f 'opts.cpp'; then $(CYGPATH_W) 'opts.cpp'; else $(CYGPATH_W) '$(srcdir)/opts.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-opts.Tpo $(DEPDIR)/cclive-opts.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='opts.cpp' object='cclive-opts.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-opts.obj `if test -f 'opts.cpp'; then $(CYGPATH_W) 'opts.cpp'; else $(CYGPATH_W) '$(srcdir)/opts.cpp'; fi`
-
-cclive-video.o: video.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-video.o -MD -MP -MF $(DEPDIR)/cclive-video.Tpo -c -o cclive-video.o `test -f 'video.cpp' || echo '$(srcdir)/'`video.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-video.Tpo $(DEPDIR)/cclive-video.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='video.cpp' object='cclive-video.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-video.o `test -f 'video.cpp' || echo '$(srcdir)/'`video.cpp
-
-cclive-video.obj: video.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-video.obj -MD -MP -MF $(DEPDIR)/cclive-video.Tpo -c -o cclive-video.obj `if test -f 'video.cpp'; then $(CYGPATH_W) 'video.cpp'; else $(CYGPATH_W) '$(srcdir)/video.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-video.Tpo $(DEPDIR)/cclive-video.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='video.cpp' object='cclive-video.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-video.obj `if test -f 'video.cpp'; then $(CYGPATH_W) 'video.cpp'; else $(CYGPATH_W) '$(srcdir)/video.cpp'; fi`
-
-cclive-curl.o: curl.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-curl.o -MD -MP -MF $(DEPDIR)/cclive-curl.Tpo -c -o cclive-curl.o `test -f 'curl.cpp' || echo '$(srcdir)/'`curl.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-curl.Tpo $(DEPDIR)/cclive-curl.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='curl.cpp' object='cclive-curl.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-curl.o `test -f 'curl.cpp' || echo '$(srcdir)/'`curl.cpp
-
-cclive-curl.obj: curl.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-curl.obj -MD -MP -MF $(DEPDIR)/cclive-curl.Tpo -c -o cclive-curl.obj `if test -f 'curl.cpp'; then $(CYGPATH_W) 'curl.cpp'; else $(CYGPATH_W) '$(srcdir)/curl.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-curl.Tpo $(DEPDIR)/cclive-curl.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='curl.cpp' object='cclive-curl.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-curl.obj `if test -f 'curl.cpp'; then $(CYGPATH_W) 'curl.cpp'; else $(CYGPATH_W) '$(srcdir)/curl.cpp'; fi`
-
-cclive-progressbar.o: progressbar.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-progressbar.o -MD -MP -MF $(DEPDIR)/cclive-progressbar.Tpo -c -o cclive-progressbar.o `test -f 'progressbar.cpp' || echo '$(srcdir)/'`progressbar.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-progressbar.Tpo $(DEPDIR)/cclive-progressbar.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='progressbar.cpp' object='cclive-progressbar.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-progressbar.o `test -f 'progressbar.cpp' || echo '$(srcdir)/'`progressbar.cpp
-
-cclive-progressbar.obj: progressbar.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-progressbar.obj -MD -MP -MF $(DEPDIR)/cclive-progressbar.Tpo -c -o cclive-progressbar.obj `if test -f 'progressbar.cpp'; then $(CYGPATH_W) 'progressbar.cpp'; else $(CYGPATH_W) '$(srcdir)/progressbar.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-progressbar.Tpo $(DEPDIR)/cclive-progressbar.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='progressbar.cpp' object='cclive-progressbar.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-progressbar.obj `if test -f 'progressbar.cpp'; then $(CYGPATH_W) 'progressbar.cpp'; else $(CYGPATH_W) '$(srcdir)/progressbar.cpp'; fi`
-
-cclive-exec.o: exec.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-exec.o -MD -MP -MF $(DEPDIR)/cclive-exec.Tpo -c -o cclive-exec.o `test -f 'exec.cpp' || echo '$(srcdir)/'`exec.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-exec.Tpo $(DEPDIR)/cclive-exec.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='exec.cpp' object='cclive-exec.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-exec.o `test -f 'exec.cpp' || echo '$(srcdir)/'`exec.cpp
-
-cclive-exec.obj: exec.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-exec.obj -MD -MP -MF $(DEPDIR)/cclive-exec.Tpo -c -o cclive-exec.obj `if test -f 'exec.cpp'; then $(CYGPATH_W) 'exec.cpp'; else $(CYGPATH_W) '$(srcdir)/exec.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-exec.Tpo $(DEPDIR)/cclive-exec.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='exec.cpp' object='cclive-exec.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-exec.obj `if test -f 'exec.cpp'; then $(CYGPATH_W) 'exec.cpp'; else $(CYGPATH_W) '$(srcdir)/exec.cpp'; fi`
-
-cclive-retry.o: retry.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-retry.o -MD -MP -MF $(DEPDIR)/cclive-retry.Tpo -c -o cclive-retry.o `test -f 'retry.cpp' || echo '$(srcdir)/'`retry.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-retry.Tpo $(DEPDIR)/cclive-retry.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='retry.cpp' object='cclive-retry.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-retry.o `test -f 'retry.cpp' || echo '$(srcdir)/'`retry.cpp
-
-cclive-retry.obj: retry.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-retry.obj -MD -MP -MF $(DEPDIR)/cclive-retry.Tpo -c -o cclive-retry.obj `if test -f 'retry.cpp'; then $(CYGPATH_W) 'retry.cpp'; else $(CYGPATH_W) '$(srcdir)/retry.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-retry.Tpo $(DEPDIR)/cclive-retry.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='retry.cpp' object='cclive-retry.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-retry.obj `if test -f 'retry.cpp'; then $(CYGPATH_W) 'retry.cpp'; else $(CYGPATH_W) '$(srcdir)/retry.cpp'; fi`
-
-cclive-log.o: log.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-log.o -MD -MP -MF $(DEPDIR)/cclive-log.Tpo -c -o cclive-log.o `test -f 'log.cpp' || echo '$(srcdir)/'`log.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-log.Tpo $(DEPDIR)/cclive-log.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='log.cpp' object='cclive-log.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-log.o `test -f 'log.cpp' || echo '$(srcdir)/'`log.cpp
-
-cclive-log.obj: log.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-log.obj -MD -MP -MF $(DEPDIR)/cclive-log.Tpo -c -o cclive-log.obj `if test -f 'log.cpp'; then $(CYGPATH_W) 'log.cpp'; else $(CYGPATH_W) '$(srcdir)/log.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-log.Tpo $(DEPDIR)/cclive-log.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='log.cpp' object='cclive-log.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-log.obj `if test -f 'log.cpp'; then $(CYGPATH_W) 'log.cpp'; else $(CYGPATH_W) '$(srcdir)/log.cpp'; fi`
-
-cclive-cmdline.o: cmdline.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-cmdline.o -MD -MP -MF $(DEPDIR)/cclive-cmdline.Tpo -c -o cclive-cmdline.o `test -f 'cmdline.cpp' || echo '$(srcdir)/'`cmdline.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-cmdline.Tpo $(DEPDIR)/cclive-cmdline.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='cmdline.cpp' object='cclive-cmdline.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-cmdline.o `test -f 'cmdline.cpp' || echo '$(srcdir)/'`cmdline.cpp
-
-cclive-cmdline.obj: cmdline.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-cmdline.obj -MD -MP -MF $(DEPDIR)/cclive-cmdline.Tpo -c -o cclive-cmdline.obj `if test -f 'cmdline.cpp'; then $(CYGPATH_W) 'cmdline.cpp'; else $(CYGPATH_W) '$(srcdir)/cmdline.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-cmdline.Tpo $(DEPDIR)/cclive-cmdline.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='cmdline.cpp' object='cclive-cmdline.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-cmdline.obj `if test -f 'cmdline.cpp'; then $(CYGPATH_W) 'cmdline.cpp'; else $(CYGPATH_W) '$(srcdir)/cmdline.cpp'; fi`
-
-cclive-hostfactory.o: hostfactory.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-hostfactory.o -MD -MP -MF $(DEPDIR)/cclive-hostfactory.Tpo -c -o cclive-hostfactory.o `test -f 'hostfactory.cpp' || echo '$(srcdir)/'`hostfactory.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-hostfactory.Tpo $(DEPDIR)/cclive-hostfactory.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='hostfactory.cpp' object='cclive-hostfactory.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-hostfactory.o `test -f 'hostfactory.cpp' || echo '$(srcdir)/'`hostfactory.cpp
-
-cclive-hostfactory.obj: hostfactory.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-hostfactory.obj -MD -MP -MF $(DEPDIR)/cclive-hostfactory.Tpo -c -o cclive-hostfactory.obj `if test -f 'hostfactory.cpp'; then $(CYGPATH_W) 'hostfactory.cpp'; else $(CYGPATH_W) '$(srcdir)/hostfactory.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-hostfactory.Tpo $(DEPDIR)/cclive-hostfactory.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='hostfactory.cpp' object='cclive-hostfactory.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-hostfactory.obj `if test -f 'hostfactory.cpp'; then $(CYGPATH_W) 'hostfactory.cpp'; else $(CYGPATH_W) '$(srcdir)/hostfactory.cpp'; fi`
-
-cclive-youtube.o: youtube.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-youtube.o -MD -MP -MF $(DEPDIR)/cclive-youtube.Tpo -c -o cclive-youtube.o `test -f 'youtube.cpp' || echo '$(srcdir)/'`youtube.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-youtube.Tpo $(DEPDIR)/cclive-youtube.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='youtube.cpp' object='cclive-youtube.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-youtube.o `test -f 'youtube.cpp' || echo '$(srcdir)/'`youtube.cpp
-
-cclive-youtube.obj: youtube.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-youtube.obj -MD -MP -MF $(DEPDIR)/cclive-youtube.Tpo -c -o cclive-youtube.obj `if test -f 'youtube.cpp'; then $(CYGPATH_W) 'youtube.cpp'; else $(CYGPATH_W) '$(srcdir)/youtube.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-youtube.Tpo $(DEPDIR)/cclive-youtube.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='youtube.cpp' object='cclive-youtube.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-youtube.obj `if test -f 'youtube.cpp'; then $(CYGPATH_W) 'youtube.cpp'; else $(CYGPATH_W) '$(srcdir)/youtube.cpp'; fi`
-
-cclive-break.o: break.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-break.o -MD -MP -MF $(DEPDIR)/cclive-break.Tpo -c -o cclive-break.o `test -f 'break.cpp' || echo '$(srcdir)/'`break.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-break.Tpo $(DEPDIR)/cclive-break.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='break.cpp' object='cclive-break.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-break.o `test -f 'break.cpp' || echo '$(srcdir)/'`break.cpp
-
-cclive-break.obj: break.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-break.obj -MD -MP -MF $(DEPDIR)/cclive-break.Tpo -c -o cclive-break.obj `if test -f 'break.cpp'; then $(CYGPATH_W) 'break.cpp'; else $(CYGPATH_W) '$(srcdir)/break.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-break.Tpo $(DEPDIR)/cclive-break.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='break.cpp' object='cclive-break.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-break.obj `if test -f 'break.cpp'; then $(CYGPATH_W) 'break.cpp'; else $(CYGPATH_W) '$(srcdir)/break.cpp'; fi`
-
-cclive-evisor.o: evisor.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-evisor.o -MD -MP -MF $(DEPDIR)/cclive-evisor.Tpo -c -o cclive-evisor.o `test -f 'evisor.cpp' || echo '$(srcdir)/'`evisor.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-evisor.Tpo $(DEPDIR)/cclive-evisor.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='evisor.cpp' object='cclive-evisor.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-evisor.o `test -f 'evisor.cpp' || echo '$(srcdir)/'`evisor.cpp
-
-cclive-evisor.obj: evisor.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-evisor.obj -MD -MP -MF $(DEPDIR)/cclive-evisor.Tpo -c -o cclive-evisor.obj `if test -f 'evisor.cpp'; then $(CYGPATH_W) 'evisor.cpp'; else $(CYGPATH_W) '$(srcdir)/evisor.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-evisor.Tpo $(DEPDIR)/cclive-evisor.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='evisor.cpp' object='cclive-evisor.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-evisor.obj `if test -f 'evisor.cpp'; then $(CYGPATH_W) 'evisor.cpp'; else $(CYGPATH_W) '$(srcdir)/evisor.cpp'; fi`
-
-cclive-sevenload.o: sevenload.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-sevenload.o -MD -MP -MF $(DEPDIR)/cclive-sevenload.Tpo -c -o cclive-sevenload.o `test -f 'sevenload.cpp' || echo '$(srcdir)/'`sevenload.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-sevenload.Tpo $(DEPDIR)/cclive-sevenload.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='sevenload.cpp' object='cclive-sevenload.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-sevenload.o `test -f 'sevenload.cpp' || echo '$(srcdir)/'`sevenload.cpp
-
-cclive-sevenload.obj: sevenload.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-sevenload.obj -MD -MP -MF $(DEPDIR)/cclive-sevenload.Tpo -c -o cclive-sevenload.obj `if test -f 'sevenload.cpp'; then $(CYGPATH_W) 'sevenload.cpp'; else $(CYGPATH_W) '$(srcdir)/sevenload.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-sevenload.Tpo $(DEPDIR)/cclive-sevenload.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='sevenload.cpp' object='cclive-sevenload.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-sevenload.obj `if test -f 'sevenload.cpp'; then $(CYGPATH_W) 'sevenload.cpp'; else $(CYGPATH_W) '$(srcdir)/sevenload.cpp'; fi`
-
-cclive-liveleak.o: liveleak.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-liveleak.o -MD -MP -MF $(DEPDIR)/cclive-liveleak.Tpo -c -o cclive-liveleak.o `test -f 'liveleak.cpp' || echo '$(srcdir)/'`liveleak.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-liveleak.Tpo $(DEPDIR)/cclive-liveleak.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='liveleak.cpp' object='cclive-liveleak.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-liveleak.o `test -f 'liveleak.cpp' || echo '$(srcdir)/'`liveleak.cpp
-
-cclive-liveleak.obj: liveleak.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-liveleak.obj -MD -MP -MF $(DEPDIR)/cclive-liveleak.Tpo -c -o cclive-liveleak.obj `if test -f 'liveleak.cpp'; then $(CYGPATH_W) 'liveleak.cpp'; else $(CYGPATH_W) '$(srcdir)/liveleak.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-liveleak.Tpo $(DEPDIR)/cclive-liveleak.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='liveleak.cpp' object='cclive-liveleak.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-liveleak.obj `if test -f 'liveleak.cpp'; then $(CYGPATH_W) 'liveleak.cpp'; else $(CYGPATH_W) '$(srcdir)/liveleak.cpp'; fi`
-
-cclive-dailymotion.o: dailymotion.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-dailymotion.o -MD -MP -MF $(DEPDIR)/cclive-dailymotion.Tpo -c -o cclive-dailymotion.o `test -f 'dailymotion.cpp' || echo '$(srcdir)/'`dailymotion.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-dailymotion.Tpo $(DEPDIR)/cclive-dailymotion.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='dailymotion.cpp' object='cclive-dailymotion.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-dailymotion.o `test -f 'dailymotion.cpp' || echo '$(srcdir)/'`dailymotion.cpp
-
-cclive-dailymotion.obj: dailymotion.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-dailymotion.obj -MD -MP -MF $(DEPDIR)/cclive-dailymotion.Tpo -c -o cclive-dailymotion.obj `if test -f 'dailymotion.cpp'; then $(CYGPATH_W) 'dailymotion.cpp'; else $(CYGPATH_W) '$(srcdir)/dailymotion.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-dailymotion.Tpo $(DEPDIR)/cclive-dailymotion.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='dailymotion.cpp' object='cclive-dailymotion.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-dailymotion.obj `if test -f 'dailymotion.cpp'; then $(CYGPATH_W) 'dailymotion.cpp'; else $(CYGPATH_W) '$(srcdir)/dailymotion.cpp'; fi`
-
-cclive-vimeo.o: vimeo.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-vimeo.o -MD -MP -MF $(DEPDIR)/cclive-vimeo.Tpo -c -o cclive-vimeo.o `test -f 'vimeo.cpp' || echo '$(srcdir)/'`vimeo.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-vimeo.Tpo $(DEPDIR)/cclive-vimeo.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='vimeo.cpp' object='cclive-vimeo.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-vimeo.o `test -f 'vimeo.cpp' || echo '$(srcdir)/'`vimeo.cpp
-
-cclive-vimeo.obj: vimeo.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-vimeo.obj -MD -MP -MF $(DEPDIR)/cclive-vimeo.Tpo -c -o cclive-vimeo.obj `if test -f 'vimeo.cpp'; then $(CYGPATH_W) 'vimeo.cpp'; else $(CYGPATH_W) '$(srcdir)/vimeo.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-vimeo.Tpo $(DEPDIR)/cclive-vimeo.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='vimeo.cpp' object='cclive-vimeo.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-vimeo.obj `if test -f 'vimeo.cpp'; then $(CYGPATH_W) 'vimeo.cpp'; else $(CYGPATH_W) '$(srcdir)/vimeo.cpp'; fi`
-
-cclive-golem.o: golem.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-golem.o -MD -MP -MF $(DEPDIR)/cclive-golem.Tpo -c -o cclive-golem.o `test -f 'golem.cpp' || echo '$(srcdir)/'`golem.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-golem.Tpo $(DEPDIR)/cclive-golem.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='golem.cpp' object='cclive-golem.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-golem.o `test -f 'golem.cpp' || echo '$(srcdir)/'`golem.cpp
-
-cclive-golem.obj: golem.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-golem.obj -MD -MP -MF $(DEPDIR)/cclive-golem.Tpo -c -o cclive-golem.obj `if test -f 'golem.cpp'; then $(CYGPATH_W) 'golem.cpp'; else $(CYGPATH_W) '$(srcdir)/golem.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-golem.Tpo $(DEPDIR)/cclive-golem.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='golem.cpp' object='cclive-golem.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-golem.obj `if test -f 'golem.cpp'; then $(CYGPATH_W) 'golem.cpp'; else $(CYGPATH_W) '$(srcdir)/golem.cpp'; fi`
-
-cclive-clipfish.o: clipfish.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-clipfish.o -MD -MP -MF $(DEPDIR)/cclive-clipfish.Tpo -c -o cclive-clipfish.o `test -f 'clipfish.cpp' || echo '$(srcdir)/'`clipfish.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-clipfish.Tpo $(DEPDIR)/cclive-clipfish.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='clipfish.cpp' object='cclive-clipfish.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-clipfish.o `test -f 'clipfish.cpp' || echo '$(srcdir)/'`clipfish.cpp
-
-cclive-clipfish.obj: clipfish.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-clipfish.obj -MD -MP -MF $(DEPDIR)/cclive-clipfish.Tpo -c -o cclive-clipfish.obj `if test -f 'clipfish.cpp'; then $(CYGPATH_W) 'clipfish.cpp'; else $(CYGPATH_W) '$(srcdir)/clipfish.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-clipfish.Tpo $(DEPDIR)/cclive-clipfish.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='clipfish.cpp' object='cclive-clipfish.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-clipfish.obj `if test -f 'clipfish.cpp'; then $(CYGPATH_W) 'clipfish.cpp'; else $(CYGPATH_W) '$(srcdir)/clipfish.cpp'; fi`
-
-cclive-funnyhub.o: funnyhub.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-funnyhub.o -MD -MP -MF $(DEPDIR)/cclive-funnyhub.Tpo -c -o cclive-funnyhub.o `test -f 'funnyhub.cpp' || echo '$(srcdir)/'`funnyhub.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-funnyhub.Tpo $(DEPDIR)/cclive-funnyhub.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='funnyhub.cpp' object='cclive-funnyhub.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-funnyhub.o `test -f 'funnyhub.cpp' || echo '$(srcdir)/'`funnyhub.cpp
-
-cclive-funnyhub.obj: funnyhub.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-funnyhub.obj -MD -MP -MF $(DEPDIR)/cclive-funnyhub.Tpo -c -o cclive-funnyhub.obj `if test -f 'funnyhub.cpp'; then $(CYGPATH_W) 'funnyhub.cpp'; else $(CYGPATH_W) '$(srcdir)/funnyhub.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-funnyhub.Tpo $(DEPDIR)/cclive-funnyhub.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='funnyhub.cpp' object='cclive-funnyhub.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-funnyhub.obj `if test -f 'funnyhub.cpp'; then $(CYGPATH_W) 'funnyhub.cpp'; else $(CYGPATH_W) '$(srcdir)/funnyhub.cpp'; fi`
-
-cclive-myubo.o: myubo.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-myubo.o -MD -MP -MF $(DEPDIR)/cclive-myubo.Tpo -c -o cclive-myubo.o `test -f 'myubo.cpp' || echo '$(srcdir)/'`myubo.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-myubo.Tpo $(DEPDIR)/cclive-myubo.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='myubo.cpp' object='cclive-myubo.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-myubo.o `test -f 'myubo.cpp' || echo '$(srcdir)/'`myubo.cpp
-
-cclive-myubo.obj: myubo.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-myubo.obj -MD -MP -MF $(DEPDIR)/cclive-myubo.Tpo -c -o cclive-myubo.obj `if test -f 'myubo.cpp'; then $(CYGPATH_W) 'myubo.cpp'; else $(CYGPATH_W) '$(srcdir)/myubo.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-myubo.Tpo $(DEPDIR)/cclive-myubo.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='myubo.cpp' object='cclive-myubo.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-myubo.obj `if test -f 'myubo.cpp'; then $(CYGPATH_W) 'myubo.cpp'; else $(CYGPATH_W) '$(srcdir)/myubo.cpp'; fi`
-
-cclive-cctv.o: cctv.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-cctv.o -MD -MP -MF $(DEPDIR)/cclive-cctv.Tpo -c -o cclive-cctv.o `test -f 'cctv.cpp' || echo '$(srcdir)/'`cctv.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-cctv.Tpo $(DEPDIR)/cclive-cctv.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='cctv.cpp' object='cclive-cctv.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-cctv.o `test -f 'cctv.cpp' || echo '$(srcdir)/'`cctv.cpp
-
-cclive-cctv.obj: cctv.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-cctv.obj -MD -MP -MF $(DEPDIR)/cclive-cctv.Tpo -c -o cclive-cctv.obj `if test -f 'cctv.cpp'; then $(CYGPATH_W) 'cctv.cpp'; else $(CYGPATH_W) '$(srcdir)/cctv.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-cctv.Tpo $(DEPDIR)/cclive-cctv.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='cctv.cpp' object='cclive-cctv.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-cctv.obj `if test -f 'cctv.cpp'; then $(CYGPATH_W) 'cctv.cpp'; else $(CYGPATH_W) '$(srcdir)/cctv.cpp'; fi`
-
-cclive-ehrensenf.o: ehrensenf.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-ehrensenf.o -MD -MP -MF $(DEPDIR)/cclive-ehrensenf.Tpo -c -o cclive-ehrensenf.o `test -f 'ehrensenf.cpp' || echo '$(srcdir)/'`ehrensenf.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-ehrensenf.Tpo $(DEPDIR)/cclive-ehrensenf.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='ehrensenf.cpp' object='cclive-ehrensenf.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-ehrensenf.o `test -f 'ehrensenf.cpp' || echo '$(srcdir)/'`ehrensenf.cpp
-
-cclive-ehrensenf.obj: ehrensenf.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-ehrensenf.obj -MD -MP -MF $(DEPDIR)/cclive-ehrensenf.Tpo -c -o cclive-ehrensenf.obj `if test -f 'ehrensenf.cpp'; then $(CYGPATH_W) 'ehrensenf.cpp'; else $(CYGPATH_W) '$(srcdir)/ehrensenf.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-ehrensenf.Tpo $(DEPDIR)/cclive-ehrensenf.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='ehrensenf.cpp' object='cclive-ehrensenf.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-ehrensenf.obj `if test -f 'ehrensenf.cpp'; then $(CYGPATH_W) 'ehrensenf.cpp'; else $(CYGPATH_W) '$(srcdir)/ehrensenf.cpp'; fi`
-
-cclive-spiegel.o: spiegel.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-spiegel.o -MD -MP -MF $(DEPDIR)/cclive-spiegel.Tpo -c -o cclive-spiegel.o `test -f 'spiegel.cpp' || echo '$(srcdir)/'`spiegel.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-spiegel.Tpo $(DEPDIR)/cclive-spiegel.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='spiegel.cpp' object='cclive-spiegel.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-spiegel.o `test -f 'spiegel.cpp' || echo '$(srcdir)/'`spiegel.cpp
-
-cclive-spiegel.obj: spiegel.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-spiegel.obj -MD -MP -MF $(DEPDIR)/cclive-spiegel.Tpo -c -o cclive-spiegel.obj `if test -f 'spiegel.cpp'; then $(CYGPATH_W) 'spiegel.cpp'; else $(CYGPATH_W) '$(srcdir)/spiegel.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-spiegel.Tpo $(DEPDIR)/cclive-spiegel.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='spiegel.cpp' object='cclive-spiegel.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-spiegel.obj `if test -f 'spiegel.cpp'; then $(CYGPATH_W) 'spiegel.cpp'; else $(CYGPATH_W) '$(srcdir)/spiegel.cpp'; fi`
-
-cclive-redtube.o: redtube.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-redtube.o -MD -MP -MF $(DEPDIR)/cclive-redtube.Tpo -c -o cclive-redtube.o `test -f 'redtube.cpp' || echo '$(srcdir)/'`redtube.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-redtube.Tpo $(DEPDIR)/cclive-redtube.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='redtube.cpp' object='cclive-redtube.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-redtube.o `test -f 'redtube.cpp' || echo '$(srcdir)/'`redtube.cpp
-
-cclive-redtube.obj: redtube.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-redtube.obj -MD -MP -MF $(DEPDIR)/cclive-redtube.Tpo -c -o cclive-redtube.obj `if test -f 'redtube.cpp'; then $(CYGPATH_W) 'redtube.cpp'; else $(CYGPATH_W) '$(srcdir)/redtube.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-redtube.Tpo $(DEPDIR)/cclive-redtube.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='redtube.cpp' object='cclive-redtube.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-redtube.obj `if test -f 'redtube.cpp'; then $(CYGPATH_W) 'redtube.cpp'; else $(CYGPATH_W) '$(srcdir)/redtube.cpp'; fi`
-
-cclive-google.o: google.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-google.o -MD -MP -MF $(DEPDIR)/cclive-google.Tpo -c -o cclive-google.o `test -f 'google.cpp' || echo '$(srcdir)/'`google.cpp
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-google.Tpo $(DEPDIR)/cclive-google.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='google.cpp' object='cclive-google.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-google.o `test -f 'google.cpp' || echo '$(srcdir)/'`google.cpp
-
-cclive-google.obj: google.cpp
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -MT cclive-google.obj -MD -MP -MF $(DEPDIR)/cclive-google.Tpo -c -o cclive-google.obj `if test -f 'google.cpp'; then $(CYGPATH_W) 'google.cpp'; else $(CYGPATH_W) '$(srcdir)/google.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(am__mv) $(DEPDIR)/cclive-google.Tpo $(DEPDIR)/cclive-google.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='google.cpp' object='cclive-google.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(cclive_CXXFLAGS) $(CXXFLAGS) -c -o cclive-google.obj `if test -f 'google.cpp'; then $(CYGPATH_W) 'google.cpp'; else $(CYGPATH_W) '$(srcdir)/google.cpp'; fi`
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \

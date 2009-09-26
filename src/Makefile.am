@@ -53,11 +53,11 @@ hostfactory.h
 bin_PROGRAMS = cclive
 cclive_SOURCES = $(src) $(host) $(hdr)
 
-cclive_CXXFLAGS = \
+AM_CPPFLAGS = \
 $(libcurl_CFLAGS) \
 $(libpcrecpp_CFLAGS)
 
-cclive_LDFLAGS = \
+LIBS = \
 $(libcurl_LIBS) \
 $(LIBICONV) \
 $(LTLIBICONV) \
