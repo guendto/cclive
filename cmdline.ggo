@@ -76,7 +76,7 @@ option "format"
     f "Download format of video"
     values="flv","best",
         # youtube:
-        "fmt17","fmt18","fmt22","fmt35","hq","3gp",
+        "fmt17","fmt18","fmt22", "fmt34","fmt35","hq","3gp",
         # dmotion:
         "spark-mini","vp6-hq","vp6-hd","vp6","h264",
         # vimeo:

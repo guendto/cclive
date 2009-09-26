@@ -1,6 +1,7 @@
 Version 0.5.2
 
  User-visible changes:
+  * Fix: accept -f fmt34 
   * Fix: Segmentation fault with -q switch (closes issue #3)
   * Vimeo: Fix title parsing (related to clive issue 37 "accented chars")
   * Golem: Parse title from fetch config xml instead

@@ -67,10 +67,15 @@ YoutubeHandler::parseLink() {
         fmt35 = HQ [640x380]
         fmt17 = 3gp[176x144]
         fmt18 = mp4[480x360]
-        fmt34 = flv[320x180] */
+        fmt34 = flv[320x180] (default) */
+
+        // Note: skips "flv", although if "fmt34" (same as "flv")
+        // is specified, we'll append it.
 
         if (fmt == "fmt18" || fmt == "mp4")
             lnk += "&fmt=18";
+        else if (fmt == "fmt34")
+            lnk += "&fmt34";
         else if (fmt == "fmt35" || fmt == "hq")
             lnk += "&fmt=35";
         else if (fmt == "fmt22" || fmt == "hd")
