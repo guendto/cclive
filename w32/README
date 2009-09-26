@@ -1,0 +1,25 @@
+
+    HOWTO: cross-compile for w32
+
+1) Install mingw32. Some examples:
+
+Arch linux:
+* mingw32-gcc
+* mingw32-w32api
+
+FreeBSD:
+* mingw32-gcc
+* mingw32-bin-msvcrt
+
+2) Begin by compiling the prerequisites. For example:
+
+cd curl-$release; mkdir tmp; cd tmp
+CFLAGS="-Os -pipe -march=i686" ../configure --host=i486-mingw32  --prefix=`pwd`/dist --without-ssl --without-ipv6 --without-random --disable-ldap && make install-strip
+
+Repeat for all prerequisites.
+
+3) Edit w32/make-w32.sh as needed. Fix the paths to prerequisites etc.
+
+4) Run "./make-w32.sh".
+
+
