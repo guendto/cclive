@@ -4,7 +4,7 @@
 AC_PREREQ(2.64)
 
 m4_include([m4/version.m4])
-AC_INIT([cclive], [_CCLIVE_VERSION], [legatvs@gmail.com])
+AC_INIT([cclive], [_CCLIVE_VERSION])
 
 AC_CONFIG_SRCDIR([src/main.cpp])
 AC_CONFIG_HEADERS([config.h])
