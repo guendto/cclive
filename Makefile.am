@@ -17,27 +17,28 @@ endif
 .PHONY: cmdline man checkpod
 cmdline:
 if HAVE_GENGETOPT
-	@GENGETOPT@ < cmdline.ggo -C --unamed-opts=URL \
-		--output-dir ./src --no-version -c cpp
+	@GENGETOPT@ < $(top_srcdir)/cmdline.ggo -C --unamed-opts=URL \
+		--output-dir $(top_srcdir)/src --no-version -c cpp
 else
 	@echo "error: configure did not find 'gengetopt' command"
 endif
 man:
 if HAVE_POD2MAN
 	@POD2MAN@ -c "cclive manual" -n cclive \
-		 -s 1 -r @VERSION@ cclive.pod cclive.1
+		 -s 1 -r @VERSION@ $(top_srcdir)/cclive.pod $(top_builddir)/cclive.1
 else
 	@echo "error: configure did not find 'pod2man' command"
 endif
 if HAVE_POD2HTML
 	@POD2HTML@ --title="cclive manual" \
-		--infile=cclive.pod --outfile=cclive.1.html
+		--infile=$(top_srcdir)/cclive.pod \
+        --outfile=$(top_builddir)/cclive.1.html
 else
 	@echo "error: configure did not find 'pod2html' command"
 endif
 checkpod:
 if HAVE_PODCHECKER
-	@PODCHECKER@ cclive.pod
+	@PODCHECKER@ $(top_srcdir)/cclive.pod
 else
 	@echo "error: configure did not find 'podchecker' command"
 endif
