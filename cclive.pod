@@ -321,31 +321,34 @@ overrides this setting.
 
 =head1 FORMATS
 
-"flv" is downloaded by default if C<--format> is not specified. Some
-websites support more than one video format.
-
 =over 4
 
 =item youtube.com
 
-=item last.fm
-
 Format: flv|fmt17|fmt18|fmt22|fmt35
 
-flv (fmt34) and fmt18 (mp4) are usually available. Others may be
-available. At the time of writing this, the following formats
-are recognized by both cclive and Youtube:
+If --format option is not unused, cclive defaults to whatever
+Youtube defaults to. Technically speaking, we leaving the "&fmt="
+from the video link.
 
-  hd  .. fmt22 .. mp4  (1280x720)
-  hq  .. fmt35 .. flv   (640x380)
-  mp4 .. fmt18 .. mp4   (480x360)
-  flv .. fmt34 .. flv   (320x180)
-  3gp .. fmt17 .. 3gp   (176x144)
+Youtube likes to rehash these from time to time so don't be
+surprised if, for example, the quality is not what you expected.
+The same applies to the suffices listed below.
+ 
+ YoutubeID Alias    Suffix  Resolution
+ fmt22     hd       mp4     1280x720
+ fmt35     hq       flv      640x380
+ fmt18     mp4      mp4      480x360
+ fmt34     -        flv      320x180 (quality reportedly varies)
+ fmt17     3gp      3gp      176x144
 
-Note that you can use either format ID, e.g. fmt22 or hd.
+You can use either, the "alias" (e.g. "hd") or the "YoutubeID"
+(e.g. "fmt22") with --format. The aliases exist for historical
+reasons. The suffix is parsed from the content-type field of
+the returned HTTP header.
 
-Some of the last.fm videos are actually hosted by Youtube.
-cclive can be used to download such videos.
+cclive can also download videos that last.fm lists as Youtube
+hosted videos.
 
 =item dailymotion.com
 
