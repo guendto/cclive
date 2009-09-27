@@ -18,6 +18,7 @@
  */
 
 #include "hosthandler.h"
+#include "curl.h"
 
 #define HOST "youtube"
 
@@ -63,19 +64,26 @@ YoutubeHandler::parseLink() {
     else {
 
         /*
-        fmt22 = HD[1280x720]
-        fmt35 = HQ [640x380]
-        fmt17 = 3gp[176x144]
-        fmt18 = mp4[480x360]
-        fmt34 = flv[320x180] (default) */
-
-        // Note: skips "flv", although if "fmt34" (same as "flv")
-        // is specified, we'll append it.
+        * Youtube/Google likes to rehash these from time to time.
+        *
+        * It's not uncommon that some formats are available only
+        * for some videos. The following lists aliases for the
+        * supported "fmt" strings, e.g. fmt22=hd.
+        *
+        * fmt22 = HD [1280x720]
+        * fmt35 = HQ  [640x380]
+        * fmt18 = mp4 [480x360]
+        * fmt34 = -   [320x180] quality reportedly varies
+        * fmt17 = 3gp [176x144]
+        *
+        * If --format is unused, we default to whatever youtube
+        * defaults to by leaving "&fmt=" from the video link.
+        */
 
         if (fmt == "fmt18" || fmt == "mp4")
             lnk += "&fmt=18";
         else if (fmt == "fmt34")
-            lnk += "&fmt34";
+            lnk += "&fmt=34";
         else if (fmt == "fmt35" || fmt == "hq")
             lnk += "&fmt=35";
         else if (fmt == "fmt22" || fmt == "hd")
@@ -84,5 +92,8 @@ YoutubeHandler::parseLink() {
             lnk += "&fmt=17";
     }
 
+    curlmgr.escape(lnk);
     props.setLink(lnk);
 }
+
+
