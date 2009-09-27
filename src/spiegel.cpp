@@ -20,7 +20,6 @@
 #include <map>
 
 #include "hosthandler.h"
-#include "curl.h"
 
 #define HOST "spiegel"
 
@@ -91,7 +90,9 @@ SpiegelHandler::parseLink() {
     if (_path.empty())
         throw HostHandler::ParseException("unable to construct video link");
 
-    props.setLink("http://video.spiegel.de/flash/" + _path);
+    std::string lnk = "http://video.spiegel.de/flash/" + _path;
+    curlmgr.escape(lnk);
+    props.setLink(lnk);
 }
 
 

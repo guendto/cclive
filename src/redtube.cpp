@@ -116,14 +116,16 @@ RedtubeHandler::parseLink() {
 
     std::string tmp = pack_casterisk(mapping);
 
-    std::stringstream lnk;
-    lnk << "http://dl.redtube.com/_videos_t4vn23s9jc5498tgj49icfj4678/"
-        << zeropad(7,id/1000)
-        << "/"
-        << tmp
-        << ".flv";
+    std::stringstream _lnk;
+    _lnk << "http://dl.redtube.com/_videos_t4vn23s9jc5498tgj49icfj4678/"
+         << zeropad(7,id/1000)
+         << "/"
+         << tmp
+         << ".flv";
 
-    props.setLink( lnk.str() );
+    std::string lnk = _lnk.str();
+    curlmgr.escape(lnk);
+    props.setLink(lnk);
 }
 
 

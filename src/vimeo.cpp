@@ -20,7 +20,6 @@
 #include <cstring>
 
 #include "hosthandler.h"
-#include "curl.h"
 
 #define HOST "vimeo"
 
@@ -79,6 +78,7 @@ VimeoHandler::parseLink() {
             lnk += "/?q=hd";
     }
 
+    curlmgr.escape(lnk);
     props.setLink(lnk);
 }
 

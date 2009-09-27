@@ -18,7 +18,6 @@
  */
 
 #include "hosthandler.h"
-#include "curl.h"
 
 #define HOST "golem"
 
@@ -55,7 +54,7 @@ GolemHandler::parseLink() {
     partialMatch("(?i)<title>(.*?)</title>", &title, config);
     props.setTitle(title);
 
-    std::string link =
+    std::string lnk =
         "http://video.golem.de/download/" + props.getId();
 
     std::string format =
@@ -74,9 +73,10 @@ GolemHandler::parseLink() {
     }
 
     if (!format.empty())
-        link += "?q=" + format;
+        lnk += "?q=" + format;
 
-    props.setLink(link);
+    curlmgr.escape(lnk);
+    props.setLink(lnk);
 }
 
 

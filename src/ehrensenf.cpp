@@ -55,8 +55,11 @@ EhrensenfHandler::parseTitle() {
 
 void
 EhrensenfHandler::parseLink() {
-    props.setLink("http://www.ehrensenf.de/misc/load-balancing/lb.php?file="
-        + props.getId() + ".flv");
+    std::string lnk = 
+        "http://www.ehrensenf.de/misc/load-balancing/lb.php?file="
+            + props.getId() + ".flv";
+    curlmgr.escape(lnk);
+    props.setLink(lnk);
 }
 
 
