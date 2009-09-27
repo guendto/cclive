@@ -334,7 +334,7 @@ from the video link.
 Youtube likes to rehash these from time to time so don't be
 surprised if, for example, the quality is not what you expected.
 The same applies to the suffices listed below.
- 
+
  YoutubeID Alias    Suffix  Resolution
  fmt22     hd       mp4     1280x720
  fmt35     hq       flv      640x380
