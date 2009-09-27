@@ -53,6 +53,7 @@ BreakHandler::parseLink() {
     std::string lnk =
         "http://video1.break.com/dnet/media/" +fpath+ "/" +fname+ ".flv";
 
+    curlmgr.escape(lnk);
     props.setLink(lnk);
 }
 

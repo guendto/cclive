@@ -35,6 +35,7 @@ public:
     void         queryFileLength(VideoProperties&);
     void         fetchToFile    (VideoProperties&);
     const std::string& unescape (std::string& url) const;
+    const std::string& escape   (std::string& url) const;
 private:
     long httpcode;
 public:

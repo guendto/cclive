@@ -1,7 +1,11 @@
 Version 0.5.2
 
  User-visible changes:
-  * Fix: accept -f fmt34 
+  * Youtube:
+    # Accept -f fmt34
+    # fmt34 is now treated as yet another (new?) format
+    # Rewrite youtube section of the FORMATS in the manual
+  * Fix: cctv title parsing (related to issue #4)
   * Fix: Segmentation fault with -q switch (closes issue #3)
   * Vimeo: Fix title parsing (related to clive issue 37 "accented chars")
   * Golem: Parse title from fetch config xml instead

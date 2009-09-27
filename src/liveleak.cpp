@@ -18,7 +18,6 @@
  */
 
 #include "hosthandler.h"
-#include "curl.h"
 
 LiveleakHandler::LiveleakHandler()
     : HostHandler()
@@ -63,6 +62,7 @@ LiveleakHandler::parseLink() {
     std::string lnk;
     partialMatch("(?i)<location>(.*?)</location>", &lnk, playlist);
     Util::subStrReplace(lnk, " ", "");
+    curlmgr.escape(lnk);
     props.setLink(lnk);
 }
 

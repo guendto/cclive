@@ -47,6 +47,7 @@ void
 MyuboHandler::parseLink() {
     std::string lnk;
     partialMatch("(?i)writeflashplayer\\('(.*?)'", &lnk);
+    curlmgr.escape(lnk);
     props.setLink(lnk);
 }
 

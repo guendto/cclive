@@ -59,6 +59,9 @@ GoogleHandler::parseLink() {
         }
         catch (ParseException x) { /* default to flv */ }
     }
+#ifdef _1_
+    curlmgr.escape(lnk); // -> http/404
+#endif
     props.setLink(lnk);
 }
 

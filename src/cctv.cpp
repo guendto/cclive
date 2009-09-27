@@ -18,7 +18,6 @@
  */
 
 #include "hosthandler.h"
-#include "curl.h"
 
 CctvHandler::CctvHandler()
     : HostHandler()
@@ -38,7 +37,7 @@ CctvHandler::parseId() {
 void
 CctvHandler::parseTitle() {
     std::string title;
-    partialMatch("(?i)<meta name=\"description\" content=\"(.*?)\"", &title);
+    partialMatch("(?i)<meta name=\"description\"\\s+content=\"(.*?)\"", &title);
     props.setTitle(title);
 }
 
@@ -57,7 +56,9 @@ CctvHandler::parseLink() {
     std::string path;
     partialMatch("url\":\"(.*?)\"", &path, config);
 
-    props.setLink("http://v.cctv.com/flash/" + path);
+    std::string lnk = "http://v.cctv.com/flash/" + path;
+    curlmgr.escape(lnk);
+    props.setLink(lnk);
 }
 
 

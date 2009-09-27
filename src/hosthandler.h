@@ -28,6 +28,7 @@
 #include "except.h"
 #include "video.h"
 #include "util.h"
+#include "curl.h"
 
 class HostHandler {
 public:

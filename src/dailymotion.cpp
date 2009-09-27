@@ -20,7 +20,6 @@
 #include <map>
 
 #include "hosthandler.h"
-#include "curl.h"
 
 #define HOST "dailymotion"
 
@@ -67,7 +66,7 @@ DailymotionHandler::parseLink() {
     if (format == "flv")
         format = "spark";
 
-    std::string link;
+    std::string lnk;
     std::map<std::string, std::string> width;
 
     for (STRV::const_iterator iter = tokens.begin();
@@ -84,7 +83,7 @@ DailymotionHandler::parseLink() {
         width[w] = v[0];
 
         if (v[1] == format && format != "best") {
-            link = v[0];
+            lnk = v[0];
             break;
         }
     }
@@ -92,12 +91,13 @@ DailymotionHandler::parseLink() {
     // std::map sorts by key (width) in descending order
     // automatically. Assume first element to be the best.
     if (format == "best")
-        link = (width.begin())->second;
+        lnk = (width.begin())->second;
 
-    if (link.empty())
+    if (lnk.empty())
         throw ParseException("failed to construct link from paths");
 
-    props.setLink(link);
+    curlmgr.escape(lnk);
+    props.setLink(lnk);
 }
 
 
