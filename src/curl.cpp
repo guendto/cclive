@@ -386,7 +386,19 @@ CurlMgr::fetchToFile(VideoProperties& props) {
 const std::string&
 CurlMgr::unescape(std::string& url) const {
     char *p = curl_easy_unescape(curl, url.c_str(), 0, 0);
+    if (!p)
+        throw RuntimeException(CCLIVE_SYSTEM, "curl_easy_unescape: returned null");
     url     = p;
+    curl_free(p);
+    return url;
+}
+
+const std::string&
+CurlMgr::escape(std::string& url) const {
+    char *p = curl_easy_escape(curl, url.c_str(), 0);
+    if (!p)
+        throw RuntimeException(CCLIVE_SYSTEM, "curl_easy_escape: returned null");
+    url = p;
     curl_free(p);
     return url;
 }
