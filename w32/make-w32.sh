@@ -34,6 +34,7 @@ pack_it()
     && cp $pcre_dll dist/bin \
     && cp $pcrecpp_dll dist/bin \
     && cp ../COPYING dist/cclive-COPYING.TXT \
+    && cp ../ChangeLog dist/ChangeLog.TXT \
     && cp README.w32.TXT dist/ \
     && cp cclive.1.html dist/ \
     && rm -rf dist/share \
