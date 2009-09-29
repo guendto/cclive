@@ -34,7 +34,7 @@ DailymotionHandler::DailymotionHandler()
 void
 DailymotionHandler::parseId() {
     std::string id;
-    partialMatch("(?i)swf\\/(.*?)_", &id);
+    partialMatch("(?i)video\\/(.*?)_", &id);
     props.setId(id);
 }
 

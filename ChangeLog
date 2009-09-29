@@ -2,6 +2,7 @@ Version 0.5.2
 (September 29, 2009)
 
  User-visible changes:
+  * Fix: dailymotion id parsing
   * Youtube:
     # Accept -f fmt34
     # fmt34 is now treated as yet another (new?) format
