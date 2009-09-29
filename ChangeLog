@@ -11,6 +11,7 @@ Version 0.5.2
   * Golem: Parse title from fetch config xml instead
 
  Developer-visible changes:
+  * Disable tests: redtube (see known-issues)
   * "make check": ADULT_OK env.var. enables redtube test
   * Bump autoconf prereq to 2.64
   * configure.ac:
@@ -22,9 +23,13 @@ Version 0.5.2
     # Add AC_PROG_MKDIR_P
     # Add BUILD_DATE
     # Remove AC_C_CONST
+  * Makefile.am:
+    # Use top_srcdir and top_builddir for gengetopt, etc.
+  * tests/Makefile.am:
+    # Use top_builddir for CCLIVE_PATH
 
  Known issues:
-   * Redtube: broken
+   * Redtube: broken (verify -> http/404)
 
 
 Version 0.5.1
