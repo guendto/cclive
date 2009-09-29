@@ -17,13 +17,13 @@ myubo\
 cctv\
 ehrensenf\
 spiegel\
-redtube\
 vimeo\
 multi
+#redtube
 
 TESTS=		$(check_PROGRAMS)
 common=		test.cpp test.h
-AM_CXXFLAGS=	-DCCLIVE_PATH="\"$(top_srcdir)/src/cclive\""
+AM_CXXFLAGS=	-DCCLIVE_PATH="\"$(top_builddir)/src/cclive\""
 
 returncode_SOURCES=	returncode.cpp $(common)
 youtube_SOURCES=	youtube.cpp $(common)
@@ -41,7 +41,7 @@ myubo_SOURCES=		myubo.cpp $(common)
 cctv_SOURCES=		cctv.cpp $(common)
 ehrensenf_SOURCES=	ehrensenf.cpp $(common)
 spiegel_SOURCES=	spiegel.cpp $(common)
-redtube_SOURCES=	redtube.cpp $(common)
+#redtube_SOURCES=	redtube.cpp $(common)
 multi_SOURCES=		multi.cpp $(common)
 
 local-clean:

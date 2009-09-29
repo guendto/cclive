@@ -39,7 +39,7 @@ check_PROGRAMS = returncode$(EXEEXT) youtube$(EXEEXT) break$(EXEEXT) \
 	google$(EXEEXT) sevenload$(EXEEXT) golem$(EXEEXT) \
 	clipfish$(EXEEXT) funnyhub$(EXEEXT) myubo$(EXEEXT) \
 	cctv$(EXEEXT) ehrensenf$(EXEEXT) spiegel$(EXEEXT) \
-	redtube$(EXEEXT) vimeo$(EXEEXT) multi$(EXEEXT)
+	vimeo$(EXEEXT) multi$(EXEEXT)
 subdir = tests
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -88,9 +88,6 @@ multi_LDADD = $(LDADD)
 am_myubo_OBJECTS = myubo.$(OBJEXT) $(am__objects_1)
 myubo_OBJECTS = $(am_myubo_OBJECTS)
 myubo_LDADD = $(LDADD)
-am_redtube_OBJECTS = redtube.$(OBJEXT) $(am__objects_1)
-redtube_OBJECTS = $(am_redtube_OBJECTS)
-redtube_LDADD = $(LDADD)
 am_returncode_OBJECTS = returncode.$(OBJEXT) $(am__objects_1)
 returncode_OBJECTS = $(am_returncode_OBJECTS)
 returncode_LDADD = $(LDADD)
@@ -123,14 +120,14 @@ SOURCES = $(break_SOURCES) $(cctv_SOURCES) $(clipfish_SOURCES) \
 	$(dailymotion_SOURCES) $(ehrensenf_SOURCES) $(evisor_SOURCES) \
 	$(funnyhub_SOURCES) $(golem_SOURCES) $(google_SOURCES) \
 	$(liveleak_SOURCES) $(multi_SOURCES) $(myubo_SOURCES) \
-	$(redtube_SOURCES) $(returncode_SOURCES) $(sevenload_SOURCES) \
-	$(spiegel_SOURCES) $(vimeo_SOURCES) $(youtube_SOURCES)
+	$(returncode_SOURCES) $(sevenload_SOURCES) $(spiegel_SOURCES) \
+	$(vimeo_SOURCES) $(youtube_SOURCES)
 DIST_SOURCES = $(break_SOURCES) $(cctv_SOURCES) $(clipfish_SOURCES) \
 	$(dailymotion_SOURCES) $(ehrensenf_SOURCES) $(evisor_SOURCES) \
 	$(funnyhub_SOURCES) $(golem_SOURCES) $(google_SOURCES) \
 	$(liveleak_SOURCES) $(multi_SOURCES) $(myubo_SOURCES) \
-	$(redtube_SOURCES) $(returncode_SOURCES) $(sevenload_SOURCES) \
-	$(spiegel_SOURCES) $(vimeo_SOURCES) $(youtube_SOURCES)
+	$(returncode_SOURCES) $(sevenload_SOURCES) $(spiegel_SOURCES) \
+	$(vimeo_SOURCES) $(youtube_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 am__tty_colors = \
@@ -251,9 +248,10 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 EXTRA_DIST = 
+#redtube
 TESTS = $(check_PROGRAMS)
 common = test.cpp test.h
-AM_CXXFLAGS = -DCCLIVE_PATH="\"$(top_srcdir)/src/cclive\""
+AM_CXXFLAGS = -DCCLIVE_PATH="\"$(top_builddir)/src/cclive\""
 returncode_SOURCES = returncode.cpp $(common)
 youtube_SOURCES = youtube.cpp $(common)
 break_SOURCES = break.cpp $(common)
@@ -270,7 +268,7 @@ myubo_SOURCES = myubo.cpp $(common)
 cctv_SOURCES = cctv.cpp $(common)
 ehrensenf_SOURCES = ehrensenf.cpp $(common)
 spiegel_SOURCES = spiegel.cpp $(common)
-redtube_SOURCES = redtube.cpp $(common)
+#redtube_SOURCES=	redtube.cpp $(common)
 multi_SOURCES = multi.cpp $(common)
 all: all-am
 
@@ -345,9 +343,6 @@ multi$(EXEEXT): $(multi_OBJECTS) $(multi_DEPENDENCIES)
 myubo$(EXEEXT): $(myubo_OBJECTS) $(myubo_DEPENDENCIES) 
 	@rm -f myubo$(EXEEXT)
 	$(CXXLINK) $(myubo_OBJECTS) $(myubo_LDADD) $(LIBS)
-redtube$(EXEEXT): $(redtube_OBJECTS) $(redtube_DEPENDENCIES) 
-	@rm -f redtube$(EXEEXT)
-	$(CXXLINK) $(redtube_OBJECTS) $(redtube_LDADD) $(LIBS)
 returncode$(EXEEXT): $(returncode_OBJECTS) $(returncode_DEPENDENCIES) 
 	@rm -f returncode$(EXEEXT)
 	$(CXXLINK) $(returncode_OBJECTS) $(returncode_LDADD) $(LIBS)
@@ -382,7 +377,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liveleak.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/multi.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/myubo.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/redtube.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/returncode.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sevenload.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/spiegel.Po@am__quote@
