@@ -43,11 +43,19 @@ pack_it()
     exit $?
 }
 
+clean_up() {
+    make distclean 2>/dev/null
+    rm -rf src tests cclive.1
+    exit $?
+}
+
 pack_flag=off
+clean_flag=off
 while [ $# -gt 0 ]
 do
     case "$1" in
         -p) pack_flag=on;;
+        -c) clean_flag=on;;
          *) break;;
     esac
     shift
@@ -55,6 +63,10 @@ done
 
 if [ x"$pack_flag" = "xon" ]; then
     pack_it
+fi
+
+if [ x"$clean_flag" = "xon" ]; then
+    clean_up
 fi
 
 # No tweaking usually required.
