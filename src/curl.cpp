@@ -194,19 +194,19 @@ CurlMgr::fetchToMem(const std::string& url, const std::string &what) {
 
 void
 CurlMgr::queryFileLength(VideoProperties& props) {
-    FILE *f = tmpfile();
-    if (!f) {
-        perror("tmpfile");
-        throw RuntimeException(CCLIVE_SYSTEM);
-    }
     logmgr.cout() << "verify video link ..." << std::flush;
 
     const Options opts = optsmgr.getOptions();
 
     curl_easy_setopt(curl, CURLOPT_URL, props.getLink().c_str());
     curl_easy_setopt(curl, CURLOPT_NOBODY, 1L);      // GET -> HEAD
-    curl_easy_setopt(curl, CURLOPT_WRITEDATA, f);
-    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, NULL);
+
+    mem_s mem;
+    memset(&mem, 0, sizeof(mem));
+
+    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &mem);
+    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, callback_writemem);
+
     curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT,
                      opts.connect_timeout_arg);
     curl_easy_setopt(curl, CURLOPT_TIMEOUT,
@@ -217,9 +217,6 @@ CurlMgr::queryFileLength(VideoProperties& props) {
 
     curl_easy_setopt(curl, CURLOPT_TIMEOUT, 0L);
     curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L); // reset HEAD -> GET
-
-    fflush(f);
-    fclose(f);
 
     std::string errmsg;
 
@@ -248,6 +245,9 @@ CurlMgr::queryFileLength(VideoProperties& props) {
     }
     else
         errmsg = formatError(rc);
+
+    if (NULL != mem.p)
+        _FREE(mem.p);
 
     if (!errmsg.empty())
         throw FetchException(errmsg, httpcode);
