@@ -1,6 +1,8 @@
 Version 0.5.3
 
  Developer-visible changes:
+  * Fix: AM_ICONV failed to detect iconv (mingw,freebsd)
+    # Use proper config.rpath file
   * Remove tmpfile(3) from queryFileLength
 
 
