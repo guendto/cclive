@@ -1,4 +1,2 @@
 repo: git://repo.or.cz/cclive.git
 web : http://repo.or.cz/w/cclive.git
-
-* w32/make-w32.sh: iconv
