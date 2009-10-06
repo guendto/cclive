@@ -1,6 +1,5 @@
 Experimental cclive w32 binaries.
 
-* No libiconv support
 * Optimized for i686 
 * See cclive.1.html for the manual page
 * --stream-exec is not supported
