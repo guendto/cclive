@@ -6,9 +6,10 @@ Version 0.5.3
 
  Developer-visible changes:
   * Remove: AC_PROG_CPP (deprecated)
-  * Fix: AM_ICONV failed to detect iconv (mingw,freebsd)
-    # Use proper config.rpath file
+  * Fix: AM_ICONV failed to detect iconv (mingw, freebsd, ...)
+    # Use a proper config.rpath file
   * Remove: use of tmpfile(3) (queryFileLength)
+    # Read into memory instead when querying file length
 
 
 Version 0.5.2
