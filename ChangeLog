@@ -1,10 +1,14 @@
 Version 0.5.3
 
+ User-visible changes:
+  * Fix: google title parsing (closes issue #6)
+    - Use <title> instead
+
  Developer-visible changes:
   * Remove: AC_PROG_CPP (deprecated)
   * Fix: AM_ICONV failed to detect iconv (mingw,freebsd)
     # Use proper config.rpath file
-  * Remove tmpfile(3) from queryFileLength
+  * Remove: use of tmpfile(3) (queryFileLength)
 
 
 Version 0.5.2
