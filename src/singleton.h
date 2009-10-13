@@ -48,3 +48,5 @@ public:
 template <typename T> T* Singleton<T>::instance = 0;
 
 #endif
+
+

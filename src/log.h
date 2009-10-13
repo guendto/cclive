@@ -73,3 +73,5 @@ private:
 #define logmgr LogMgr::getInstance()
 
 #endif
+
+

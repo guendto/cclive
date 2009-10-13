@@ -321,3 +321,5 @@ static const char copyr_notice[] =
         << "\n  Home            : "     << "<http://cclive.googlecode.com/>"
         << std::endl;
 }
+
+

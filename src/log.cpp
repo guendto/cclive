@@ -176,3 +176,5 @@ void
 LogMgr::resetReturnCode() {
     rc = CCLIVE_OK;
 }
+
+

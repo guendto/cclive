@@ -298,3 +298,5 @@ ProgressBar::forkStreamer() {
     }
 #endif
 }
+
+

@@ -414,3 +414,5 @@ const long&
 CurlMgr::FetchException::getHTTPCode() const {
     return httpcode;
 }
+
+

@@ -37,3 +37,5 @@ main (const int argc, char * const *argv) {
     }
     return static_cast<int>(logmgr.getReturnCode());
 }
+
+

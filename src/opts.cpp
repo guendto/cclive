@@ -126,3 +126,5 @@ const bool&
 OptionsMgr::getToUnicodeFlag() const {
     return toUnicodeFlag;
 }
+
+
