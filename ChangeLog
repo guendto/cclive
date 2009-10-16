@@ -1,9 +1,17 @@
+Version 0.5.4
+
+ User-visible changes:
+  * Fix: youtube -f best (error: parse failed: no match: (?i)"fmt_map": "(\d+))
+    # Failed if fmt_map was an empty string
+    # Closes issue #7
+
+
 Version 0.5.3
 (October 15, 2009)
 
  User-visible changes:
   * Fix: google title parsing (closes issue #6)
-    - Use <title> instead
+    # Use <title> instead
 
  Developer-visible changes:
   * Remove: AC_PROG_CPP (deprecated)

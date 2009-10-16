@@ -56,9 +56,14 @@ YoutubeHandler::parseLink() {
         Util::parseFormatMap(HOST);
 
     if (fmt == "best") {
-        std::string best;
-        partialMatch("(?i)\"fmt_map\": \"(\\d+)", &best);
-        lnk += "&fmt=" + best;
+        try {
+            std::string best;
+            partialMatch("(?i)\"fmt_map\": \"(\\d+)", &best);
+            lnk += "&fmt=" + best;
+        }
+        catch (const HostHandler::ParseException& x) {
+            // Ignore. Go with the default format instead.
+        }
     }
     else {
 
