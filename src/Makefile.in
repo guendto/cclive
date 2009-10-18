@@ -116,6 +116,7 @@ LDFLAGS = @LDFLAGS@
 LIBICONV = @LIBICONV@
 LIBOBJS = @LIBOBJS@
 LIBS = \
+$(libquvi_LIBS) \
 $(libcurl_LIBS) \
 $(LIBICONV) \
 $(LTLIBICONV) \
@@ -197,6 +198,8 @@ libdir = @libdir@
 libexecdir = @libexecdir@
 libpcrecpp_CFLAGS = @libpcrecpp_CFLAGS@
 libpcrecpp_LIBS = @libpcrecpp_LIBS@
+libquvi_CFLAGS = @libquvi_CFLAGS@
+libquvi_LIBS = @libquvi_LIBS@
 localedir = @localedir@
 localstatedir = @localstatedir@
 mandir = @mandir@
@@ -254,6 +257,7 @@ hostfactory.h
 
 cclive_SOURCES = $(src) $(host) $(hdr)
 AM_CPPFLAGS = \
+$(libquvi_CFLAGS) \
 $(libcurl_CFLAGS) \
 $(libpcrecpp_CFLAGS)
 

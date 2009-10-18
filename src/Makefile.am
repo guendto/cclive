@@ -54,10 +54,12 @@ bin_PROGRAMS = cclive
 cclive_SOURCES = $(src) $(host) $(hdr)
 
 AM_CPPFLAGS = \
+$(libquvi_CFLAGS) \
 $(libcurl_CFLAGS) \
 $(libpcrecpp_CFLAGS)
 
 LIBS = \
+$(libquvi_LIBS) \
 $(libcurl_LIBS) \
 $(LIBICONV) \
 $(LTLIBICONV) \

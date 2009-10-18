@@ -58,6 +58,7 @@ fi
 AC_DEFINE_UNQUOTED([BUILD_DATE], "$build_date", [...])
 
 # Checks for (mandatory) libraries.
+PKG_CHECK_MODULES(libquvi, libquvi >= 0.1.0)
 PKG_CHECK_MODULES(libcurl, libcurl >= 7.18.0)
 PKG_CHECK_MODULES(libpcrecpp, libpcrecpp >= 7.8)
 AM_ICONV
