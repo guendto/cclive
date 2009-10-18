@@ -51,9 +51,9 @@ am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am__objects_1 = main.$(OBJEXT) app.$(OBJEXT) except.$(OBJEXT) \
 	util.$(OBJEXT) hosthandler.$(OBJEXT) opts.$(OBJEXT) \
-	video.$(OBJEXT) curl.$(OBJEXT) progressbar.$(OBJEXT) \
-	exec.$(OBJEXT) retry.$(OBJEXT) log.$(OBJEXT) cmdline.$(OBJEXT) \
-	hostfactory.$(OBJEXT)
+	video.$(OBJEXT) quvi.$(OBJEXT) curl.$(OBJEXT) \
+	progressbar.$(OBJEXT) exec.$(OBJEXT) retry.$(OBJEXT) \
+	log.$(OBJEXT) cmdline.$(OBJEXT) hostfactory.$(OBJEXT)
 am__objects_2 = youtube.$(OBJEXT) break.$(OBJEXT) evisor.$(OBJEXT) \
 	sevenload.$(OBJEXT) liveleak.$(OBJEXT) dailymotion.$(OBJEXT) \
 	vimeo.$(OBJEXT) golem.$(OBJEXT) clipfish.$(OBJEXT) \
@@ -229,6 +229,7 @@ util.cpp \
 hosthandler.cpp \
 opts.cpp \
 video.cpp \
+quvi.cpp \
 curl.cpp \
 progressbar.cpp \
 exec.cpp \
@@ -246,6 +247,7 @@ hosthandler.h \
 video.h \
 singleton.h \
 macros.h \
+quvi.h \
 curl.h \
 progressbar.h \
 exec.h \
@@ -364,6 +366,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/myubo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/opts.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/progressbar.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/quvi.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/redtube.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/retry.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sevenload.Po@am__quote@

@@ -6,6 +6,7 @@ util.cpp \
 hosthandler.cpp \
 opts.cpp \
 video.cpp \
+quvi.cpp \
 curl.cpp \
 progressbar.cpp \
 exec.cpp \
@@ -41,6 +42,7 @@ hosthandler.h \
 video.h \
 singleton.h \
 macros.h \
+quvi.h \
 curl.h \
 progressbar.h \
 exec.h \
