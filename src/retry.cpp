@@ -33,7 +33,7 @@
 #endif
 
 #include "except.h"
-#include "video.h"
+#include "quvi.h"
 #include "curl.h"
 #include "log.h"
 #include "opts.h"
@@ -51,11 +51,11 @@ RetryMgr::reset() {
 }
 
 void
-RetryMgr::handle(const CurlMgr::FetchException& x) {
+RetryMgr::handle(const QuviException& x) {
 
     logmgr.cerr(x);
 
-    const long httpcode = x.getHTTPCode();
+    const long httpcode = x.getHttpCode();
 
     if (httpcode >= 400 && httpcode < 500)
         throw x; // Pass the exception without retrying

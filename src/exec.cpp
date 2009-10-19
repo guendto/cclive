@@ -26,7 +26,7 @@
 #include <vector>
 
 #include "except.h"
-#include "video.h"
+#include "quvi.h"
 #include "opts.h"
 #include "util.h"
 #include "log.h"
@@ -53,7 +53,7 @@ ExecMgr::verifyExecArgument() {
 }
 
 void
-ExecMgr::append(const VideoProperties& props) {
+ExecMgr::append(const QuviVideo& props) {
     queue->push_back(props);
 }
 
@@ -93,7 +93,7 @@ invokeCommand(const std::string& cmd, const char *what=0) {
     }
 }
 
-typedef std::vector<VideoProperties> VIDV;
+typedef std::vector<QuviVideo> VIDV;
 
 void
 ExecMgr::playPlus() {
@@ -136,7 +136,7 @@ ExecMgr::playSemi() {
 }
 
 void
-ExecMgr::passStream(const VideoProperties& props) {
+ExecMgr::passStream(const QuviVideo& props) {
     std::string cmd = 
         optsmgr.getOptions().stream_exec_arg;
 
@@ -148,7 +148,7 @@ ExecMgr::passStream(const VideoProperties& props) {
 }
 
 void
-ExecMgr::playStream(const VideoProperties& props) {
+ExecMgr::playStream(const QuviVideo& props) {
     std::string cmd = optsmgr.getOptions().stream_exec_arg;
 
     std::stringstream fname;

@@ -39,13 +39,11 @@
 #include <sys/ioctl.h>
 #endif
 
-#include <curl/curl.h>
-
-#include "hosthandler.h"
-#include "hostfactory.h"
 #include "macros.h"
 #include "opts.h"
+#include "quvi.h"
 #include "curl.h"
+#include "util.h"
 #include "exec.h"
 #include "retry.h"
 #include "log.h"
@@ -59,6 +57,7 @@
 
 // singleton instances
 static SHP<OptionsMgr> __optsmgr (new OptionsMgr);
+static SHP<QuviMgr>    __quvimgr (new QuviMgr);
 static SHP<CurlMgr>    __curlmgr (new CurlMgr);
 static SHP<ExecMgr>    __execmgr (new ExecMgr);
 static SHP<RetryMgr>   __retrymgr(new RetryMgr);
@@ -72,12 +71,13 @@ App::~App() {
 void
 App::main(const int& argc, char * const *argv) {
     optsmgr.init(argc, argv);
-    logmgr.init(); // apply --quiet
+    logmgr.init();  // apply --quiet
+    quvimgr.init(); // creates also curl handle which we'll reuse
     curlmgr.init();
 }
 
 static void
-printVideo(const VideoProperties& props) {
+print_video(const QuviVideo& props) {
     logmgr.cout()
         << "file: "
         << props.getFilename()
@@ -91,7 +91,7 @@ printVideo(const VideoProperties& props) {
 }
 
 static void
-printCSV(const VideoProperties& props) {
+print_csv(const QuviVideo& props) {
     std::cout.setf(std::ios::fixed);
     std::cout.unsetf(std::ios::showpoint);
     std::cout
@@ -106,72 +106,35 @@ printCSV(const VideoProperties& props) {
         << std::endl;
 }
 
-typedef CurlMgr::FetchException FetchError;
-
 static void
-fetchPage(SHP<HostHandler> handler,
-          const std::string& url,
+fetch_page(QuviVideo& props,
           const bool& reset=false)
 {
     if (reset)
         retrymgr.reset();
-    try   { handler->parsePage(url); }
-    catch (const FetchError& x) {
+    try { props.parse(); }
+    catch (const QuviException& x) {
         retrymgr.handle(x);
-        fetchPage(handler, url);
+        fetch_page(props);
     }
     logmgr.resetReturnCode();
 }
 
 static void
-fetchFile(VideoProperties& props, const bool& reset=false) {
+fetch_file(QuviVideo& props, const bool& reset=false) {
     if (reset)
         retrymgr.reset();
     try   { curlmgr.fetchToFile(props); }
-    catch (const FetchError& x) {
+    catch (const QuviException& x) {
         retrymgr.setRetryUntilRetrievedFlag();
         retrymgr.handle(x);
-        fetchFile(props);
+        fetch_file(props);
     }
     logmgr.resetReturnCode();
 }
 
 static void
-queryLength(VideoProperties& props, const bool& reset=false) {
-    if (reset)
-        retrymgr.reset();
-    try   { curlmgr.queryFileLength(props); }
-    catch (const FetchError& x) {
-        retrymgr.handle(x);
-        queryLength(props);
-    }
-    logmgr.resetReturnCode();
-}
-
-static void
-processVideo(VideoProperties& props) {
-    queryLength(props, true);
-
-    const Options opts =
-        optsmgr.getOptions();
-
-    if (opts.no_extract_given)
-        printVideo(props);
-    else if (opts.emit_csv_given)
-        printCSV(props);
-    else if (opts.stream_pass_given)
-        execmgr.passStream(props);
-    else
-    {
-        if (opts.print_fname_given)
-            printVideo(props);
-
-        fetchFile(props, true);
-    }
-}
-
-static void
-reportNotice() {
+report_notice() {
     static const char report_notice[] =
     ":: A bug? If you think so, and you can reproduce the above,\n"
     ":: consider submitting it to the issue tracker:\n"
@@ -179,38 +142,54 @@ reportNotice() {
     logmgr.cerr() << report_notice << std::endl;
 }
 
-typedef HostHandlerFactory::UnsupportedHostException NoSupport;
-typedef HostHandler::ParseException                  ParseError;
-typedef VideoProperties::NothingToDoException        NothingTodo;
-
 static void
-handleURL(const std::string& url) {
+handle_url(const std::string& url) {
     try
     {
-        SHP<HostHandler> handler = 
-            HostHandlerFactory::createHandler(url);
+        QuviVideo props(url);
 
-        fetchPage(handler, url, true);
+        try
+        {
+            fetch_page(props);
 
-        VideoProperties props =
-            handler->getVideoProperties();
+            const Options opts =
+                optsmgr.getOptions();
 
-        try   { processVideo(props); }
-        catch (const NothingTodo& x) { logmgr.cerr(x, false); }
+            if (opts.no_extract_given)
+                print_video(props);
+            else if (opts.emit_csv_given)
+                print_csv(props);
+            else if (opts.stream_pass_given)
+                execmgr.passStream(props);
+            else
+            {
+                if (opts.print_fname_given)
+                    print_video(props);
 
-        if (optsmgr.getOptions().exec_run_given) 
-            execmgr.append(props);
+                fetch_file(props, true);
+            }
+
+            if (optsmgr.getOptions().exec_run_given) 
+                execmgr.append(props);
+        }
+        catch (const NothingToDoException& x) 
+            { logmgr.cerr(x, false); }
     }
-    catch (const NoSupport& x)   { logmgr.cerr(x, false); }
-    catch (const FetchError& x)  { /* printed by retrymgr.handle already */ }
-    catch (const ParseError& x)  { logmgr.cerr(x, false); reportNotice(); }
+    catch (const NoSupportException& x)
+        { logmgr.cerr(x, false); }
+    catch (const ParseException& x)
+        { logmgr.cerr(x, false); report_notice(); }
+    catch (const QuviException& x)
+        { /* printed by retrymgr.handle already */ }
 }
 
 typedef std::vector<std::string> STRV;
 
 void
 App::run() {
-    const Options opts = optsmgr.getOptions();
+
+    const Options opts =
+        optsmgr.getOptions();
 
     if (opts.version_given) {
         printVersion();
@@ -218,7 +197,12 @@ App::run() {
     }
 
     if (opts.hosts_given) {
-        HostHandlerFactory::printHosts();
+        char *domain=0, *formats=0;
+        while (quvi_iter_host(&domain, &formats) != QUVI_LASTHOST)
+            std::cout << domain << "\t" << formats << "\n";
+        std::cout
+            << "\nNote: Some videos may have limited number "
+            << "of formats available." << std::endl;
         return;
     }
 
@@ -263,7 +247,7 @@ App::run() {
 #ifdef WITH_RESIZE
     signal(SIGWINCH, handle_sigwinch);
 #endif
-    std::for_each(tokens.begin(), tokens.end(), handleURL);
+    std::for_each(tokens.begin(), tokens.end(), handle_url);
 
     if (opts.exec_run_given)
         execmgr.playQueue();
@@ -297,13 +281,10 @@ static const char copyr_notice[] =
 "This is free software; see the  source for  copying conditions.  There is NO\n"
 "warranty;  not even for MERCHANTABILITY or FITNESS FOR A  PARTICULAR PURPOSE.";
 
-    const curl_version_info_data *c =
-        curl_version_info(CURLVERSION_NOW);
-
     std::cout
         << CMDLINE_PARSER_PACKAGE       << " version "
-        << CMDLINE_PARSER_VERSION       << " with libcurl version "
-        << c->version                   << "  ["
+        << CMDLINE_PARSER_VERSION       << " with libquvi version "
+        << quvi_version(QUVI_VERSION)   << "  ["
 #ifdef BUILD_DATE
         << BUILD_DATE << "-"
 #endif

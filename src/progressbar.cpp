@@ -50,12 +50,12 @@
 #endif
 
 #include "except.h"
-#include "video.h"
 #include "opts.h"
 #include "macros.h"
 #include "util.h"
 #include "exec.h"
 #include "log.h"
+#include "quvi.h"
 #include "progressbar.h"
 
 #if defined (SIGWINCH) && defined (TIOCGWINSZ)
@@ -84,17 +84,17 @@ getTermWidth() {
 #endif
 
 ProgressBar::ProgressBar()
-    : props(VideoProperties()), lastUpdate(0),
-      started(0),               initial(0),
-      total(0),                 count(0),
-      done(false),              width(0),
-      termWidth(0),             streamFlag(false),
+    : props(QuviVideo()), lastUpdate(0),
+      started(0),         initial(0),
+      total(0),           count(0),
+      done(false),        width(0),
+      termWidth(0),       streamFlag(false),
       streamPid(-1)
 {
 }
 
 void
-ProgressBar::init(const VideoProperties& props) {
+ProgressBar::init(const QuviVideo& props) {
     this->props = props;
 
     initial = props.getInitial(); // bytes dl previously

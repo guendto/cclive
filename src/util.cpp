@@ -25,14 +25,17 @@
 #include <vector>
 #include <map>
 
+#include <pcrecpp.h>
+
 #ifdef HAVE_ICONV
 #include <cerrno>
 #include <iconv.h>
 #endif
 
-#include "hosthandler.h"
 #include "opts.h"
+#include "except.h"
 #include "log.h"
+#include "util.h"
 
 const double
 Util::fileExists(const std::string& path) {
@@ -50,6 +53,7 @@ Util::fileExists(const std::string& path) {
     return len;
 }
 
+#ifdef _1_
 const std::string
 Util::subStr(const std::string& src,
              const std::string& begin,
@@ -99,6 +103,7 @@ Util::rsubStr(const std::string& src,
 
     return src.substr(from, len);
 }
+#endif
 
 std::string&
 Util::subStrReplace(

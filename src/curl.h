@@ -22,6 +22,8 @@
 
 #include "singleton.h"
 
+class QuviVideo;
+
 class CurlMgr : public Singleton<CurlMgr> {
 public:
     CurlMgr           ();
@@ -32,20 +34,11 @@ public:
     void         init           ();
     std::string  fetchToMem     (const std::string& url,
                                     const std::string& what="");
-    void         queryFileLength(VideoProperties&);
-    void         fetchToFile    (VideoProperties&);
+    void         fetchToFile    (QuviVideo&);
     const std::string& unescape (std::string& url) const;
     const std::string& escape   (std::string& url) const;
 private:
     long httpcode;
-public:
-    class FetchException : public RuntimeException {
-    public:
-        FetchException(const std::string&, const long& httpcode);
-        const long& getHTTPCode() const;
-    protected:
-        long httpcode;
-    };
 };
 
 #define curlmgr CurlMgr::getInstance()

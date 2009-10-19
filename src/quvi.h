@@ -17,10 +17,14 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef quvi_h
-#define quvi_h
+#ifndef quvimgr_h
+#define quvimgr_h
+
+#include <curl/curl.h>
+#include <quvi/quvi.h>
 
 #include "singleton.h"
+#include "except.h"
 
 class QuviVideo;
 
@@ -28,37 +32,57 @@ class QuviMgr : public Singleton<QuviMgr> {
 public:
     QuviMgr          ();
     QuviMgr          (const QuviMgr&);
-    QuviMgr operator=(const QuviMgr&);
+    QuviMgr& operator=(const QuviMgr&);
     virtual ~QuviMgr ();
 public:
     void    init        ();
     quvi_t  handle      () const;
     void    curlHandle  (CURL **curl);
 private:
-    void handleError();
-private:
     quvi_t quvi;
-public:
-    class QuviException : public RuntimeException {
-    public:
-        QuviException(const std::string&);
-        const long& httpcode() const;
-        const long& curlcode() const;
-    };
-};
-
-class QuviVideo {
-public:
-    QuviVideo();
-    QuviVideo(const std::string& url);
-    virtual ~QuviVideo();
-public:
-    void parse(const std::string& url);
-private:
-    quvi_video_t video;
 };
 
 #define quvimgr QuviMgr::getInstance()
+
+class QuviVideo {
+public:
+    QuviVideo           ();
+    QuviVideo           (const std::string& url);
+    QuviVideo           (const QuviVideo&);
+    QuviVideo& operator=(const QuviVideo&);
+    virtual ~QuviVideo();
+public:
+    void parse(std::string url="");
+public:
+    const double&      getLength()      const;
+    const std::string& getPageLink()    const;
+    const std::string& getId()          const;
+    const std::string& getTitle()       const;
+    const std::string& getLink()        const;
+    const std::string& getSuffix()      const;
+    const std::string& getContentType() const;
+    const std::string& getHostId()      const;
+    const double&      getInitial()     const;
+public:
+    void               formatOutputFilename();
+    void               applyTitleRegexp(std::string& src);
+    void               customOutputFilenameFormatter(
+                           std::stringstream& b);
+    void               updateInitial();
+    const std::string& getFilename()    const;
+private:
+    double length;
+    std::string pageLink;
+    std::string id;
+    std::string title;
+    std::string link;
+    std::string suffix;
+    std::string contentType;
+    std::string hostId;
+    double initial;
+    std::string filename;
+public:
+};
 
 #endif
 

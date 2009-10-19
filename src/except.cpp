@@ -19,6 +19,7 @@
 
 #include <string>
 
+#include "quvi.h"
 #include "except.h"
 
 RuntimeException::RuntimeException()
@@ -79,6 +80,52 @@ RuntimeException::what() const {
 const ReturnCode&
 RuntimeException::getReturnCode() const {
     return rc;
+}
+
+QuviException::QuviException(const std::string& error)
+    : RuntimeException(CCLIVE_QUVI, error),
+      httpcode(0),
+      curlcode(0)
+{
+    const quvi_t quvi = quvimgr.handle();
+    assert(quvi != 0);
+    quvi_getinfo(quvi, QUVII_HTTPCODE, &httpcode);
+    quvi_getinfo(quvi, QUVII_CURLCODE, &curlcode);
+}
+
+QuviException::QuviException(
+    const std::string& err,
+    const long& httpcode)
+    : RuntimeException(CCLIVE_FETCH, err),
+      httpcode(httpcode),
+      curlcode(0)
+{
+}
+
+const long&
+QuviException::getHttpCode() const {
+    return httpcode;
+}
+
+const long&
+QuviException::getCurlCode() const {
+    return curlcode;
+}
+
+
+NoSupportException::NoSupportException(const std::string& err)
+    : RuntimeException(CCLIVE_NOSUPPORT, err)
+{
+}
+
+ParseException::ParseException(const std::string& err)
+    : RuntimeException(CCLIVE_PARSE, err)
+{
+}
+
+NothingToDoException::NothingToDoException()
+    : RuntimeException(CCLIVE_NOTHINGTODO)
+{
 }
 
 

@@ -36,6 +36,35 @@ private:
     std::string error;
 };
 
+class ParseException : public RuntimeException {
+public:
+    ParseException(const std::string&);
+};
+
+class NoSupportException : public RuntimeException {
+public:
+    NoSupportException(const std::string&);
+};
+
+class NothingToDoException : public RuntimeException {
+public:
+    NothingToDoException();
+};
+
+class QuviException : public RuntimeException {
+public:
+    QuviException(const std::string&);
+    // Not actually an quvi exception. Recycle exception name.
+    // Note that this is used by CurlMgr::fetchToFile only.
+    QuviException(const std::string&,
+        const long &httpcode);
+    const long& getHttpCode() const;
+    const long& getCurlCode() const;
+private:
+    long httpcode;
+    long curlcode;
+};
+
 #endif
 
 

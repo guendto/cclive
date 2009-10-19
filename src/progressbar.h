@@ -24,7 +24,7 @@ class ProgressBar {
 public:
     ProgressBar();
 public:
-    void init   (const VideoProperties&);
+    void init   (const QuviVideo&);
     void update (double now);
     void finish ();
 private:
@@ -32,7 +32,7 @@ private:
     const std::string getUnit      (double& rate) const;
     void              forkStreamer ();
 private:
-    VideoProperties props;
+    QuviVideo props;
     time_t lastUpdate;
     time_t started;
     double initial;

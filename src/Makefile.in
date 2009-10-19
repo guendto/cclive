@@ -50,18 +50,11 @@ CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am__objects_1 = main.$(OBJEXT) app.$(OBJEXT) except.$(OBJEXT) \
-	util.$(OBJEXT) hosthandler.$(OBJEXT) opts.$(OBJEXT) \
-	video.$(OBJEXT) quvi.$(OBJEXT) curl.$(OBJEXT) \
+	util.$(OBJEXT) opts.$(OBJEXT) quvi.$(OBJEXT) curl.$(OBJEXT) \
 	progressbar.$(OBJEXT) exec.$(OBJEXT) retry.$(OBJEXT) \
-	log.$(OBJEXT) cmdline.$(OBJEXT) hostfactory.$(OBJEXT)
-am__objects_2 = youtube.$(OBJEXT) break.$(OBJEXT) evisor.$(OBJEXT) \
-	sevenload.$(OBJEXT) liveleak.$(OBJEXT) dailymotion.$(OBJEXT) \
-	vimeo.$(OBJEXT) golem.$(OBJEXT) clipfish.$(OBJEXT) \
-	funnyhub.$(OBJEXT) myubo.$(OBJEXT) cctv.$(OBJEXT) \
-	ehrensenf.$(OBJEXT) spiegel.$(OBJEXT) redtube.$(OBJEXT) \
-	google.$(OBJEXT)
-am__objects_3 =
-am_cclive_OBJECTS = $(am__objects_1) $(am__objects_2) $(am__objects_3)
+	log.$(OBJEXT) cmdline.$(OBJEXT)
+am__objects_2 =
+am_cclive_OBJECTS = $(am__objects_1) $(am__objects_2)
 cclive_OBJECTS = $(am_cclive_OBJECTS)
 cclive_LDADD = $(LDADD)
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
@@ -166,24 +159,7 @@ datarootdir = @datarootdir@
 docdir = @docdir@
 dvidir = @dvidir@
 exec_prefix = @exec_prefix@
-host = \
-youtube.cpp \
-break.cpp \
-evisor.cpp \
-sevenload.cpp \
-liveleak.cpp \
-dailymotion.cpp \
-vimeo.cpp \
-golem.cpp \
-clipfish.cpp \
-funnyhub.cpp \
-myubo.cpp \
-cctv.cpp \
-ehrensenf.cpp \
-spiegel.cpp \
-redtube.cpp \
-google.cpp
-
+host = @host@
 host_alias = @host_alias@
 host_cpu = @host_cpu@
 host_os = @host_os@
@@ -226,25 +202,20 @@ main.cpp \
 app.cpp	\
 except.cpp \
 util.cpp \
-hosthandler.cpp \
 opts.cpp \
-video.cpp \
 quvi.cpp \
 curl.cpp \
 progressbar.cpp \
 exec.cpp \
 retry.cpp \
 log.cpp	\
-cmdline.cpp \
-hostfactory.cpp
+cmdline.cpp
 
 hdr = \
 app.h \
 except.h \
 util.h \
 opts.h \
-hosthandler.h \
-video.h \
 singleton.h \
 macros.h \
 quvi.h \
@@ -254,10 +225,9 @@ exec.h \
 retry.h \
 error.h \
 log.h \
-cmdline.h \
-hostfactory.h
+cmdline.h
 
-cclive_SOURCES = $(src) $(host) $(hdr)
+cclive_SOURCES = $(src) $(hdr)
 AM_CPPFLAGS = \
 $(libquvi_CFLAGS) \
 $(libcurl_CFLAGS) \
@@ -345,36 +315,17 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/app.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/break.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cctv.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/clipfish.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cmdline.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/curl.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dailymotion.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ehrensenf.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/evisor.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/except.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/exec.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/funnyhub.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/golem.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/google.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hostfactory.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/hosthandler.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liveleak.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/log.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/myubo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/opts.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/progressbar.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/quvi.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/redtube.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/retry.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sevenload.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/spiegel.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/util.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/video.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/vimeo.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/youtube.Po@am__quote@
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<

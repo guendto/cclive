@@ -24,7 +24,7 @@ public:
     RetryMgr();
 public:
     void        reset                     ();
-    void        handle                    (const CurlMgr::FetchException&);
+    void        handle                    (const QuviException&);
     void        setRetryUntilRetrievedFlag();
     const bool& getRetryUntilRetrievedFlag() const;
 private:

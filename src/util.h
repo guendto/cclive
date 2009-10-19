@@ -20,7 +20,7 @@
 #ifndef util_h
 #define util_h
 
-class VideoProperties;
+class QuviVideo;
 
 class Util {
 public:
