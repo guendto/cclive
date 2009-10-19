@@ -53,58 +53,6 @@ Util::fileExists(const std::string& path) {
     return len;
 }
 
-#ifdef _1_
-const std::string
-Util::subStr(const std::string& src,
-             const std::string& begin,
-             const std::string& end,
-             const bool& croak_if_not_found /*=true*/)
-{
-    const std::string::size_type begin_pos = src.find(begin);
-    if (begin_pos == std::string::npos && croak_if_not_found)
-        throw HostHandler::ParseException("not found: "+begin);
-
-    const std::string::size_type end_pos =
-        src.find(end, begin_pos + begin.length());
-
-    if (end_pos == std::string::npos && croak_if_not_found)
-        throw HostHandler::ParseException("not found: "+end);
-
-    const std::string::size_type from =
-        begin_pos + begin.length();
-
-    const std::string::size_type len =
-        end_pos - begin_pos - begin.length();
-
-    return src.substr(from, len);
-}
-
-const std::string
-Util::rsubStr(const std::string& src,
-        const std::string& begin,
-        const std::string& end,
-        const bool& croak_if_not_found /*=true*/)
-{
-    const std::string::size_type end_pos = src.rfind(end);
-    if (end_pos == std::string::npos && croak_if_not_found)
-        throw HostHandler::ParseException("not found: "+end);
-
-    const std::string::size_type begin_pos =
-        src.rfind(begin, end_pos - end.length());
-
-    if (begin_pos == std::string::npos && croak_if_not_found)
-        throw HostHandler::ParseException("not found: "+begin);
-
-    const std::string::size_type from =
-        begin_pos + begin.length();
-
-    const std::string::size_type len =
-        end_pos - begin_pos - begin.length();
-
-    return src.substr(from, len);
-}
-#endif
-
 std::string&
 Util::subStrReplace(
     std::string& src,
