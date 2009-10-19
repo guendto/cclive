@@ -2,13 +2,10 @@
 
             Prerequisites
 
+ * libquvi  0.1.0+   <http://quvi.googlecode.com/>
  * libcurl  7.18.0+  <http://curl.haxx.se/>
  * libpcre  7.8+     <http://pcre.org/>
- * libiconv 1.12.0+  <http://www.gnu.org/software/libiconv/>
  * gcc      4.2+     (cclive uses the tr1 extensions)
-
- Some operating systems have iconv in the C library, for example glibc.
- Some have it in a separate library libiconv, for example OSF/1 or FreeBSD.
 
  Platform specific and other additional information available at:
    http://code.google.com/p/cclive/wiki/HowtoInstall
