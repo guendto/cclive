@@ -24,7 +24,6 @@
 #include <quvi/quvi.h>
 
 #include "singleton.h"
-#include "except.h"
 
 class QuviVideo;
 
@@ -81,7 +80,6 @@ private:
     std::string hostId;
     double initial;
     std::string filename;
-public:
 };
 
 #endif

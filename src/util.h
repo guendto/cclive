@@ -20,8 +20,6 @@
 #ifndef util_h
 #define util_h
 
-class QuviVideo;
-
 class Util {
 public:
     static const double fileExists   (const std::string& path);

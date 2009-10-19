@@ -53,9 +53,9 @@
 #include "opts.h"
 #include "macros.h"
 #include "util.h"
+#include "quvi.h"
 #include "exec.h"
 #include "log.h"
-#include "quvi.h"
 #include "progressbar.h"
 
 #if defined (SIGWINCH) && defined (TIOCGWINSZ)

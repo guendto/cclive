@@ -41,6 +41,7 @@
 
 #include "macros.h"
 #include "opts.h"
+#include "except.h"
 #include "quvi.h"
 #include "curl.h"
 #include "util.h"
