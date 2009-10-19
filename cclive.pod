@@ -496,7 +496,7 @@ cclive exits 0 on success, and E<gt>0 if an error occurs.
   CCLIVE_OK           = 0
   CCLIVE_OPT          = 1  // cmdline option parsing error
   CCLIVE_OPTARG       = 2  // cmdline option arg error
-  CCLIVE_CURLINIT     = 3  // curl init error
+  CCLIVE_CURLINIT     = 3  // curl init error (unused since 0.6.0+)
   CCLIVE_NOTHINGTODO  = 4  // file already retrieved
   CCLIVE_SYSTEM       = 5  // system call failed
   CCLIVE_NOSUPPORT    = 6  // host not supported
