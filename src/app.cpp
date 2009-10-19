@@ -292,7 +292,7 @@ static const char copyr_notice[] =
         << copyr_notice                 << "\n"
         << "\n  Locale/codeset  : "     << optsmgr.getLocale()
         << "\n  Config          : "     << optsmgr.getPath()
-        << "\n  Features        : pcre "
+        << "\n  Features        : "
 #ifdef WITH_RESIZE
         << "sigwinch "
 #endif
