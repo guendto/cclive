@@ -1,6 +1,25 @@
 cclive News
 -----------
 
+0.6.0
+-------------
+
+* Add dependency for libquvi (http://quvi.googlecode.com/).
+Due to this change, cclive no longer contains host specific
+code for parsing video pages. All of this is now done by
+the libquvi.
+
+* Due to libquvi design, cclive now retries from page fetch if
+video link verification fails
+
+* CCLIVE_CURLINIT return code is now obsolete and possibly
+reused in the future -- libquvi takes care of initializing
+libcurl
+
+* libiconv is no longer used by cclive as libquvi takes
+care of character set conversions from now on
+
+
 0.5.2
 -------------
 
