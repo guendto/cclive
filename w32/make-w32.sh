@@ -11,9 +11,6 @@ CURL_CONFIG=\
 PCRE_CONFIG=\
 "/home/legatvs/src/non-installed/pcre-7.9/release/dist/bin/pcre-config"
 
-ICONV_PREFIX=\
-"/home/legatvs/src/non-installed/libiconv-1.13.1/release/dist"
-
 pack_it()
 {
     curl_prefix="`$CURL_CONFIG --prefix`"
@@ -27,15 +24,12 @@ pack_it()
     archive="cclive-$version-win32-i686-bin.7z"
     distdir="cclive-$version"
 
-    iconv_dll="$ICONV_PREFIX/bin/libiconv-2.dll"
-
     rm -rf dist cclive-$version $archive \
     && make install-strip \
     && make man \
     && cp $curl_dll dist/bin \
     && cp $pcre_dll dist/bin \
     && cp $pcrecpp_dll dist/bin \
-    && cp $iconv_dll dist/bin \
     && cp ../COPYING dist/cclive-COPYING.TXT \
     && cp ../ChangeLog dist/ChangeLog.TXT \
     && cp README.w32.TXT dist/ \
@@ -83,7 +77,6 @@ export libpcrecpp_LIBS="`$PCRE_CONFIG --libs` -lpcrecpp"
 CXXFLAGS=$CXXFLAGS ../configure \
     --prefix="$PREFIX" \
     --host="$HOST" \
-     --without-man \
-     --with-libiconv-prefix="$ICONV_PREFIX"
+     --without-man
 
 
