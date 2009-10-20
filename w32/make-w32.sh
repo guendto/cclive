@@ -8,16 +8,27 @@ CXXFLAGS="-Os -pipe -march=i686"
 QUVI_PREFIX=\
 "/home/legatvs/quvi.git/w32/quvi-0.1.0"
 
+CURL_PREFIX=\
+"/home/legatvs/src/non-installed/curl-7.19.6"
+
 CURL_CONFIG=\
-"/home/legatvs/src/non-installed/curl-7.19.6/release/dist/bin/curl-config"
+"$CURL_PREFIX/release/dist/bin/curl-config"
+
+PCRE_PREFIX=\
+"/home/legatvs/src/non-installed/pcre-7.9"
 
 PCRE_CONFIG=\
-"/home/legatvs/src/non-installed/pcre-7.9/release/dist/bin/pcre-config"
+"$PCRE_PREFIX/release/dist/bin/pcre-config"
+
+ICONV_PREFIX=\
+"/home/legatvs/src/non-installed/libiconv-1.13.1"
+
+ICONV_DIST=\
+"$ICONV_PREFIX/release/dist"
 
 pack_it()
 {
     quvi_dll="$QUVI_PREFIX/bin/libquvi-0.dll"
-    iconv_dll="$QUVI_PREFIX/bin/libiconv-2.dll"
 
     curl_prefix="`$CURL_CONFIG --prefix`"
     curl_dll="$curl_prefix/bin/libcurl-4.dll"
@@ -25,6 +36,8 @@ pack_it()
     pcre_prefix="`$PCRE_CONFIG --prefix`"
     pcre_dll="$pcre_prefix/bin/libpcre-0.dll"
     pcrecpp_dll="$pcre_prefix/bin/libpcrecpp-0.dll"
+
+    iconv_dll="$ICONV_DIST/bin/libiconv-2.dll"
 
     version=`awk '/PACKAGE_VERSION = / {print $3}' Makefile`
     archive="cclive-$version-win32-i686-bin.7z"
@@ -34,10 +47,14 @@ pack_it()
     && make install-strip \
     && make man \
     && cp $quvi_dll dist/bin \
-    && cp $iconv_dll dist/bin \
+    && cp $QUVI_PREFIX/../../COPYING dist/libquvi-COPYING.TXT \
     && cp $curl_dll dist/bin \
+    && cp $CURL_PREFIX/COPYING dist/libcurl-COPYING.TXT \
     && cp $pcre_dll dist/bin \
+    && cp $PCRE_PREFIX/LICENCE dist/libpcre-LICENSE.TXT \
     && cp $pcrecpp_dll dist/bin \
+    && cp $iconv_dll dist/bin \
+    && cp $ICONV_PREFIX/COPYING.LIB dist/libiconv-COPYING.TXT \
     && cp ../COPYING dist/cclive-COPYING.TXT \
     && cp ../ChangeLog dist/ChangeLog.TXT \
     && cp README.w32.TXT dist/ \
