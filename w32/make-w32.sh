@@ -5,6 +5,9 @@ HOST=i486-mingw32 # ./configure --host=$HOST
 PREFIX=`pwd`/dist # ./configure --prefix=$PREFIX
 CXXFLAGS="-Os -pipe -march=i686"
 
+QUVI_PREFIX=\
+"/home/legatvs/quvi.git/w32/quvi-0.1.0"
+
 CURL_CONFIG=\
 "/home/legatvs/src/non-installed/curl-7.19.6/release/dist/bin/curl-config"
 
@@ -13,6 +16,9 @@ PCRE_CONFIG=\
 
 pack_it()
 {
+    quvi_dll="$QUVI_PREFIX/bin/libquvi-0.dll"
+    iconv_dll="$QUVI_PREFIX/bin/libiconv-2.dll"
+
     curl_prefix="`$CURL_CONFIG --prefix`"
     curl_dll="$curl_prefix/bin/libcurl-4.dll"
 
@@ -27,6 +33,8 @@ pack_it()
     rm -rf dist cclive-$version $archive \
     && make install-strip \
     && make man \
+    && cp $quvi_dll dist/bin \
+    && cp $iconv_dll dist/bin \
     && cp $curl_dll dist/bin \
     && cp $pcre_dll dist/bin \
     && cp $pcrecpp_dll dist/bin \
@@ -67,6 +75,9 @@ if [ x"$clean_flag" = "xon" ]; then
 fi
 
 # No tweaking usually required.
+
+export libquvi_CFLAGS="-I$QUVI_PREFIX/include"
+export libquvi_LIBS="-L$QUVI_PREFIX/lib -lquvi"
 
 export libcurl_CFLAGS="`$CURL_CONFIG --cflags`"
 export libcurl_LIBS="`$CURL_CONFIG --libs`"
