@@ -335,8 +335,10 @@ QuviVideo::customOutputFilenameFormatter(
         applyTitleRegexp(_title);
 
     // Remove leading and trailing whitespace.
-    pcrecpp::RE("^[\\s]+").Replace("", &_title);
-    pcrecpp::RE("\\s+$").Replace("", &_title);
+    pcrecpp::RE("^[\\s]+", pcrecpp::UTF8())
+        .Replace("", &_title);
+    pcrecpp::RE("\\s+$", pcrecpp::UTF8())
+        .Replace("", &_title);
 
     // Replace format specifiers.
     Util::subStrReplace(fmt, "%t", _title.empty() ? _id : _title);
