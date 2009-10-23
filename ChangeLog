@@ -4,6 +4,10 @@ Version 0.5.4
   * Fix: youtube -f best (error: parse failed: no match: (?i)"fmt_map": "(\d+))
     # Failed if fmt_map was an empty string
     # Closes issue #7
+  * Add support for:
+    # youjizz.com (closes issue #11)
+    # xvideos.com (closes issues #12)
+    # Both contributed by i.am.a.real.coward
 
 
 Version 0.5.3
