@@ -39,7 +39,7 @@ check_PROGRAMS = returncode$(EXEEXT) youtube$(EXEEXT) break$(EXEEXT) \
 	google$(EXEEXT) sevenload$(EXEEXT) golem$(EXEEXT) \
 	clipfish$(EXEEXT) funnyhub$(EXEEXT) myubo$(EXEEXT) \
 	cctv$(EXEEXT) ehrensenf$(EXEEXT) spiegel$(EXEEXT) \
-	vimeo$(EXEEXT) multi$(EXEEXT)
+	vimeo$(EXEEXT) youjizz$(EXEEXT) multi$(EXEEXT)
 subdir = tests
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -100,6 +100,9 @@ spiegel_LDADD = $(LDADD)
 am_vimeo_OBJECTS = vimeo.$(OBJEXT) $(am__objects_1)
 vimeo_OBJECTS = $(am_vimeo_OBJECTS)
 vimeo_LDADD = $(LDADD)
+am_youjizz_OBJECTS = youjizz.$(OBJEXT) $(am__objects_1)
+youjizz_OBJECTS = $(am_youjizz_OBJECTS)
+youjizz_LDADD = $(LDADD)
 am_youtube_OBJECTS = youtube.$(OBJEXT) $(am__objects_1)
 youtube_OBJECTS = $(am_youtube_OBJECTS)
 youtube_LDADD = $(LDADD)
@@ -121,13 +124,13 @@ SOURCES = $(break_SOURCES) $(cctv_SOURCES) $(clipfish_SOURCES) \
 	$(funnyhub_SOURCES) $(golem_SOURCES) $(google_SOURCES) \
 	$(liveleak_SOURCES) $(multi_SOURCES) $(myubo_SOURCES) \
 	$(returncode_SOURCES) $(sevenload_SOURCES) $(spiegel_SOURCES) \
-	$(vimeo_SOURCES) $(youtube_SOURCES)
+	$(vimeo_SOURCES) $(youjizz_SOURCES) $(youtube_SOURCES)
 DIST_SOURCES = $(break_SOURCES) $(cctv_SOURCES) $(clipfish_SOURCES) \
 	$(dailymotion_SOURCES) $(ehrensenf_SOURCES) $(evisor_SOURCES) \
 	$(funnyhub_SOURCES) $(golem_SOURCES) $(google_SOURCES) \
 	$(liveleak_SOURCES) $(multi_SOURCES) $(myubo_SOURCES) \
 	$(returncode_SOURCES) $(sevenload_SOURCES) $(spiegel_SOURCES) \
-	$(vimeo_SOURCES) $(youtube_SOURCES)
+	$(vimeo_SOURCES) $(youjizz_SOURCES) $(youtube_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 am__tty_colors = \
@@ -269,6 +272,7 @@ cctv_SOURCES = cctv.cpp $(common)
 ehrensenf_SOURCES = ehrensenf.cpp $(common)
 spiegel_SOURCES = spiegel.cpp $(common)
 #redtube_SOURCES=	redtube.cpp $(common)
+youjizz_SOURCES = youjizz.cpp $(common)
 multi_SOURCES = multi.cpp $(common)
 all: all-am
 
@@ -355,6 +359,9 @@ spiegel$(EXEEXT): $(spiegel_OBJECTS) $(spiegel_DEPENDENCIES)
 vimeo$(EXEEXT): $(vimeo_OBJECTS) $(vimeo_DEPENDENCIES) 
 	@rm -f vimeo$(EXEEXT)
 	$(CXXLINK) $(vimeo_OBJECTS) $(vimeo_LDADD) $(LIBS)
+youjizz$(EXEEXT): $(youjizz_OBJECTS) $(youjizz_DEPENDENCIES) 
+	@rm -f youjizz$(EXEEXT)
+	$(CXXLINK) $(youjizz_OBJECTS) $(youjizz_LDADD) $(LIBS)
 youtube$(EXEEXT): $(youtube_OBJECTS) $(youtube_DEPENDENCIES) 
 	@rm -f youtube$(EXEEXT)
 	$(CXXLINK) $(youtube_OBJECTS) $(youtube_LDADD) $(LIBS)
@@ -382,6 +389,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/spiegel.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/vimeo.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/youjizz.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/youtube.Po@am__quote@
 
 .cpp.o:

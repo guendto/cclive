@@ -59,7 +59,7 @@ am__objects_2 = youtube.$(OBJEXT) break.$(OBJEXT) evisor.$(OBJEXT) \
 	vimeo.$(OBJEXT) golem.$(OBJEXT) clipfish.$(OBJEXT) \
 	funnyhub.$(OBJEXT) myubo.$(OBJEXT) cctv.$(OBJEXT) \
 	ehrensenf.$(OBJEXT) spiegel.$(OBJEXT) redtube.$(OBJEXT) \
-	google.$(OBJEXT)
+	google.$(OBJEXT) youjizz.$(OBJEXT)
 am__objects_3 =
 am_cclive_OBJECTS = $(am__objects_1) $(am__objects_2) $(am__objects_3)
 cclive_OBJECTS = $(am_cclive_OBJECTS)
@@ -181,7 +181,8 @@ cctv.cpp \
 ehrensenf.cpp \
 spiegel.cpp \
 redtube.cpp \
-google.cpp
+google.cpp \
+youjizz.cpp
 
 host_alias = @host_alias@
 host_cpu = @host_cpu@
@@ -367,6 +368,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/util.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/video.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/vimeo.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/youjizz.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/youtube.Po@am__quote@
 
 .cpp.o:

@@ -221,6 +221,16 @@ public:
     virtual void parseLink ();
 };
 
+// Youjizz
+
+class YoujizzHandler : public HostHandler {
+public:
+  YoujizzHandler();
+  virtual void parseId   ();
+  virtual void parseTitle();
+  virtual void parseLink ();
+};
+
 #endif
 
 

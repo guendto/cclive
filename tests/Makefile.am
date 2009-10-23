@@ -18,6 +18,7 @@ cctv\
 ehrensenf\
 spiegel\
 vimeo\
+youjizz\
 multi
 #redtube
 
@@ -42,6 +43,7 @@ cctv_SOURCES=		cctv.cpp $(common)
 ehrensenf_SOURCES=	ehrensenf.cpp $(common)
 spiegel_SOURCES=	spiegel.cpp $(common)
 #redtube_SOURCES=	redtube.cpp $(common)
+youjizz_SOURCES=	youjizz.cpp $(common)
 multi_SOURCES=		multi.cpp $(common)
 
 local-clean:
