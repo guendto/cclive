@@ -231,6 +231,16 @@ public:
   virtual void parseLink ();
 };
 
+// XVideos
+
+class XvideosHandler : public HostHandler {
+public:
+  XvideosHandler();
+  virtual void parseId   ();
+  virtual void parseTitle();
+  virtual void parseLink ();
+};
+
 #endif
 
 

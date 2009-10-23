@@ -31,7 +31,8 @@ ehrensenf.cpp \
 spiegel.cpp \
 redtube.cpp \
 google.cpp \
-youjizz.cpp
+youjizz.cpp \
+xvideos.cpp
 
 hdr = \
 app.h \

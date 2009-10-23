@@ -32,8 +32,8 @@ protected:
         Youtube,    Google,    Break,       Evisor,
         Sevenload,  Liveleak,  Dailymotion, Vimeo,
         Golem,      Clipfish,  Funnyhub,    Myubo,
-		Cctv,       Ehrensenf, Spiegel,     
-        Redtube,    Youjizz,    _last_type };
+		Cctv,       Ehrensenf, Spiegel,     Redtube,
+        Youjizz,    Xvideos,   _last_type };
 protected:
     static std::tr1::shared_ptr<HostHandler>
         createHandler(const HandlerType& type);
