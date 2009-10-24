@@ -55,10 +55,15 @@ RetryMgr::handle(const QuviException& x) {
 
     logmgr.cerr(x);
 
+    // Pass if this is a curl error.
+    if (x.getCurlCode() != CURLE_OK)
+        throw x;
+
     const long httpcode = x.getHttpCode();
 
+    // Pass if this is an HTTP error of range of 400 .. 500.
     if (httpcode >= 400 && httpcode < 500)
-        throw x; // Pass the exception without retrying
+        throw x;
 
     const Options opts =
         optsmgr.getOptions();
