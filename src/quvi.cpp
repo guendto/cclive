@@ -54,6 +54,10 @@ QuviMgr::~QuviMgr() {
 
 static void
 handle_error(QUVIcode rc) {
+    std::stringstream s;
+
+    s << "quvi: "
+      << quvi_strerror(quvimgr.handle(),rc);
 
     switch (rc) {
     case QUVI_NOSUPPORT:
@@ -63,12 +67,6 @@ handle_error(QUVIcode rc) {
     default:
         break;
     }
-
-    std::stringstream s;
-
-    s << "quvi: "
-      << quvi_strerror(quvimgr.handle(),rc);
-
     throw QuviException(s.str());
 }
 
