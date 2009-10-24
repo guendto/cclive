@@ -55,9 +55,11 @@ RetryMgr::handle(const QuviException& x) {
 
     logmgr.cerr(x);
 
-    // Pass if this is a curl error.
-    if (x.getCurlCode() != CURLE_OK)
-        throw x;
+    // Pass unless one of the following curl codes:
+    switch (x.getCurlCode()) {
+    case CURLE_OPERATION_TIMEDOUT: break;
+    default: throw x;
+    }
 
     const long httpcode = x.getHttpCode();
 
