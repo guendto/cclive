@@ -9,7 +9,7 @@ CURL_CONFIG=\
 "/home/legatvs/src/non-installed/curl-7.19.6/release/dist/bin/curl-config"
 
 PCRE_CONFIG=\
-"/home/legatvs/src/non-installed/pcre-7.9/release/dist/bin/pcre-config"
+"/home/legatvs/src/non-installed/pcre-8.00/release/dist/bin/pcre-config"
 
 ICONV_PREFIX=\
 "/home/legatvs/src/non-installed/libiconv-1.13.1/release/dist"
