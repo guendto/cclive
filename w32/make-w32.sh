@@ -15,7 +15,7 @@ CURL_CONFIG=\
 "$CURL_PREFIX/release/dist/bin/curl-config"
 
 PCRE_PREFIX=\
-"/home/legatvs/src/non-installed/pcre-7.9"
+"/home/legatvs/src/non-installed/pcre-8.00"
 
 PCRE_CONFIG=\
 "$PCRE_PREFIX/release/dist/bin/pcre-config"
