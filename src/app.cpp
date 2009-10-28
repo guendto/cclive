@@ -293,10 +293,6 @@ static const char copyr_notice[] =
         << copyr_notice                 << "\n"
         << "\n  Locale/codeset  : "     << optsmgr.getLocale()
         << "\n  Config          : "     << optsmgr.getPath()
-        << "\n  Features        : "
-#ifdef WITH_RESIZE
-        << "sigwinch "
-#endif
         << "\n  Home            : "     << "<http://cclive.googlecode.com/>"
         << std::endl;
 }

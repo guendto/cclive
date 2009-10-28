@@ -1,5 +1,8 @@
 Version 0.6.0
 
+ User-visible changes:
+  * Remove "Features" from --version output
+
  Developer-visible changes:
   * Add dependency for libquvi (see NEWS and INSTALL files)
   * --version now reports libquvi version instead of libcurl
