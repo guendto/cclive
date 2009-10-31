@@ -1,3 +1,9 @@
+Version 0.5.5
+
+ User-visible changes:
+  * Add predefined HTML character entity (e.g. &quot;) conversion
+
+
 Version 0.5.4
 (October 29, 2009)
 

@@ -22,6 +22,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <map>
 
 #include "hosthandler.h"
 #include "opts.h"
@@ -66,9 +67,27 @@ HostHandler::parsePage(const std::string& url) {
     catch (const HostHandler::ParseException& x) { }
 #endif
 
-    // Apply regexp.
     std::string title = props.getTitle();
 
+    // Convert predefined HTML character entities.
+    typedef std::map<std::string,std::string> maps;
+
+    maps m;
+    m["&quot;"] = "\"";
+    m["&amp;"]  = "&";
+    m["&apos;"] = "'";
+    m["&lt;"]   = "<";
+    m["&gt;"]   = ">";
+
+    for (maps::const_iterator iter = m.begin();
+        iter != m.end();
+        ++iter)
+    {
+        Util::subStrReplace(title,
+            iter->first, iter->second);
+    }
+
+    // Apply regexp.
     if (optsmgr.getOptions().regexp_given)
         applyRegexp(title);
 
