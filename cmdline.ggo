@@ -86,7 +86,7 @@ option "format"
         # golem:
         "high", "ipod",
         # spiegel:
-        "vp6_64", "vp6_576", "vp6_928", "h264_1400"
+        "vp6_576", "vp6_928", "h264_1400"
     default="flv"
     typestr="<formatid>"
     optional
