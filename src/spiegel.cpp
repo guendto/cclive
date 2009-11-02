@@ -28,7 +28,7 @@ SpiegelHandler::SpiegelHandler()
 {
     props.setHost   (HOST);
     props.setDomain ("spiegel.de");
-    props.setFormats("flv|vp6_576|vp_928|h264_1400");
+    props.setFormats("flv|vp6_576|vp6_928|h264_1400");
 }
 
 void
