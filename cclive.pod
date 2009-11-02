@@ -370,7 +370,7 @@ Format: vp6_(64|576|928)|h264_1400
   h264_1400 .. mp4 (996x560)
   vp6_928   .. flv (996x560)
   vp6_576   .. flv (560x315)
-  vp6_64    .. flv (180x100) [default]
+  flv       .. flv (180x100) [default]
 
 =item golem.de
 
