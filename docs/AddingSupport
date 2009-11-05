@@ -1,31 +1,79 @@
 
 Or "HOWTO-AddSupportForNewWebsite".
 
-The general idea
-----------------
 
-cclive fetches and parses video page contents for various details
-and constructs the video download link from these details.
+The concept
+-----------
 
-Currently the following details are gathered video each video page link:
-
-  * video id
-  * video title
-  * video link
+cclive fetches and parses video page contents for various
+video details and constructs the video download link from
+these parsed details.
 
 
 Programming is easy, data mining isn't
 --------------------------------------
 
-The above steps can vary greatly for each website. See src/evisor.cpp
-and src/liveleak.cpp for an example of this.
+The above steps can vary greatly for each website. See
+src/evisor.cpp and src/liveleak.cpp for an example of this.
 
 Sometimes extra steps are necessary:
   http://code.google.com/p/clive/issues/detail?id=6#c7
 
 
-Implementing new support
-------------------------
+Checklist
+---------
+
+  * Does the website allow video downloading already?
+    - If yes, then there is little reason to add support for it
+      - cclive was intended to workaround the flash requirement
+
+  * Does the website support multiple formats?
+    - If yes, then consider adding support for them as well
+
+  * Does your code parse everything?
+    - Video ID
+    - Video title
+    - Video link
+
+  * Does your code cleanup the video title?
+    - We want the video title only
+    - Domain name, etc. should be excluded from the title
+
+  * Did you confirm the last two above with?
+    - cclive -F "%t_%i_%h.%s"
+
+  * Consider writing a test
+    - See tests/ subdir for examples
+      - Do not forget to modify tests/Makefile.am also
+    - If the website contains adult material, force ADULT_OK checking
+      - see tests/xvideos.cpp for an example of this
+
+
+Implementing support
+--------------------
+
+cclive 0.6.0+
+-------------
+
+cclive 0.6.0 will no longer contain the website parsing logic
+but will depend on libquvi to do this. Unlike cclive which
+is written in C++, libquvi is written in C.
+
+If you want to try the 0.6.0:
+
+    git clone git://repo.or.cz/quvi.git quvi.git
+    cd quvi.git
+    ./configure --prefix=/usr && make
+    make install # as root
+
+    git clone git://repo.or.cz/cclive.git cclive.git
+    cd cclive.git
+    git checkout --track origin/dev-0.6.0
+    ./configure && make
+
+
+cclive 0.5.x
+------------
 
   * src/Makefile.am
     - append $host.cpp to "host"
@@ -58,8 +106,8 @@ Run "autoreconf" && ./configure (options).
 Testing
 -------
 
-Depending on changes that you have made or make, re-running "autoreconf" and
-"configure" may be required.
+Depending on changes that you have made or make, re-running
+"autoreconf" and "configure" may be required.
 
   * make && ./src/cclive $test_link -n
     - tests the new host
@@ -72,3 +120,5 @@ Submitting
 ----------
 
 See SubmittingPatches file.
+
+
