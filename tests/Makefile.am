@@ -20,6 +20,7 @@ spiegel\
 vimeo\
 youjizz\
 xvideos\
+tube8\
 multi
 #redtube
 
@@ -46,6 +47,7 @@ spiegel_SOURCES=	spiegel.cpp $(common)
 #redtube_SOURCES=	redtube.cpp $(common)
 youjizz_SOURCES=	youjizz.cpp $(common)
 xvideos_SOURCES=	xvideos.cpp $(common)
+tube8_SOURCES=	    tube8.cpp $(common)
 multi_SOURCES=		multi.cpp $(common)
 
 local-clean:

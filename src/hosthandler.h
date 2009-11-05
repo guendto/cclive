@@ -241,6 +241,16 @@ public:
   virtual void parseLink ();
 };
 
+// Tube8
+
+class Tube8Handler : public HostHandler {
+public:
+  Tube8Handler();
+  virtual void parseId   ();
+  virtual void parseTitle();
+  virtual void parseLink ();
+};
+
 #endif
 
 

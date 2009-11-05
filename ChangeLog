@@ -2,6 +2,8 @@ Version 0.5.5
 
  User-visible changes:
   * Add predefined HTML character entity (e.g. &quot;) conversion
+  * Add support for tube8.com
+    # Thanks to i.am.a.real.coward for the patch
 
 
 Version 0.5.4
