@@ -5,6 +5,10 @@ Version 0.5.5
   * Add support for tube8.com
     # Thanks to i.am.a.real.coward for the patch
 
+ Developer-visible changes:
+  * Clear up project description ("mission statement")
+  * docs/AddingSupport: add checklist and 0.6.0 note
+
 
 Version 0.5.4
 (October 29, 2009)
