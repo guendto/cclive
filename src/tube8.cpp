@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 i.am.a.real.coward@gmail.com
+ * Copyright (C) 2009 anonymous contributor.
  *
  * This file is part of cclive.
  *
