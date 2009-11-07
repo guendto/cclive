@@ -27,7 +27,7 @@ DailymotionHandler::DailymotionHandler()
     : HostHandler()
 {
     props.setHost   (HOST);
-    props.setDomain ("dailymotion.com");
+    props.setDomain ("dailymotion.");
     props.setFormats("flv|spark-mini|vp6-hq|vp6-hd|vp6|h264");
 }
 
