@@ -3,7 +3,6 @@
 static const char *
 formats[] = {
     "flv",
-    "vp6_64",
     "vp6_576",
     "vp6_928",
     "h264_1400",
