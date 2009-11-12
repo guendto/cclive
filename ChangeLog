@@ -5,6 +5,8 @@ Version 0.5.5
   * Add support for tube8.com
     # Thanks to anonymous contributor for the patch
   * Allow dailymotion.*
+  * Fix sevenload title parsing
+    # Use config title instead
 
  Developer-visible changes:
   * Clear up project description ("mission statement")

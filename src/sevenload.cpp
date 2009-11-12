@@ -34,14 +34,7 @@ SevenloadHandler::parseId() {
 
 void
 SevenloadHandler::parseTitle() {
-    std::string title;
-    try {
-        partialMatch("(?i)<h1 id=\"itemtitle\">(.*?)</", &title);
-    }
-    catch(const HostHandler::ParseException& x) {
-        partialMatch("(?i)class=\"l title\">(.*?)</", &title);
-    }
-    props.setTitle(title);
+    // See parseLink below.
 }
 
 void
@@ -54,9 +47,15 @@ SevenloadHandler::parseLink() {
     const std::string config =
         fetch(cpath, "config", true);
 
-    std::string id;
-    partialMatch("(?i)item id=\"(.*?)\"", &id, config);
+    const std::string re =
+        "(?i)item id=\"(\\w+)\">\\s+<title>(.*?)</title>";
+
+    std::string id, title;
+    if (!pcrecpp::RE(re).PartialMatch(config, &id, &title))
+        throw HostHandler::ParseException("no match: "+re);
+
     props.setId(id);
+    props.setTitle(title);
 
     std::string lnk;
     partialMatch("(?i)<location seeking=\"yes\">(.*?)</", &lnk, config);
