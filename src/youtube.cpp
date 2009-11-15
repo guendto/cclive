@@ -96,7 +96,6 @@ YoutubeHandler::parseLink() {
             lnk += "&fmt=17";
     }
 
-    curlmgr.escape(lnk);
     props.setLink(lnk);
 }
 

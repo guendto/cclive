@@ -75,7 +75,6 @@ GolemHandler::parseLink() {
     if (!format.empty())
         lnk += "?q=" + format;
 
-    curlmgr.escape(lnk);
     props.setLink(lnk);
 }
 

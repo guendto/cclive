@@ -43,10 +43,9 @@ XvideosHandler::parseTitle() {
 
 void
 XvideosHandler::parseLink() {
-  std::string lnk;
-  partialMatch("(?i)flv_url=(.*?)&amp;", &lnk);
-  curlmgr.escape(lnk);
-  props.setLink(lnk);
+    std::string lnk;
+    partialMatch("(?i)flv_url=(.*?)&amp;", &lnk);
+    props.setLink(lnk);
 }
 
 

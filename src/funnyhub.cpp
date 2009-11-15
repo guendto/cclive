@@ -46,7 +46,6 @@ void
 FunnyhubHandler::parseLink() {
     std::string lnk;
     partialMatch("(?i)\"flv\", \"(.*?)\"", &lnk);
-    curlmgr.escape(lnk);
     props.setLink(lnk);
 }
 

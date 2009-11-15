@@ -91,7 +91,6 @@ SpiegelHandler::parseLink() {
         throw HostHandler::ParseException("unable to construct video link");
 
     std::string lnk = "http://video.spiegel.de/flash/" + _path;
-    curlmgr.escape(lnk);
     props.setLink(lnk);
 }
 

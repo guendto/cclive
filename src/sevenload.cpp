@@ -59,7 +59,6 @@ SevenloadHandler::parseLink() {
 
     std::string lnk;
     partialMatch("(?i)<location seeking=\"yes\">(.*?)</", &lnk, config);
-    curlmgr.escape(lnk);
     props.setLink(lnk);
 }
 

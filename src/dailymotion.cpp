@@ -96,7 +96,6 @@ DailymotionHandler::parseLink() {
     if (lnk.empty())
         throw ParseException("failed to construct link from paths");
 
-    curlmgr.escape(lnk);
     props.setLink(lnk);
 }
 

@@ -62,7 +62,6 @@ LiveleakHandler::parseLink() {
     std::string lnk;
     partialMatch("(?i)<location>(.*?)</location>", &lnk, playlist);
     Util::subStrReplace(lnk, " ", "");
-    curlmgr.escape(lnk);
     props.setLink(lnk);
 }
 

@@ -124,7 +124,6 @@ RedtubeHandler::parseLink() {
          << ".flv";
 
     std::string lnk = _lnk.str();
-    curlmgr.escape(lnk);
     props.setLink(lnk);
 }
 

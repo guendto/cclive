@@ -57,7 +57,6 @@ ClipfishHandler::parseLink() {
 
     std::string lnk;
     partialMatch("(?i)&url=(.*?)&", &lnk, config);
-    curlmgr.escape(lnk);
     props.setLink(lnk);
 }
 

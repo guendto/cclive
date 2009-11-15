@@ -45,7 +45,6 @@ void
 EvisorHandler::parseLink() {
     std::string lnk;
     partialMatch("(?i)file=(.*?)\"", &lnk);
-    curlmgr.escape(lnk);
     props.setLink(lnk);
 }
 

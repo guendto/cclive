@@ -78,7 +78,6 @@ VimeoHandler::parseLink() {
             lnk += "/?q=hd";
     }
 
-    curlmgr.escape(lnk);
     props.setLink(lnk);
 }
 

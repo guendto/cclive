@@ -43,10 +43,9 @@ YoujizzHandler::parseTitle() {
 
 void
 YoujizzHandler::parseLink() {
-  std::string lnk;
-  partialMatch("(?i)['\"]content_video['\"],.*['\"](.*?)['\"]", &lnk);
-  curlmgr.escape(lnk);
-  props.setLink(lnk);
+    std::string lnk;
+    partialMatch("(?i)['\"]content_video['\"],.*['\"](.*?)['\"]", &lnk);
+    props.setLink(lnk);
 }
 
 

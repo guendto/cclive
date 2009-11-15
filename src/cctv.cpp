@@ -57,7 +57,6 @@ CctvHandler::parseLink() {
     partialMatch("url\":\"(.*?)\"", &path, config);
 
     std::string lnk = "http://v.cctv.com/flash/" + path;
-    curlmgr.escape(lnk);
     props.setLink(lnk);
 }
 
