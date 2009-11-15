@@ -1,6 +1,7 @@
 Version 0.5.6
 
  User-visible changes:
+  * Add support for predefined (5) (X)HTML numeric character refs
   * Fix (random) sevenload http/401 errors
     # Caused by HTML/XML predefined entities in video links
 

@@ -271,10 +271,19 @@ Util::fromHtmlEntities(std::string& src) {
 
     maps m;
     m["&quot;"] = "\"";
+    m["&#34;"]  = "\"";
+
     m["&amp;"]  = "&";
+    m["&#38;"]  = "&";
+
     m["&apos;"] = "'";
+    m["&#39;"]  = "'";
+
     m["&lt;"]   = "<";
+    m["&#60;"]  = "<";
+
     m["&gt;"]   = ">";
+    m["&#62;"]  = ">";
 
     for (maps::const_iterator iter = m.begin();
         iter != m.end();
