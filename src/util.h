@@ -34,6 +34,7 @@ public:
                         tokenize     (const std::string& src,
                                         const std::string& delims);
     static std::string parseFormatMap(const std::string& host);
+    static const std::string& fromHtmlEntities(std::string& src);
 };
 
 #endif

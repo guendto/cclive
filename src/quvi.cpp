@@ -332,22 +332,7 @@ QuviVideo::customOutputFilenameFormatter(
     std::string _title = title;
  
     // Convert predefined HTML character entities.
-    typedef std::map<std::string,std::string> maps;
-
-    maps m;
-    m["&quot;"] = "\"";
-    m["&amp;"]  = "&";
-    m["&apos;"] = "'";
-    m["&lt;"]   = "<";
-    m["&gt;"]   = ">";
-
-    for (maps::const_iterator iter = m.begin();
-        iter != m.end();
-        ++iter)
-    {
-        Util::subStrReplace(_title,
-            iter->first, iter->second);
-    }
+    Util::fromHtmlEntities(_title);
 
     // Apply --regexp.
     if (opts.regexp_given)
