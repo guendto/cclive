@@ -331,8 +331,10 @@ QuviVideo::customOutputFilenameFormatter(
 
     std::string _title = title;
  
+#ifdef _1_
     // Convert predefined HTML character entities.
     Util::fromHtmlEntities(_title);
+#endif
 
     // Apply --regexp.
     if (opts.regexp_given)
