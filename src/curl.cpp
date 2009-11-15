@@ -25,6 +25,7 @@
 #include <string>
 #include <cstdlib>
 #include <cstring>
+#include <vector>
 #include <curl/curl.h>
 
 #ifdef HAVE_UNISTD_H
@@ -37,6 +38,7 @@
 #include "video.h"
 #include "progressbar.h"
 #include "log.h"
+#include "util.h"
 #include "curl.h"
 #include "retry.h"
 
@@ -128,13 +130,15 @@ callback_writemem(void *p, size_t size, size_t nmemb, void *data) {
 }
 
 std::string
-CurlMgr::fetchToMem(const std::string& url, const std::string &what) {
-    logmgr.cout() << "fetch ";
-    if (what.empty())
-        logmgr.cout() << url;
-    else
-        logmgr.cout() << what;
-    logmgr.cout() << " ..." << std::flush;
+CurlMgr::fetchToMem(std::string url, const std::string &what) {
+
+    Util::fromHtmlEntities(url);
+
+    logmgr.cout()
+        << "fetch "
+        << (what.empty() ? url : what)
+        << " ..."
+        << std::flush;
 
     curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
     curl_easy_setopt(curl, CURLOPT_ENCODING, "");

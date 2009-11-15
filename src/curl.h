@@ -30,7 +30,7 @@ public:
     virtual ~CurlMgr  ();
 public:
     void         init           ();
-    std::string  fetchToMem     (const std::string& url,
+    std::string  fetchToMem     (std::string url,
                                     const std::string& what="");
     void         queryFileLength(VideoProperties&);
     void         fetchToFile    (VideoProperties&);
