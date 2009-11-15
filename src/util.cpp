@@ -264,4 +264,27 @@ Util::toUnicode(std::string& src, const std::string& from) {
     return src;
 }
 
+const std::string&
+Util::fromHtmlEntities(std::string& src) {
+
+    typedef std::map<std::string,std::string> maps;
+
+    maps m;
+    m["&quot;"] = "\"";
+    m["&amp;"]  = "&";
+    m["&apos;"] = "'";
+    m["&lt;"]   = "<";
+    m["&gt;"]   = ">";
+
+    for (maps::const_iterator iter = m.begin();
+        iter != m.end();
+        ++iter)
+    {
+        Util::subStrReplace(src,
+            iter->first, iter->second);
+    }
+
+    return src;
+}
+
 

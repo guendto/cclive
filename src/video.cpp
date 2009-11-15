@@ -46,8 +46,9 @@ VideoProperties::setId(const std::string& id) {
 }
 
 void
-VideoProperties::setLink(std::string link) {
-    this->link = curlmgr.unescape(link);
+VideoProperties::setLink(std::string lnk) {
+    this->link = curlmgr.unescape(lnk);
+    Util::fromHtmlEntities(this->link);
 }
 
 void
