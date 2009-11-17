@@ -21,6 +21,10 @@
 #include <iostream>
 #include <string>
 
+#include <vector>
+#include <algorithm>
+#include <iterator>
+
 #include "hosthandler.h"
 #include "hostfactory.h"
 
@@ -40,14 +44,18 @@ HostHandlerFactory::createHandler(const std::string& url) {
 
 void
 HostHandlerFactory::printHosts() {
+    std::vector<std::string> hostsList;
     for (register _uint type=Youtube; type < _last_type; ++type) {
         SHP<HostHandler> p = createHandler((HandlerType)type);
         VideoProperties props = p->getVideoProperties();
-        std::cout << props.getDomain()
-                  << "\t"
-                  << props.getFormats()
-                  << "\n";
+        hostsList.push_back(props.getDomain()
+                  + "\t"
+                  + props.getFormats()
+                  + "\n");
     }
+    std::sort(hostsList.begin(), hostsList.end());
+    std::copy(hostsList.begin(), hostsList.end(),
+        std::ostream_iterator<std::string>(std::cout));
     std::cout
       << "\nNote: Some videos may have limited number of formats available.\n"
       << std::flush;
