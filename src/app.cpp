@@ -198,12 +198,27 @@ App::run() {
     }
 
     if (opts.hosts_given) {
+        std::vector<std::string> hosts;
         char *domain=0, *formats=0;
-        while (quvi_iter_host(&domain, &formats) != QUVI_LASTHOST)
-            std::cout << domain << "\t" << formats << "\n";
+
+        while (quvi_iter_host(&domain, &formats) != QUVI_LASTHOST) {
+            hosts.push_back(
+                std::string(domain)
+                + "\t"
+                + std::string(formats)
+                + "\n"
+            );
+        }
+
+        std::sort(hosts.begin(), hosts.end());
+
+        std::copy(hosts.begin(), hosts.end(),
+            std::ostream_iterator<std::string>(std::cout));
+
         std::cout
             << "\nNote: Some videos may have limited number "
             << "of formats available." << std::endl;
+
         return;
     }
 
