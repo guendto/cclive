@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2009-09-27" "0.5.3" "cclive manual"
+.TH cclive 1 "2009-11-18" "0.5.6" "cclive manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -439,7 +439,7 @@ Format: vp6_(64|576|928)|h264_1400
 \&  h264_1400 .. mp4 (996x560)
 \&  vp6_928   .. flv (996x560)
 \&  vp6_576   .. flv (560x315)
-\&  vp6_64    .. flv (180x100) [default]
+\&  flv       .. flv (180x100) [default]
 .Ve
 .IP "golem.de" 4
 .IX Item "golem.de"
@@ -462,29 +462,10 @@ For further reading:
 Format: flv|mp4
 .Sp
 mp4 may not always be available.
-.IP "sevenload.com" 4
-.IX Item "sevenload.com"
-.PD 0
-.IP "break.com" 4
-.IX Item "break.com"
-.IP "liveleak.com" 4
-.IX Item "liveleak.com"
-.IP "evisor.tv" 4
-.IX Item "evisor.tv"
-.IP "clipfish.de" 4
-.IX Item "clipfish.de"
-.IP "funnyhub.com" 4
-.IX Item "funnyhub.com"
-.IP "myubo.com" 4
-.IX Item "myubo.com"
-.IP "tv.cctv.com" 4
-.IX Item "tv.cctv.com"
-.IP "ehrensenf.de" 4
-.IX Item "ehrensenf.de"
-.IP "redtube.com" 4
-.IX Item "redtube.com"
-.PD
-Format: flv
+.IP "Other" 4
+.IX Item "Other"
+All other supported websites (see \-\-host output) support
+the flv format only.
 .SH "FILES"
 .IX Header "FILES"
 .ie n .IP "\fB\fB$CCLIVE_HOME\fB|$HOME/.ccliverc\fR" 4
@@ -567,6 +548,9 @@ cclive exits 0 on success, and >0 if an error occurs.
 .IP "Project page:" 4
 .IX Item "Project page:"
 <http://cclive.googlecode.com/>
+.IP "\s-1FAQ:\s0" 4
+.IX Item "FAQ:"
+<http://code.google.com/p/cclive/wiki/FAQ>
 .IP "Front-end:" 4
 .IX Item "Front-end:"
 <http://abby.googlecode.com/>
