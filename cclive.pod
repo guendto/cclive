@@ -496,6 +496,10 @@ cclive exits 0 on success, and E<gt>0 if an error occurs.
 
 <http://cclive.googlecode.com/>
 
+=item FAQ:
+
+<http://code.google.com/p/cclive/wiki/FAQ>
+
 =item Front-end:
 
 <http://abby.googlecode.com/>
