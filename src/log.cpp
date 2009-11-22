@@ -46,17 +46,12 @@ LogBuffer::LogBuffer(const int& fd)
 
 LogBuffer::~LogBuffer() {
     sync();
+    close(fd);
 }
 
 void
 LogBuffer::setVerbose(const bool& verbose) {
     this->verbose = verbose;
-}
-
-void
-LogBuffer::closefd() {
-    close(this->fd);
-    this->fd = -1;
 }
 
 int
@@ -153,8 +148,6 @@ LogMgr::init() {
 }
 
 LogMgr::~LogMgr() {
-    if (!fname.empty())
-        lbout->closefd(); // Both use the same fd.
     _DELETE(oscerr);
     _DELETE(oscout);
     _DELETE(lberr);

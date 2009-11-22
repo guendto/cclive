@@ -30,7 +30,6 @@ public:
     virtual ~LogBuffer();
 public:
     void setVerbose(const bool&);
-    void closefd();
 protected:
     int              flushBuffer ();
     virtual int_type overflow    (int_type);
