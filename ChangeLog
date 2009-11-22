@@ -1,6 +1,7 @@
 Version 0.5.6
 
  User-visible changes:
+  * Add --background, --logfile, --logfile-interval
   * Sort --hosts output alphabetically (Thanks to Bram Neijt for the patch)
   * Add support for predefined (5) (X)HTML numeric character refs
   * Fix (random) sevenload http/401 errors (closes issue #14)
