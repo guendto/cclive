@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2009-11-18" "0.5.6" "cclive manual"
+.TH cclive 1 "2009-11-22" "0.5.6" "cclive manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -154,6 +154,10 @@ Print version and exit.
 .IP "\fB\-\-hosts\fR" 4
 .IX Item "--hosts"
 Print supported hosts and exit.
+.IP "\fB\-\-background\fR" 4
+.IX Item "--background"
+Go to background immediately after startup. Output will be written to
+\&\fIcclive.log\fR unless \fB\-\-logfile\fR is used.
 .PP
 \&\fBOutput\fR
 .IP "\fB\-q, \-\-quiet\fR" 4
@@ -170,6 +174,14 @@ Ignores \f(CW\*(C`\-\-quiet\*(C'\fR for \s-1CSV\s0.
 .IX Item "--print-fname"
 Print filename on a separate line before each download starts.
 Prepends \*(L"file:\*(R" for each video.
+.IP "\fB\-o, \-\-logfile\fR=\fIfile\fR" 4
+.IX Item "-o, --logfile=file"
+Write output to \fIfile\fR while in the background. Defaults to \fIcclive.log\fR.
+.IP "\fB\-i, \-\-logfile\-interval\fR=\fIseconds\fR" 4
+.IX Item "-i, --logfile-interval=seconds"
+Update logfile every \fIseconds\fR while in the background. Defines how
+frequently the download progress information is written to the log.
+Defaults to \fI10\fR.
 .PP
 \&\fB\s-1HTTP\s0\fR
 .IP "\fB\-\-agent\fR=\fIagentstring\fR" 4

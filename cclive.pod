@@ -34,6 +34,11 @@ Print version and exit.
 
 Print supported hosts and exit.
 
+=item B<--background>
+
+Go to background immediately after startup. Output will be written to
+I<cclive.log> unless B<--logfile> is used.
+
 =back
 
 B<Output>
@@ -57,6 +62,16 @@ Ignores C<--quiet> for CSV.
 
 Print filename on a separate line before each download starts.
 Prepends "file:" for each video.
+
+=item B<-o, --logfile>=I<file>
+
+Write output to I<file> while in the background. Defaults to I<cclive.log>.
+
+=item B<-i, --logfile-interval>=I<seconds>
+
+Update logfile every I<seconds> while in the background. Defines how
+frequently the download progress information is written to the log.
+Defaults to I<10>.
 
 =back
 
