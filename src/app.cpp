@@ -377,7 +377,7 @@ App::daemonize() {
     chdir(path);
 #endif
     umask(0);
-#else
+#else // ifndef HAVE_FORK ...
     logmgr.cerr()
         << "warning: --background ignored: system does not support fork()"
         << std::endl;
