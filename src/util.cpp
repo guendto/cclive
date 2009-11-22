@@ -24,6 +24,8 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <cstring>
+#include <cerrno>
 
 #ifdef HAVE_ICONV
 #include <cerrno>
@@ -215,7 +217,7 @@ Util::toUnicode(std::string& src, const std::string& from) {
     if (cd == (iconv_t)-1) {
         if (errno == EINVAL) {
             logmgr.cerr()
-                << "error: conversion from \""
+                << "conversion from \""
                 << from
                 << "\" to \""
                 << to
@@ -223,7 +225,10 @@ Util::toUnicode(std::string& src, const std::string& from) {
                 << std::endl;
         }
         else {
-            perror("iconv_popen");
+            logmgr.cerr()
+                << "iconv_open: "
+                << strerror(errno)
+                << std::endl;
             return src;
         }
     }

@@ -30,6 +30,8 @@
 #include <iomanip>
 #include <algorithm>
 #include <tr1/memory>
+#include <cstring>
+#include <cerrno>
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
@@ -353,7 +355,7 @@ App::daemonize() {
     pid_t pid = fork();
 
     if (pid < 0) {
-        perror("fork");
+        fprintf(stderr, "error: fork: %s\n", strerror(errno));
         exit (CCLIVE_SYSTEM);
     }
     else if (pid != 0) {

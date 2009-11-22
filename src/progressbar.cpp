@@ -24,8 +24,10 @@
 #include <sstream>
 #include <iomanip>
 #include <cstdlib>
+#include <cstring>
 #include <string>
 #include <vector>
+#include <cerrno>
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
@@ -263,8 +265,12 @@ ProgressBar::finish() {
 
 #ifdef HAVE_SYS_WAIT_H
     if (streamFlag) {
-        if (waitpid(streamPid, 0, 0) != streamPid)
-            perror("waitpid");
+        if (waitpid(streamPid, 0, 0) != streamPid) {
+            logmgr.cerr()
+                << "waitpid: "
+                << strerror(errno)
+                << std::endl;
+        }
         streamFlag = false;
     }
 #endif
@@ -310,8 +316,12 @@ void
 ProgressBar::forkStreamer() {
 #if defined(HAVE_FORK) && defined(HAVE_WORKING_FORK)
     streamFlag = true;
-    if ((streamPid = fork()) < 0)
-        perror("fork");
+    if ((streamPid = fork()) < 0) {
+        logmgr.cerr()
+            << "fork: "
+            << strerror(errno)
+            << std::endl;
+    }
     else if (streamPid == 0) {
         execmgr.playStream(props);
         exit(0);
