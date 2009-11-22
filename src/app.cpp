@@ -355,7 +355,11 @@ App::daemonize() {
     pid_t pid = fork();
 
     if (pid < 0) {
+#ifdef HAVE_STRERROR
         fprintf(stderr, "error: fork: %s\n", strerror(errno));
+#else
+        perror("fork");
+#endif
         exit (CCLIVE_SYSTEM);
     }
     else if (pid != 0) {

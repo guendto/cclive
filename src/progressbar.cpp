@@ -266,10 +266,14 @@ ProgressBar::finish() {
 #ifdef HAVE_SYS_WAIT_H
     if (streamFlag) {
         if (waitpid(streamPid, 0, 0) != streamPid) {
+#ifdef HAVE_STRERROR
             logmgr.cerr()
                 << "waitpid: "
                 << strerror(errno)
                 << std::endl;
+#else
+            perror("waitpid");
+#endif
         }
         streamFlag = false;
     }
@@ -317,10 +321,14 @@ ProgressBar::forkStreamer() {
 #if defined(HAVE_FORK) && defined(HAVE_WORKING_FORK)
     streamFlag = true;
     if ((streamPid = fork()) < 0) {
+#ifdef HAVE_STRERROR
         logmgr.cerr()
             << "fork: "
             << strerror(errno)
             << std::endl;
+#else
+            perror("waitpid");
+#endif
     }
     else if (streamPid == 0) {
         execmgr.playStream(props);

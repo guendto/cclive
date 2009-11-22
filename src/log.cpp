@@ -132,8 +132,12 @@ LogMgr::_init(const std::string& fname) {
                 S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH
             );
         if (fd == -1) {
+#ifdef HAVE_STRERROR
             fprintf(stderr, "error: %s: %s\n",
                 fname.c_str(), strerror(errno));
+#else
+            perror("open");
+#endif
             exit (CCLIVE_SYSTEM);
         }
         fderr = fdout = fd;

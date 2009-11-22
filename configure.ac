@@ -84,7 +84,7 @@ AC_FUNC_ERROR_AT_LINE
 AC_FUNC_FORK
 AC_PROG_GCC_TRADITIONAL
 AC_TYPE_SIGNAL
-AC_CHECK_FUNCS([memset setenv strchr strcspn strspn strtol setlocale nl_langinfo getcwd])
+AC_CHECK_FUNCS([memset setenv strchr strcspn strspn strtol setlocale nl_langinfo getcwd strerror])
 
 # --enable-tests
 AC_ARG_ENABLE([tests],

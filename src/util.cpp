@@ -225,10 +225,14 @@ Util::toUnicode(std::string& src, const std::string& from) {
                 << std::endl;
         }
         else {
+#ifdef HAVE_STRERROR
             logmgr.cerr()
                 << "iconv_open: "
                 << strerror(errno)
                 << std::endl;
+#else
+            perror("iconv_open");
+#endif
             return src;
         }
     }
