@@ -37,6 +37,14 @@
 #include <sys/stat.h>
 #endif
 
+#ifndef S_IRGRP
+# define S_IRGRP    S_IRUSR
+#endif
+
+#ifndef S_IROTH
+# define S_IROTH    S_IRUSR
+#endif
+
 #include "except.h"
 #include "macros.h"
 #include "opts.h"
