@@ -26,7 +26,7 @@
 
 class LogBuffer : public std::streambuf {
 public:
-    LogBuffer(const int& fd);
+    LogBuffer(const int& fd, const bool& close_after);
     virtual ~LogBuffer();
 public:
     void setVerbose(const bool&);
@@ -40,6 +40,7 @@ protected:
 private:
     int fd;
     bool verbose;
+    bool close_after;
 };
 
 // LogMgr

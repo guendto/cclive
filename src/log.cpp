@@ -21,7 +21,10 @@
 
 #include <fstream>
 #include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <sys/stat.h>
+#include <errno.h>
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
@@ -38,15 +41,16 @@
 
 // LogBuffer
 
-LogBuffer::LogBuffer(const int& fd)
-    : fd(fd), verbose(true)
+LogBuffer::LogBuffer(const int& fd, const bool& close_after)
+    : fd(fd), verbose(true), close_after(close_after)
 {
     setp(buffer, buffer+(BufferSize-1));
 }
 
 LogBuffer::~LogBuffer() {
     sync();
-    close(fd);
+    if (close_after)
+        close(fd);
 }
 
 void
@@ -119,17 +123,25 @@ LogMgr::_init(const std::string& fname) {
     int fdout = fileno(stdout),
         fderr = fileno(stderr);
 
+    bool close_after = false;
+
     if (!fname.empty()) {
-        fdout = open(
+        const int fd = open(
                 fname.c_str(),
                 O_WRONLY|O_CREAT|O_TRUNC,
                 S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH
             );
-        fderr = fdout;
+        if (fd == -1) {
+            fprintf(stderr, "error: %s: %s\n",
+                fname.c_str(), strerror(errno));
+            exit (CCLIVE_SYSTEM);
+        }
+        fderr = fdout = fd;
+        close_after = true;
     }
 
-    lbout = new LogBuffer(fdout);
-    lberr = new LogBuffer(fderr);
+    lbout = new LogBuffer(fdout, close_after);
+    lberr = new LogBuffer(fderr, close_after);
 
     oscout = new std::ostream(lbout);
     oscerr = new std::ostream(lberr);
