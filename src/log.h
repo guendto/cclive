@@ -30,6 +30,7 @@ public:
     virtual ~LogBuffer();
 public:
     void setVerbose(const bool&);
+    void closefd();
 protected:
     int              flushBuffer ();
     virtual int_type overflow    (int_type);
@@ -63,11 +64,12 @@ public:
     const ReturnCode&  getReturnCode() const;
     void               resetReturnCode();
 protected:
-    void            _init();
+    void            _init(const std::string& fname="");
 private:
     LogBuffer    *lbout, *lberr;
     std::ostream *oscout, *oscerr;
     ReturnCode   rc;
+    std::string  fname;
 };
 
 #define logmgr LogMgr::getInstance()

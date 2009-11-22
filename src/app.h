@@ -29,6 +29,7 @@ public:
 protected:
     std::vector<std::string> parseInput ();
     void printVersion                   ();
+    void daemonize                      ();
 };
 
 #endif

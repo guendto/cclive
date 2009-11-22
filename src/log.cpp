@@ -21,9 +21,14 @@
 
 #include <fstream>
 #include <cstdio>
+#include <sys/stat.h>
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#endif
+
+#ifdef HAVE_FCNTL_H
+#include <fcntl.h>
 #endif
 
 #include "except.h"
@@ -46,6 +51,12 @@ LogBuffer::~LogBuffer() {
 void
 LogBuffer::setVerbose(const bool& verbose) {
     this->verbose = verbose;
+}
+
+void
+LogBuffer::closefd() {
+    close(this->fd);
+    this->fd = -1;
 }
 
 int
@@ -80,14 +91,16 @@ LogBuffer::sync() {
 // LogMgr
 
 LogMgr::LogMgr()
-    : lbout(NULL), lberr(NULL), oscout(NULL), oscerr(NULL), rc(CCLIVE_OK)
+    : lbout(NULL), lberr(NULL), oscout(NULL), oscerr(NULL),
+      rc(CCLIVE_OK), fname("")
 {
     _init();
 }
 
     // Keeps -Weffc++ happy.
 LogMgr::LogMgr(const LogMgr&)
-    : lbout(NULL), lberr(NULL), oscout(NULL), oscerr(NULL), rc(CCLIVE_OK)
+    : lbout(NULL), lberr(NULL), oscout(NULL), oscerr(NULL),
+      rc(CCLIVE_OK), fname("")
 {
     _init();
 }
@@ -99,9 +112,29 @@ LogMgr::operator=(const LogMgr&) {
 }
 
 void
-LogMgr::_init() {
-    lbout = new LogBuffer( fileno(stdout) );
-    lberr = new LogBuffer( fileno(stderr) );
+LogMgr::_init(const std::string& fname) {
+
+    this->fname = fname;
+
+    _DELETE(lbout);
+    _DELETE(lberr);
+    _DELETE(oscout);
+    _DELETE(oscerr);
+
+    int fdout = fileno(stdout),
+        fderr = fileno(stderr);
+
+    if (!fname.empty()) {
+        fdout = open(
+                fname.c_str(),
+                O_WRONLY|O_CREAT|O_TRUNC,
+                S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH
+            );
+        fderr = fdout;
+    }
+
+    lbout = new LogBuffer(fdout);
+    lberr = new LogBuffer(fderr);
 
     oscout = new std::ostream(lbout);
     oscerr = new std::ostream(lberr);
@@ -110,11 +143,18 @@ LogMgr::_init() {
 void
 LogMgr::init() {
     const Options opts = optsmgr.getOptions();
-    lbout->setVerbose(!opts.quiet_given);
-    lberr->setVerbose(!opts.quiet_given);
+
+    if (opts.background_given)
+        _init(opts.logfile_arg);
+    else {
+        lbout->setVerbose(!opts.quiet_given);
+        lberr->setVerbose(!opts.quiet_given);
+    }
 }
 
 LogMgr::~LogMgr() {
+    if (!fname.empty())
+        lbout->closefd(); // Both use the same fd.
     _DELETE(oscerr);
     _DELETE(oscout);
     _DELETE(lberr);

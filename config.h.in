@@ -9,8 +9,14 @@
 /* Canonical target */
 #undef CANONICAL_TARGET
 
+/* Define to 1 if you have the <fcntl.h> header file. */
+#undef HAVE_FCNTL_H
+
 /* Define to 1 if you have the `fork' function. */
 #undef HAVE_FORK
+
+/* Define to 1 if you have the `getcwd' function. */
+#undef HAVE_GETCWD
 
 /* Define if you have the iconv() function and it works. */
 #undef HAVE_ICONV
@@ -20,6 +26,9 @@
 
 /* Define to 1 if you have the <langinfo.h> header file. */
 #undef HAVE_LANGINFO_H
+
+/* Define to 1 if you have the <limits.h> header file. */
+#undef HAVE_LIMITS_H
 
 /* Define to 1 if you have the <locale.h> header file. */
 #undef HAVE_LOCALE_H
