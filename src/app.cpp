@@ -379,7 +379,7 @@ App::daemonize() {
     umask(0);
 #else // ifndef HAVE_FORK ...
     logmgr.cerr()
-        << "warning: --background ignored: system does not support fork()"
+        << "warning: --background ignored: system does not support fork(2)"
         << std::endl;
 #endif
 }
