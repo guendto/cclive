@@ -166,8 +166,11 @@ void
 LogMgr::init() {
     const Options opts = optsmgr.getOptions();
 
-    if (opts.background_given)
+    if (opts.background_given) {
+#if defined(HAVE_FORK) && defined(HAVE_WORKING_FORK)
         _init(opts.logfile_arg);
+#endif
+    }
     else {
         lbout->setVerbose(!opts.quiet_given);
         lberr->setVerbose(!opts.quiet_given);
