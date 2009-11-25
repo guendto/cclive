@@ -363,13 +363,13 @@ App::daemonize() {
         exit (CCLIVE_SYSTEM);
     }
     else if (pid != 0) {
-        const Options opts = optsmgr.getOptions();
-        printf(
-            "continuing in background, pid %ld.\n"
-            "output will be written to %s.\n",
-            static_cast<long>(pid),
-            opts.logfile_arg
-        );
+        std::cout 
+            << "Continuing in background, pid "
+            << static_cast<long>(pid)
+            << ".\nOutput will be written to \""
+            << logmgr.getFilename()
+            << "\"."
+            << std::endl;
         exit (CCLIVE_OK);
     }
     setsid();

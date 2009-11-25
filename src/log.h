@@ -63,8 +63,9 @@ public:
                             const bool& append_newline=true);
     const ReturnCode&  getReturnCode() const;
     void               resetReturnCode();
+    const std::string& getFilename() const;
 protected:
-    void            _init(const std::string& fname="");
+    void            _init(std::string fname="");
 private:
     LogBuffer    *lbout, *lberr;
     std::ostream *oscout, *oscerr;

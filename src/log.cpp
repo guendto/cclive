@@ -24,6 +24,10 @@
 #include <cstdlib>
 #include <cstring>
 #include <cerrno>
+#include <climits>
+#include <iomanip>
+#include <vector>
+#include <sstream>
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
@@ -48,6 +52,7 @@
 #include "except.h"
 #include "macros.h"
 #include "opts.h"
+#include "util.h"
 #include "log.h"
 
 // LogBuffer
@@ -122,9 +127,7 @@ LogMgr::operator=(const LogMgr&) {
 }
 
 void
-LogMgr::_init(const std::string& fname) {
-
-    this->fname = fname;
+LogMgr::_init(std::string fname/*=""*/) {
 
     _DELETE(lbout);
     _DELETE(lberr);
@@ -137,11 +140,27 @@ LogMgr::_init(const std::string& fname) {
     bool close_after = false;
 
     if (!fname.empty()) {
+
+        std::string orig = fname;
+
+        for (int i=1; i<INT_MAX; ++i) {
+            if (Util::fileExists(fname) > 0) {
+                std::stringstream tmp;
+                tmp << orig << "." << i;
+                fname = tmp.str();
+            }
+            else
+                break;
+        }
+
+        this->fname = fname;
+
         const int fd = open(
                 fname.c_str(),
                 O_WRONLY|O_CREAT|O_TRUNC,
                 S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH
             );
+
         if (fd == -1) {
 #ifdef HAVE_STRERROR
             fprintf(stderr, "error: %s: %s\n",
@@ -151,6 +170,7 @@ LogMgr::_init(const std::string& fname) {
 #endif
             exit (CCLIVE_SYSTEM);
         }
+
         fderr = fdout = fd;
         close_after = true;
     }
@@ -238,6 +258,11 @@ LogMgr::getReturnCode() const {
 void
 LogMgr::resetReturnCode() {
     rc = CCLIVE_OK;
+}
+
+const std::string&
+LogMgr::getFilename() const {
+    return fname;
 }
 
 
