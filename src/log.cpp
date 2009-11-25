@@ -23,7 +23,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-#include <errno.h>
+#include <cerrno>
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
