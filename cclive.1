@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2009-09-27" "0.5.3" "cclive manual"
+.TH cclive 1 "2009-11-27" "0.6.0" "cclive manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -154,6 +154,10 @@ Print version and exit.
 .IP "\fB\-\-hosts\fR" 4
 .IX Item "--hosts"
 Print supported hosts and exit.
+.IP "\fB\-\-background\fR" 4
+.IX Item "--background"
+Go to background immediately after startup. Output will be written to
+\&\fIcclive.log\fR unless \fB\-\-logfile\fR is used.
 .PP
 \&\fBOutput\fR
 .IP "\fB\-q, \-\-quiet\fR" 4
@@ -170,6 +174,14 @@ Ignores \f(CW\*(C`\-\-quiet\*(C'\fR for \s-1CSV\s0.
 .IX Item "--print-fname"
 Print filename on a separate line before each download starts.
 Prepends \*(L"file:\*(R" for each video.
+.IP "\fB\-o, \-\-logfile\fR=\fIfile\fR" 4
+.IX Item "-o, --logfile=file"
+Write output to \fIfile\fR while in the background. Defaults to \fIcclive.log\fR.
+.IP "\fB\-i, \-\-logfile\-interval\fR=\fIseconds\fR" 4
+.IX Item "-i, --logfile-interval=seconds"
+Update logfile every \fIseconds\fR while in the background. Defines how
+frequently the download progress information is written to the log.
+Defaults to \fI10\fR.
 .PP
 \&\fB\s-1HTTP\s0\fR
 .IP "\fB\-\-agent\fR=\fIagentstring\fR" 4
@@ -439,7 +451,7 @@ Format: vp6_(64|576|928)|h264_1400
 \&  h264_1400 .. mp4 (996x560)
 \&  vp6_928   .. flv (996x560)
 \&  vp6_576   .. flv (560x315)
-\&  vp6_64    .. flv (180x100) [default]
+\&  flv       .. flv (180x100) [default]
 .Ve
 .IP "golem.de" 4
 .IX Item "golem.de"
@@ -553,7 +565,7 @@ cclive exits 0 on success, and >0 if an error occurs.
 \&  CCLIVE_OK           = 0
 \&  CCLIVE_OPT          = 1  // cmdline option parsing error
 \&  CCLIVE_OPTARG       = 2  // cmdline option arg error
-\&  CCLIVE_CURLINIT     = 3  // curl init error
+\&  CCLIVE_CURLINIT     = 3  // curl init error (unused since 0.6.0+)
 \&  CCLIVE_NOTHINGTODO  = 4  // file already retrieved
 \&  CCLIVE_SYSTEM       = 5  // system call failed
 \&  CCLIVE_NOSUPPORT    = 6  // host not supported
@@ -567,6 +579,9 @@ cclive exits 0 on success, and >0 if an error occurs.
 .IP "Project page:" 4
 .IX Item "Project page:"
 <http://cclive.googlecode.com/>
+.IP "\s-1FAQ:\s0" 4
+.IX Item "FAQ:"
+<http://code.google.com/p/cclive/wiki/FAQ>
 .IP "Front-end:" 4
 .IX Item "Front-end:"
 <http://abby.googlecode.com/>

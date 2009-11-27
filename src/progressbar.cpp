@@ -24,6 +24,8 @@
 #include <sstream>
 #include <iomanip>
 #include <cstdlib>
+#include <cstring>
+#include <cerrno>
 #include <string>
 #include <vector>
 
@@ -85,7 +87,8 @@ getTermWidth() {
 
 ProgressBar::ProgressBar()
     : props(QuviVideo()), lastUpdate(0),
-      started(0),         initial(0),
+      started(0),         lastLogfileUpdate(0),
+      initial(0),
       total(0),           count(0),
       done(false),        width(0),
       termWidth(0),       streamFlag(false),
@@ -227,8 +230,27 @@ ProgressBar::update(double now) {
 
     b << tmp.str();
 
-    logmgr.cout() << "\r" << b.str() << std::flush;
     count = now;
+
+    const Options opts = optsmgr.getOptions();
+
+    if (!opts.background_given)
+        b << "\r";
+    else {
+        const time_t _elapsed = tnow - lastLogfileUpdate;
+
+        if (_elapsed < opts.logfile_interval_arg
+            && _elapsed >= 0
+            && !done)
+        {
+            return;
+        }
+
+        lastLogfileUpdate = tnow;
+        b << "\n";
+    }
+
+    logmgr.cout() << b.str() << std::flush;
 }
 
 void
@@ -243,8 +265,16 @@ ProgressBar::finish() {
 
 #ifdef HAVE_SYS_WAIT_H
     if (streamFlag) {
-        if (waitpid(streamPid, 0, 0) != streamPid)
+        if (waitpid(streamPid, 0, 0) != streamPid) {
+#ifdef HAVE_STRERROR
+            logmgr.cerr()
+                << "waitpid: "
+                << strerror(errno)
+                << std::endl;
+#else
             perror("waitpid");
+#endif
+        }
         streamFlag = false;
     }
 #endif
@@ -290,8 +320,16 @@ void
 ProgressBar::forkStreamer() {
 #if defined(HAVE_FORK) && defined(HAVE_WORKING_FORK)
     streamFlag = true;
-    if ((streamPid = fork()) < 0)
+    if ((streamPid = fork()) < 0) {
+#ifdef HAVE_STRERROR
+        logmgr.cerr()
+            << "fork: "
+            << strerror(errno)
+            << std::endl;
+#else
         perror("fork");
+#endif
+    }
     else if (streamPid == 0) {
         execmgr.playStream(props);
         exit(0);

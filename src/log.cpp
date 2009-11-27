@@ -19,28 +19,55 @@
 
 #include "config.h"
 
+#include <iostream>
 #include <fstream>
 #include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <cerrno>
+#include <climits>
+#include <iomanip>
+#include <vector>
+#include <sstream>
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
 
+#ifdef HAVE_SYS_STAT_H
+#include <sys/stat.h>
+#endif
+
+#ifdef HAVE_FCNTL_H
+#include <fcntl.h>
+#endif
+
+#ifndef S_IRGRP
+#define S_IRGRP S_IRUSR
+#endif
+
+#ifndef S_IROTH
+#define S_IROTH S_IRUSR
+#endif
+
 #include "except.h"
 #include "macros.h"
 #include "opts.h"
+#include "util.h"
 #include "log.h"
 
 // LogBuffer
 
-LogBuffer::LogBuffer(const int& fd)
-    : fd(fd), verbose(true)
+LogBuffer::LogBuffer(const int& fd, const bool& close_after)
+    : fd(fd), verbose(true), close_after(close_after)
 {
     setp(buffer, buffer+(BufferSize-1));
 }
 
 LogBuffer::~LogBuffer() {
     sync();
+    if (close_after)
+        close(fd);
 }
 
 void
@@ -80,14 +107,16 @@ LogBuffer::sync() {
 // LogMgr
 
 LogMgr::LogMgr()
-    : lbout(NULL), lberr(NULL), oscout(NULL), oscerr(NULL), rc(CCLIVE_OK)
+    : lbout(NULL), lberr(NULL), oscout(NULL), oscerr(NULL),
+      rc(CCLIVE_OK), fname("")
 {
     _init();
 }
 
     // Keeps -Weffc++ happy.
 LogMgr::LogMgr(const LogMgr&)
-    : lbout(NULL), lberr(NULL), oscout(NULL), oscerr(NULL), rc(CCLIVE_OK)
+    : lbout(NULL), lberr(NULL), oscout(NULL), oscerr(NULL),
+      rc(CCLIVE_OK), fname("")
 {
     _init();
 }
@@ -99,9 +128,62 @@ LogMgr::operator=(const LogMgr&) {
 }
 
 void
-LogMgr::_init() {
-    lbout = new LogBuffer( fileno(stdout) );
-    lberr = new LogBuffer( fileno(stderr) );
+LogMgr::_init(std::string fname/*=""*/) {
+
+    this->fname = fname;
+
+    _DELETE(lbout);
+    _DELETE(lberr);
+    _DELETE(oscout);
+    _DELETE(oscerr);
+
+    int fdout = fileno(stdout),
+        fderr = fileno(stderr);
+
+    bool close_after = false;
+
+    if (!fname.empty()) {
+
+        std::string orig = fname;
+
+        for (int i=1; i<INT_MAX; ++i) {
+            if (Util::fileExists(fname) > 0) {
+                std::stringstream tmp;
+                tmp << orig << "." << i;
+                fname = tmp.str();
+            }
+            else
+                break;
+        }
+
+        this->fname = fname;
+
+        const int fd = open(
+                fname.c_str(),
+                O_WRONLY|O_CREAT|O_TRUNC,
+                S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH
+            );
+
+        if (fd == -1) {
+#ifdef HAVE_STRERROR
+            std::cerr
+                << "error: "
+                << fname
+                << ": "
+                << strerror(errno)
+                << std::endl;
+#else
+            perror("open");
+#endif
+            exit (CCLIVE_SYSTEM);
+        }
+
+        fderr = fdout = fd;
+        close_after = true;
+    }
+
+    lbout = new LogBuffer(fdout, close_after);
+    lberr = new LogBuffer(fderr, close_after);
 
     oscout = new std::ostream(lbout);
     oscerr = new std::ostream(lberr);
@@ -110,8 +192,19 @@ LogMgr::_init() {
 void
 LogMgr::init() {
     const Options opts = optsmgr.getOptions();
+
     lbout->setVerbose(!opts.quiet_given);
     lberr->setVerbose(!opts.quiet_given);
+
+    if (opts.background_given) {
+#if defined(HAVE_FORK) && defined(HAVE_WORKING_FORK)
+         _init(opts.logfile_arg);
+#endif
+    }
+    else {
+        lbout->setVerbose(!opts.quiet_given);
+        lberr->setVerbose(!opts.quiet_given);
+    }
 }
 
 LogMgr::~LogMgr() {
@@ -175,6 +268,11 @@ LogMgr::getReturnCode() const {
 void
 LogMgr::resetReturnCode() {
     rc = CCLIVE_OK;
+}
+
+const std::string&
+LogMgr::getFilename() const {
+    return fname;
 }
 
 

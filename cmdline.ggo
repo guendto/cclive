@@ -5,6 +5,9 @@ option "version"
 option "hosts"
     - "List supported hosts"
     optional
+option "background"
+    b "Go to background immediately after startup"
+    optional
 
 section "Output"
 option "quiet"
@@ -18,6 +21,18 @@ option "emit-csv"
     optional
 option "print-fname"
     - "Print filename before each download starts"
+    optional
+option "logfile"
+    o "Write output to file while in background"
+    string typestr="<file>"
+    default="cclive.log"
+    dependon="background"
+    optional
+option "logfile-interval"
+    i "Update logfile every n seconds while in background"
+    int typestr="<n>"
+    default="10"
+    dependon="background"
     optional
 
 section "HTTP"

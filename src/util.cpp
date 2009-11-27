@@ -24,6 +24,8 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <cstring>
+#include <cerrno>
 
 #include <pcrecpp.h>
 

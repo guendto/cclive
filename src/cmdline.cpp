@@ -35,11 +35,14 @@ const char *gengetopt_args_info_help[] = {
   "  -h, --help                    Print help and exit",
   "  -v, --version                 Print version and exit",
   "      --hosts                   List supported hosts",
+  "  -b, --background              Go to background immediately after startup",
   "\nOutput:",
   "  -q, --quiet                   Turn off all output",
   "      --debug                   Turn on libcurl verbose mode",
   "      --emit-csv                Print video details in csv format to stdout",
   "      --print-fname             Print filename before each download starts",
+  "  -o, --logfile=<file>          Write output to file while in background  \n                                  (default=`cclive.log')",
+  "  -i, --logfile-interval=<n>    Update logfile every n seconds while in \n                                  background  (default=`10')",
   "\nHTTP:",
   "      --agent=<agentstring>     Identify cclive as agentstring to servers  \n                                  (default=`Mozilla/5.0')",
   "      --proxy=proxyhost[:port]  Use specified proxy",
@@ -124,10 +127,13 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->help_given = 0 ;
   args_info->version_given = 0 ;
   args_info->hosts_given = 0 ;
+  args_info->background_given = 0 ;
   args_info->quiet_given = 0 ;
   args_info->debug_given = 0 ;
   args_info->emit_csv_given = 0 ;
   args_info->print_fname_given = 0 ;
+  args_info->logfile_given = 0 ;
+  args_info->logfile_interval_given = 0 ;
   args_info->agent_given = 0 ;
   args_info->proxy_given = 0 ;
   args_info->no_proxy_given = 0 ;
@@ -157,6 +163,10 @@ static
 void clear_args (struct gengetopt_args_info *args_info)
 {
   FIX_UNUSED (args_info);
+  args_info->logfile_arg = gengetopt_strdup ("cclive.log");
+  args_info->logfile_orig = NULL;
+  args_info->logfile_interval_arg = 10;
+  args_info->logfile_interval_orig = NULL;
   args_info->agent_arg = gengetopt_strdup ("Mozilla/5.0");
   args_info->agent_orig = NULL;
   args_info->proxy_arg = NULL;
@@ -196,33 +206,36 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->help_help = gengetopt_args_info_help[0] ;
   args_info->version_help = gengetopt_args_info_help[1] ;
   args_info->hosts_help = gengetopt_args_info_help[2] ;
-  args_info->quiet_help = gengetopt_args_info_help[4] ;
-  args_info->debug_help = gengetopt_args_info_help[5] ;
-  args_info->emit_csv_help = gengetopt_args_info_help[6] ;
-  args_info->print_fname_help = gengetopt_args_info_help[7] ;
-  args_info->agent_help = gengetopt_args_info_help[9] ;
-  args_info->proxy_help = gengetopt_args_info_help[10] ;
-  args_info->no_proxy_help = gengetopt_args_info_help[11] ;
-  args_info->connect_timeout_help = gengetopt_args_info_help[12] ;
-  args_info->connect_timeout_socks_help = gengetopt_args_info_help[13] ;
-  args_info->retry_help = gengetopt_args_info_help[14] ;
-  args_info->retry_wait_help = gengetopt_args_info_help[15] ;
-  args_info->output_video_help = gengetopt_args_info_help[17] ;
-  args_info->continue_help = gengetopt_args_info_help[18] ;
-  args_info->overwrite_help = gengetopt_args_info_help[19] ;
-  args_info->no_extract_help = gengetopt_args_info_help[20] ;
-  args_info->limit_rate_help = gengetopt_args_info_help[21] ;
-  args_info->format_help = gengetopt_args_info_help[22] ;
-  args_info->format_map_help = gengetopt_args_info_help[23] ;
-  args_info->number_videos_help = gengetopt_args_info_help[25] ;
-  args_info->regexp_help = gengetopt_args_info_help[26] ;
-  args_info->find_all_help = gengetopt_args_info_help[27] ;
-  args_info->filename_format_help = gengetopt_args_info_help[28] ;
-  args_info->exec_help = gengetopt_args_info_help[30] ;
-  args_info->exec_run_help = gengetopt_args_info_help[31] ;
-  args_info->stream_exec_help = gengetopt_args_info_help[33] ;
-  args_info->stream_pass_help = gengetopt_args_info_help[34] ;
-  args_info->stream_help = gengetopt_args_info_help[35] ;
+  args_info->background_help = gengetopt_args_info_help[3] ;
+  args_info->quiet_help = gengetopt_args_info_help[5] ;
+  args_info->debug_help = gengetopt_args_info_help[6] ;
+  args_info->emit_csv_help = gengetopt_args_info_help[7] ;
+  args_info->print_fname_help = gengetopt_args_info_help[8] ;
+  args_info->logfile_help = gengetopt_args_info_help[9] ;
+  args_info->logfile_interval_help = gengetopt_args_info_help[10] ;
+  args_info->agent_help = gengetopt_args_info_help[12] ;
+  args_info->proxy_help = gengetopt_args_info_help[13] ;
+  args_info->no_proxy_help = gengetopt_args_info_help[14] ;
+  args_info->connect_timeout_help = gengetopt_args_info_help[15] ;
+  args_info->connect_timeout_socks_help = gengetopt_args_info_help[16] ;
+  args_info->retry_help = gengetopt_args_info_help[17] ;
+  args_info->retry_wait_help = gengetopt_args_info_help[18] ;
+  args_info->output_video_help = gengetopt_args_info_help[20] ;
+  args_info->continue_help = gengetopt_args_info_help[21] ;
+  args_info->overwrite_help = gengetopt_args_info_help[22] ;
+  args_info->no_extract_help = gengetopt_args_info_help[23] ;
+  args_info->limit_rate_help = gengetopt_args_info_help[24] ;
+  args_info->format_help = gengetopt_args_info_help[25] ;
+  args_info->format_map_help = gengetopt_args_info_help[26] ;
+  args_info->number_videos_help = gengetopt_args_info_help[28] ;
+  args_info->regexp_help = gengetopt_args_info_help[29] ;
+  args_info->find_all_help = gengetopt_args_info_help[30] ;
+  args_info->filename_format_help = gengetopt_args_info_help[31] ;
+  args_info->exec_help = gengetopt_args_info_help[33] ;
+  args_info->exec_run_help = gengetopt_args_info_help[34] ;
+  args_info->stream_exec_help = gengetopt_args_info_help[36] ;
+  args_info->stream_pass_help = gengetopt_args_info_help[37] ;
+  args_info->stream_help = gengetopt_args_info_help[38] ;
   
 }
 
@@ -306,6 +319,9 @@ static void
 cmdline_parser_release (struct gengetopt_args_info *args_info)
 {
   unsigned int i;
+  free_string_field (&(args_info->logfile_arg));
+  free_string_field (&(args_info->logfile_orig));
+  free_string_field (&(args_info->logfile_interval_orig));
   free_string_field (&(args_info->agent_arg));
   free_string_field (&(args_info->agent_orig));
   free_string_field (&(args_info->proxy_arg));
@@ -412,6 +428,8 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "version", 0, 0 );
   if (args_info->hosts_given)
     write_into_file(outfile, "hosts", 0, 0 );
+  if (args_info->background_given)
+    write_into_file(outfile, "background", 0, 0 );
   if (args_info->quiet_given)
     write_into_file(outfile, "quiet", 0, 0 );
   if (args_info->debug_given)
@@ -420,6 +438,10 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "emit-csv", 0, 0 );
   if (args_info->print_fname_given)
     write_into_file(outfile, "print-fname", 0, 0 );
+  if (args_info->logfile_given)
+    write_into_file(outfile, "logfile", args_info->logfile_orig, 0);
+  if (args_info->logfile_interval_given)
+    write_into_file(outfile, "logfile-interval", args_info->logfile_interval_orig, 0);
   if (args_info->agent_given)
     write_into_file(outfile, "agent", args_info->agent_orig, 0);
   if (args_info->proxy_given)
@@ -584,6 +606,16 @@ cmdline_parser_required2 (struct gengetopt_args_info *args_info, const char *pro
   /* checks for required options */
   
   /* checks for dependences among options */
+  if (args_info->logfile_given && ! args_info->background_given)
+    {
+      fprintf (stderr, "%s: '--logfile' ('-o') option depends on option 'background'%s\n", prog_name, (additional_error ? additional_error : ""));
+      error = 1;
+    }
+  if (args_info->logfile_interval_given && ! args_info->background_given)
+    {
+      fprintf (stderr, "%s: '--logfile-interval' ('-i') option depends on option 'background'%s\n", prog_name, (additional_error ? additional_error : ""));
+      error = 1;
+    }
   if (args_info->find_all_given && ! args_info->regexp_given)
     {
       fprintf (stderr, "%s: '--find-all' ('-g') option depends on option 'regexp'%s\n", prog_name, (additional_error ? additional_error : ""));
@@ -772,10 +804,13 @@ cmdline_parser_internal (
         { "help",	0, NULL, 'h' },
         { "version",	0, NULL, 'v' },
         { "hosts",	0, NULL, 0 },
+        { "background",	0, NULL, 'b' },
         { "quiet",	0, NULL, 'q' },
         { "debug",	0, NULL, 0 },
         { "emit-csv",	0, NULL, 0 },
         { "print-fname",	0, NULL, 0 },
+        { "logfile",	1, NULL, 'o' },
+        { "logfile-interval",	1, NULL, 'i' },
         { "agent",	1, NULL, 0 },
         { "proxy",	1, NULL, 0 },
         { "no-proxy",	0, NULL, 0 },
@@ -802,7 +837,7 @@ cmdline_parser_internal (
         { 0,  0, 0, 0 }
       };
 
-      c = getopt_long (argc, argv, "hvqt:O:cWnl:f:M:Nr:gF:es", long_options, &option_index);
+      c = getopt_long (argc, argv, "hvbqo:i:t:O:cWnl:f:M:Nr:gF:es", long_options, &option_index);
 
       if (c == -1) break;	/* Exit from `while (1)' loop.  */
 
@@ -825,6 +860,18 @@ cmdline_parser_internal (
             goto failure;
         
           break;
+        case 'b':	/* Go to background immediately after startup.  */
+        
+        
+          if (update_arg( 0 , 
+               0 , &(args_info->background_given),
+              &(local_args_info.background_given), optarg, 0, 0, ARG_NO,
+              check_ambiguity, override, 0, 0,
+              "background", 'b',
+              additional_error))
+            goto failure;
+        
+          break;
         case 'q':	/* Turn off all output.  */
         
         
@@ -833,6 +880,30 @@ cmdline_parser_internal (
               &(local_args_info.quiet_given), optarg, 0, 0, ARG_NO,
               check_ambiguity, override, 0, 0,
               "quiet", 'q',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 'o':	/* Write output to file while in background.  */
+        
+        
+          if (update_arg( (void *)&(args_info->logfile_arg), 
+               &(args_info->logfile_orig), &(args_info->logfile_given),
+              &(local_args_info.logfile_given), optarg, 0, "cclive.log", ARG_STRING,
+              check_ambiguity, override, 0, 0,
+              "logfile", 'o',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 'i':	/* Update logfile every n seconds while in background.  */
+        
+        
+          if (update_arg( (void *)&(args_info->logfile_interval_arg), 
+               &(args_info->logfile_interval_orig), &(args_info->logfile_interval_given),
+              &(local_args_info.logfile_interval_given), optarg, 0, "10", ARG_INT,
+              check_ambiguity, override, 0, 0,
+              "logfile-interval", 'i',
               additional_error))
             goto failure;
         

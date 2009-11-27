@@ -31,12 +31,28 @@
 #include <algorithm>
 #include <tr1/memory>
 
-#ifdef HAVE_SIGNAL_H
-#include <signal.h>
-#endif
-
 #ifdef HAVE_SYS_IOCTL_H
 #include <sys/ioctl.h>
+#endif
+
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
+
+#ifdef HAVE_LIMITS_H
+#include <limits.h>
+#endif
+
+#ifdef HAVE_SYS_TYPES_H
+#include <sys/types.h>
+#endif
+
+#ifdef HAVE_SYS_STAT_H
+#include <sys/stat.h>
+#endif
+
+#ifdef HAVE_SIGNAL_H
+#include <signal.h>
 #endif
 
 #include "macros.h"
@@ -263,6 +279,9 @@ App::run() {
 #ifdef WITH_RESIZE
     signal(SIGWINCH, handle_sigwinch);
 #endif
+    if (opts.background_given)
+        daemonize();
+
     std::for_each(tokens.begin(), tokens.end(), handle_url);
 
     if (opts.exec_run_given)
@@ -310,6 +329,51 @@ static const char copyr_notice[] =
         << "\n  Config          : "     << optsmgr.getPath()
         << "\n  Home            : "     << "<http://cclive.googlecode.com/>"
         << std::endl;
+}
+
+void
+App::daemonize() {
+#if defined(HAVE_FORK) && defined(HAVE_WORKING_FORK)
+#ifdef HAVE_GETCWD
+    char path[PATH_MAX];
+    path[0] = '\0';
+    getcwd(path, sizeof(path));
+#endif
+
+    pid_t pid = fork();
+
+    if (pid < 0) {
+#ifdef HAVE_STRERROR
+        std::cerr
+            << "error: fork: "
+            << strerror(errno)
+            << std::endl;
+#else
+        perror("fork");
+#endif
+        exit (CCLIVE_SYSTEM);
+    }
+    else if (pid != 0) {
+        const Options opts = optsmgr.getOptions();
+        std::cout
+            << "Continuing in background, pid "
+            << static_cast<long>(pid)
+            << ".\nOutput will be written to \""
+            << logmgr.getFilename()
+            << "\"."
+            << std::endl;
+        exit (CCLIVE_OK);
+    }
+    setsid();
+#ifdef HAVE_GETCWD
+    chdir(path);
+#endif
+    umask(0);
+#else // ifndef HAVE_FORK ...
+    logmgr.cerr()
+        << "warning: --background ignored: system does not support fork(2)"
+        << std::endl;
+#endif
 }
 
 

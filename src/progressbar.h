@@ -35,6 +35,7 @@ private:
     QuviVideo props;
     time_t lastUpdate;
     time_t started;
+    time_t lastLogfileUpdate;
     double initial;
     double total;
     double count;

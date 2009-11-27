@@ -26,7 +26,7 @@
 
 class LogBuffer : public std::streambuf {
 public:
-    LogBuffer(const int& fd);
+    LogBuffer(const int& fd, const bool& close_after);
     virtual ~LogBuffer();
 public:
     void setVerbose(const bool&);
@@ -40,6 +40,7 @@ protected:
 private:
     int fd;
     bool verbose;
+    bool close_after;
 };
 
 // LogMgr
@@ -62,12 +63,14 @@ public:
                             const bool& append_newline=true);
     const ReturnCode&  getReturnCode() const;
     void               resetReturnCode();
+    const std::string& getFilename() const;
 protected:
-    void            _init();
+    void            _init(std::string fname="");
 private:
     LogBuffer    *lbout, *lberr;
     std::ostream *oscout, *oscerr;
     ReturnCode   rc;
+    std::string  fname;
 };
 
 #define logmgr LogMgr::getInstance()

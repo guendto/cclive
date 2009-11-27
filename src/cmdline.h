@@ -44,10 +44,17 @@ struct gengetopt_args_info
   const char *help_help; /**< @brief Print help and exit help description.  */
   const char *version_help; /**< @brief Print version and exit help description.  */
   const char *hosts_help; /**< @brief List supported hosts help description.  */
+  const char *background_help; /**< @brief Go to background immediately after startup help description.  */
   const char *quiet_help; /**< @brief Turn off all output help description.  */
   const char *debug_help; /**< @brief Turn on libcurl verbose mode help description.  */
   const char *emit_csv_help; /**< @brief Print video details in csv format to stdout help description.  */
   const char *print_fname_help; /**< @brief Print filename before each download starts help description.  */
+  char * logfile_arg;	/**< @brief Write output to file while in background (default='cclive.log').  */
+  char * logfile_orig;	/**< @brief Write output to file while in background original value given at command line.  */
+  const char *logfile_help; /**< @brief Write output to file while in background help description.  */
+  int logfile_interval_arg;	/**< @brief Update logfile every n seconds while in background (default='10').  */
+  char * logfile_interval_orig;	/**< @brief Update logfile every n seconds while in background original value given at command line.  */
+  const char *logfile_interval_help; /**< @brief Update logfile every n seconds while in background help description.  */
   char * agent_arg;	/**< @brief Identify cclive as agentstring to servers (default='Mozilla/5.0').  */
   char * agent_orig;	/**< @brief Identify cclive as agentstring to servers original value given at command line.  */
   const char *agent_help; /**< @brief Identify cclive as agentstring to servers help description.  */
@@ -105,10 +112,13 @@ struct gengetopt_args_info
   unsigned int help_given ;	/**< @brief Whether help was given.  */
   unsigned int version_given ;	/**< @brief Whether version was given.  */
   unsigned int hosts_given ;	/**< @brief Whether hosts was given.  */
+  unsigned int background_given ;	/**< @brief Whether background was given.  */
   unsigned int quiet_given ;	/**< @brief Whether quiet was given.  */
   unsigned int debug_given ;	/**< @brief Whether debug was given.  */
   unsigned int emit_csv_given ;	/**< @brief Whether emit-csv was given.  */
   unsigned int print_fname_given ;	/**< @brief Whether print-fname was given.  */
+  unsigned int logfile_given ;	/**< @brief Whether logfile was given.  */
+  unsigned int logfile_interval_given ;	/**< @brief Whether logfile-interval was given.  */
   unsigned int agent_given ;	/**< @brief Whether agent was given.  */
   unsigned int proxy_given ;	/**< @brief Whether proxy was given.  */
   unsigned int no_proxy_given ;	/**< @brief Whether no-proxy was given.  */
