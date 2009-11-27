@@ -30,6 +30,8 @@
 #include <iomanip>
 #include <algorithm>
 #include <tr1/memory>
+#include <cstring>
+#include <cerrno>
 
 #ifdef HAVE_SYS_IOCTL_H
 #include <sys/ioctl.h>
