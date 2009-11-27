@@ -1,6 +1,4 @@
 repo: git://repo.or.cz/cclive.git
 web : http://repo.or.cz/w/cclive.git
 
-* port --background, --logfile, --logfile-interval from 0.5.x
-* port perror -> strerror changes
 * go over error handling (return codes, string formatting etc.)
