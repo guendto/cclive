@@ -9,7 +9,7 @@ QUVI_PREFIX=\
 "/home/legatvs/quvi.git/w32/quvi-0.1.0"
 
 CURL_PREFIX=\
-"/home/legatvs/src/non-installed/curl-7.19.6"
+"/home/legatvs/src/non-installed/curl-7.19.7"
 
 CURL_CONFIG=\
 "$CURL_PREFIX/release/dist/bin/curl-config"
