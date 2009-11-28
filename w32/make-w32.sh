@@ -6,7 +6,7 @@ PREFIX=`pwd`/dist # ./configure --prefix=$PREFIX
 CXXFLAGS="-Os -pipe -march=i686"
 
 CURL_CONFIG=\
-"/home/legatvs/src/non-installed/curl-7.19.6/release/dist/bin/curl-config"
+"/home/legatvs/src/non-installed/curl-7.19.7/release/dist/bin/curl-config"
 
 PCRE_CONFIG=\
 "/home/legatvs/src/non-installed/pcre-8.00/release/dist/bin/pcre-config"
