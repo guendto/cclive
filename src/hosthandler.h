@@ -45,8 +45,6 @@ public:
     void                    partialMatch       (const std::string& re,
                                                 const pcrecpp::Arg& dst,
                                                 const std::string& data="");
-private:
-    void applyRegexp (std::string& title);
 protected:
     std::string fetch(const std::string& url,
                         const std::string& what,

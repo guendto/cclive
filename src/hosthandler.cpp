@@ -73,7 +73,7 @@ HostHandler::parsePage(const std::string& url) {
 
     // Apply regexp.
     if (optsmgr.getOptions().regexp_given)
-        applyRegexp(title);
+        Util::perlMatch(optsmgr.getOptions().regexp_arg, title);
 
     // Remove leading and trailing whitespace.
     pcrecpp::RE("^[\\s]+").Replace("", &title);
@@ -101,32 +101,6 @@ HostHandler::fetch(const std::string& url,
         fetch(url,what);
     }
     return tmp;
-}
-
-void
-HostHandler::applyRegexp(std::string& title) {
-
-    const Options opts = optsmgr.getOptions();
-
-    if (opts.find_all_given) {
-        pcrecpp::StringPiece sp(title);
-        pcrecpp::RE re(opts.regexp_arg, pcrecpp::UTF8());
-
-        title.clear();
-
-        std::string s;
-        while (re.FindAndConsume(&sp, &s))
-            title += s;
-    }
-    else {
-        std::string tmp = title;
-        title.clear();
-
-        pcrecpp::RE(opts.regexp_arg, pcrecpp::UTF8())
-            .PartialMatch(tmp, &title);
-    }
-
-    props.setTitle(title);
 }
 
 void

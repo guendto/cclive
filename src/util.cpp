@@ -330,4 +330,39 @@ Util::perlSubstitute(const std::string& re, std::string& src) {
     return false;
 }
 
+const bool
+Util::perlMatch(const std::string& re, std::string& src) {
+    std::string pat, flags;
+    if (pcrecpp::RE("^\\/(.*)\\/(.*)$", pcrecpp::UTF8())
+        .PartialMatch(re, &pat, &flags))
+    {
+        if (src.empty())
+            return true;
+
+        pcrecpp::RE_Options opts;
+
+        opts.set_caseless(strstr(flags.c_str(), "i") != 0);
+        opts.set_utf8(true);
+
+        if (strstr(flags.c_str(), "g") != 0) {
+            pcrecpp::StringPiece sp(src);
+            pcrecpp::RE re(pat, opts);
+
+            src.clear();
+
+            std::string s;
+            while (re.FindAndConsume(&sp, &s))
+                src += s;
+        }
+        else {
+            std::string tmp = src;
+            src.clear();
+
+            pcrecpp::RE(pat, opts).PartialMatch(tmp, &src);
+        }
+        return true;
+    }
+    return false;
+}
+
 
