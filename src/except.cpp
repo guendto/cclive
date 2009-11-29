@@ -51,12 +51,12 @@ RuntimeException::what() const {
         "invalid option argument",
         "curl_easy_init returned null",
         "file already fully retrieved; nothing to do",
-        "system call failed",
+        "system",
         "no support",
-        "network error",
-        "fetch failed",
-        "parse failed",
-        "internal error",
+        "network",
+        "fetch",
+        "parse",
+        "internal",
     };
 
     ReturnCode _rc = rc;
