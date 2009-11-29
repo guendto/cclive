@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2009-11-27" "0.6.0" "cclive manual"
+.TH cclive 1 "2009-11-29" "0.6.0" "cclive manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -245,16 +245,19 @@ Note that \f(CW\*(C`\-\-format\*(C'\fR setting overrides this setting. See also 
 .IP "\fB\-N, \-\-number\-videos\fR" 4
 .IX Item "-N, --number-videos"
 Prepend a numeric prefix (e.g. \*(L"001_\*(R") to the output filenames.
-.IP "\fB\-r, \-\-regexp\fR=\fIexpression\fR" 4
-.IX Item "-r, --regexp=expression"
-Regular expression to cleanup the video titles before using them for output
-filenames. Used in conjunction with the \f(CW\*(C`\-\-filename\-format\*(C'\fR option. Refer
-to the \s-1PCRE\s0 manual page for the supported regular expression syntax,
-patterns, etc. See also \*(L"\s-1EXAMPLES\s0\*(R".
-.IP "\fB\-g, \-\-find\-all\fR" 4
-.IX Item "-g, --find-all"
-Use repeated matching to find all occurences, like Perl's /g option.
-See also \*(L"\s-1EXAMPLES\s0\*(R".
+.IP "\fB\-r, \-\-regexp\fR=\fIregexp\fR" 4
+.IX Item "-r, --regexp=regexp"
+Regular expression used to clean up video titles before they are used for
+output filenames. Supports (and mimics) Perl's /g (global, find all) and /i
+(case-insensitive). See also \*(L"\s-1EXAMPLES\s0\*(R".
+.IP "\fB\-S, \-\-substitute\fR=\fIregexp\fR" 4
+.IX Item "-S, --substitute=regexp"
+Mimics Perl's s/old/new/(gi) substitution. This option can be used to
+replace occurences in output filenames. Supports /g (global, find all
+occurences) and /i (case-insensitive). See also \*(L"\s-1EXAMPLES\s0\*(R".
+.Sp
+Note that substitution is made \fIafter\fR pattern matching (\fB\-\-regexp\fR)
+and formatting the filename (\fB\-\-filename\-format\fR).
 .IP "\fB\-F, \-\-filename\-format\fR=\fIformatstring\fR" 4
 .IX Item "-F, --filename-format=formatstring"
 Use the specified \fIformatstring\fR to format the output filenames.
@@ -329,17 +332,22 @@ Download fmt18 (mp4) format of the video.
 .IX Item "cclive -F %t.%s URL"
 Use video titles in filenames. cclive uses \*(L"%i_%h.%s\*(R" by default.
 For the supported specifiers, refer to the \f(CW\*(C`\-\-filename\-format\*(C'\fR description.
-.ie n .IP "cclive \-F ""%t.%s"" \-r ""(\ew+)"" \s-1URL\s0" 4
-.el .IP "cclive \-F ``%t.%s'' \-r ``(\ew+)'' \s-1URL\s0" 4
-.IX Item "cclive -F %t.%s -r (w+) URL"
+.ie n .IP "cclive \-F ""%t.%s"" \-r ""/(\ew+)/"" \s-1URL\s0" 4
+.el .IP "cclive \-F ``%t.%s'' \-r ``/(\ew+)/'' \s-1URL\s0" 4
+.IX Item "cclive -F %t.%s -r /(w+)/ URL"
 Match a string of \*(L"word\*(R" character from the video title and use it in the
 filename replacing the \*(L"%t\*(R" specifier. cclive replaces the \*(L"%s\*(R" specifier
 with appropriate file suffix string (e.g. \*(L"flv\*(R").
-.ie n .IP "cclive \-F ""%t.%s"" \-gr ""(\ew|\es)"" \s-1URL\s0" 4
-.el .IP "cclive \-F ``%t.%s'' \-gr ``(\ew|\es)'' \s-1URL\s0" 4
-.IX Item "cclive -F %t.%s -gr (w|s) URL"
+.ie n .IP "cclive \-F ""%t.%s"" \-r ""/(\ew|\es)/g"" \s-1URL\s0" 4
+.el .IP "cclive \-F ``%t.%s'' \-r ``/(\ew|\es)/g'' \s-1URL\s0" 4
+.IX Item "cclive -F %t.%s -r /(w|s)/g URL"
 Match all \*(L"word\*(R" and \*(L"whitespace\*(R" characters, and use them in the filename
-replacing the \*(L"%t\*(R". Note the use of \*(L"\-g\*(R" (or \f(CW\*(C`\-\-find\-all\*(C'\fR) option.
+replacing the \*(L"%t\*(R". Note the use of \*(L"/g\*(R" (global, find all).
+.ie n .IP "cclive \-S ""s/old/new/gi"" \s-1URL\s0" 4
+.el .IP "cclive \-S ``s/old/new/gi'' \s-1URL\s0" 4
+.IX Item "cclive -S s/old/new/gi URL"
+Replace all occurences of \*(L"old\*(R" with \*(L"new\*(R" in the output filename.
+Note the use of \*(L"g\*(R" (global, find all) and \*(L"i\*(R" (case-insensitive).
 .ie n .IP "cclive \-\-exec=""mplayer \-really\-quiet %i;"" \-e \s-1URL\s0" 4
 .el .IP "cclive \-\-exec=``mplayer \-really\-quiet \f(CW%i\fR;'' \-e \s-1URL\s0" 4
 .IX Item "cclive --exec=mplayer -really-quiet %i; -e URL"
@@ -533,7 +541,7 @@ If you are missing the unicode characters when using \f(CW\*(C`\-\-regexp\*(C'\f
 For example:
 .PP
 .Vb 1
-\&  % cclive \-F "%t.%s" \-gr "(\ew|\es|\epL") URL
+\&  % cclive \-F "%t.%s" \-r "/(\ew|\es|\epL)/g" URL
 .Ve
 .PP
 \&\*(L"In \s-1UTF\-8\s0 mode, characters with values greater than 128 never match \ed,

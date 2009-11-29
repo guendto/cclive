@@ -116,12 +116,8 @@ option "number-videos"
     optional
 option "regexp"
     r "Regular expression to cleanup video title"
-    string typestr="<expr>"
+    string typestr="<regexp>"
     optional
-option "find-all"
-    g "Match all occurences, like Perl's /g option"
-    optional
-    dependon="regexp"
 option "substitute"
     S "Substitute matched occurences in filename, like Perl's s/old/new/(g)"
     string typestr="<regexp>"

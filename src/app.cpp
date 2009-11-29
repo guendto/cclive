@@ -241,6 +241,15 @@ App::run() {
 
         return;
     }
+ 
+    if (opts.regexp_given) {
+        std::string empty;
+        if (!Util::perlMatch(opts.regexp_arg, empty)) {
+            throw RuntimeException(CCLIVE_OPTARG,
+                "--regexp: expected perl-like\n"
+                "error: /pattern/(gi) regular expression");
+        }
+    }
 
     if (opts.substitute_given) {
         std::string empty; // Validate regexp only (empty string).

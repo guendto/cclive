@@ -334,7 +334,7 @@ QuviVideo::customOutputFilenameFormatter(
 
     // Apply --regexp.
     if (opts.regexp_given)
-        applyTitleRegexp(_title);
+        Util::perlMatch(opts.regexp_arg, _title);
 
     // Remove leading and trailing whitespace.
     pcrecpp::RE("^[\\s]+", pcrecpp::UTF8())
@@ -352,31 +352,6 @@ QuviVideo::customOutputFilenameFormatter(
         Util::perlSubstitute(opts.substitute_arg, fmt);
 
     b << fmt;
-}
-
-void
-QuviVideo::applyTitleRegexp(std::string& src) {
-
-    const Options opts =
-        optsmgr.getOptions();
-
-    if (opts.find_all_given) {
-        pcrecpp::StringPiece sp(src);
-        pcrecpp::RE re(opts.regexp_arg, pcrecpp::UTF8());
-
-        src.clear();
-
-        std::string s;
-        while (re.FindAndConsume(&sp, &s))
-            src += s;
-    }
-    else {
-        std::string tmp = src;
-        src.clear();
-
-        pcrecpp::RE(opts.regexp_arg, pcrecpp::UTF8())
-            .PartialMatch(tmp, &src);
-    }
 }
 
 const double&

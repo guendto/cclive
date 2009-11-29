@@ -64,7 +64,6 @@ public:
     const double&      getInitial()     const;
 public:
     void               formatOutputFilename();
-    void               applyTitleRegexp(std::string& src);
     void               customOutputFilenameFormatter(
                            std::stringstream& b);
     void               updateInitial();
