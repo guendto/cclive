@@ -191,6 +191,8 @@ handle_url(const std::string& url) {
             if (optsmgr.getOptions().exec_run_given) 
                 execmgr.append(props);
         }
+        catch (const FileOpenException& x)
+            { logmgr.cerr(x, false); }
         catch (const NothingToDoException& x) 
             { logmgr.cerr(x, false); }
     }

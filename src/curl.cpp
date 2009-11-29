@@ -25,6 +25,7 @@
 #include <string>
 #include <cstdlib>
 #include <cstring>
+#include <cerrno>
 #include <curl/curl.h>
 
 #ifdef HAVE_UNISTD_H
@@ -101,22 +102,14 @@ CurlMgr::init() {
 }
 
 struct write_s {
-    write_s()
-        : filename(NULL), initial(0), file(NULL) { }
-    char *filename;
-    double initial;
     FILE *file;
 };
 
 static size_t
 callback_writefile(void *data, size_t size, size_t nmemb, void *p) {
     write_s *w = reinterpret_cast<write_s*>(p);
-    if (NULL != w && !w->file && NULL != w->filename) {
-        const char *mode = w->initial > 0 ? "ab" : "wb";
-        w->file = fopen(w->filename, mode);
-        if (!w->file)
-            return -1;
-    }
+    assert(w);
+    assert(w->file);
     return fwrite(data, size, nmemb, w->file);
 }
 
@@ -175,8 +168,22 @@ CurlMgr::fetchToFile(QuviVideo& props) {
     write_s write;
     memset(&write, 0, sizeof(write));
 
-    write.initial  = initial;
-    write.filename = const_cast<char*>(props.getFilename().c_str());
+    const char *mode = initial > 0 ? "ab" : "wb";
+    const char *fname = props.getFilename().c_str();
+
+    write.file = fopen(fname, mode);
+
+    if (!write.file) {
+        std::stringstream b;
+        b << fname << ": ";
+#ifdef HAVE_STRERROR
+        b << strerror(errno);
+#else
+        perror("fopen");
+        b << "unable to open file for write";
+#endif
+        throw FileOpenException(b.str());
+    }
 
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &write);
 

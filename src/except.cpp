@@ -128,4 +128,9 @@ NothingToDoException::NothingToDoException()
 {
 }
 
+FileOpenException::FileOpenException(const std::string& err)
+    : RuntimeException(CCLIVE_SYSTEM, err)
+{
+}
+
 

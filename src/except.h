@@ -51,6 +51,11 @@ public:
     NothingToDoException();
 };
 
+class FileOpenException : public RuntimeException {
+public:
+    FileOpenException(const std::string&);
+};
+
 class QuviException : public RuntimeException {
 public:
     QuviException(const std::string&);
