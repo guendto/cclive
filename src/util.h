@@ -47,6 +47,7 @@ public:
     static const std::string& toUnicode(std::string& src,
                                     const std::string& from);
     static const std::string& fromHtmlEntities(std::string& src);
+    static const bool perlSubstitute(const std::string& re, std::string& src);
 };
 
 #endif

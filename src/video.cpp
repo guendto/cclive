@@ -238,6 +238,9 @@ VideoProperties::customOutputFilenameFormatter(
     Util::subStrReplace(fmt, "%h", host);
     Util::subStrReplace(fmt, "%s", suffix);
 
+    if (opts.substitute_given)
+        Util::perlSubstitute(opts.substitute_arg, fmt);
+
     b << fmt;
 }
 

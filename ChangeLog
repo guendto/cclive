@@ -2,6 +2,7 @@ Version 0.5.6
 
  User-visible changes:
   * Add --background, --logfile, --logfile-interval
+  * Add --substitute (closes issue #17)
   * Tweak static error strings (e.g. "system call failed" -> "system")
   * Croak if file open fails prior to video download (related to issue #17)
   * Sort --hosts output alphabetically (Thanks to Bram Neijt for the patch)

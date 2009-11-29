@@ -243,6 +243,15 @@ App::run() {
         return;
     }
 
+    if (opts.substitute_given) {
+        std::string empty; // Validate regexp only (empty string).
+        if (!Util::perlSubstitute(opts.substitute_arg, empty)) {
+            throw RuntimeException(CCLIVE_OPTARG,
+                "--substitute: expected perl-like\n"
+                "error: s/old/new/(gi) substitution");
+        }
+    }
+
     execmgr.verifyExecArgument();
 
 #if !defined(HAVE_FORK) || !defined(HAVE_WORKING_FORK)

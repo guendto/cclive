@@ -1,6 +1,17 @@
 cclive News
 -----------
 
+0.5.6
+-------------
+
+Added --substitute which mimics Perl's s/old/new/(gi) substitution.
+It can be used to replace substrings in output filenames.
+
+Example:
+  % cclive -S s/old/new/i
+  % cclive -S s/[/:-]/_/g
+
+
 0.5.2
 -------------
 

@@ -175,6 +175,13 @@ patterns, etc. See also L</EXAMPLES>.
 Use repeated matching to find all occurences, like Perl's /g option.
 See also L</EXAMPLES>.
 
+=item B<-S, --substitute>=I<regexp>
+
+Mimics Perl's s/old/new/(gi) substitution. This option can be used
+to replace occurences in output filenames. Supports /g (global,
+find all occurences) and /i (case-insensitive). 
+See also L</EXAMPLES>.
+
 =item B<-F, --filename-format>=I<formatstring>
 
 Use the specified I<formatstring> to format the output filenames.
@@ -278,6 +285,11 @@ with appropriate file suffix string (e.g. "flv").
 
 Match all "word" and "whitespace" characters, and use them in the filename
 replacing the "%t". Note the use of "-g" (or C<--find-all>) option.
+
+=item cclive -S s/old/new/gi URL
+
+Replace all occurences of "old" with "new" in the output filename.
+Note the use of "g" (global, find all) and "i" (case-insensitive).
 
 =item cclive --exec="mplayer -really-quiet %i;" -e URL
 
