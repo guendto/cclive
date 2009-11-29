@@ -36,6 +36,11 @@ private:
     std::string error;
 };
 
+class FileOpenException : public RuntimeException {
+public:
+    FileOpenException(const std::string&);
+};
+
 #endif
 
 

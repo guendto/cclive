@@ -213,8 +213,11 @@ handleURL(const std::string& url) {
         VideoProperties props =
             handler->getVideoProperties();
 
-        try   { processVideo(props); }
-        catch (const NothingTodo& x) { logmgr.cerr(x, false); }
+        try { processVideo(props); }
+        catch (const FileOpenException& x)
+            { logmgr.cerr(x, false); }
+        catch (const NothingTodo& x)
+            { logmgr.cerr(x, false); }
 
         if (optsmgr.getOptions().exec_run_given) 
             execmgr.append(props);

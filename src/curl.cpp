@@ -341,7 +341,7 @@ CurlMgr::fetchToFile(VideoProperties& props) {
         perror("fopen");
         b << "unable to open file for write";
 #endif
-        throw RuntimeException(CCLIVE_SYSTEM, b.str());
+        throw FileOpenException(b.str());
     }
 
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &write);

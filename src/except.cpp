@@ -81,4 +81,9 @@ RuntimeException::getReturnCode() const {
     return rc;
 }
 
+FileOpenException::FileOpenException(const std::string& err)
+    : RuntimeException(CCLIVE_SYSTEM, err)
+{
+}
+
 
