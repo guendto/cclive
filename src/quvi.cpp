@@ -348,6 +348,9 @@ QuviVideo::customOutputFilenameFormatter(
     Util::subStrReplace(fmt, "%h", hostId);
     Util::subStrReplace(fmt, "%s", suffix);
 
+    if (opts.substitute_given)
+        Util::perlSubstitute(opts.substitute_arg, fmt);
+
     b << fmt;
 }
 

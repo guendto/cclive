@@ -122,6 +122,10 @@ option "find-all"
     g "Match all occurences, like Perl's /g option"
     optional
     dependon="regexp"
+option "substitute"
+    S "Substitute matched occurences in filename, like Perl's s/old/new/(g)"
+    string typestr="<regexp>"
+    optional
 option "filename-format"
     F "Output filename format"
     string typestr="<formatstring>"

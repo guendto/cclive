@@ -2,5 +2,4 @@ repo: git://repo.or.cz/cclive.git
 web : http://repo.or.cz/w/cclive.git
 
 * port --regexp, --find-all changes from master
-* port --substitute from master
 * go over error handling (return codes, string formatting etc.)

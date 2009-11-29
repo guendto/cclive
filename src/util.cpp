@@ -173,4 +173,29 @@ Util::fromHtmlEntities(std::string& src) {
     return src;
 }
 
+const bool
+Util::perlSubstitute(const std::string& re, std::string& src) {
+    std::string pat, sub, flags;
+    if (pcrecpp::RE("^s\\/(.*)\\/(.*)\\/(.*)$", pcrecpp::UTF8())
+        .PartialMatch(re, &pat, &sub, &flags))
+    {
+        if (src.empty()) // test "re" only.
+            return true;
+
+        pcrecpp::RE_Options opts;
+
+        opts.set_caseless(strstr(flags.c_str(), "i") != 0);
+        opts.set_utf8(true);
+
+        pcrecpp::RE subs(pat, opts);
+
+        (strstr(flags.c_str(), "g"))
+            ? subs.GlobalReplace(sub, &src)
+            : subs.Replace(sub, &src);
+
+        return true;
+    }
+    return false;
+}
+
 

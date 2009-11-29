@@ -63,6 +63,7 @@ const char *gengetopt_args_info_help[] = {
   "  -N, --number-videos           Prepend a numeric prefix to output filenames",
   "  -r, --regexp=<expr>           Regular expression to cleanup video title",
   "  -g, --find-all                Match all occurences, like Perl's /g option",
+  "  -S, --substitute=<regexp>     Substitute matched occurences in filename, like \n                                  Perl's s/old/new/(g)",
   "  -F, --filename-format=<formatstring>\n                                Output filename format  (default=`%h_%i.%s')",
   "\nSubsequent:",
   "      --exec=<expr[;|+]>        Command to invoke when transfer finishes",
@@ -151,6 +152,7 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->number_videos_given = 0 ;
   args_info->regexp_given = 0 ;
   args_info->find_all_given = 0 ;
+  args_info->substitute_given = 0 ;
   args_info->filename_format_given = 0 ;
   args_info->exec_given = 0 ;
   args_info->exec_run_given = 0 ;
@@ -188,6 +190,8 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->format_map_orig = NULL;
   args_info->regexp_arg = NULL;
   args_info->regexp_orig = NULL;
+  args_info->substitute_arg = NULL;
+  args_info->substitute_orig = NULL;
   args_info->filename_format_arg = gengetopt_strdup ("%h_%i.%s");
   args_info->filename_format_orig = NULL;
   args_info->exec_arg = NULL;
@@ -230,12 +234,13 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->number_videos_help = gengetopt_args_info_help[28] ;
   args_info->regexp_help = gengetopt_args_info_help[29] ;
   args_info->find_all_help = gengetopt_args_info_help[30] ;
-  args_info->filename_format_help = gengetopt_args_info_help[31] ;
-  args_info->exec_help = gengetopt_args_info_help[33] ;
-  args_info->exec_run_help = gengetopt_args_info_help[34] ;
-  args_info->stream_exec_help = gengetopt_args_info_help[36] ;
-  args_info->stream_pass_help = gengetopt_args_info_help[37] ;
-  args_info->stream_help = gengetopt_args_info_help[38] ;
+  args_info->substitute_help = gengetopt_args_info_help[31] ;
+  args_info->filename_format_help = gengetopt_args_info_help[32] ;
+  args_info->exec_help = gengetopt_args_info_help[34] ;
+  args_info->exec_run_help = gengetopt_args_info_help[35] ;
+  args_info->stream_exec_help = gengetopt_args_info_help[37] ;
+  args_info->stream_pass_help = gengetopt_args_info_help[38] ;
+  args_info->stream_help = gengetopt_args_info_help[39] ;
   
 }
 
@@ -339,6 +344,8 @@ cmdline_parser_release (struct gengetopt_args_info *args_info)
   free_string_field (&(args_info->format_map_orig));
   free_string_field (&(args_info->regexp_arg));
   free_string_field (&(args_info->regexp_orig));
+  free_string_field (&(args_info->substitute_arg));
+  free_string_field (&(args_info->substitute_orig));
   free_string_field (&(args_info->filename_format_arg));
   free_string_field (&(args_info->filename_format_orig));
   free_string_field (&(args_info->exec_arg));
@@ -476,6 +483,8 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "regexp", args_info->regexp_orig, 0);
   if (args_info->find_all_given)
     write_into_file(outfile, "find-all", 0, 0 );
+  if (args_info->substitute_given)
+    write_into_file(outfile, "substitute", args_info->substitute_orig, 0);
   if (args_info->filename_format_given)
     write_into_file(outfile, "filename-format", args_info->filename_format_orig, 0);
   if (args_info->exec_given)
@@ -828,6 +837,7 @@ cmdline_parser_internal (
         { "number-videos",	0, NULL, 'N' },
         { "regexp",	1, NULL, 'r' },
         { "find-all",	0, NULL, 'g' },
+        { "substitute",	1, NULL, 'S' },
         { "filename-format",	1, NULL, 'F' },
         { "exec",	1, NULL, 0 },
         { "exec-run",	0, NULL, 'e' },
@@ -837,7 +847,7 @@ cmdline_parser_internal (
         { 0,  0, 0, 0 }
       };
 
-      c = getopt_long (argc, argv, "hvbqo:i:t:O:cWnl:f:M:Nr:gF:es", long_options, &option_index);
+      c = getopt_long (argc, argv, "hvbqo:i:t:O:cWnl:f:M:Nr:gS:F:es", long_options, &option_index);
 
       if (c == -1) break;	/* Exit from `while (1)' loop.  */
 
@@ -1036,6 +1046,18 @@ cmdline_parser_internal (
               &(local_args_info.find_all_given), optarg, 0, 0, ARG_NO,
               check_ambiguity, override, 0, 0,
               "find-all", 'g',
+              additional_error))
+            goto failure;
+        
+          break;
+        case 'S':	/* Substitute matched occurences in filename, like Perl's s/old/new/(g).  */
+        
+        
+          if (update_arg( (void *)&(args_info->substitute_arg), 
+               &(args_info->substitute_orig), &(args_info->substitute_given),
+              &(local_args_info.substitute_given), optarg, 0, 0, ARG_STRING,
+              check_ambiguity, override, 0, 0,
+              "substitute", 'S',
               additional_error))
             goto failure;
         

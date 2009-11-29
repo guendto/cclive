@@ -35,6 +35,7 @@ public:
                                         const std::string& delims);
     static std::string parseFormatMap(const std::string& host);
     static const std::string& fromHtmlEntities(std::string& src);
+    static const bool perlSubstitute(const std::string& re, std::string& src);
 };
 
 #endif

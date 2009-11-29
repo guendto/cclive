@@ -94,6 +94,9 @@ struct gengetopt_args_info
   char * regexp_orig;	/**< @brief Regular expression to cleanup video title original value given at command line.  */
   const char *regexp_help; /**< @brief Regular expression to cleanup video title help description.  */
   const char *find_all_help; /**< @brief Match all occurences, like Perl's /g option help description.  */
+  char * substitute_arg;	/**< @brief Substitute matched occurences in filename, like Perl's s/old/new/(g).  */
+  char * substitute_orig;	/**< @brief Substitute matched occurences in filename, like Perl's s/old/new/(g) original value given at command line.  */
+  const char *substitute_help; /**< @brief Substitute matched occurences in filename, like Perl's s/old/new/(g) help description.  */
   char * filename_format_arg;	/**< @brief Output filename format (default='%h_%i.%s').  */
   char * filename_format_orig;	/**< @brief Output filename format original value given at command line.  */
   const char *filename_format_help; /**< @brief Output filename format help description.  */
@@ -136,6 +139,7 @@ struct gengetopt_args_info
   unsigned int number_videos_given ;	/**< @brief Whether number-videos was given.  */
   unsigned int regexp_given ;	/**< @brief Whether regexp was given.  */
   unsigned int find_all_given ;	/**< @brief Whether find-all was given.  */
+  unsigned int substitute_given ;	/**< @brief Whether substitute was given.  */
   unsigned int filename_format_given ;	/**< @brief Whether filename-format was given.  */
   unsigned int exec_given ;	/**< @brief Whether exec was given.  */
   unsigned int exec_run_given ;	/**< @brief Whether exec-run was given.  */
