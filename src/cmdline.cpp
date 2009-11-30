@@ -61,8 +61,8 @@ const char *gengetopt_args_info_help[] = {
   "  -M, --format-map=<mapstring>  Specify format for multiple hosts in a string",
   "\nFilename formatting:",
   "  -N, --number-videos           Prepend a numeric prefix to output filenames",
-  "  -r, --regexp=<regexp>         Regular expression to cleanup video title",
-  "  -S, --substitute=<regexp>     Substitute matched occurences in filename, like \n                                  Perl's s/old/new/(g)",
+  "  -r, --regexp=<regexp>         Regular expression to cleanup video title, \n                                  mimics Perl's /what/(gi)",
+  "  -S, --substitute=<regexp>     Replace matched occurences in filename, mimics \n                                  Perl's s/old/new/(gi)",
   "  -F, --filename-format=<formatstring>\n                                Output filename format  (default=`%h_%i.%s')",
   "\nSubsequent:",
   "      --exec=<expr[;|+]>        Command to invoke when transfer finishes",
@@ -1015,7 +1015,7 @@ cmdline_parser_internal (
             goto failure;
         
           break;
-        case 'r':	/* Regular expression to cleanup video title.  */
+        case 'r':	/* Regular expression to cleanup video title, mimics Perl's /what/(gi).  */
         
         
           if (update_arg( (void *)&(args_info->regexp_arg), 
@@ -1027,7 +1027,7 @@ cmdline_parser_internal (
             goto failure;
         
           break;
-        case 'S':	/* Substitute matched occurences in filename, like Perl's s/old/new/(g).  */
+        case 'S':	/* Replace matched occurences in filename, mimics Perl's s/old/new/(gi).  */
         
         
           if (update_arg( (void *)&(args_info->substitute_arg), 
