@@ -20,6 +20,11 @@ Note that this breaks the backward compatibility.
   * --regexp now expects /pattern/(gi)
   * --find-all is no longer supported (use /g instead)
 
+Added --background which is similar to what clive (2.1.x) once had.
+The progress indication while in the background is very simplistic.
+Note that --logfile and --logfile-interval options were also added
+to support --background.
+
 
 0.5.2
 -------------
