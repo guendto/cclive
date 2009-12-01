@@ -72,7 +72,7 @@ RetryMgr::handle(const QuviException& x) {
 
     int maxRetry = opts.retry_arg;
 
-    if (retryUntilRetrievedFlag)
+    if (retryUntilRetrievedFlag && x.getCurlCode() != CURLE_RANGE_ERROR)
         maxRetry = 0; // Override --retry limit for file downloads
 
     if (++retries <= opts.retry_arg || maxRetry == 0) {
