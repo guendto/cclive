@@ -20,6 +20,8 @@
 #ifndef curl_h
 #define curl_h
 
+#include <curl/curl.h>
+
 #include "singleton.h"
 
 class CurlMgr : public Singleton<CurlMgr> {
@@ -41,10 +43,13 @@ private:
 public:
     class FetchException : public RuntimeException {
     public:
-        FetchException(const std::string&, const long& httpcode);
+        FetchException(const std::string&,
+            const long& httpcode, const CURLcode& curlcode);
         const long& getHTTPCode() const;
+        const CURLcode& getCurlCode() const;
     protected:
         long httpcode;
+        CURLcode curlcode;
     };
 };
 

@@ -27,7 +27,6 @@
 #include <cstring>
 #include <cerrno>
 #include <vector>
-#include <curl/curl.h>
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
@@ -192,7 +191,7 @@ CurlMgr::fetchToMem(std::string url, const std::string &what) {
     }
 
     if (!errmsg.empty())
-        throw FetchException(errmsg, httpcode);
+        throw FetchException(errmsg, httpcode, rc);
 
     return content;
 }
@@ -255,7 +254,7 @@ CurlMgr::queryFileLength(VideoProperties& props) {
         _FREE(mem.p);
 
     if (!errmsg.empty())
-        throw FetchException(errmsg, httpcode);
+        throw FetchException(errmsg, httpcode, rc);
 
     props.formatOutputFilename();
 }
@@ -388,7 +387,7 @@ CurlMgr::fetchToFile(VideoProperties& props) {
         errmsg = formatError(rc);
 
     if (!errmsg.empty())
-        throw FetchException(errmsg, httpcode);
+        throw FetchException(errmsg, httpcode, rc);
 
     pb.finish();
     logmgr.cout() << std::endl;
@@ -416,14 +415,22 @@ CurlMgr::escape(std::string& url) const {
 
 CurlMgr::FetchException::FetchException(
     const std::string& error,
-    const long& httpcode)
-    : RuntimeException(CCLIVE_FETCH, error), httpcode(httpcode)
+    const long& httpcode,
+    const CURLcode& rc)
+    : RuntimeException(CCLIVE_FETCH, error),
+      httpcode(httpcode),
+      curlcode(rc)
 {
 }
 
 const long&
 CurlMgr::FetchException::getHTTPCode() const {
     return httpcode;
+}
+
+const CURLcode&
+CurlMgr::FetchException::getCurlCode() const {
+    return curlcode;
 }
 
 

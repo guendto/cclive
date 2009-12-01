@@ -57,8 +57,6 @@
 #include <sys/ioctl.h>
 #endif
 
-#include <curl/curl.h>
-
 #include "hosthandler.h"
 #include "hostfactory.h"
 #include "macros.h"
