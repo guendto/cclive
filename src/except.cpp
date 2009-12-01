@@ -52,7 +52,7 @@ RuntimeException::what() const {
         "curl_easy_init returned null",
         "file already fully retrieved; nothing to do",
         "system",
-        "no support",
+        "", // rely on libquvi returned string instead
         "network",
         "fetch",
         "parse",
