@@ -6,12 +6,14 @@ Version 0.5.6
   * Tweak static error strings (e.g. "system call failed" -> "system")
   * Croak if file open fails prior to video download (related to issue #17)
   * Sort --hosts output alphabetically (Thanks to Bram Neijt for the patch)
-  * Add support for predefined (5) (X)HTML numeric character refs
-  * Change --regexp to expect Perl-like regex (see NEWS and manual for details)
-  * Remove --find-all (use /g with --regexp instead)
-  * Fix (random) sevenload http/401 errors (closes issue #14)
-    # Caused by HTML/XML predefined entities in video links
-  * Fix CURLE_RANGE_ERROR handling for file transfer retries
+  * Decode properly predefined (X)HTML numeric character references
+  * Changes to --regexp
+    # Support Perl-like regexps (see NEWS file, updated manual for more)
+    # Add support for Perl-like /i
+    # Remove --find-all (use /g with --regexp instead)
+  * Fix random sevenload http/401 errors (closes issue #14)
+    # Caused by use of predefined HTML entities in video links
+  * Fix CURLE_RANGE_ERROR handling for file transfers
     # Caused infinite loop of "Requested range was not delivered by the server"
     # Stop after --retry specified limit has been reached
 
