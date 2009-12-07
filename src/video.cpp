@@ -25,6 +25,7 @@
 #include <iomanip>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 #include "except.h"
 #include "util.h"
@@ -238,8 +239,26 @@ VideoProperties::customOutputFilenameFormatter(
     Util::subStrReplace(fmt, "%h", host);
     Util::subStrReplace(fmt, "%s", suffix);
 
-    if (opts.substitute_given)
-        Util::perlSubstitute(opts.substitute_arg, fmt);
+    if (opts.substitute_given) {
+
+        std::istringstream iss(opts.substitute_arg);
+
+        typedef std::vector<std::string> sv;
+        sv regexps;
+
+        std::copy(
+            std::istream_iterator<std::string >(iss),
+            std::istream_iterator<std::string >(),
+            std::back_inserter<sv >(regexps)
+        );
+
+        for (sv::const_iterator iter = regexps.begin();
+            iter != regexps.end();
+            ++iter)
+        {
+            Util::perlSubstitute(*iter, fmt);
+        }
+    }
 
     b << fmt;
 }

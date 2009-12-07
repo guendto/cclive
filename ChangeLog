@@ -1,3 +1,10 @@
+
+Version 0.5.7
+
+ User-visible changes:
+  * --substitute: support multiple regexps (see NEWS) (re-closes issue #17)
+
+
 Version 0.5.6
 (December 2, 2009)
 
