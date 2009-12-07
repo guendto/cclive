@@ -71,8 +71,10 @@ HostHandler::parsePage(const std::string& url) {
     // Convert predefined HTML character entities.
     Util::fromHtmlEntities(title);
 
+    const Options opts = optsmgr.getOptions();
+
     // Apply regexp.
-    if (optsmgr.getOptions().regexp_given)
+    if (opts.regexp_given)
         Util::perlMatch(optsmgr.getOptions().regexp_arg, title);
 
     // Remove leading and trailing whitespace.
