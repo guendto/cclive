@@ -4,7 +4,8 @@ cclive News
 0.5.7
 -------------
 
--S, --substitute now supports use of multiple regular expressions.
+Multiple regular expressions can now be supplied for --substitute.
+
 For example:
   % cclive -S "s/old/new/i s/[/:-]/_/g" URL
 

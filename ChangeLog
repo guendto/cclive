@@ -2,7 +2,9 @@
 Version 0.5.7
 
  User-visible changes:
-  * --substitute: support multiple regexps (see NEWS) (re-closes issue #17)
+  * --substitute: support multiple regexps (re-closes issue #17)
+    # Read manual page for updated details
+    # See also NEWS file
 
 
 Version 0.5.6
