@@ -173,16 +173,13 @@ output filenames. Supports (and mimics) Perl's /g (global, find all) and /i
 
 Mimics Perl's s/old/new/(gi) substitution. This option can be used to
 replace occurences in output filenames. Supports /g (global, find all
-occurences) and /i (case-insensitive).
-
-Use of multiple regular expressions is also supported. You can separate
-each with with a whitespace. The number of regular expressions is
-currently unlimited.
-
-See also L</EXAMPLES>.
+occurences) and /i (case-insensitive). To use multiple regexps, separate
+each with whitespace.
 
 Note that substitution is made I<after> pattern matching (B<--regexp>)
 and formatting the filename (B<--filename-format>).
+
+See also L</EXAMPLES>.
 
 =item B<-F, --filename-format>=I<formatstring>
 
