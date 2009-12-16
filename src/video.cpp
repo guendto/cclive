@@ -231,11 +231,13 @@ VideoProperties::customOutputFilenameFormatter(
     const Options opts  = optsmgr.getOptions();
     std::string fmt     = opts.filename_format_arg;
 
+#ifdef _1_
     std::string _id = this->id;
     Util::subStrReplace(_id, "-", "_");
+#endif
 
-    Util::subStrReplace(fmt, "%t", title.empty() ? _id : title);
-    Util::subStrReplace(fmt, "%i", _id);
+    Util::subStrReplace(fmt, "%t", title.empty() ? id : title);
+    Util::subStrReplace(fmt, "%i", id);
     Util::subStrReplace(fmt, "%h", host);
     Util::subStrReplace(fmt, "%s", suffix);
 

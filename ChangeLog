@@ -2,6 +2,7 @@
 Version 0.5.7
 
  User-visible changes:
+  * Do not replace dashes with underscores in IDs
   * --substitute: support multiple regexps (re-closes issue #17)
     # Read manual page for updated details
     # See also NEWS file
