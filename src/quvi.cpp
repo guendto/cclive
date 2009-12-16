@@ -321,10 +321,6 @@ QuviVideo::customOutputFilenameFormatter(
 {
     const Options opts  = optsmgr.getOptions();
     std::string fmt     = opts.filename_format_arg;
-
-    std::string _id = this->id;
-    Util::subStrReplace(_id, "-", "_");
-
     std::string _title = title;
  
 #ifdef _1_
@@ -343,8 +339,8 @@ QuviVideo::customOutputFilenameFormatter(
         .Replace("", &_title);
 
     // Replace format specifiers.
-    Util::subStrReplace(fmt, "%t", _title.empty() ? _id : _title);
-    Util::subStrReplace(fmt, "%i", _id);
+    Util::subStrReplace(fmt, "%t", _title.empty() ? id : _title);
+    Util::subStrReplace(fmt, "%i", id);
     Util::subStrReplace(fmt, "%h", hostId);
     Util::subStrReplace(fmt, "%s", suffix);
 
