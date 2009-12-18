@@ -22,7 +22,6 @@ youjizz\
 xvideos\
 tube8\
 multi
-#redtube
 
 TESTS=		$(check_PROGRAMS)
 common=		test.cpp test.h
@@ -44,7 +43,6 @@ myubo_SOURCES=		myubo.cpp $(common)
 cctv_SOURCES=		cctv.cpp $(common)
 ehrensenf_SOURCES=	ehrensenf.cpp $(common)
 spiegel_SOURCES=	spiegel.cpp $(common)
-#redtube_SOURCES=	redtube.cpp $(common)
 youjizz_SOURCES=	youjizz.cpp $(common)
 xvideos_SOURCES=	xvideos.cpp $(common)
 tube8_SOURCES=	    tube8.cpp $(common)

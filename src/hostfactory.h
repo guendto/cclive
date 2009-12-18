@@ -32,7 +32,7 @@ protected:
         Youtube,    Google,    Break,       Evisor,
         Sevenload,  Liveleak,  Dailymotion, Vimeo,
         Golem,      Clipfish,  Funnyhub,    Myubo,
-        Cctv,       Ehrensenf, Spiegel,     Redtube,
+        Cctv,       Ehrensenf, Spiegel,
         Youjizz,    Xvideos,   Tube8,
 	_last_type };
 protected:

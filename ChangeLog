@@ -7,6 +7,9 @@ Version 0.5.7
     # Read manual page for updated details
     # See also NEWS file
 
+ Developer-visible changes:
+  * Remove redtube remains from the src tree
+
 
 Version 0.5.6
 (December 2, 2009)

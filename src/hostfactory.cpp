@@ -79,7 +79,6 @@ HostHandlerFactory::createHandler(const HandlerType& type) {
     case Cctv:       return SHP<CctvHandler>       (new CctvHandler);
     case Ehrensenf:  return SHP<EhrensenfHandler>  (new EhrensenfHandler);
     case Spiegel:    return SHP<SpiegelHandler>    (new SpiegelHandler);
-    case Redtube:    return SHP<RedtubeHandler>    (new RedtubeHandler);
     case Youjizz:    return SHP<YoujizzHandler>    (new YoujizzHandler);
     case Xvideos:    return SHP<XvideosHandler>    (new XvideosHandler);
     case Tube8:      return SHP<Tube8Handler>      (new Tube8Handler);
