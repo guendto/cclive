@@ -9,6 +9,7 @@ Version 0.5.7
   * Fix tube8 support
 
  Developer-visible changes:
+  * tests: support MULTI_TEST env.var. (see INSTALL)
   * Remove redtube remains from the src tree
 
 

@@ -24,7 +24,8 @@
 
     `make check' respects the following environment variables:
       - NO_INTERNET (skip internet based tests)
-      - ADULT_OK (run adult website tests)
+      - ADULT_OK (run adult website tests, skipped by default)
+      - MULTI_TEST (dl 2 ~1MB videos to /dev/null, skipped by default)
       - CCLIVE_TEST_OPTS (any extra cclive command line options to use)
 
     Example:
