@@ -6,6 +6,7 @@ Version 0.5.7
   * --substitute: support multiple regexps (re-closes issue #17)
     # Read manual page for updated details
     # See also NEWS file
+  * Fix tube8 support
 
  Developer-visible changes:
   * Remove redtube remains from the src tree
