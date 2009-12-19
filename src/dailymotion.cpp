@@ -84,6 +84,9 @@ DailymotionHandler::parseLink() {
 
         width[w] = v[0];
 
+        if (lnk.empty()) // Set as default link.
+            lnk = v[0];
+
         if (v[1] == format && format != "best") {
             lnk = v[0];
             break;

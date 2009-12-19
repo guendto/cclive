@@ -2,6 +2,8 @@
 Version 0.5.8
 
  User-visible changes:
+  * Fix "-f unavailable_format" for dailymotion
+    # Use first found link instead of croaking with an error
   * Fix "-f best" for dailymotion
     # Use proper sorting method
     # Thanks to Markus Doppelbauer for reporting the issue
