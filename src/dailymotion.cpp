@@ -67,7 +67,7 @@ DailymotionHandler::parseLink() {
         format = "spark";
 
     std::string lnk;
-    std::map<std::string, std::string> width;
+    std::map<int, std::string, std::greater<int> > width;
 
     for (STRV::const_iterator iter = tokens.begin();
         iter != tokens.end();
@@ -79,7 +79,9 @@ DailymotionHandler::parseLink() {
         if (v.size() == 0)
             continue;
 
-        std::string w = Util::subStr(v[0], "-", "x");
+        const int w =
+            atoi(Util::subStr(v[0], "-", "x").c_str());
+
         width[w] = v[0];
 
         if (v[1] == format && format != "best") {

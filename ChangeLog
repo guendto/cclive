@@ -1,4 +1,12 @@
 
+Version 0.5.8
+
+ User-visible changes:
+  * Fix "-f best" for dailymotion
+    # Use proper sorting method
+    # Thanks to Markus Doppelbauer for reporting the issue
+
+
 Version 0.5.7
 (December 18, 2009)
 
