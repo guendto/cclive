@@ -8,6 +8,9 @@ Version 0.5.8
     # Use proper sorting method
     # Thanks to Markus Doppelbauer for reporting the issue
 
+ Developer-visible changes:
+  * tests/sevenload.cpp: remove dead test link (closes issue #19)
+
 
 Version 0.5.7
 (December 18, 2009)
