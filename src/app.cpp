@@ -24,12 +24,9 @@
 #endif
 
 #include <iostream>
-#include <vector>
-#include <iterator>
 #include <sstream>
 #include <iomanip>
 #include <algorithm>
-#include <tr1/memory>
 #include <cstring>
 #include <cerrno>
 
@@ -96,33 +93,47 @@ App::main(const int& argc, char * const *argv) {
 }
 
 static void
-print_video(const QuviVideo& props) {
-    logmgr.cout()
-        << "file: "
-        << props.getFilename()
-        << "  "
-        << std::setprecision(1)
-        << _TOMB(props.getLength())
-        << "M  ["
-        << props.getContentType()
-        << "]"
-        << std::endl;
+print_video(QuviVideo& props) {
+    try {
+        while (1) {
+            logmgr.cout()
+                << "file: "
+                << props.getFileName()
+                << "  "
+                << std::setprecision(1)
+                << _TOMB(props.getFileLength())
+                << "M  ["
+                << props.getFileContentType()
+                << "]"
+                << std::endl;
+            props.nextVideoLink();
+        }
+    }
+    catch (const QuviNoVideoLinkException&) {
+    }
 }
 
 static void
-print_csv(const QuviVideo& props) {
+print_csv(QuviVideo& props) {
     std::cout.setf(std::ios::fixed);
     std::cout.unsetf(std::ios::showpoint);
-    std::cout
-        << "csv:\""
-        << props.getFilename()
-        << "\",\""
-        << std::setprecision(0)
-        << props.getLength()
-        << "\",\""
-        << props.getLink()
-        << "\""
-        << std::endl;
+    try {
+        while (1) {
+            std::cout
+                << "csv:\""
+                << props.getFileName()
+                << "\",\""
+                << std::setprecision(0)
+                << props.getFileLength()
+                << "\",\""
+                << props.getFileUrl()
+                << "\""
+                << std::endl;
+            props.nextVideoLink();
+        }
+    }
+    catch (const QuviNoVideoLinkException&) {
+    }
 }
 
 static void
@@ -143,22 +154,41 @@ static void
 fetch_file(QuviVideo& props, const bool& reset=false) {
     if (reset)
         retrymgr.reset();
+
     try   { curlmgr.fetchToFile(props); }
     catch (const QuviException& x) {
         retrymgr.setRetryUntilRetrievedFlag();
         retrymgr.handle(x);
         fetch_file(props);
     }
+    catch (const NothingToDoException& x) { }
+
     logmgr.resetReturnCode();
+
+    try {
+        props.nextVideoLink();
+        fetch_file(props, true);
+    }
+    catch (const QuviNoVideoLinkException&) { }
 }
 
 static void
 report_notice() {
     static const char report_notice[] =
-    ":: A bug? If you think so, and you can reproduce the above,\n"
-    ":: consider submitting it to the issue tracker:\n"
-    "::     <http://code.google.com/p/cclive/issues/>\n";
+    ":: Consider filing a bug report bug if you can reproduce the above\n"
+    ":: results with the steps to repeat it.\n"
+    "::   <http://code.google.com/p/cclive/issues/>\n";
     logmgr.cerr() << report_notice << std::endl;
+}
+
+static void
+handle_error(QuviVideo& props, const RuntimeException& x) {
+    logmgr.cerr(x, false);
+    try {
+        props.nextVideoLink();
+        fetch_file(props, true);
+    }
+    catch (const QuviNoVideoLinkException&) { }
 }
 
 static void
@@ -192,9 +222,9 @@ handle_url(const std::string& url) {
                 execmgr.append(props);
         }
         catch (const FileOpenException& x)
-            { logmgr.cerr(x, false); }
-        catch (const NothingToDoException& x) 
-            { logmgr.cerr(x, false); }
+            { handle_error(props, x); }
+        catch (const NothingToDoException& x)
+            { handle_error(props, x); }
     }
     catch (const NoSupportException& x)
         { logmgr.cerr(x, false); }

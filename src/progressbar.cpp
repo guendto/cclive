@@ -19,7 +19,6 @@
 
 #include "config.h"
 
-#include <tr1/memory>
 #include <iostream>
 #include <sstream>
 #include <iomanip>
@@ -27,7 +26,6 @@
 #include <cstring>
 #include <cerrno>
 #include <string>
-#include <vector>
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
@@ -54,8 +52,8 @@
 #include "except.h"
 #include "opts.h"
 #include "macros.h"
-#include "util.h"
 #include "quvi.h"
+#include "util.h"
 #include "exec.h"
 #include "log.h"
 #include "progressbar.h"
@@ -100,8 +98,8 @@ void
 ProgressBar::init(const QuviVideo& props) {
     this->props = props;
 
-    initial = props.getInitial(); // bytes dl previously
-    total   = props.getLength();  // expected bytes
+    initial = props.getInitialFileLength(); // bytes dl previously
+    total   = props.getFileLength();        // expected bytes
 
     if (initial > total)
         total = initial;
@@ -118,7 +116,7 @@ ProgressBar::init(const QuviVideo& props) {
     width = termWidth-1; // do not use the last column
     time(&started);
 }
-
+ 
 typedef unsigned int _uint;
 
 void
@@ -162,7 +160,7 @@ ProgressBar::update(double now) {
     register _uint l = 32;
     if (width > DEFAULT_TERM_WIDTH)
         l += width - DEFAULT_TERM_WIDTH;
-    b << props.getFilename().substr(0,l);
+    b << props.getFileName().substr(0,l);
 
     if (total > 0) {
         const double _size = !done ? size:now;

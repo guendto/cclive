@@ -70,6 +70,11 @@ private:
     long curlcode;
 };
 
+class QuviNoVideoLinkException : public RuntimeException {
+public:
+    QuviNoVideoLinkException();
+};
+
 #endif
 
 

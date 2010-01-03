@@ -17,13 +17,10 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <tr1/memory>
-#include <iterator>
 #include <cstdlib>
 #include <cstring>
 #include <sstream>
 #include <string>
-#include <vector>
 
 #include "except.h"
 #include "quvi.h"
@@ -109,7 +106,7 @@ ExecMgr::playPlus() {
         ++iter)
     {
         cmd += " \"";
-        cmd += (*iter).getFilename();
+        cmd += (*iter).getFileName();
         cmd += "\"";
     }
 
@@ -125,7 +122,7 @@ ExecMgr::playSemi() {
         ++iter)
     {
         std::stringstream fname;
-        fname << "\"" << (*iter).getFilename() << "\"";
+        fname << "\"" << (*iter).getFileName() << "\"";
 
         std::string cmd = opts.exec_arg;
         Util::subStrReplace(cmd, "%i", fname.str());
@@ -141,7 +138,7 @@ ExecMgr::passStream(const QuviVideo& props) {
         optsmgr.getOptions().stream_exec_arg;
 
     std::stringstream lnk;
-    lnk << "\"" << props.getLink() << "\"";
+    lnk << "\"" << props.getFileUrl() << "\"";
 
     Util::subStrReplace(cmd, "%i", lnk.str());
     invokeCommand(cmd, "--stream-exec");
@@ -152,7 +149,7 @@ ExecMgr::playStream(const QuviVideo& props) {
     std::string cmd = optsmgr.getOptions().stream_exec_arg;
 
     std::stringstream fname;
-    fname << "\"" << props.getFilename() << "\"";
+    fname << "\"" << props.getFileName() << "\"";
 
     Util::subStrReplace(cmd, "%i", fname.str());
     invokeCommand(cmd);

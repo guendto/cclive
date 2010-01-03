@@ -134,16 +134,16 @@ CurlMgr::fetchToFile(QuviVideo& props) {
         static_cast<bool>(opts.continue_given);
 
     if (retrymgr.getRetryUntilRetrievedFlag()) {
-        props.updateInitial();
+        props.updateInitialLength();
         continue_given = true;
     }
 
-    const double initial = props.getInitial();
+    const double initial = props.getInitialFileLength();
 
     if (continue_given && initial > 0) {
 
         const double remaining =
-            props.getLength() - initial;
+            props.getFileLength() - initial;
 
         logmgr.cout()
             << "from: "
@@ -162,14 +162,14 @@ CurlMgr::fetchToFile(QuviVideo& props) {
             << std::endl;
     }
 
-    curl_easy_setopt(curl, CURLOPT_URL, props.getLink().c_str());
+    curl_easy_setopt(curl, CURLOPT_URL, props.getFileUrl().c_str());
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, callback_writefile);
 
     write_s write;
     memset(&write, 0, sizeof(write));
 
     const char *mode = initial > 0 ? "ab" : "wb";
-    const char *fname = props.getFilename().c_str();
+    const char *fname = props.getFileName().c_str();
 
     write.file = fopen(fname, mode);
 

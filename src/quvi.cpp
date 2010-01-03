@@ -57,7 +57,7 @@ static void
 handle_error(QUVIcode rc) {
     std::stringstream s;
 
-    s << "quvi: "
+    s << "libquvi: "
       << quvi_strerror(quvimgr.handle(),rc);
 
     switch (rc) {
@@ -142,73 +142,24 @@ QuviMgr::curlHandle(CURL **curl) {
     quvi_getinfo(quvi, QUVII_CURL, curl);
 }
 
+static int video_num; // --number-videos index
+
 // QuviVideo
 
-QuviVideo::QuviVideo()
-    : length    (0),
-      pageLink  (""),
-      id        (""),
-      title     (""),
-      link      (""),
-      suffix    (""),
-      contentType(""),
-      hostId    (""),
-      initial   (0),
-      filename  ("")
-{
+QuviVideo::QuviVideo() {
+    video_num = 0;
 }
 
 QuviVideo::QuviVideo(const std::string& url)
-    : length    (0),
-      pageLink  (url),
-      id        (""),
-      title     (""),
-      link      (""),
-      suffix    (""),
-      contentType(""),
-      hostId    (""),
-      initial   (0),
-      filename  ("")
+    : pageUrl(url)
 {
-}
-
-QuviVideo::QuviVideo(const QuviVideo& o)
-    : length    (o.length),
-      pageLink  (o.pageLink),
-      id        (o.id),
-      title     (o.title),
-      link      (o.link),
-      suffix    (o.suffix),
-      contentType(o.contentType),
-      hostId    (o.hostId),
-      initial   (o.initial),
-      filename  (o.filename)
-{
-}
-
-QuviVideo&
-QuviVideo::operator=(const QuviVideo& o) {
-    length  = o.length;
-    pageLink= o.pageLink;
-    id      = o.id;
-    title   = o.title;
-    link    = o.link;
-    suffix  = o.suffix;
-    contentType = o.contentType;
-    hostId  = o.hostId;
-    initial = o.initial;
-    filename= o.filename;
-    return *this;
-}
-
-QuviVideo::~QuviVideo() {
 }
 
 void
 QuviVideo::parse(std::string url /*=""*/) {
 
     if (url.empty())
-        url = pageLink;
+        url = pageUrl;
 
     assert(!url.empty());
 
@@ -242,30 +193,107 @@ QuviVideo::parse(std::string url /*=""*/) {
     if (rc != QUVI_OK)
         handle_error(rc);
 
-    quvi_getprop(video, QUVIP_LENGTH, &length);
+#define wrap_getprop_s(id,dst) \
+    do { quvi_getprop(video, id, &tmp); dst = tmp; } while (0)
+    char *tmp; // wrap_getprop_s (above) uses this
 
-#define _getprop(id,dst) \
-    do { quvi_getprop(video, id, &s); dst = s; } while (0)
+    wrap_getprop_s(QUVIP_HOSTID, hostId);
+    wrap_getprop_s(QUVIP_PAGEURL, pageUrl);
+    wrap_getprop_s(QUVIP_PAGETITLE, pageTitle);
+    wrap_getprop_s(QUVIP_VIDEOID, videoId);
 
-    char *s; // _getprop uses this.
-    _getprop(QUVIP_PAGELINK, pageLink);
-    _getprop(QUVIP_ID, id);
-    _getprop(QUVIP_TITLE, title);
-    _getprop(QUVIP_LINK, link);
-    _getprop(QUVIP_SUFFIX, suffix);
-    _getprop(QUVIP_CONTENTTYPE, contentType);
-    _getprop(QUVIP_HOSTID, hostId);
+    std::string videoLink;
+    wrap_getprop_s(QUVIP_VIDEOURL, videoLink);
+
+    std::string videoLength;
+    wrap_getprop_s(QUVIP_VIDEOFILELENGTH, videoLength);
+
+    std::string videoSuffix;
+    wrap_getprop_s(QUVIP_VIDEOFILESUFFIX, videoSuffix);
+
+    std::string videoContentType;
+    wrap_getprop_s(QUVIP_VIDEOFILECONTENTTYPE, videoContentType);
 #undef _getstr
     quvi_parse_close(&video);
 
-    formatOutputFilename();
+    // Handle delimited strings.
+    quvi::StringVector vlink, vlength, vsuffix, vct;
+
+    QuviVideo::toVector(videoLink, vlink);
+    QuviVideo::toVector(videoLength, vlength);
+    QuviVideo::toVector(videoSuffix, vsuffix);
+    QuviVideo::toVector(videoContentType, vct);
+
+    const int size = vlink.size();
+
+    for (int i=0; i<size; ++i) {
+        quvi::SHPQuviVideoLink q(new QuviVideoLink);
+        videoLinks.push_back(q);
+
+        q->url = vlink[i];
+        q->ct  = vct[i];
+        q->suffix = vsuffix[i];
+        q->length = atof(vlength[i].c_str());
+
+        QuviVideo::toFileName(
+            pageTitle,
+            videoId,
+            hostId,
+            q,
+            i+1,
+            size
+        );
+    }
+
+    // Start from the first link.
+    currentVideoLink = videoLinks.begin();
 }
 
-static int video_num = 0;
+#define wrap_get_s(n,r) \
+    const std::string& QuviVideo::n() const { return r; }
+
+wrap_get_s(getPageUrl,          pageUrl)
+wrap_get_s(getPageTitle,        pageTitle)
+wrap_get_s(getId,               videoId)
+wrap_get_s(getHostId,           hostId)
+wrap_get_s(getFileUrl,          (*currentVideoLink)->url)
+wrap_get_s(getFileContentType,  (*currentVideoLink)->ct)
+wrap_get_s(getFileSuffix,       (*currentVideoLink)->suffix)
+wrap_get_s(getFileName,         (*currentVideoLink)->filename)
+#undef wrap_get_s
+
+#define wrap_get_f(n,r) \
+    const double& QuviVideo::n() const { return r; }
+
+wrap_get_f(getFileLength,       (*currentVideoLink)->length)
+wrap_get_f(getInitialFileLength,(*currentVideoLink)->initial)
+#undef wrap_get_s
 
 void
-QuviVideo::formatOutputFilename() {
+QuviVideo::nextVideoLink() {
+    if (++currentVideoLink == videoLinks.end())
+        throw QuviNoVideoLinkException();
+}
 
+void
+QuviVideo::updateInitialLength() {
+    quvi::SHPQuviVideoLink q = (*currentVideoLink);
+
+    q->initial = Util::fileExists(q->filename);
+
+    if (q->initial >= q->length)
+        throw NothingToDoException();
+}
+
+void
+QuviVideo::toFileName(
+    const std::string& pageTitle,
+    const std::string& videoId,
+    const std::string& hostId,
+    quvi::SHPQuviVideoLink qvl,
+    const int& linkIndex,
+    const int& totalLinks)
+{
     const Options opts = optsmgr.getOptions();
 
     if (!opts.output_video_given) {
@@ -278,16 +306,51 @@ QuviVideo::formatOutputFilename() {
               << "_";
         }
 
-        customOutputFilenameFormatter(b);
+        // Append video segment / link number.
+        if (totalLinks > 1) {
+            const int w = totalLinks < 100 ? 2:4;
+            b << std::setw(w)
+              << std::setfill('0')
+              << linkIndex
+              << "of"
+              << std::setw(w)
+              << std::setfill('0')
+              << totalLinks
+              << "_";
+        }
 
-        filename = b.str();
+        // --filename-format
+        std::string fmt   = opts.filename_format_arg;
+        std::string title = pageTitle;
+
+        // --regexp
+        if (opts.regexp_given)
+            Util::perlMatch(opts.regexp_arg, title);
+
+        // Remove leading and trailing whitespace.
+        pcrecpp::RE("^[\\s]+", pcrecpp::UTF8())
+            .Replace("", &title);
+        pcrecpp::RE("\\s+$", pcrecpp::UTF8())
+            .Replace("", &title);
+
+        // Replace format specifiers.
+        Util::subStrReplace(fmt, "%t", title.empty() ? videoId : title);
+        Util::subStrReplace(fmt, "%i", videoId);
+        Util::subStrReplace(fmt, "%s", qvl->suffix);
+        Util::subStrReplace(fmt, "%h", hostId);
+
+        if (opts.substitute_given)
+            Util::perlSubstitute(opts.substitute_arg, fmt);
+
+        b << fmt;
+        qvl->filename = b.str();
 
         if (!opts.overwrite_given) {
-            for (int i=1; i<INT_MAX; ++i) {
-                initial = Util::fileExists(filename);
-                if (initial == 0)
+            for (int i=0; i<INT_MAX; ++i) {
+                qvl->initial = Util::fileExists(qvl->filename);
+                if (!qvl->initial)
                     break;
-                else if (initial >= length)
+                else if (qvl->initial >= qvl->length)
                     throw NothingToDoException();
                 else {
                     if (opts.continue_given)
@@ -295,117 +358,36 @@ QuviVideo::formatOutputFilename() {
                 }
                 std::stringstream tmp;
                 tmp << b.str() << "." << i;
-                filename = tmp.str();
-             }
+                qvl->filename = tmp.str();
+            }
         }
     }
     else {
-        initial = Util::fileExists(opts.output_video_arg);
+        qvl->initial = Util::fileExists(opts.output_video_arg);
 
-        if (initial >= length)
+        if (qvl->initial >= qvl->length)
             throw NothingToDoException();
 
         if (opts.overwrite_given)
-            initial = 0;
+            qvl->initial = 0;
 
-        filename = opts.output_video_arg;
+        qvl->filename = opts.output_video_arg;
     }
 
     if (!opts.continue_given)
-        initial = 0;
+        qvl->initial = 0;
 }
 
 void
-QuviVideo::customOutputFilenameFormatter(
-    std::stringstream& b)
+QuviVideo::toVector(
+    const std::string& s,
+    quvi::StringVector& dst)
 {
-    const Options opts  = optsmgr.getOptions();
-    std::string fmt     = opts.filename_format_arg;
-    std::string _title = title;
- 
-#ifdef _1_
-    // Convert predefined HTML character entities.
-    Util::fromHtmlEntities(_title);
-#endif
-
-    // Apply --regexp.
-    if (opts.regexp_given)
-        Util::perlMatch(opts.regexp_arg, _title);
-
-    // Remove leading and trailing whitespace.
-    pcrecpp::RE("^[\\s]+", pcrecpp::UTF8())
-        .Replace("", &_title);
-    pcrecpp::RE("\\s+$", pcrecpp::UTF8())
-        .Replace("", &_title);
-
-    // Replace format specifiers.
-    Util::subStrReplace(fmt, "%t", _title.empty() ? id : _title);
-    Util::subStrReplace(fmt, "%i", id);
-    Util::subStrReplace(fmt, "%h", hostId);
-    Util::subStrReplace(fmt, "%s", suffix);
-
-    if (opts.substitute_given)
-        Util::perlSubstitute(opts.substitute_arg, fmt);
-
-    b << fmt;
-}
-
-const double&
-QuviVideo::getLength() const {
-    return length;
-}
-
-const std::string&
-QuviVideo::getPageLink() const {
-    return pageLink;
-}
-
-const std::string&
-QuviVideo::getId() const {
-    return id;
-}
-
-const std::string&
-QuviVideo::getTitle() const {
-    return title;
-}
-
-const std::string&
-QuviVideo::getLink() const {
-    return link;
-}
-
-const std::string&
-QuviVideo::getSuffix() const {
-    return suffix;
-}
-
-const std::string&
-QuviVideo::getContentType() const {
-    return contentType;
-}
-
-const std::string&
-QuviVideo::getHostId() const {
-    return hostId;
-}
-
-const double&
-QuviVideo::getInitial() const {
-    return initial;
-}
-
-const std::string&
-QuviVideo::getFilename() const {
-    return filename;
-}
-
-void
-QuviVideo::updateInitial() {
-    initial = Util::fileExists(filename);
-
-    if (initial >= length)
-        throw NothingToDoException();
+    dst.clear();
+    std::istringstream iss(s);
+    std::string tmp;
+    while (std::getline(iss, tmp, quvi_delim[0]))
+        dst.push_back(tmp);
 }
 
 

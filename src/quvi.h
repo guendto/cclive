@@ -20,6 +20,10 @@
 #ifndef quvimgr_h
 #define quvimgr_h
 
+#include <vector>
+#include <iterator>
+#include <tr1/memory>
+
 #include <curl/curl.h>
 #include <quvi/quvi.h>
 
@@ -43,42 +47,64 @@ private:
 
 #define quvimgr QuviMgr::getInstance()
 
+class QuviVideoLink {
+public:
+    std::string url;
+    std::string ct;
+    std::string suffix;
+    double length;
+    double initial;
+    std::string filename;
+};
+
+namespace quvi {
+
+typedef std::tr1::shared_ptr<QuviVideoLink> SHPQuviVideoLink;
+
+typedef std::vector<SHPQuviVideoLink> QuviVideoLinkVector;
+typedef QuviVideoLinkVector::iterator QuviVideoLinkIter;
+
+typedef std::vector<std::string> StringVector;
+typedef StringVector::const_iterator StringVectorIter;
+
+}
+
 class QuviVideo {
 public:
     QuviVideo           ();
     QuviVideo           (const std::string& url);
-    QuviVideo           (const QuviVideo&);
-    QuviVideo& operator=(const QuviVideo&);
-    virtual ~QuviVideo();
 public:
     void parse(std::string url="");
 public:
-    const double&      getLength()      const;
-    const std::string& getPageLink()    const;
-    const std::string& getId()          const;
-    const std::string& getTitle()       const;
-    const std::string& getLink()        const;
-    const std::string& getSuffix()      const;
-    const std::string& getContentType() const;
-    const std::string& getHostId()      const;
-    const double&      getInitial()     const;
+    const std::string& getPageUrl() const;
+    const std::string& getPageTitle() const;
+    const std::string& getId() const;
+    const std::string& getFileUrl() const;
+    const std::string& getFileContentType() const;
+    const std::string& getFileSuffix() const;
+    const double& getFileLength() const;
+    const double& getInitialFileLength() const;
+    const std::string& getFileName() const;
+    const std::string& getHostId() const;
 public:
-    void               formatOutputFilename();
-    void               customOutputFilenameFormatter(
-                           std::stringstream& b);
-    void               updateInitial();
-    const std::string& getFilename()    const;
+    void nextVideoLink();
+    void updateInitialLength();
 private:
-    double length;
-    std::string pageLink;
-    std::string id;
-    std::string title;
-    std::string link;
-    std::string suffix;
-    std::string contentType;
+    static void toVector(const std::string&, quvi::StringVector&);
+    static void toFileName(
+        const std::string& pageTitle,
+        const std::string& videoId,
+        const std::string& hostId,
+        quvi::SHPQuviVideoLink qvl,
+        const int& linkIndex,
+        const int& totalLinks);
+private:
+    quvi::QuviVideoLinkVector videoLinks;
+    quvi::QuviVideoLinkIter currentVideoLink;
+    std::string pageUrl;
+    std::string pageTitle;
+    std::string videoId;
     std::string hostId;
-    double initial;
-    std::string filename;
 };
 
 #endif

@@ -133,4 +133,9 @@ FileOpenException::FileOpenException(const std::string& err)
 {
 }
 
+QuviNoVideoLinkException::QuviNoVideoLinkException()
+    : RuntimeException(CCLIVE_QUVINOLINK)
+{
+}
+
 
