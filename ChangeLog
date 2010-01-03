@@ -1,6 +1,7 @@
 Version 0.6.0
 
  User-visible changes:
+  * Multi-segment support (e.g. some cctv videos)
   * Remove "Features" from --version output
 
  Developer-visible changes:
