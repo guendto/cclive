@@ -169,14 +169,17 @@ Regular expression used to clean up video titles before they are used for
 output filenames. Supports (and mimics) Perl's /g (global, find all) and /i
 (case-insensitive). See also L</EXAMPLES>.
 
-=item B<-S, --substitute>=I<regexp>
+=item B<-S, --substitute>=I<regexps>
 
 Mimics Perl's s/old/new/(gi) substitution. This option can be used to
 replace occurences in output filenames. Supports /g (global, find all
-occurences) and /i (case-insensitive). See also L</EXAMPLES>.
+occurences) and /i (case-insensitive).
 
-Note that substitution is made I<after> pattern matching (B<--regexp>)
-and formatting the filename (B<--filename-format>).
+Use of multiple regular expressions is also supported. You can separate
+each with with a whitespace. The number of regular expressions is
+currently unlimited.
+
+See also L</EXAMPLES>.
 
 =item B<-F, --filename-format>=I<formatstring>
 
@@ -281,10 +284,16 @@ with appropriate file suffix string (e.g. "flv").
 Match all "word" and "whitespace" characters, and use them in the filename
 replacing the "%t". Note the use of "/g" (global, find all).
 
-=item cclive -S "s/old/new/gi" URL
+=item cclive -S "s/old/new/i" URL
 
 Replace all occurences of "old" with "new" in the output filename.
-Note the use of "g" (global, find all) and "i" (case-insensitive).
+Note the use of "i" (case-insensitive).
+
+=item cclive -S "s/old/new/i s/:/_/g" URL
+
+Same but replaces also ':' with '_'. Note the use of "g" (global,
+find all) and the use of a whitespace to separate the used regular
+expressions.
 
 =item cclive --exec="mplayer -really-quiet %i;" -e URL
 

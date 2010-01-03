@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2009-11-29" "0.6.0" "cclive manual"
+.TH cclive 1 "2010-01-03" "0.6.0" "cclive manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -250,14 +250,17 @@ Prepend a numeric prefix (e.g. \*(L"001_\*(R") to the output filenames.
 Regular expression used to clean up video titles before they are used for
 output filenames. Supports (and mimics) Perl's /g (global, find all) and /i
 (case-insensitive). See also \*(L"\s-1EXAMPLES\s0\*(R".
-.IP "\fB\-S, \-\-substitute\fR=\fIregexp\fR" 4
-.IX Item "-S, --substitute=regexp"
+.IP "\fB\-S, \-\-substitute\fR=\fIregexps\fR" 4
+.IX Item "-S, --substitute=regexps"
 Mimics Perl's s/old/new/(gi) substitution. This option can be used to
 replace occurences in output filenames. Supports /g (global, find all
-occurences) and /i (case-insensitive). See also \*(L"\s-1EXAMPLES\s0\*(R".
+occurences) and /i (case-insensitive).
 .Sp
-Note that substitution is made \fIafter\fR pattern matching (\fB\-\-regexp\fR)
-and formatting the filename (\fB\-\-filename\-format\fR).
+Use of multiple regular expressions is also supported. You can separate
+each with with a whitespace. The number of regular expressions is
+currently unlimited.
+.Sp
+See also \*(L"\s-1EXAMPLES\s0\*(R".
 .IP "\fB\-F, \-\-filename\-format\fR=\fIformatstring\fR" 4
 .IX Item "-F, --filename-format=formatstring"
 Use the specified \fIformatstring\fR to format the output filenames.
@@ -271,7 +274,6 @@ appearing in the format string will be replaced accordingly:
 \&  %s = file suffix
 .Ve
 .Sp
-Note that cclive converts any dashes ('\-') to underscores ('_') in video IDs.
 See also \*(L"\s-1EXAMPLES\s0\*(R".
 .PP
 \&\fBSubsequent\fR
@@ -343,11 +345,17 @@ with appropriate file suffix string (e.g. \*(L"flv\*(R").
 .IX Item "cclive -F %t.%s -r /(w|s)/g URL"
 Match all \*(L"word\*(R" and \*(L"whitespace\*(R" characters, and use them in the filename
 replacing the \*(L"%t\*(R". Note the use of \*(L"/g\*(R" (global, find all).
-.ie n .IP "cclive \-S ""s/old/new/gi"" \s-1URL\s0" 4
-.el .IP "cclive \-S ``s/old/new/gi'' \s-1URL\s0" 4
-.IX Item "cclive -S s/old/new/gi URL"
+.ie n .IP "cclive \-S ""s/old/new/i"" \s-1URL\s0" 4
+.el .IP "cclive \-S ``s/old/new/i'' \s-1URL\s0" 4
+.IX Item "cclive -S s/old/new/i URL"
 Replace all occurences of \*(L"old\*(R" with \*(L"new\*(R" in the output filename.
-Note the use of \*(L"g\*(R" (global, find all) and \*(L"i\*(R" (case-insensitive).
+Note the use of \*(L"i\*(R" (case-insensitive).
+.ie n .IP "cclive \-S ""s/old/new/i s/:/_/g"" \s-1URL\s0" 4
+.el .IP "cclive \-S ``s/old/new/i s/:/_/g'' \s-1URL\s0" 4
+.IX Item "cclive -S s/old/new/i s/:/_/g URL"
+Same but replaces also ':' with '_'. Note the use of \*(L"g\*(R" (global,
+find all) and the use of a whitespace to separate the used regular
+expressions.
 .ie n .IP "cclive \-\-exec=""mplayer \-really\-quiet %i;"" \-e \s-1URL\s0" 4
 .el .IP "cclive \-\-exec=``mplayer \-really\-quiet \f(CW%i\fR;'' \-e \s-1URL\s0" 4
 .IX Item "cclive --exec=mplayer -really-quiet %i; -e URL"

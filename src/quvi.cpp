@@ -23,6 +23,7 @@
 #include <vector>
 #include <iomanip>
 #include <map>
+#include <algorithm>
 
 #include <pcrecpp.h>
 
@@ -339,8 +340,23 @@ QuviVideo::toFileName(
         Util::subStrReplace(fmt, "%s", qvl->suffix);
         Util::subStrReplace(fmt, "%h", hostId);
 
-        if (opts.substitute_given)
-            Util::perlSubstitute(opts.substitute_arg, fmt);
+        if (opts.substitute_given) {
+            std::istringstream iss(opts.substitute_arg);
+
+            quvi::StringVector regexps;
+            std::copy(
+                std::istream_iterator<std::string >(iss),
+                std::istream_iterator<std::string >(),
+                std::back_inserter<quvi::StringVector >(regexps)
+            );
+
+            for (quvi::StringVectorIter iter=regexps.begin();
+                iter!=regexps.end();
+                ++iter)
+            {
+                Util::perlSubstitute(*iter, fmt);
+            }
+        }
 
         b << fmt;
         qvl->filename = b.str();

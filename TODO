@@ -2,4 +2,3 @@ repo: git://repo.or.cz/cclive.git
 web : http://repo.or.cz/w/cclive.git
 
 * rewrite/cleanup retry 'engine', especially app.cpp
-* port --substitute (multi-regexps) support from master
