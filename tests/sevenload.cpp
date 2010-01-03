@@ -5,8 +5,6 @@ static const char *urls[] = {
 "http://de.sevenload.com/videos/GN4Hati/EM08-Spanien-Russland-4-1-Highlights",
 "http://en.sevenload.com/shows/TheSailingChannel-TV/episodes/"
     "zLM5OvT-Cruising-with-Bettie-Trailer",
-"http://de.sevenload.com/sendungen/halbzeit-in/folgen/"
-    "Kbv3CsN-Wechselgesang-Sieger-beste-Bewertungen",
 NULL
 };
 
