@@ -247,10 +247,8 @@ QuviVideo::parse(std::string url /*=""*/) {
             videoLinks.push_back(q);
         }
         catch (const NothingToDoException& x) {
-            if (!opts.no_extract_given && !opts.emit_csv_given) {
-                logmgr.cerr() << "file: " << q->filename << "\n";
-                logmgr.cerr(x, false);
-            }
+            logmgr.cerr() << "file: " << q->filename << "\n";
+            logmgr.cerr(x, false);
         }
     }
 
