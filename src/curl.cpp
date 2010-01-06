@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Toni Gundogdu.
+ * Copyright (C) 2009,2010 Toni Gundogdu.
  *
  * This file is part of cclive.
  * 
@@ -39,7 +39,8 @@
 #include "curl.h"
 #include "quvi.h"
 #include "progressbar.h"
-#include "retry.h"
+
+extern int number_of_retries(); // src/retry.cpp
 
 static CURL *curl;
 
@@ -133,12 +134,18 @@ CurlMgr::fetchToFile(QuviVideo& props) {
     bool continue_given =
         static_cast<bool>(opts.continue_given);
 
-    if (retrymgr.getRetryUntilRetrievedFlag()) {
+    if (number_of_retries() > 1) {
+        // Make an attempt to continue if we're retrying a file transfer.
+
+        // (QuviVideo::updateInitialLength) Throws NothingToDoException
+        // if in some bizarre way we managed to get the file in whole already.
         props.updateInitialLength();
+
         continue_given = true;
     }
 
-    const double initial = props.getInitialFileLength();
+    const double initial =
+        props.getInitialFileLength();
 
     if (continue_given && initial > 0) {
 

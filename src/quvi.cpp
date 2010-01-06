@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Toni Gundogdu.
+ * Copyright (C) 2009,2010 Toni Gundogdu.
  *
  * This file is part of cclive.
  * 
@@ -229,21 +229,29 @@ QuviVideo::parse(std::string url /*=""*/) {
 
     for (int i=0; i<size; ++i) {
         quvi::SHPQuviVideoLink q(new QuviVideoLink);
-        videoLinks.push_back(q);
+        try {
+            q->url    = vlink[i];
+            q->ct     = vct[i];
+            q->suffix = vsuffix[i];
+            q->length = atof(vlength[i].c_str());
 
-        q->url = vlink[i];
-        q->ct  = vct[i];
-        q->suffix = vsuffix[i];
-        q->length = atof(vlength[i].c_str());
+            QuviVideo::toFileName(
+                pageTitle,
+                videoId,
+                hostId,
+                q,
+                i+1,
+                size
+            );
 
-        QuviVideo::toFileName(
-            pageTitle,
-            videoId,
-            hostId,
-            q,
-            i+1,
-            size
-        );
+            videoLinks.push_back(q);
+        }
+        catch (const NothingToDoException& x) {
+            if (!opts.no_extract_given && !opts.emit_csv_given) {
+                logmgr.cerr() << "file: " << q->filename << "\n";
+                logmgr.cerr(x, false);
+            }
+        }
     }
 
     // Start from the first link.
@@ -384,13 +392,10 @@ QuviVideo::toFileName(
         if (qvl->initial >= qvl->length)
             throw NothingToDoException();
 
-        if (opts.overwrite_given)
-            qvl->initial = 0;
-
         qvl->filename = opts.output_video_arg;
     }
 
-    if (!opts.continue_given)
+    if (opts.overwrite_given)
         qvl->initial = 0;
 }
 

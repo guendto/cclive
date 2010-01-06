@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Toni Gundogdu.
+ * Copyright (C) 2009,2010 Toni Gundogdu.
  *
  * This file is part of cclive.
  * 
@@ -31,6 +31,7 @@ CCLIVE_NOSUPPORT,
 CCLIVE_NET,
 CCLIVE_FETCH,
 CCLIVE_PARSE,
+CCLIVE_NORETRIES,
 CCLIVE_INTERNAL,
 CCLIVE_QUVI,
 CCLIVE_QUVINOLINK,

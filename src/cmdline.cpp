@@ -37,33 +37,33 @@ const char *gengetopt_args_info_help[] = {
   "      --hosts                   List supported hosts",
   "  -b, --background              Go to background immediately after startup",
   "\nOutput:",
-  "  -q, --quiet                   Turn off all output",
-  "      --debug                   Turn on libcurl verbose mode",
   "      --emit-csv                Print video details in csv format to stdout",
-  "      --print-fname             Print filename before each download starts",
+  "  -q, --quiet                   Turn off all output  (default=off)",
+  "      --debug                   Turn on libcurl verbose mode  (default=off)",
+  "      --print-fname             Print filename before each download starts  \n                                  (default=off)",
   "  -o, --logfile=<file>          Write output to file while in background  \n                                  (default=`cclive.log')",
   "  -i, --logfile-interval=<n>    Update logfile every n seconds while in \n                                  background  (default=`10')",
   "\nHTTP:",
-  "      --agent=<agentstring>     Identify cclive as agentstring to servers  \n                                  (default=`Mozilla/5.0')",
+  "      --agent=<agent_string>    Identify cclive as agent string to servers  \n                                  (default=`Mozilla/5.0')",
   "      --proxy=proxyhost[:port]  Use specified proxy",
   "      --no-proxy                Do not use proxy even if http_proxy is defined",
   "      --connect-timeout=<seconds>\n                                Max time allowed connection to server take  \n                                  (default=`30')",
   "      --connect-timeout-socks=<seconds>\n                                Same but works around 'SOCKS proxy connect \n                                  timeout' bug in libcurl  (default=`30')",
   "  -t, --retry=<number>          Number of retries  (default=`5')",
-  "      --retry-wait=<seconds>    wait 1..seconds between retries  (default=`1')",
+  "      --retry-wait=<seconds>    wait 5 seconds between retries  (default=`5')",
   "\nDownload:",
   "  -O, --output-video=<file>     Write video to file",
-  "  -c, --continue                Resume partially downloaded file",
-  "  -W, --overwrite               Overwrite existing file",
+  "  -c, --continue                Resume partially downloaded file  (default=off)",
+  "  -W, --overwrite               Overwrite existing file  (default=off)",
   "  -n, --no-extract              Do not actually extract video, simulate only",
-  "  -l, --limit-rate=<amount>     Limit download speed to amount KB/s",
-  "  -f, --format=<formatid>       Download format of video  (possible \n                                  values=\"flv\", \"best\", \"fmt17\", \n                                  \"fmt18\", \"fmt22\", \"fmt34\", \"fmt35\", \n                                  \"hq\", \"3gp\", \"spark-mini\", \"vp6-hq\", \n                                  \"vp6-hd\", \"vp6\", \"h264\", \"hd\", \n                                  \"mp4\", \"high\", \"ipod\", \"vp6_576\", \n                                  \"vp6_928\", \"h264_1400\" default=`flv')",
-  "  -M, --format-map=<mapstring>  Specify format for multiple hosts in a string",
+  "  -l, --limit-rate=<amount>     Limit download speed to amount KB/s \n                                  (0=unlimited)  (default=`0')",
+  "  -f, --format=<format_id>      Download format of video  (possible \n                                  values=\"flv\", \"best\", \"fmt17\", \n                                  \"fmt18\", \"fmt22\", \"fmt34\", \"fmt35\", \n                                  \"hq\", \"3gp\", \"spark-mini\", \"vp6-hq\", \n                                  \"vp6-hd\", \"vp6\", \"h264\", \"hd\", \n                                  \"mp4\", \"high\", \"ipod\", \"vp6_576\", \n                                  \"vp6_928\", \"h264_1400\" default=`flv')",
+  "  -M, --format-map=<map_string> Specify format for multiple hosts in a string",
   "\nFilename formatting:",
-  "  -N, --number-videos           Prepend a numeric prefix to output filenames",
+  "  -N, --number-videos           Prepend a numeric prefix to output filenames  \n                                  (default=off)",
   "  -r, --regexp=<regexp>         Regular expression to cleanup video title, \n                                  mimics Perl's /what/(gi)",
   "  -S, --substitute=<regexp>     Replace matched occurences in filename, mimics \n                                  Perl's s/old/new/(gi)",
-  "  -F, --filename-format=<formatstring>\n                                Output filename format  (default=`%h_%i.%s')",
+  "  -F, --filename-format=<format_string>\n                                Output filename format  (default=`%h_%i.%s')",
   "\nSubsequent:",
   "      --exec=<expr[;|+]>        Command to invoke when transfer finishes",
   "  -e, --exec-run                Invoke command specified with --exec",
@@ -76,6 +76,7 @@ const char *gengetopt_args_info_help[] = {
 };
 
 typedef enum {ARG_NO
+  , ARG_FLAG
   , ARG_STRING
   , ARG_INT
 } cmdline_parser_arg_type;
@@ -128,9 +129,9 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->version_given = 0 ;
   args_info->hosts_given = 0 ;
   args_info->background_given = 0 ;
+  args_info->emit_csv_given = 0 ;
   args_info->quiet_given = 0 ;
   args_info->debug_given = 0 ;
-  args_info->emit_csv_given = 0 ;
   args_info->print_fname_given = 0 ;
   args_info->logfile_given = 0 ;
   args_info->logfile_interval_given = 0 ;
@@ -163,6 +164,9 @@ static
 void clear_args (struct gengetopt_args_info *args_info)
 {
   FIX_UNUSED (args_info);
+  args_info->quiet_flag = 0;
+  args_info->debug_flag = 0;
+  args_info->print_fname_flag = 0;
   args_info->logfile_arg = gengetopt_strdup ("cclive.log");
   args_info->logfile_orig = NULL;
   args_info->logfile_interval_arg = 10;
@@ -177,15 +181,19 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->connect_timeout_socks_orig = NULL;
   args_info->retry_arg = 5;
   args_info->retry_orig = NULL;
-  args_info->retry_wait_arg = 1;
+  args_info->retry_wait_arg = 5;
   args_info->retry_wait_orig = NULL;
   args_info->output_video_arg = NULL;
   args_info->output_video_orig = NULL;
+  args_info->continue_flag = 0;
+  args_info->overwrite_flag = 0;
+  args_info->limit_rate_arg = 0;
   args_info->limit_rate_orig = NULL;
   args_info->format_arg = gengetopt_strdup ("flv");
   args_info->format_orig = NULL;
   args_info->format_map_arg = NULL;
   args_info->format_map_orig = NULL;
+  args_info->number_videos_flag = 0;
   args_info->regexp_arg = NULL;
   args_info->regexp_orig = NULL;
   args_info->substitute_arg = NULL;
@@ -209,9 +217,9 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->version_help = gengetopt_args_info_help[1] ;
   args_info->hosts_help = gengetopt_args_info_help[2] ;
   args_info->background_help = gengetopt_args_info_help[3] ;
-  args_info->quiet_help = gengetopt_args_info_help[5] ;
-  args_info->debug_help = gengetopt_args_info_help[6] ;
-  args_info->emit_csv_help = gengetopt_args_info_help[7] ;
+  args_info->emit_csv_help = gengetopt_args_info_help[5] ;
+  args_info->quiet_help = gengetopt_args_info_help[6] ;
+  args_info->debug_help = gengetopt_args_info_help[7] ;
   args_info->print_fname_help = gengetopt_args_info_help[8] ;
   args_info->logfile_help = gengetopt_args_info_help[9] ;
   args_info->logfile_interval_help = gengetopt_args_info_help[10] ;
@@ -434,12 +442,12 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "hosts", 0, 0 );
   if (args_info->background_given)
     write_into_file(outfile, "background", 0, 0 );
+  if (args_info->emit_csv_given)
+    write_into_file(outfile, "emit-csv", 0, 0 );
   if (args_info->quiet_given)
     write_into_file(outfile, "quiet", 0, 0 );
   if (args_info->debug_given)
     write_into_file(outfile, "debug", 0, 0 );
-  if (args_info->emit_csv_given)
-    write_into_file(outfile, "emit-csv", 0, 0 );
   if (args_info->print_fname_given)
     write_into_file(outfile, "print-fname", 0, 0 );
   if (args_info->logfile_given)
@@ -716,6 +724,9 @@ int update_arg(void *field, char **orig_field,
     val = possible_values[found];
 
   switch(arg_type) {
+  case ARG_FLAG:
+    *((int *)field) = !*((int *)field);
+    break;
   case ARG_INT:
     if (val) *((int *)field) = strtol (val, &stop_char, 0);
     break;
@@ -746,6 +757,7 @@ int update_arg(void *field, char **orig_field,
   /* store the original value */
   switch(arg_type) {
   case ARG_NO:
+  case ARG_FLAG:
     break;
   default:
     if (value && orig_field) {
@@ -804,9 +816,9 @@ cmdline_parser_internal (
         { "version",	0, NULL, 'v' },
         { "hosts",	0, NULL, 0 },
         { "background",	0, NULL, 'b' },
+        { "emit-csv",	0, NULL, 0 },
         { "quiet",	0, NULL, 'q' },
         { "debug",	0, NULL, 0 },
-        { "emit-csv",	0, NULL, 0 },
         { "print-fname",	0, NULL, 0 },
         { "logfile",	1, NULL, 'o' },
         { "logfile-interval",	1, NULL, 'i' },
@@ -874,11 +886,9 @@ cmdline_parser_internal (
         case 'q':	/* Turn off all output.  */
         
         
-          if (update_arg( 0 , 
-               0 , &(args_info->quiet_given),
-              &(local_args_info.quiet_given), optarg, 0, 0, ARG_NO,
-              check_ambiguity, override, 0, 0,
-              "quiet", 'q',
+          if (update_arg((void *)&(args_info->quiet_flag), 0, &(args_info->quiet_given),
+              &(local_args_info.quiet_given), optarg, 0, 0, ARG_FLAG,
+              check_ambiguity, override, 1, 0, "quiet", 'q',
               additional_error))
             goto failure;
         
@@ -934,11 +944,9 @@ cmdline_parser_internal (
         case 'c':	/* Resume partially downloaded file.  */
         
         
-          if (update_arg( 0 , 
-               0 , &(args_info->continue_given),
-              &(local_args_info.continue_given), optarg, 0, 0, ARG_NO,
-              check_ambiguity, override, 0, 0,
-              "continue", 'c',
+          if (update_arg((void *)&(args_info->continue_flag), 0, &(args_info->continue_given),
+              &(local_args_info.continue_given), optarg, 0, 0, ARG_FLAG,
+              check_ambiguity, override, 1, 0, "continue", 'c',
               additional_error))
             goto failure;
         
@@ -946,11 +954,9 @@ cmdline_parser_internal (
         case 'W':	/* Overwrite existing file.  */
         
         
-          if (update_arg( 0 , 
-               0 , &(args_info->overwrite_given),
-              &(local_args_info.overwrite_given), optarg, 0, 0, ARG_NO,
-              check_ambiguity, override, 0, 0,
-              "overwrite", 'W',
+          if (update_arg((void *)&(args_info->overwrite_flag), 0, &(args_info->overwrite_given),
+              &(local_args_info.overwrite_given), optarg, 0, 0, ARG_FLAG,
+              check_ambiguity, override, 1, 0, "overwrite", 'W',
               additional_error))
             goto failure;
         
@@ -967,12 +973,12 @@ cmdline_parser_internal (
             goto failure;
         
           break;
-        case 'l':	/* Limit download speed to amount KB/s.  */
+        case 'l':	/* Limit download speed to amount KB/s (0=unlimited).  */
         
         
           if (update_arg( (void *)&(args_info->limit_rate_arg), 
                &(args_info->limit_rate_orig), &(args_info->limit_rate_given),
-              &(local_args_info.limit_rate_given), optarg, 0, 0, ARG_INT,
+              &(local_args_info.limit_rate_given), optarg, 0, "0", ARG_INT,
               check_ambiguity, override, 0, 0,
               "limit-rate", 'l',
               additional_error))
@@ -1006,11 +1012,9 @@ cmdline_parser_internal (
         case 'N':	/* Prepend a numeric prefix to output filenames.  */
         
         
-          if (update_arg( 0 , 
-               0 , &(args_info->number_videos_given),
-              &(local_args_info.number_videos_given), optarg, 0, 0, ARG_NO,
-              check_ambiguity, override, 0, 0,
-              "number-videos", 'N',
+          if (update_arg((void *)&(args_info->number_videos_flag), 0, &(args_info->number_videos_given),
+              &(local_args_info.number_videos_given), optarg, 0, 0, ARG_FLAG,
+              check_ambiguity, override, 1, 0, "number-videos", 'N',
               additional_error))
             goto failure;
         
@@ -1091,20 +1095,6 @@ cmdline_parser_internal (
               goto failure;
           
           }
-          /* Turn on libcurl verbose mode.  */
-          else if (strcmp (long_options[option_index].name, "debug") == 0)
-          {
-          
-          
-            if (update_arg( 0 , 
-                 0 , &(args_info->debug_given),
-                &(local_args_info.debug_given), optarg, 0, 0, ARG_NO,
-                check_ambiguity, override, 0, 0,
-                "debug", '-',
-                additional_error))
-              goto failure;
-          
-          }
           /* Print video details in csv format to stdout.  */
           else if (strcmp (long_options[option_index].name, "emit-csv") == 0)
           {
@@ -1119,21 +1109,31 @@ cmdline_parser_internal (
               goto failure;
           
           }
+          /* Turn on libcurl verbose mode.  */
+          else if (strcmp (long_options[option_index].name, "debug") == 0)
+          {
+          
+          
+            if (update_arg((void *)&(args_info->debug_flag), 0, &(args_info->debug_given),
+                &(local_args_info.debug_given), optarg, 0, 0, ARG_FLAG,
+                check_ambiguity, override, 1, 0, "debug", '-',
+                additional_error))
+              goto failure;
+          
+          }
           /* Print filename before each download starts.  */
           else if (strcmp (long_options[option_index].name, "print-fname") == 0)
           {
           
           
-            if (update_arg( 0 , 
-                 0 , &(args_info->print_fname_given),
-                &(local_args_info.print_fname_given), optarg, 0, 0, ARG_NO,
-                check_ambiguity, override, 0, 0,
-                "print-fname", '-',
+            if (update_arg((void *)&(args_info->print_fname_flag), 0, &(args_info->print_fname_given),
+                &(local_args_info.print_fname_given), optarg, 0, 0, ARG_FLAG,
+                check_ambiguity, override, 1, 0, "print-fname", '-',
                 additional_error))
               goto failure;
           
           }
-          /* Identify cclive as agentstring to servers.  */
+          /* Identify cclive as agent string to servers.  */
           else if (strcmp (long_options[option_index].name, "agent") == 0)
           {
           
@@ -1203,14 +1203,14 @@ cmdline_parser_internal (
               goto failure;
           
           }
-          /* wait 1..seconds between retries.  */
+          /* wait 5 seconds between retries.  */
           else if (strcmp (long_options[option_index].name, "retry-wait") == 0)
           {
           
           
             if (update_arg( (void *)&(args_info->retry_wait_arg), 
                  &(args_info->retry_wait_orig), &(args_info->retry_wait_given),
-                &(local_args_info.retry_wait_given), optarg, 0, "1", ARG_INT,
+                &(local_args_info.retry_wait_given), optarg, 0, "5", ARG_INT,
                 check_ambiguity, override, 0, 0,
                 "retry-wait", '-',
                 additional_error))

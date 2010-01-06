@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Toni Gundogdu.
+ * Copyright (C) 2009,2010 Toni Gundogdu.
  *
  * This file is part of cclive.
  * 
@@ -56,6 +56,7 @@ RuntimeException::what() const {
         "network",
         "fetch",
         "parse",
+        "retry",
         "internal",
     };
 
@@ -135,6 +136,11 @@ FileOpenException::FileOpenException(const std::string& err)
 
 QuviNoVideoLinkException::QuviNoVideoLinkException()
     : RuntimeException(CCLIVE_QUVINOLINK)
+{
+}
+
+NoMoreRetriesException::NoMoreRetriesException()
+    : RuntimeException(CCLIVE_NORETRIES)
 {
 }
 

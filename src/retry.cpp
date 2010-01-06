@@ -1,21 +1,19 @@
 /*
- * Copyright (C) 2009 Toni Gundogdu.
- *
- * This file is part of cclive.
- * 
- * cclive is free software: you can redistribute it and/or modify it under the
- * terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * cclive is distributed in the hope that it will be useful, but WITHOUT ANY
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU General Public License along with
- * this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright (C) 2010 Toni Gundogdu.
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 #include "config.h"
 
@@ -37,74 +35,89 @@
 #include "curl.h"
 #include "log.h"
 #include "opts.h"
-#include "retry.h"
 
-RetryMgr::RetryMgr()
-    : retries(0), retryUntilRetrievedFlag(false)
-{
+static int retries_so_far = 0;
+
+static void
+check_counter() {
+    const Options opts = optsmgr.getOptions();
+
+    if (++retries_so_far >= opts.retry_arg)
+        throw NoMoreRetriesException();
+
+}
+
+static void
+retry_msg(const QuviException& x) {
+    const Options opts = optsmgr.getOptions();
+
+    std::stringstream b;
+    b << "\n"
+      << x.what()
+      << "\nretry "
+      << retries_so_far
+      << "/"
+      << opts.retry_arg
+      << " ... wait "
+      << opts.retry_wait_arg
+      << "s";
+
+    logmgr.cerr(b.str(), false, false, false);
+    sleep(opts.retry_wait_arg);
+    logmgr.cerr() << std::endl;
 }
 
 void
-RetryMgr::reset() {
-    retries = 0;
-    retryUntilRetrievedFlag = false;
-}
+fetch_page(QuviVideo& qv, const bool& reset_counter=false) {
 
-void
-RetryMgr::handle(const QuviException& x) {
+    if (reset_counter)
+        retries_so_far = 0;
 
-    logmgr.cerr(x);
+    check_counter();
 
-    // Pass unless one of the following curl codes:
-    switch (x.getCurlCode()) {
-    case CURLE_OPERATION_TIMEDOUT: break;
-    default: throw x;
+    try {
+        qv.parse();
     }
+    catch (const QuviException& x) {
+        const long httpcode = x.getHttpCode();
 
-    const long httpcode = x.getHttpCode();
+        if (httpcode >= 400 && httpcode <= 500)
+            throw x;
 
-    // Pass if this is an HTTP error of range of 400 .. 500.
-    if (httpcode >= 400 && httpcode < 500)
-        throw x;
+        retry_msg(x);
 
-    const Options opts =
-        optsmgr.getOptions();
-
-    int maxRetry = opts.retry_arg;
-
-    if (retryUntilRetrievedFlag && x.getCurlCode() != CURLE_RANGE_ERROR)
-        maxRetry = 0; // Override --retry limit for file downloads
-
-    if (++retries <= opts.retry_arg || maxRetry == 0) {
-        std::stringstream b;
-        b << "retry #" << retries;
-
-        if (maxRetry > 0)
-            b << "/" << maxRetry;
-
-        b << " ... wait "
-          << opts.retry_wait_arg
-          << " second(s).";
-
-        logmgr.cerr(b.str(), false, false, false);
-        sleep(opts.retry_wait_arg);
-        logmgr.cerr() << std::endl;
-
-        if (retries == INT_MAX-1)
-            retries = 0;
+        fetch_page(qv);
     }
-    else
-        throw x; // Pass the exception, retries count not within our range
 }
 
 void
-RetryMgr::setRetryUntilRetrievedFlag() {
-    retryUntilRetrievedFlag = true;
+fetch_file(QuviVideo& qv, const bool& reset_counter=false) {
+
+    if (reset_counter)
+        retries_so_far = 0;
+
+    check_counter();
+
+    try {
+        curlmgr.fetchToFile(qv);
+    }
+    // This is actually a curl error:
+    // * We reuse the QuviException class
+    catch (const QuviException& x) {
+        const long httpcode = x.getHttpCode();
+
+        if (httpcode >= 400 && httpcode <= 500)
+            throw x;
+
+        retry_msg(x);
+
+        fetch_file(qv);
+    }
 }
 
-const bool&
-RetryMgr::getRetryUntilRetrievedFlag() const {
-    return retryUntilRetrievedFlag;
+int
+number_of_retries() {
+    return retries_so_far;
 }
 
 

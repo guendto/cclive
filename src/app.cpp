@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Toni Gundogdu.
+ * Copyright (C) 2009,2010 Toni Gundogdu.
  *
  * This file is part of cclive.
  * 
@@ -61,7 +61,6 @@
 #include "curl.h"
 #include "util.h"
 #include "exec.h"
-#include "retry.h"
 #include "log.h"
 #include "app.h"
 
@@ -76,13 +75,11 @@ static SHP<OptionsMgr> __optsmgr (new OptionsMgr);
 static SHP<QuviMgr>    __quvimgr (new QuviMgr);
 static SHP<CurlMgr>    __curlmgr (new CurlMgr);
 static SHP<ExecMgr>    __execmgr (new ExecMgr);
-static SHP<RetryMgr>   __retrymgr(new RetryMgr);
 static SHP<LogMgr>     __logmgr  (new LogMgr);
 
-extern void handle_sigwinch(int); // src/progress.cpp
-
-App::~App() {
-}
+extern void handle_sigwinch(int); // src/progressbar.cpp
+extern void fetch_page(QuviVideo&, const bool&); // src/retry.cpp
+extern void fetch_file(QuviVideo&, const bool&); // src/retry.cpp
 
 void
 App::main(const int& argc, char * const *argv) {
@@ -93,148 +90,117 @@ App::main(const int& argc, char * const *argv) {
 }
 
 static void
-print_video(QuviVideo& props) {
-    try {
-        while (1) {
-            logmgr.cout()
-                << "file: "
-                << props.getFileName()
-                << "  "
-                << std::setprecision(1)
-                << _TOMB(props.getFileLength())
-                << "M  ["
-                << props.getFileContentType()
-                << "]"
-                << std::endl;
-            props.nextVideoLink();
-        }
-    }
-    catch (const QuviNoVideoLinkException&) {
-    }
+print_fname(QuviVideo& qv) {
+    logmgr.cout()
+        << "file: "
+        << qv.getFileName()
+        << "  "
+        << std::setprecision(1)
+        << _TOMB(qv.getFileLength())
+        << "M  ["
+        << qv.getFileContentType()
+        << "]"
+        << std::endl;
 }
 
 static void
-print_csv(QuviVideo& props) {
+print_video(QuviVideo& qv) {
+    try {
+        while (1) {
+            print_fname(qv);
+            qv.nextVideoLink();
+        }
+    }
+    catch (const QuviNoVideoLinkException&) { }
+}
+
+static void
+print_csv(QuviVideo& qv) {
     std::cout.setf(std::ios::fixed);
     std::cout.unsetf(std::ios::showpoint);
     try {
         while (1) {
             std::cout
                 << "csv:\""
-                << props.getFileName()
+                << qv.getFileName()
                 << "\",\""
                 << std::setprecision(0)
-                << props.getFileLength()
+                << qv.getFileLength()
                 << "\",\""
-                << props.getFileUrl()
+                << qv.getFileUrl()
                 << "\""
                 << std::endl;
-            props.nextVideoLink();
+            qv.nextVideoLink();
         }
     }
-    catch (const QuviNoVideoLinkException&) {
-    }
-}
-
-static void
-fetch_page(QuviVideo& props,
-          const bool& reset=false)
-{
-    if (reset)
-        retrymgr.reset();
-    try { props.parse(); }
-    catch (const QuviException& x) {
-        retrymgr.handle(x);
-        fetch_page(props);
-    }
-    logmgr.resetReturnCode();
-}
-
-static void
-fetch_file(QuviVideo& props, const bool& reset=false) {
-    if (reset)
-        retrymgr.reset();
-
-    try   { curlmgr.fetchToFile(props); }
-    catch (const QuviException& x) {
-        retrymgr.setRetryUntilRetrievedFlag();
-        retrymgr.handle(x);
-        fetch_file(props);
-    }
-    catch (const NothingToDoException& x) { }
-
-    logmgr.resetReturnCode();
-
-    try {
-        props.nextVideoLink();
-        fetch_file(props, true);
-    }
     catch (const QuviNoVideoLinkException&) { }
 }
 
-static void
-report_notice() {
-    static const char report_notice[] =
-    ":: Consider filing a bug report bug if you can reproduce the above\n"
-    ":: results with the steps to repeat it.\n"
-    "::   <http://code.google.com/p/cclive/issues/>\n";
-    logmgr.cerr() << report_notice << std::endl;
-}
+#define next_video(d) \
+    do { \
+        if (d) logmgr.cerr(x, false); \
+        try { \
+            qv.nextVideoLink(); \
+            handle_video(qv); \
+        } \
+        catch (const QuviNoVideoLinkException&) { } \
+    } while(0)
 
 static void
-handle_error(QuviVideo& props, const RuntimeException& x) {
-    logmgr.cerr(x, false);
+handle_video(QuviVideo& qv) {
+    const Options opts = optsmgr.getOptions();
     try {
-        props.nextVideoLink();
-        fetch_file(props, true);
+        if (opts.print_fname_given)
+            print_fname(qv);
+
+        fetch_file(qv, true);
+
+        if (opts.exec_run_given)
+            execmgr.append(qv);
+
+        qv.nextVideoLink();
+        handle_video(qv);
     }
-    catch (const QuviNoVideoLinkException&) { }
+    // This is actually a curl error: 
+    // * We no longer rely on libquvi here
+    // * Reuse the QuviException class
+    catch (const QuviException& x)
+        { next_video(true); }
+    catch (const NothingToDoException& x)
+        { next_video(true); }
+    catch (const FileOpenException& x)
+        { next_video(true); }
+    catch (const NoMoreRetriesException& x)
+        { next_video(false); }
 }
 
 static void
 handle_url(const std::string& url) {
-    try
-    {
-        QuviVideo props(url);
+    try {
+        QuviVideo qv(url);
 
-        try
-        {
-            fetch_page(props);
+        fetch_page(qv, true/*reset retry counter*/);
 
-            const Options opts =
-                optsmgr.getOptions();
+        const Options opts = optsmgr.getOptions();
 
-            if (opts.no_extract_given)
-                print_video(props);
-            else if (opts.emit_csv_given)
-                print_csv(props);
-            else if (opts.stream_pass_given)
-                execmgr.passStream(props);
-            else
-            {
-                if (opts.print_fname_given)
-                    print_video(props);
-
-                fetch_file(props, true);
-            }
-
-            if (optsmgr.getOptions().exec_run_given) 
-                execmgr.append(props);
-        }
-        catch (const FileOpenException& x)
-            { handle_error(props, x); }
-        catch (const NothingToDoException& x)
-            { handle_error(props, x); }
+        if (opts.no_extract_given)
+            print_video(qv);
+        else if (opts.emit_csv_given)
+            print_csv(qv);
+        else if (opts.stream_pass_given)
+            execmgr.passStream(qv);
+        else
+            handle_video(qv);
     }
+    catch (const QuviException& x)
+        { logmgr.cerr(x, false); }
     catch (const NoSupportException& x)
         { logmgr.cerr(x, false); }
     catch (const ParseException& x)
-        { logmgr.cerr(x, false); report_notice(); }
-    catch (const QuviException& x)
-        { /* printed by retrymgr.handle already */ }
+        { logmgr.cerr(x, false); }
+    catch (const NoMoreRetriesException& x)
+        { }
 }
-
-typedef std::vector<std::string> STRV;
 
 void
 App::run() {
@@ -301,7 +267,7 @@ App::run() {
     }
 #endif
 
-    STRV tokens;
+    quvi::StringVector tokens;
 
     typedef unsigned int _uint;
 
@@ -312,7 +278,7 @@ App::run() {
             tokens.push_back(opts.inputs[i]);
     }
 
-    for (STRV::iterator iter=tokens.begin();
+    for (quvi::StringVector::iterator iter=tokens.begin();
         iter != tokens.end();
         ++iter)
     {
@@ -340,7 +306,7 @@ App::run() {
         execmgr.playQueue();
 }
 
-STRV
+quvi::StringVector
 App::parseInput() {
     std::string input;
 
@@ -349,12 +315,12 @@ App::parseInput() {
         input += ch;
 
     std::istringstream iss(input);
-    STRV tokens;
+    quvi::StringVector tokens;
 
     std::copy(
         std::istream_iterator<std::string >(iss),
         std::istream_iterator<std::string >(),
-        std::back_inserter<STRV>(tokens)
+        std::back_inserter<quvi::StringVector>(tokens)
     );
 
     return tokens;
@@ -364,7 +330,7 @@ void
 App::printVersion() {
 static const char copyr_notice[] =
 "Copyright (C) 2009,2010 Toni Gundogdu. "
-"License GPLv3+: GNU GPL version 3 or later\n"
+"License: GNU GPL version  3 or  later\n"
 "This is free software; see the  source for  copying conditions.  There is NO\n"
 "warranty;  not even for MERCHANTABILITY or FITNESS FOR A  PARTICULAR PURPOSE.";
 

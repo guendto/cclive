@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Toni Gundogdu.
+ * Copyright (C) 2009,2010 Toni Gundogdu.
  *
  * This file is part of cclive.
  * 
@@ -59,10 +59,7 @@ public:
 class QuviException : public RuntimeException {
 public:
     QuviException(const std::string&);
-    // Not actually an quvi exception. Recycle exception name.
-    // Note that this is used by CurlMgr::fetchToFile only.
-    QuviException(const std::string&,
-        const long &httpcode);
+    QuviException(const std::string&, const long &httpcode);
     const long& getHttpCode() const;
     const long& getCurlCode() const;
 private:
@@ -73,6 +70,11 @@ private:
 class QuviNoVideoLinkException : public RuntimeException {
 public:
     QuviNoVideoLinkException();
+};
+
+class NoMoreRetriesException : public RuntimeException {
+public:
+    NoMoreRetriesException();
 };
 
 #endif

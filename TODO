@@ -1,4 +1,4 @@
 repo: git://repo.or.cz/cclive.git
 web : http://repo.or.cz/w/cclive.git
 
-* rewrite/cleanup retry 'engine', especially app.cpp
+* execmgr: iterate all video links
