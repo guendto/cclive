@@ -64,9 +64,9 @@ option "retry"
     default="5"
     optional
 option "retry-wait"
-    - "wait 1..seconds between retries"
+    - "wait 5 seconds between retries"
     int typestr="<seconds>"
-    default="1"
+    default="5"
     optional
 
 section "Download"
