@@ -9079,6 +9079,7 @@ fi
     install prefix: ${prefix}
     compiler:       ${CXX}
     cxxflags:       ${CXXFLAGS}
+    install manual: ${with_man}
 " >&5
 $as_echo "$as_me: Configured to build cclive:
 
@@ -9087,6 +9088,7 @@ $as_echo "$as_me: Configured to build cclive:
     install prefix: ${prefix}
     compiler:       ${CXX}
     cxxflags:       ${CXXFLAGS}
+    install manual: ${with_man}
 " >&6;}
 
 
