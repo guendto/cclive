@@ -119,6 +119,7 @@ AC_MSG_NOTICE([Configured to build cclive:
     install prefix: ${prefix}
     compiler:       ${CXX}
     cxxflags:       ${CXXFLAGS}
+    install manual: ${with_man}
 ])
 
 
