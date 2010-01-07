@@ -19,6 +19,9 @@ for video links and verifying the links
 * Removed libiconv dependency; libquvi will take care of
 character set conversions instead
 
+* Tests ("make check") no longer run host specific tests,
+this is now done in quvi
+
 
 0.5.2
 -------------
