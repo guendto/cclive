@@ -44,7 +44,7 @@ Tube8Handler::parseTitle() {
 void
 Tube8Handler::parseLink() {
     std::string lnk;
-    partialMatch("videoUrl=(http://.*?)&", &lnk);
+    partialMatch("(?i)videourl=\"(.*?)\"", &lnk);
     props.setLink(lnk);
 }
 

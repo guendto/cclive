@@ -7,6 +7,7 @@ Version 0.5.8
   * Fix "-f best" for dailymotion
     # Use proper sorting method
     # Thanks to Markus Doppelbauer for reporting the issue
+  * Fix tube8 support
 
  Developer-visible changes:
   * configure: dump build configuration

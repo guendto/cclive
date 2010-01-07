@@ -8,7 +8,8 @@ MAIN_BEGIN
         return (0);
     }
     return
-        runtest_host("http://www.tube8.com/erotic/sadie-jones-sheer-undies/185361/");
+        runtest_host("http://www.tube8.com/fetish/japanese-melon-gal-censored/186133/");
+
 MAIN_END
 
 
