@@ -172,6 +172,8 @@ handle_video(QuviVideo& qv) {
         { next_video(true); }
     catch (const NoMoreRetriesException& x)
         { next_video(false); }
+    catch (const QuviNoVideoLinkException& x)
+        { /* Triggered by qv.nextvideoLink() in the above try-block. */ }
 }
 
 static void
