@@ -23,7 +23,6 @@ quvi.h \
 curl.h \
 progressbar.h \
 exec.h \
-retry.h \
 error.h \
 log.h \
 cmdline.h
