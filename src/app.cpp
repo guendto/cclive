@@ -171,7 +171,8 @@ handle_video(QuviVideo& qv) {
     catch (const FileOpenException& x)
         { next_video(true); }
     catch (const NoMoreRetriesException& x)
-        { next_video(false); }
+        { logmgr.cerr() << "give up trying." << std::endl;
+          next_video(false); }
     catch (const QuviNoVideoLinkException& x)
         { /* Triggered by qv.nextvideoLink() in the above try-block. */ }
 }
@@ -200,9 +201,9 @@ handle_url(const std::string& url) {
         { logmgr.cerr(x, false); }
     catch (const ParseException& x)
         { logmgr.cerr(x, false); }
-    catch (const QuviNoVideoLinkException& x)
-        { }
     catch (const NoMoreRetriesException& x)
+        { logmgr.cerr() << "give up trying." << std::endl; }
+    catch (const QuviNoVideoLinkException& x)
         { }
 }
 

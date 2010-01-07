@@ -42,7 +42,7 @@ static void
 check_counter() {
     const Options opts = optsmgr.getOptions();
 
-    if (++retries_so_far >= opts.retry_arg)
+    if (retries_so_far++ >= opts.retry_arg)
         throw NoMoreRetriesException();
 
 }
