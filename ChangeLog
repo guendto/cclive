@@ -9,6 +9,7 @@ Version 0.5.8
     # Thanks to Markus Doppelbauer for reporting the issue
 
  Developer-visible changes:
+  * configure: dump build configuration
   * tests/sevenload.cpp: remove dead test link (closes issue #19)
 
 
