@@ -111,3 +111,14 @@ AC_CONFIG_FILES([Makefile
                  src/Makefile
                  tests/Makefile])
 AC_OUTPUT
+
+AC_MSG_NOTICE([Configured to build cclive:
+
+    cclive version: ${VERSION}
+    host setup:     ${host}
+    install prefix: ${prefix}
+    compiler:       ${CXX}
+    cxxflags:       ${CXXFLAGS}
+])
+
+

@@ -9071,3 +9071,22 @@ if test -n "$ac_unrecognized_opts" && test "$enable_option_checking" != no; then
 $as_echo "$as_me: WARNING: unrecognized options: $ac_unrecognized_opts" >&2;}
 fi
 
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: Configured to build cclive:
+
+    cclive version: ${VERSION}
+    host setup:     ${host}
+    install prefix: ${prefix}
+    compiler:       ${CXX}
+    cxxflags:       ${CXXFLAGS}
+" >&5
+$as_echo "$as_me: Configured to build cclive:
+
+    cclive version: ${VERSION}
+    host setup:     ${host}
+    install prefix: ${prefix}
+    compiler:       ${CXX}
+    cxxflags:       ${CXXFLAGS}
+" >&6;}
+
+
