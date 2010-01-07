@@ -252,6 +252,9 @@ QuviVideo::parse(std::string url /*=""*/) {
         }
     }
 
+    if (videoLinks.size() == 0)
+        throw QuviNoVideoLinkException();
+
     // Start from the first link.
     currentVideoLink = videoLinks.begin();
 }

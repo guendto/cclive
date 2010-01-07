@@ -200,6 +200,8 @@ handle_url(const std::string& url) {
         { logmgr.cerr(x, false); }
     catch (const ParseException& x)
         { logmgr.cerr(x, false); }
+    catch (const QuviNoVideoLinkException& x)
+        { }
     catch (const NoMoreRetriesException& x)
         { }
 }

@@ -52,7 +52,7 @@ retry_msg(const QuviException& x) {
     const Options opts = optsmgr.getOptions();
 
     std::stringstream b;
-    b << "\n"
+    b << "\nerror: "
       << x.what()
       << "\nretry "
       << retries_so_far
