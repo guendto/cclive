@@ -9,18 +9,29 @@ cclive News
 * libquvi will now take care of fetching pages, parsing them
 for video links and verifying the links
 
-* CCLIVE_CURLINIT return code is now obsolete
+* cclive will print "error: libquvi: ..." if the error occurred
+in the library, and bug reports should therefore filed to the
+quvi bug tracker, not cclive's tracker
 
-* Improved fetch retrying for both pages and files
-
-* Added support for (cctv) multi-segment videos
+* Added support for (cctv) multi-segment videos, see also:
   http://code.google.com/p/clive/issues/detail?id=45
+
+* Adult websites are only supported if libquvi was built with
+the support (default:no)
+
+* CCLIVE_CURLINIT return code is now obsolete as libquvi
+initializes libcurl
+
+* Cleaned up code wise the retrying support
 
 * Removed libiconv dependency; libquvi will take care of
 character set conversions instead
 
 * Tests ("make check") no longer run host specific tests,
 this is now done in quvi
+
+* Similarly, the ADULT_OK environment variable is no longer
+used by the tests ("make check")
 
 
 0.5.2
