@@ -306,6 +306,9 @@ QuviVideo::toFileName(
 {
     const Options opts = optsmgr.getOptions();
 
+    const bool throw_nothing_todo =
+        (!opts.no_extract_given && !opts.emit_csv_given);
+
     if (!opts.output_video_given) {
         std::stringstream b;
 
@@ -375,8 +378,11 @@ QuviVideo::toFileName(
                 qvl->initial = Util::fileExists(qvl->filename);
                 if (!qvl->initial)
                     break;
-                else if (qvl->initial >= qvl->length)
-                    throw NothingToDoException();
+                else if (qvl->initial >= qvl->length) {
+                    if (throw_nothing_todo)
+                        throw NothingToDoException();
+                    break;
+                }
                 else {
                     if (opts.continue_given)
                         break;
@@ -390,8 +396,10 @@ QuviVideo::toFileName(
     else {
         qvl->initial = Util::fileExists(opts.output_video_arg);
 
-        if (qvl->initial >= qvl->length)
-            throw NothingToDoException();
+        if (qvl->initial >= qvl->length) {
+            if (throw_nothing_todo)
+                throw NothingToDoException();
+        }
 
         qvl->filename = opts.output_video_arg;
     }
