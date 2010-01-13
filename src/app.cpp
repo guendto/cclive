@@ -221,9 +221,9 @@ App::run() {
 
     if (opts.hosts_given) {
         std::vector<std::string> hosts;
-        char *domain=0, *formats=0;
+        char *domain, *formats;
 
-        while (quvi_iter_host(&domain, &formats) != QUVI_LASTHOST) {
+        while (quvi_next_host(&domain, &formats) == QUVI_OK) {
             hosts.push_back(
                 std::string(domain)
                 + "\t"
