@@ -90,7 +90,6 @@ public:
     void nextVideoLink();
     void updateInitialLength();
 private:
-    static void toVector(const std::string&, quvi::StringVector&);
     static void toFileName(
         const std::string& pageTitle,
         const std::string& videoId,

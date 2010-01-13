@@ -194,54 +194,34 @@ QuviVideo::parse(std::string url /*=""*/) {
     if (rc != QUVI_OK)
         handle_error(rc);
 
-#define wrap_getprop_s(id,dst) \
-    do { quvi_getprop(video, id, &tmp); dst = tmp; } while (0)
-    char *tmp; // wrap_getprop_s (above) uses this
+#define wrap_getprop(id,dst,type) \
+    do { type tmp; quvi_getprop(video, id, &tmp); dst = tmp; } while (0)
 
-    wrap_getprop_s(QUVIP_HOSTID, hostId);
-    wrap_getprop_s(QUVIP_PAGEURL, pageUrl);
-    wrap_getprop_s(QUVIP_PAGETITLE, pageTitle);
-    wrap_getprop_s(QUVIP_VIDEOID, videoId);
+    wrap_getprop(QUVIP_HOSTID,      hostId,     char*);
+    wrap_getprop(QUVIP_PAGEURL,     pageUrl,    char*);
+    wrap_getprop(QUVIP_PAGETITLE,   pageTitle,  char*);
+    wrap_getprop(QUVIP_VIDEOID,     videoId,    char*);
 
-    std::string videoLink;
-    wrap_getprop_s(QUVIP_VIDEOURL, videoLink);
+    size_t count = 0;
+    do    { ++count; }
+    while (quvi_next_videolink(video) == QUVI_OK);
 
-    std::string videoLength;
-    wrap_getprop_s(QUVIP_VIDEOFILELENGTH, videoLength);
-
-    std::string videoSuffix;
-    wrap_getprop_s(QUVIP_VIDEOFILESUFFIX, videoSuffix);
-
-    std::string videoContentType;
-    wrap_getprop_s(QUVIP_VIDEOFILECONTENTTYPE, videoContentType);
-#undef _getstr
-    quvi_parse_close(&video);
-
-    // Handle delimited strings.
-    quvi::StringVector vlink, vlength, vsuffix, vct;
-
-    QuviVideo::toVector(videoLink, vlink);
-    QuviVideo::toVector(videoLength, vlength);
-    QuviVideo::toVector(videoSuffix, vsuffix);
-    QuviVideo::toVector(videoContentType, vct);
-
-    const int size = vlink.size();
-
-    for (int i=0; i<size; ++i) {
+    int i = 0;
+    do {
         quvi::SHPQuviVideoLink q(new QuviVideoLink);
         try {
-            q->url    = vlink[i];
-            q->ct     = vct[i];
-            q->suffix = vsuffix[i];
-            q->length = atof(vlength[i].c_str());
+            wrap_getprop(QUVIP_VIDEOURL,              q->url,       char*);
+            wrap_getprop(QUVIP_VIDEOFILECONTENTTYPE,  q->ct,        char*);
+            wrap_getprop(QUVIP_VIDEOFILESUFFIX,       q->suffix,    char*);
+            wrap_getprop(QUVIP_VIDEOFILELENGTH,       q->length,    double);
 
             QuviVideo::toFileName(
                 pageTitle,
                 videoId,
                 hostId,
                 q,
-                i+1,
-                size
+                ++i,
+                count
             );
 
             videoLinks.push_back(q);
@@ -250,7 +230,11 @@ QuviVideo::parse(std::string url /*=""*/) {
             logmgr.cerr() << "file: " << q->filename << "\n";
             logmgr.cerr(x, false);
         }
-    }
+    } while (quvi_next_videolink(video) == QUVI_OK);
+
+#undef wrap_getprop
+
+    quvi_parse_close(&video);
 
     if (videoLinks.size() == 0)
         throw QuviNoVideoLinkException();
@@ -406,18 +390,6 @@ QuviVideo::toFileName(
 
     if (opts.overwrite_given)
         qvl->initial = 0;
-}
-
-void
-QuviVideo::toVector(
-    const std::string& s,
-    quvi::StringVector& dst)
-{
-    dst.clear();
-    std::istringstream iss(s);
-    std::string tmp;
-    while (std::getline(iss, tmp, quvi_delim[0]))
-        dst.push_back(tmp);
 }
 
 
