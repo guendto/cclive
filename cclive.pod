@@ -425,6 +425,10 @@ Format: flv|mp4
 
 mp4 may not always be available.
 
+=item spyfilms.com
+
+Format: flv|hd
+
 =item Other
 
 All other supported websites (see --host output) support
