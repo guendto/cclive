@@ -32,7 +32,8 @@ spiegel.cpp \
 google.cpp \
 youjizz.cpp \
 xvideos.cpp \
-tube8.cpp
+tube8.cpp \
+spyfilms.cpp
 
 hdr = \
 app.h \

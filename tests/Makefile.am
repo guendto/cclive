@@ -21,6 +21,7 @@ vimeo\
 youjizz\
 xvideos\
 tube8\
+spyfilms\
 multi
 
 TESTS=		$(check_PROGRAMS)
@@ -46,6 +47,7 @@ spiegel_SOURCES=	spiegel.cpp $(common)
 youjizz_SOURCES=	youjizz.cpp $(common)
 xvideos_SOURCES=	xvideos.cpp $(common)
 tube8_SOURCES=	    tube8.cpp $(common)
+spyfilms_SOURCES=   spyfilms.cpp $(common)
 multi_SOURCES=		multi.cpp $(common)
 
 local-clean:

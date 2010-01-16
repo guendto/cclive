@@ -82,6 +82,7 @@ HostHandlerFactory::createHandler(const HandlerType& type) {
     case Youjizz:    return SHP<YoujizzHandler>    (new YoujizzHandler);
     case Xvideos:    return SHP<XvideosHandler>    (new XvideosHandler);
     case Tube8:      return SHP<Tube8Handler>      (new Tube8Handler);
+    case Spyfilms:   return SHP<SpyfilmsHandler>   (new SpyfilmsHandler);
     // Keeps -Weffc++ quiet.
     case _last_type: break;
     }

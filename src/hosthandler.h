@@ -249,6 +249,16 @@ public:
   virtual void parseLink ();
 };
 
+// Spyfilms
+
+class SpyfilmsHandler : public HostHandler {
+public:
+    SpyfilmsHandler();
+    virtual void parseId   ();
+    virtual void parseTitle();
+    virtual void parseLink ();
+};
+
 #endif
 
 

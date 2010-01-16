@@ -59,7 +59,8 @@ am__objects_2 = youtube.$(OBJEXT) break.$(OBJEXT) evisor.$(OBJEXT) \
 	vimeo.$(OBJEXT) golem.$(OBJEXT) clipfish.$(OBJEXT) \
 	funnyhub.$(OBJEXT) myubo.$(OBJEXT) cctv.$(OBJEXT) \
 	ehrensenf.$(OBJEXT) spiegel.$(OBJEXT) google.$(OBJEXT) \
-	youjizz.$(OBJEXT) xvideos.$(OBJEXT) tube8.$(OBJEXT)
+	youjizz.$(OBJEXT) xvideos.$(OBJEXT) tube8.$(OBJEXT) \
+	spyfilms.$(OBJEXT)
 am__objects_3 =
 am_cclive_OBJECTS = $(am__objects_1) $(am__objects_2) $(am__objects_3)
 cclive_OBJECTS = $(am_cclive_OBJECTS)
@@ -183,7 +184,8 @@ spiegel.cpp \
 google.cpp \
 youjizz.cpp \
 xvideos.cpp \
-tube8.cpp
+tube8.cpp \
+spyfilms.cpp
 
 host_alias = @host_alias@
 host_cpu = @host_cpu@
@@ -365,6 +367,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/retry.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sevenload.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/spiegel.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/spyfilms.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tube8.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/util.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/video.Po@am__quote@

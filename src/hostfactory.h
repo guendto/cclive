@@ -33,7 +33,7 @@ protected:
         Sevenload,  Liveleak,  Dailymotion, Vimeo,
         Golem,      Clipfish,  Funnyhub,    Myubo,
         Cctv,       Ehrensenf, Spiegel,
-        Youjizz,    Xvideos,   Tube8,
+        Youjizz,    Xvideos,   Tube8,       Spyfilms,
 	_last_type };
 protected:
     static std::tr1::shared_ptr<HostHandler>

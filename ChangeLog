@@ -1,4 +1,11 @@
 
+Version 0.5.9
+
+ User-visible changes:
+  * Add spyfilms support
+    # Thanks to Hanno Böck for initial patch and data
+
+
 Version 0.5.8
 (January 14, 2010)
 

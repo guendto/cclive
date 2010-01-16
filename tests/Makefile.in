@@ -40,7 +40,7 @@ check_PROGRAMS = returncode$(EXEEXT) youtube$(EXEEXT) break$(EXEEXT) \
 	clipfish$(EXEEXT) funnyhub$(EXEEXT) myubo$(EXEEXT) \
 	cctv$(EXEEXT) ehrensenf$(EXEEXT) spiegel$(EXEEXT) \
 	vimeo$(EXEEXT) youjizz$(EXEEXT) xvideos$(EXEEXT) \
-	tube8$(EXEEXT) multi$(EXEEXT)
+	tube8$(EXEEXT) spyfilms$(EXEEXT) multi$(EXEEXT)
 subdir = tests
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -98,6 +98,9 @@ sevenload_LDADD = $(LDADD)
 am_spiegel_OBJECTS = spiegel.$(OBJEXT) $(am__objects_1)
 spiegel_OBJECTS = $(am_spiegel_OBJECTS)
 spiegel_LDADD = $(LDADD)
+am_spyfilms_OBJECTS = spyfilms.$(OBJEXT) $(am__objects_1)
+spyfilms_OBJECTS = $(am_spyfilms_OBJECTS)
+spyfilms_LDADD = $(LDADD)
 am_tube8_OBJECTS = tube8.$(OBJEXT) $(am__objects_1)
 tube8_OBJECTS = $(am_tube8_OBJECTS)
 tube8_LDADD = $(LDADD)
@@ -131,15 +134,15 @@ SOURCES = $(break_SOURCES) $(cctv_SOURCES) $(clipfish_SOURCES) \
 	$(funnyhub_SOURCES) $(golem_SOURCES) $(google_SOURCES) \
 	$(liveleak_SOURCES) $(multi_SOURCES) $(myubo_SOURCES) \
 	$(returncode_SOURCES) $(sevenload_SOURCES) $(spiegel_SOURCES) \
-	$(tube8_SOURCES) $(vimeo_SOURCES) $(xvideos_SOURCES) \
-	$(youjizz_SOURCES) $(youtube_SOURCES)
+	$(spyfilms_SOURCES) $(tube8_SOURCES) $(vimeo_SOURCES) \
+	$(xvideos_SOURCES) $(youjizz_SOURCES) $(youtube_SOURCES)
 DIST_SOURCES = $(break_SOURCES) $(cctv_SOURCES) $(clipfish_SOURCES) \
 	$(dailymotion_SOURCES) $(ehrensenf_SOURCES) $(evisor_SOURCES) \
 	$(funnyhub_SOURCES) $(golem_SOURCES) $(google_SOURCES) \
 	$(liveleak_SOURCES) $(multi_SOURCES) $(myubo_SOURCES) \
 	$(returncode_SOURCES) $(sevenload_SOURCES) $(spiegel_SOURCES) \
-	$(tube8_SOURCES) $(vimeo_SOURCES) $(xvideos_SOURCES) \
-	$(youjizz_SOURCES) $(youtube_SOURCES)
+	$(spyfilms_SOURCES) $(tube8_SOURCES) $(vimeo_SOURCES) \
+	$(xvideos_SOURCES) $(youjizz_SOURCES) $(youtube_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 am__tty_colors = \
@@ -282,6 +285,7 @@ spiegel_SOURCES = spiegel.cpp $(common)
 youjizz_SOURCES = youjizz.cpp $(common)
 xvideos_SOURCES = xvideos.cpp $(common)
 tube8_SOURCES = tube8.cpp $(common)
+spyfilms_SOURCES = spyfilms.cpp $(common)
 multi_SOURCES = multi.cpp $(common)
 all: all-am
 
@@ -365,6 +369,9 @@ sevenload$(EXEEXT): $(sevenload_OBJECTS) $(sevenload_DEPENDENCIES)
 spiegel$(EXEEXT): $(spiegel_OBJECTS) $(spiegel_DEPENDENCIES) 
 	@rm -f spiegel$(EXEEXT)
 	$(CXXLINK) $(spiegel_OBJECTS) $(spiegel_LDADD) $(LIBS)
+spyfilms$(EXEEXT): $(spyfilms_OBJECTS) $(spyfilms_DEPENDENCIES) 
+	@rm -f spyfilms$(EXEEXT)
+	$(CXXLINK) $(spyfilms_OBJECTS) $(spyfilms_LDADD) $(LIBS)
 tube8$(EXEEXT): $(tube8_OBJECTS) $(tube8_DEPENDENCIES) 
 	@rm -f tube8$(EXEEXT)
 	$(CXXLINK) $(tube8_OBJECTS) $(tube8_LDADD) $(LIBS)
@@ -402,6 +409,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/returncode.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sevenload.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/spiegel.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/spyfilms.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tube8.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/vimeo.Po@am__quote@
