@@ -94,6 +94,7 @@ VideoProperties::setContentType(const std::string& contentType) {
             suffix = "flv";
         }
         Util::subStrReplace(suffix, "x-", "");
+        Util::subStrReplace(suffix, "quicktime", "mov");
     }
 }
 
