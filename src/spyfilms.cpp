@@ -28,7 +28,7 @@ SpyfilmsHandler::SpyfilmsHandler()
 {
     props.setHost   (HOST);
     props.setDomain ("spyfilms.com");
-    props.setFormats("flv|mov");
+    props.setFormats("flv|hd");
 }
 
 void
