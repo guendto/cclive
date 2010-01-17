@@ -1,7 +1,7 @@
 #include "test.h"
 
 #define TEST_URL\
-    "http://www.spyfilms.com/neill_blomkamp/alive_in_joburg"
+    "http://www.spyfilms.com/#neill_blomkamp/alive_in_joburg"
 
 static const char *
 formats[] = {

@@ -291,6 +291,9 @@ App::run() {
         // Convert any embed type URLs to video page links.
         Util::embedToPage(*iter);
 
+        // Cleanup.
+        Util::cleanupLink(*iter);
+
         // Convert last.fm video link to Youtube page link.
         if ((*iter).find("last.fm") != std::string::npos)
             Util::lastfmToYoutube(*iter);

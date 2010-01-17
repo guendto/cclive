@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Toni Gundogdu.
+ * Copyright (C) 2009,2010 Toni Gundogdu.
  *
  * This file is part of cclive.
  * 
@@ -363,6 +363,12 @@ Util::perlMatch(const std::string& re, std::string& src) {
         return true;
     }
     return false;
+}
+
+void
+Util::cleanupLink(std::string& url) {
+    // spyvideos:
+    Util::subStrReplace(url, "#", "");
 }
 
 
