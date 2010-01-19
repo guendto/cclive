@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Toni Gundogdu.
+ * Copyright (C) 2009,2010 Toni Gundogdu.
  *
  * This file is part of cclive.
  * 
@@ -139,8 +139,13 @@ ExecMgr::passStream(const QuviVideo& props) {
 
     std::stringstream lnk;
     lnk << "\"" << props.getFileUrl() << "\"";
+ 
+    std::stringstream fname;
+    fname << "\"" << props.getFileName() << "\"";
 
     Util::subStrReplace(cmd, "%i", lnk.str());
+    Util::subStrReplace(cmd, "%f", fname.str());
+
     invokeCommand(cmd, "--stream-exec");
 }
 

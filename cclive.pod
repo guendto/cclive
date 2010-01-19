@@ -234,9 +234,12 @@ with either the video pathname (C<--stream>) or the parsed video link
 
 =item B<-s, --stream-pass>
 
-Pass parsed video link to the expression specified with C<--stream-exec>.
-See also L</EXAMPLES>. Inspired by a C<clive(1)> wrapper script contributed
-by Bill Squire.
+In addition to the "%i" specifier, if the specifier "%f" appears
+anywhere in C<--stream-exec> I<expression> it will be replaced
+with the pathname of the extracted video file.
+
+See also L</EXAMPLES>. This feature is based on clive wrapper script
+contributed by Bill Squire.
 
 =item B<--stream>=I<percentage>
 
@@ -326,6 +329,10 @@ We have added C<--stream-exec> to the config file to save ourselves from retypin
 later, allowing us to stream the video by just typing C<-s>.
 
 Other player software, e.g. C<vlc(1)> and C<totem(1)>, should work also.
+
+=item cclive -s URL --stream-exec="wget %i -O %f"
+
+Use C<wget(1)> to download the video.
 
 =item cat E<gt> url.lst
 
