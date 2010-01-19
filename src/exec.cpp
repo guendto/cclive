@@ -143,7 +143,12 @@ ExecMgr::passStream(const VideoProperties& props) {
     std::stringstream lnk;
     lnk << "\"" << props.getLink() << "\"";
 
+    std::stringstream fname;
+    fname << "\"" << props.getFilename() << "\"";
+
     Util::subStrReplace(cmd, "%i", lnk.str());
+    Util::subStrReplace(cmd, "%f", fname.str());
+
     invokeCommand(cmd, "--stream-exec");
 }
 

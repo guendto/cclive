@@ -2,6 +2,10 @@
 Version 0.5.9
 
  User-visible changes:
+  * --stream-exec, --stream-pass
+    # Add support for the %f specifier
+    # Thanks to webmaster.foto-schaal.de for the patch
+    # Closes issue #22
   * Add spyfilms support
     # Thanks to Hanno Böck for initial patch and data
 

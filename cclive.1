@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2010-01-16" "0.5.9" "cclive manual"
+.TH cclive 1 "2010-01-19" "0.5.9" "cclive manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -297,15 +297,16 @@ Invokes the expression specified with \f(CW\*(C`\-\-exec\*(C'\fR when download f
 .IP "\fB\-\-stream\-exec\fR=\fIexpression\fR" 4
 .IX Item "--stream-exec=expression"
 Expression to be invoked with \f(CW\*(C`\-\-stream\*(C'\fR and \f(CW\*(C`\-\-stream\-pass\*(C'\fR.
-.Sp
-If a \*(L"%i\*(R" specifier is used in the \fIexpression\fR, it will be replaced
-with either the video pathname (\f(CW\*(C`\-\-stream\*(C'\fR) or the parsed video link
-(\f(CW\*(C`\-\-stream\-pass\*(C'\fR).
 .IP "\fB\-s, \-\-stream\-pass\fR" 4
 .IX Item "-s, --stream-pass"
 Pass parsed video link to the expression specified with \f(CW\*(C`\-\-stream\-exec\*(C'\fR.
-See also \*(L"\s-1EXAMPLES\s0\*(R". Inspired by a \f(CWclive(1)\fR wrapper script contributed
-by Bill Squire.
+.Sp
+In addition to the \*(L"%i\*(R" specifier, if the specifier \*(L"%f\*(R" appears
+anywhere in \f(CW\*(C`\-\-stream\-exec\*(C'\fR \fIexpression\fR it will be replaced
+with the pathname of the extracted video file.
+.Sp
+See also \*(L"\s-1EXAMPLES\s0\*(R". This feature is based on clive wrapper script
+contributed by Bill Squire.
 .IP "\fB\-\-stream\fR=\fIpercentage\fR" 4
 .IX Item "--stream=percentage"
 Mimics \*(L"streaming\*(R" by forking the expression specified with \f(CW\*(C`\-\-stream\-exec\*(C'\fR
@@ -390,6 +391,10 @@ We have added \f(CW\*(C`\-\-stream\-exec\*(C'\fR to the config file to save ours
 later, allowing us to stream the video by just typing \f(CW\*(C`\-s\*(C'\fR.
 .Sp
 Other player software, e.g. \f(CWvlc(1)\fR and \f(CWtotem(1)\fR, should work also.
+.ie n .IP "cclive \-s \s-1URL\s0 \-\-stream\-exec=""wget %i \-O %f""" 4
+.el .IP "cclive \-s \s-1URL\s0 \-\-stream\-exec=``wget \f(CW%i\fR \-O \f(CW%f\fR''" 4
+.IX Item "cclive -s URL --stream-exec=wget %i -O %f"
+Use \f(CWwget(1)\fR to download the video.
 .IP "cat > url.lst" 4
 .IX Item "cat > url.lst"
 .Vb 4
