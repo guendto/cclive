@@ -90,7 +90,7 @@ invokeCommand(const std::string& cmd, const char *what=0) {
     }
 }
 
-typedef std::vector<QuviVideo> VIDV;
+typedef std::vector<QuviVideo> vquvi;
 
 void
 ExecMgr::playPlus() {
@@ -101,7 +101,7 @@ ExecMgr::playPlus() {
     Util::subStrReplace(cmd, "+",  "");
     cmd += " ";
 
-    for (VIDV::const_iterator iter=queue->begin();
+    for (vquvi::const_iterator iter=queue->begin();
         iter != queue->end();
         ++iter)
     {
@@ -117,7 +117,7 @@ void
 ExecMgr::playSemi() {
     const Options opts = optsmgr.getOptions();
 
-    for (VIDV::const_iterator iter = queue->begin();
+    for (vquvi::const_iterator iter = queue->begin();
         iter != queue->end();
         ++iter)
     {
