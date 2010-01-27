@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Toni Gundogdu.
+ * Copyright (C) 2009,2010 Toni Gundogdu.
  *
  * This file is part of cclive.
  * 
@@ -24,14 +24,15 @@
 #endif
 
 #include <iostream>
-#include <vector>
-#include <iterator>
 #include <sstream>
 #include <iomanip>
 #include <algorithm>
-#include <tr1/memory>
 #include <cstring>
 #include <cerrno>
+
+#ifdef HAVE_SYS_IOCTL_H
+#include <sys/ioctl.h>
+#endif
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
@@ -53,17 +54,13 @@
 #include <signal.h>
 #endif
 
-#ifdef HAVE_SYS_IOCTL_H
-#include <sys/ioctl.h>
-#endif
-
-#include "hosthandler.h"
-#include "hostfactory.h"
 #include "macros.h"
 #include "opts.h"
+#include "except.h"
+#include "quvi.h"
 #include "curl.h"
+#include "util.h"
 #include "exec.h"
-#include "retry.h"
 #include "log.h"
 #include "app.h"
 
@@ -75,161 +72,147 @@
 
 // singleton instances
 static SHP<OptionsMgr> __optsmgr (new OptionsMgr);
+static SHP<QuviMgr>    __quvimgr (new QuviMgr);
 static SHP<CurlMgr>    __curlmgr (new CurlMgr);
 static SHP<ExecMgr>    __execmgr (new ExecMgr);
-static SHP<RetryMgr>   __retrymgr(new RetryMgr);
 static SHP<LogMgr>     __logmgr  (new LogMgr);
 
-extern void handle_sigwinch(int); // src/progress.cpp
-
-App::~App() {
-}
+extern void handle_sigwinch(int); // src/progressbar.cpp
+extern void fetch_page(QuviVideo&, const bool&); // src/retry.cpp
+extern void fetch_file(QuviVideo&, const bool&); // src/retry.cpp
 
 void
 App::main(const int& argc, char * const *argv) {
     optsmgr.init(argc, argv);
-    logmgr.init(); // apply --quiet
+    logmgr.init();  // apply --quiet
+    quvimgr.init(); // creates also curl handle which we'll reuse
     curlmgr.init();
 }
 
 static void
-printVideo(const VideoProperties& props) {
+print_fname(QuviVideo& qv) {
     logmgr.cout()
         << "file: "
-        << props.getFilename()
+        << qv.getFileName()
         << "  "
         << std::setprecision(1)
-        << _TOMB(props.getLength())
+        << _TOMB(qv.getFileLength())
         << "M  ["
-        << props.getContentType()
+        << qv.getFileContentType()
         << "]"
         << std::endl;
 }
 
 static void
-printCSV(const VideoProperties& props) {
+print_video(QuviVideo& qv) {
+    try {
+        while (1) {
+            print_fname(qv);
+            qv.nextVideoLink();
+        }
+    }
+    catch (const QuviNoVideoLinkException&) { }
+}
+
+static void
+print_csv(QuviVideo& qv) {
     std::cout.setf(std::ios::fixed);
     std::cout.unsetf(std::ios::showpoint);
-    std::cout
-        << "csv:\""
-        << props.getFilename()
-        << "\",\""
-        << std::setprecision(0)
-        << props.getLength()
-        << "\",\""
-        << props.getLink()
-        << "\""
-        << std::endl;
-}
-
-typedef CurlMgr::FetchException FetchError;
-
-static void
-fetchPage(SHP<HostHandler> handler,
-          const std::string& url,
-          const bool& reset=false)
-{
-    if (reset)
-        retrymgr.reset();
-    try   { handler->parsePage(url); }
-    catch (const FetchError& x) {
-        retrymgr.handle(x);
-        fetchPage(handler, url);
+    try {
+        while (1) {
+            std::cout
+                << "csv:\""
+                << qv.getFileName()
+                << "\",\""
+                << std::setprecision(0)
+                << qv.getFileLength()
+                << "\",\""
+                << qv.getFileUrl()
+                << "\""
+                << std::endl;
+            qv.nextVideoLink();
+        }
     }
-    logmgr.resetReturnCode();
+    catch (const QuviNoVideoLinkException&) { }
 }
 
-static void
-fetchFile(VideoProperties& props, const bool& reset=false) {
-    if (reset)
-        retrymgr.reset();
-    try   { curlmgr.fetchToFile(props); }
-    catch (const FetchError& x) {
-        retrymgr.setRetryUntilRetrievedFlag();
-        retrymgr.handle(x);
-        fetchFile(props);
-    }
-    logmgr.resetReturnCode();
-}
+#define next_video(log_error, prepend_newline) \
+    do { \
+        if (log_error) \
+            logmgr.cerr(x, prepend_newline); \
+        try { \
+            qv.nextVideoLink(); \
+            handle_video(qv); \
+        } \
+        catch (const QuviNoVideoLinkException&) { } \
+    } while(0)
 
 static void
-queryLength(VideoProperties& props, const bool& reset=false) {
-    if (reset)
-        retrymgr.reset();
-    try   { curlmgr.queryFileLength(props); }
-    catch (const FetchError& x) {
-        retrymgr.handle(x);
-        queryLength(props);
-    }
-    logmgr.resetReturnCode();
-}
-
-static void
-processVideo(VideoProperties& props) {
-    queryLength(props, true);
-
-    const Options opts =
-        optsmgr.getOptions();
-
-    if (opts.no_extract_given)
-        printVideo(props);
-    else if (opts.emit_csv_given)
-        printCSV(props);
-    else if (opts.stream_pass_given)
-        execmgr.passStream(props);
-    else
-    {
+handle_video(QuviVideo& qv) {
+    const Options opts = optsmgr.getOptions();
+    try {
         if (opts.print_fname_given)
-            printVideo(props);
+            print_fname(qv);
 
-        fetchFile(props, true);
+        fetch_file(qv, true);
+
+        if (opts.exec_run_given)
+            execmgr.append(qv);
+
+        qv.nextVideoLink();
+        handle_video(qv);
     }
+    // This is actually a curl error: 
+    // * We no longer rely on libquvi here
+    // * Reuse the QuviException class
+    catch (const QuviException& x)
+        { next_video(true, true); }
+    catch (const NothingToDoException& x)
+        { next_video(true, false); }
+    catch (const FileOpenException& x)
+        { next_video(true, false); }
+    catch (const NoMoreRetriesException& x)
+        { logmgr.cerr() << "give up trying." << std::endl;
+          next_video(false, false); }
+    catch (const QuviNoVideoLinkException& x)
+        { /* Triggered by qv.nextvideoLink() in the above try-block. */ }
 }
 
 static void
-reportNotice() {
-    static const char report_notice[] =
-    ":: A bug? If you think so, and you can reproduce the above,\n"
-    ":: consider submitting it to the issue tracker:\n"
-    "::     <http://code.google.com/p/cclive/issues/>\n";
-    logmgr.cerr() << report_notice << std::endl;
-}
+handle_url(const std::string& url) {
+    try {
+        QuviVideo qv(url);
 
-typedef HostHandlerFactory::UnsupportedHostException NoSupport;
-typedef HostHandler::ParseException                  ParseError;
-typedef VideoProperties::NothingToDoException        NothingTodo;
+        fetch_page(qv, true/*reset retry counter*/);
 
-static void
-handleURL(const std::string& url) {
-    try
-    {
-        SHP<HostHandler> handler = 
-            HostHandlerFactory::createHandler(url);
+        const Options opts = optsmgr.getOptions();
 
-        fetchPage(handler, url, true);
-
-        VideoProperties props =
-            handler->getVideoProperties();
-
-        try { processVideo(props); }
-        catch (const FileOpenException& x)
-            { logmgr.cerr(x, false); }
-        catch (const NothingTodo& x)
-            { logmgr.cerr(x, false); }
-
-        if (optsmgr.getOptions().exec_run_given) 
-            execmgr.append(props);
+        if (opts.no_extract_given)
+            print_video(qv);
+        else if (opts.emit_csv_given)
+            print_csv(qv);
+        else if (opts.stream_pass_given)
+            execmgr.passStream(qv);
+        else
+            handle_video(qv);
     }
-    catch (const NoSupport& x)   { logmgr.cerr(x, false); }
-    catch (const FetchError& x)  { /* printed by retrymgr.handle already */ }
-    catch (const ParseError& x)  { logmgr.cerr(x, false); reportNotice(); }
+    catch (const QuviException& x)
+        { logmgr.cerr(x, false); }
+    catch (const NoSupportException& x)
+        { logmgr.cerr(x, false); }
+    catch (const ParseException& x)
+        { logmgr.cerr(x, false); }
+    catch (const NoMoreRetriesException& x)
+        { logmgr.cerr() << "give up trying." << std::endl; }
+    catch (const QuviNoVideoLinkException& x)
+        { }
 }
-
-typedef std::vector<std::string> STRV;
 
 void
 App::run() {
-    const Options opts = optsmgr.getOptions();
+
+    const Options opts =
+        optsmgr.getOptions();
 
     if (opts.version_given) {
         printVersion();
@@ -237,10 +220,30 @@ App::run() {
     }
 
     if (opts.hosts_given) {
-        HostHandlerFactory::printHosts();
+        std::vector<std::string> hosts;
+        char *domain, *formats;
+
+        while (quvi_next_host(&domain, &formats) == QUVI_OK) {
+            hosts.push_back(
+                std::string(domain)
+                + "\t"
+                + std::string(formats)
+                + "\n"
+            );
+        }
+
+        std::sort(hosts.begin(), hosts.end());
+
+        std::copy(hosts.begin(), hosts.end(),
+            std::ostream_iterator<std::string>(std::cout));
+
+        std::cout
+            << "\nNote: Some videos may have limited number "
+            << "of formats available." << std::endl;
+
         return;
     }
-
+ 
     if (opts.regexp_given) {
         std::string empty;
         if (!Util::perlMatch(opts.regexp_arg, empty)) {
@@ -270,7 +273,7 @@ App::run() {
     }
 #endif
 
-    STRV tokens;
+    quvi::StringVector tokens;
 
     typedef unsigned int _uint;
 
@@ -281,7 +284,7 @@ App::run() {
             tokens.push_back(opts.inputs[i]);
     }
 
-    for (STRV::iterator iter=tokens.begin();
+    for (quvi::StringVector::iterator iter=tokens.begin();
         iter != tokens.end();
         ++iter)
     {
@@ -290,9 +293,6 @@ App::run() {
 
         // Convert any embed type URLs to video page links.
         Util::embedToPage(*iter);
-
-        // Cleanup.
-        Util::cleanupLink(*iter);
 
         // Convert last.fm video link to Youtube page link.
         if ((*iter).find("last.fm") != std::string::npos)
@@ -306,13 +306,13 @@ App::run() {
     if (opts.background_given)
         daemonize();
 
-    std::for_each(tokens.begin(), tokens.end(), handleURL);
+    std::for_each(tokens.begin(), tokens.end(), handle_url);
 
     if (opts.exec_run_given)
         execmgr.playQueue();
 }
 
-STRV
+quvi::StringVector
 App::parseInput() {
     std::string input;
 
@@ -321,12 +321,12 @@ App::parseInput() {
         input += ch;
 
     std::istringstream iss(input);
-    STRV tokens;
+    quvi::StringVector tokens;
 
     std::copy(
         std::istream_iterator<std::string >(iss),
         std::istream_iterator<std::string >(),
-        std::back_inserter<STRV>(tokens)
+        std::back_inserter<quvi::StringVector>(tokens)
     );
 
     return tokens;
@@ -336,17 +336,14 @@ void
 App::printVersion() {
 static const char copyr_notice[] =
 "Copyright (C) 2009,2010 Toni Gundogdu. "
-"License GNU  GPL  version  3 or later\n"
+"License: GNU GPL version  3 or  later\n"
 "This is free software; see the  source for  copying conditions.  There is NO\n"
 "warranty;  not even for MERCHANTABILITY or FITNESS FOR A  PARTICULAR PURPOSE.";
 
-    const curl_version_info_data *c =
-        curl_version_info(CURLVERSION_NOW);
-
     std::cout
         << CMDLINE_PARSER_PACKAGE       << " version "
-        << CMDLINE_PARSER_VERSION       << " with libcurl version "
-        << c->version                   << "  ["
+        << CMDLINE_PARSER_VERSION       << " with libquvi version "
+        << quvi_version(QUVI_VERSION)   << "  ["
 #ifdef BUILD_DATE
         << BUILD_DATE << "-"
 #endif
@@ -354,13 +351,6 @@ static const char copyr_notice[] =
         << copyr_notice                 << "\n"
         << "\n  Locale/codeset  : "     << optsmgr.getLocale()
         << "\n  Config          : "     << optsmgr.getPath()
-        << "\n  Features        : pcre "
-#ifdef HAVE_ICONV
-        << "iconv "
-#endif
-#ifdef WITH_RESIZE
-        << "sigwinch "
-#endif
         << "\n  Home            : "     << "<http://cclive.googlecode.com/>"
         << std::endl;
 }
@@ -378,14 +368,18 @@ App::daemonize() {
 
     if (pid < 0) {
 #ifdef HAVE_STRERROR
-        fprintf(stderr, "error: fork: %s\n", strerror(errno));
+        std::cerr
+            << "error: fork: "
+            << strerror(errno)
+            << std::endl;
 #else
         perror("fork");
 #endif
         exit (CCLIVE_SYSTEM);
     }
     else if (pid != 0) {
-        std::cout 
+        const Options opts = optsmgr.getOptions();
+        std::cout
             << "Continuing in background, pid "
             << static_cast<long>(pid)
             << ".\nOutput will be written to \""

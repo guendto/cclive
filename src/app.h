@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Toni Gundogdu.
+ * Copyright (C) 2009,2010 Toni Gundogdu.
  *
  * This file is part of cclive.
  * 
@@ -21,8 +21,6 @@
 #define app_h
 
 class App {
-public:
-    virtual ~App();
 public:
     void main (const int& argc, char * const *argv);
     void run  ();

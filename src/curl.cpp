@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Toni Gundogdu.
+ * Copyright (C) 2009,2010 Toni Gundogdu.
  *
  * This file is part of cclive.
  * 
@@ -26,7 +26,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <cerrno>
-#include <vector>
+#include <curl/curl.h>
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
@@ -35,12 +35,12 @@
 #include "except.h"
 #include "opts.h"
 #include "macros.h"
-#include "video.h"
-#include "progressbar.h"
 #include "log.h"
-#include "util.h"
 #include "curl.h"
-#include "retry.h"
+#include "quvi.h"
+#include "progressbar.h"
+
+extern int number_of_retries(); // src/retry.cpp
 
 static CURL *curl;
 
@@ -61,14 +61,12 @@ formatError (const CURLcode& code) {
 CurlMgr::CurlMgr()
     : httpcode(0)
 {
-    curl = NULL;
 }
 
 // Keeps -Weffc++ happy.
 CurlMgr::CurlMgr(const CurlMgr& o)
     : httpcode(o.httpcode)
 {
-    curl = NULL;
 }
 
 // Ditto.
@@ -78,17 +76,17 @@ CurlMgr::operator=(const CurlMgr&) {
 }
 
 CurlMgr::~CurlMgr() {
-    curl_easy_cleanup(curl);
-    curl = NULL;
+    // libquvi takes care of releasing libcurl.
 }
 
 void
 CurlMgr::init() {
-    curl = curl_easy_init();
-    if (!curl)
-        throw RuntimeException(CCLIVE_CURLINIT);
 
-    const Options opts = optsmgr.getOptions();
+    const Options opts =
+        optsmgr.getOptions();
+
+    quvimgr.curlHandle(&curl);
+    assert(curl != 0);
 
     curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1L);
     curl_easy_setopt(curl, CURLOPT_USERAGENT, opts.agent_arg);
@@ -102,161 +100,6 @@ CurlMgr::init() {
         proxy = "";
 
     curl_easy_setopt(curl, CURLOPT_PROXY, proxy);
-}
-
-static void *
-_realloc(void *p, const size_t size) {
-    if (p) return realloc(p,size);
-    return malloc(size);
-}
-
-struct mem_s {
-    size_t size;
-    char *p;
-};
-
-static size_t
-callback_writemem(void *p, size_t size, size_t nmemb, void *data) {
-    mem_s *m = reinterpret_cast<mem_s*>(data);
-    const size_t rsize = size * nmemb;
-    void *tmp = _realloc(m->p, m->size+rsize+1);
-    if (tmp) {
-        m->p = reinterpret_cast<char*>(tmp);
-        memcpy(&(m->p[m->size]), p, rsize);
-        m->size += rsize;
-        m->p[m->size] = '\0';
-    }
-    return rsize;
-}
-
-std::string
-CurlMgr::fetchToMem(std::string url, const std::string &what) {
-
-    Util::fromHtmlEntities(url);
-
-    logmgr.cout()
-        << "fetch "
-        << (what.empty() ? url : what)
-        << " ..."
-        << std::flush;
-
-    curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-    curl_easy_setopt(curl, CURLOPT_ENCODING, "");
-
-    mem_s mem;
-    memset(&mem, 0, sizeof(mem));
-
-    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &mem);
-    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, callback_writemem);
-
-    const Options opts = optsmgr.getOptions();
-
-    curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT,
-        opts.connect_timeout_arg);
-
-    /*
-     * http://curl.haxx.se/docs/knownbugs.html:
-     * 
-     * "When connecting to a SOCKS proxy, the (connect) timeout is
-     * not properly acknowledged after the actual TCP connect (during
-     * the SOCKS 'negotiate' phase)."
-     */
-    curl_easy_setopt(curl, CURLOPT_TIMEOUT,
-        opts.connect_timeout_socks_arg);
-
-    const CURLcode rc =
-        curl_easy_perform(curl);
-
-    curl_easy_setopt(curl, CURLOPT_TIMEOUT, 0L);
-
-    std::string errmsg;
-
-    httpcode = 0;
-
-    if (CURLE_OK == rc) {
-        curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpcode);
-        if (httpcode == 200 || httpcode == 206)
-            logmgr.cout() << "done." << std::endl;
-        else
-            errmsg = formatError(httpcode);
-    }
-    else
-        errmsg = formatError(rc);
-
-    std::string content;
-
-    if (NULL != mem.p) {
-        content = mem.p;
-        _FREE(mem.p);
-    }
-
-    if (!errmsg.empty())
-        throw FetchException(errmsg, httpcode, rc);
-
-    return content;
-}
-
-void
-CurlMgr::queryFileLength(VideoProperties& props) {
-    logmgr.cout() << "verify video link ..." << std::flush;
-
-    const Options opts = optsmgr.getOptions();
-
-    curl_easy_setopt(curl, CURLOPT_URL, props.getLink().c_str());
-    curl_easy_setopt(curl, CURLOPT_NOBODY, 1L);      // GET -> HEAD
-
-    mem_s mem;
-    memset(&mem, 0, sizeof(mem));
-
-    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &mem);
-    curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, callback_writemem);
-
-    curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT,
-                     opts.connect_timeout_arg);
-    curl_easy_setopt(curl, CURLOPT_TIMEOUT,
-                     opts.connect_timeout_socks_arg);
-
-    const CURLcode rc =
-        curl_easy_perform(curl);
-
-    curl_easy_setopt(curl, CURLOPT_TIMEOUT, 0L);
-    curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L); // reset HEAD -> GET
-
-    std::string errmsg;
-
-    httpcode = 0;
-
-    if (CURLE_OK == rc)
-    {
-        curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpcode);
-
-        if (httpcode == 200 || httpcode == 206)
-        {
-            const char *ct = NULL;
-            curl_easy_getinfo(curl, CURLINFO_CONTENT_TYPE, &ct);
-
-            double len = 0;
-            curl_easy_getinfo(curl,
-                CURLINFO_CONTENT_LENGTH_DOWNLOAD, &len);
-
-            props.setLength(len);
-            props.setContentType(ct);
-
-            logmgr.cout() << "done." << std::endl;
-        }
-        else
-            errmsg = formatError(httpcode);
-    }
-    else
-        errmsg = formatError(rc);
-
-    if (NULL != mem.p)
-        _FREE(mem.p);
-
-    if (!errmsg.empty())
-        throw FetchException(errmsg, httpcode, rc);
-
-    props.formatOutputFilename();
 }
 
 struct write_s {
@@ -285,23 +128,29 @@ callback_progress(
 }
 
 void
-CurlMgr::fetchToFile(VideoProperties& props) {
+CurlMgr::fetchToFile(QuviVideo& props) {
     const Options opts   = optsmgr.getOptions();
 
     bool continue_given =
         static_cast<bool>(opts.continue_given);
 
-    if (retrymgr.getRetryUntilRetrievedFlag()) {
-        props.updateInitial();
+    if (number_of_retries() > 1) {
+        // Make an attempt to continue if we're retrying a file transfer.
+
+        // (QuviVideo::updateInitialLength) Throws NothingToDoException
+        // if in some bizarre way we managed to get the file in whole already.
+        props.updateInitialLength();
+
         continue_given = true;
     }
 
-    const double initial = props.getInitial();
+    const double initial =
+        props.getInitialFileLength();
 
     if (continue_given && initial > 0) {
 
         const double remaining =
-            props.getLength() - initial;
+            props.getFileLength() - initial;
 
         logmgr.cout()
             << "from: "
@@ -320,14 +169,14 @@ CurlMgr::fetchToFile(VideoProperties& props) {
             << std::endl;
     }
 
-    curl_easy_setopt(curl, CURLOPT_URL, props.getLink().c_str());
+    curl_easy_setopt(curl, CURLOPT_URL, props.getFileUrl().c_str());
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, callback_writefile);
 
     write_s write;
     memset(&write, 0, sizeof(write));
 
     const char *mode = initial > 0 ? "ab" : "wb";
-    const char *fname = props.getFilename().c_str();
+    const char *fname = props.getFileName().c_str();
 
     write.file = fopen(fname, mode);
 
@@ -387,17 +236,20 @@ CurlMgr::fetchToFile(VideoProperties& props) {
         errmsg = formatError(rc);
 
     if (!errmsg.empty())
-        throw FetchException(errmsg, httpcode, rc);
+        throw QuviException(errmsg, httpcode);
 
     pb.finish();
+
     logmgr.cout() << std::endl;
 }
 
 const std::string&
 CurlMgr::unescape(std::string& url) const {
     char *p = curl_easy_unescape(curl, url.c_str(), 0, 0);
-    if (!p)
-        throw RuntimeException(CCLIVE_SYSTEM, "curl_easy_unescape: returned null");
+    if (!p) {
+        throw RuntimeException(CCLIVE_SYSTEM,
+            "curl_easy_unescape: returned null");
+    }
     url     = p;
     curl_free(p);
     return url;
@@ -406,31 +258,13 @@ CurlMgr::unescape(std::string& url) const {
 const std::string&
 CurlMgr::escape(std::string& url) const {
     char *p = curl_easy_escape(curl, url.c_str(), 0);
-    if (!p)
-        throw RuntimeException(CCLIVE_SYSTEM, "curl_easy_escape: returned null");
+    if (!p) {
+        throw RuntimeException(CCLIVE_SYSTEM,
+            "curl_easy_escape: returned null");
+    }
     url = p;
     curl_free(p);
     return url;
-}
-
-CurlMgr::FetchException::FetchException(
-    const std::string& error,
-    const long& httpcode,
-    const CURLcode& rc)
-    : RuntimeException(CCLIVE_FETCH, error),
-      httpcode(httpcode),
-      curlcode(rc)
-{
-}
-
-const long&
-CurlMgr::FetchException::getHTTPCode() const {
-    return httpcode;
-}
-
-const CURLcode&
-CurlMgr::FetchException::getCurlCode() const {
-    return curlcode;
 }
 
 

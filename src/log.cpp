@@ -19,6 +19,7 @@
 
 #include "config.h"
 
+#include <iostream>
 #include <fstream>
 #include <cstdio>
 #include <cstdlib>
@@ -33,20 +34,20 @@
 #include <unistd.h>
 #endif
 
-#ifdef HAVE_FCNTL_H
-#include <fcntl.h>
-#endif
-
 #ifdef HAVE_SYS_STAT_H
 #include <sys/stat.h>
 #endif
 
+#ifdef HAVE_FCNTL_H
+#include <fcntl.h>
+#endif
+
 #ifndef S_IRGRP
-# define S_IRGRP    S_IRUSR
+#define S_IRGRP S_IRUSR
 #endif
 
 #ifndef S_IROTH
-# define S_IROTH    S_IRUSR
+#define S_IROTH S_IRUSR
 #endif
 
 #include "except.h"
@@ -129,6 +130,8 @@ LogMgr::operator=(const LogMgr&) {
 void
 LogMgr::_init(std::string fname/*=""*/) {
 
+    this->fname = fname;
+
     _DELETE(lbout);
     _DELETE(lberr);
     _DELETE(oscout);
@@ -163,8 +166,12 @@ LogMgr::_init(std::string fname/*=""*/) {
 
         if (fd == -1) {
 #ifdef HAVE_STRERROR
-            fprintf(stderr, "error: %s: %s\n",
-                fname.c_str(), strerror(errno));
+            std::cerr
+                << "error: "
+                << fname
+                << ": "
+                << strerror(errno)
+                << std::endl;
 #else
             perror("open");
 #endif
@@ -186,9 +193,12 @@ void
 LogMgr::init() {
     const Options opts = optsmgr.getOptions();
 
+    lbout->setVerbose(!opts.quiet_given);
+    lberr->setVerbose(!opts.quiet_given);
+
     if (opts.background_given) {
 #if defined(HAVE_FORK) && defined(HAVE_WORKING_FORK)
-        _init(opts.logfile_arg);
+         _init(opts.logfile_arg);
 #endif
     }
     else {

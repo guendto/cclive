@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Toni Gundogdu.
+ * Copyright (C) 2009,2010 Toni Gundogdu.
  *
  * This file is part of cclive.
  * 
@@ -17,16 +17,13 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <tr1/memory>
-#include <iterator>
 #include <cstdlib>
 #include <cstring>
 #include <sstream>
 #include <string>
-#include <vector>
 
 #include "except.h"
-#include "video.h"
+#include "quvi.h"
 #include "opts.h"
 #include "util.h"
 #include "log.h"
@@ -53,7 +50,7 @@ ExecMgr::verifyExecArgument() {
 }
 
 void
-ExecMgr::append(const VideoProperties& props) {
+ExecMgr::append(const QuviVideo& props) {
     queue->push_back(props);
 }
 
@@ -93,7 +90,7 @@ invokeCommand(const std::string& cmd, const char *what=0) {
     }
 }
 
-typedef std::vector<VideoProperties> VIDV;
+typedef std::vector<QuviVideo> vquvi;
 
 void
 ExecMgr::playPlus() {
@@ -104,12 +101,12 @@ ExecMgr::playPlus() {
     Util::subStrReplace(cmd, "+",  "");
     cmd += " ";
 
-    for (VIDV::const_iterator iter=queue->begin();
+    for (vquvi::const_iterator iter=queue->begin();
         iter != queue->end();
         ++iter)
     {
         cmd += " \"";
-        cmd += (*iter).getFilename();
+        cmd += (*iter).getFileName();
         cmd += "\"";
     }
 
@@ -120,12 +117,12 @@ void
 ExecMgr::playSemi() {
     const Options opts = optsmgr.getOptions();
 
-    for (VIDV::const_iterator iter = queue->begin();
+    for (vquvi::const_iterator iter = queue->begin();
         iter != queue->end();
         ++iter)
     {
         std::stringstream fname;
-        fname << "\"" << (*iter).getFilename() << "\"";
+        fname << "\"" << (*iter).getFileName() << "\"";
 
         std::string cmd = opts.exec_arg;
         Util::subStrReplace(cmd, "%i", fname.str());
@@ -136,12 +133,15 @@ ExecMgr::playSemi() {
 }
 
 void
-ExecMgr::passStream(const VideoProperties& props) {
+ExecMgr::passStream(const QuviVideo& props) {
     std::string cmd = 
         optsmgr.getOptions().stream_exec_arg;
 
     std::stringstream lnk;
-    lnk << "\"" << props.getLink() << "\"";
+    lnk << "\"" << props.getFileUrl() << "\"";
+ 
+    std::stringstream fname;
+    fname << "\"" << props.getFileName() << "\"";
 
     std::stringstream fname;
     fname << "\"" << props.getFilename() << "\"";
@@ -153,11 +153,11 @@ ExecMgr::passStream(const VideoProperties& props) {
 }
 
 void
-ExecMgr::playStream(const VideoProperties& props) {
+ExecMgr::playStream(const QuviVideo& props) {
     std::string cmd = optsmgr.getOptions().stream_exec_arg;
 
     std::stringstream fname;
-    fname << "\"" << props.getFilename() << "\"";
+    fname << "\"" << props.getFileName() << "\"";
 
     Util::subStrReplace(cmd, "%i", fname.str());
     invokeCommand(cmd);

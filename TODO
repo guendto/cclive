@@ -1,6 +1,7 @@
 repo: git://repo.or.cz/cclive.git
 web : http://repo.or.cz/w/cclive.git
 
+* execmgr: iterate all video links
 * youtube feather support (when due)
   http://youtube-global.blogspot.com/
   http://www.youtube.com/feather_beta

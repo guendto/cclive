@@ -45,9 +45,12 @@ struct gengetopt_args_info
   const char *version_help; /**< @brief Print version and exit help description.  */
   const char *hosts_help; /**< @brief List supported hosts help description.  */
   const char *background_help; /**< @brief Go to background immediately after startup help description.  */
-  const char *quiet_help; /**< @brief Turn off all output help description.  */
-  const char *debug_help; /**< @brief Turn on libcurl verbose mode help description.  */
   const char *emit_csv_help; /**< @brief Print video details in csv format to stdout help description.  */
+  int quiet_flag;	/**< @brief Turn off all output (default=off).  */
+  const char *quiet_help; /**< @brief Turn off all output help description.  */
+  int debug_flag;	/**< @brief Turn on libcurl verbose mode (default=off).  */
+  const char *debug_help; /**< @brief Turn on libcurl verbose mode help description.  */
+  int print_fname_flag;	/**< @brief Print filename before each download starts (default=off).  */
   const char *print_fname_help; /**< @brief Print filename before each download starts help description.  */
   char * logfile_arg;	/**< @brief Write output to file while in background (default='cclive.log').  */
   char * logfile_orig;	/**< @brief Write output to file while in background original value given at command line.  */
@@ -55,9 +58,9 @@ struct gengetopt_args_info
   int logfile_interval_arg;	/**< @brief Update logfile every n seconds while in background (default='10').  */
   char * logfile_interval_orig;	/**< @brief Update logfile every n seconds while in background original value given at command line.  */
   const char *logfile_interval_help; /**< @brief Update logfile every n seconds while in background help description.  */
-  char * agent_arg;	/**< @brief Identify cclive as agentstring to servers (default='Mozilla/5.0').  */
-  char * agent_orig;	/**< @brief Identify cclive as agentstring to servers original value given at command line.  */
-  const char *agent_help; /**< @brief Identify cclive as agentstring to servers help description.  */
+  char * agent_arg;	/**< @brief Identify cclive as agent string to servers (default='Mozilla/5.0').  */
+  char * agent_orig;	/**< @brief Identify cclive as agent string to servers original value given at command line.  */
+  const char *agent_help; /**< @brief Identify cclive as agent string to servers help description.  */
   char * proxy_arg;	/**< @brief Use specified proxy.  */
   char * proxy_orig;	/**< @brief Use specified proxy original value given at command line.  */
   const char *proxy_help; /**< @brief Use specified proxy help description.  */
@@ -71,24 +74,27 @@ struct gengetopt_args_info
   int retry_arg;	/**< @brief Number of retries (default='5').  */
   char * retry_orig;	/**< @brief Number of retries original value given at command line.  */
   const char *retry_help; /**< @brief Number of retries help description.  */
-  int retry_wait_arg;	/**< @brief wait 1..seconds between retries (default='1').  */
-  char * retry_wait_orig;	/**< @brief wait 1..seconds between retries original value given at command line.  */
-  const char *retry_wait_help; /**< @brief wait 1..seconds between retries help description.  */
+  int retry_wait_arg;	/**< @brief wait 5 seconds between retries (default='5').  */
+  char * retry_wait_orig;	/**< @brief wait 5 seconds between retries original value given at command line.  */
+  const char *retry_wait_help; /**< @brief wait 5 seconds between retries help description.  */
   char * output_video_arg;	/**< @brief Write video to file.  */
   char * output_video_orig;	/**< @brief Write video to file original value given at command line.  */
   const char *output_video_help; /**< @brief Write video to file help description.  */
+  int continue_flag;	/**< @brief Resume partially downloaded file (default=off).  */
   const char *continue_help; /**< @brief Resume partially downloaded file help description.  */
+  int overwrite_flag;	/**< @brief Overwrite existing file (default=off).  */
   const char *overwrite_help; /**< @brief Overwrite existing file help description.  */
   const char *no_extract_help; /**< @brief Do not actually extract video, simulate only help description.  */
-  int limit_rate_arg;	/**< @brief Limit download speed to amount KB/s.  */
-  char * limit_rate_orig;	/**< @brief Limit download speed to amount KB/s original value given at command line.  */
-  const char *limit_rate_help; /**< @brief Limit download speed to amount KB/s help description.  */
+  int limit_rate_arg;	/**< @brief Limit download speed to amount KB/s (0=unlimited) (default='0').  */
+  char * limit_rate_orig;	/**< @brief Limit download speed to amount KB/s (0=unlimited) original value given at command line.  */
+  const char *limit_rate_help; /**< @brief Limit download speed to amount KB/s (0=unlimited) help description.  */
   char * format_arg;	/**< @brief Download format of video (default='flv').  */
   char * format_orig;	/**< @brief Download format of video original value given at command line.  */
   const char *format_help; /**< @brief Download format of video help description.  */
   char * format_map_arg;	/**< @brief Specify format for multiple hosts in a string.  */
   char * format_map_orig;	/**< @brief Specify format for multiple hosts in a string original value given at command line.  */
   const char *format_map_help; /**< @brief Specify format for multiple hosts in a string help description.  */
+  int number_videos_flag;	/**< @brief Prepend a numeric prefix to output filenames (default=off).  */
   const char *number_videos_help; /**< @brief Prepend a numeric prefix to output filenames help description.  */
   char * regexp_arg;	/**< @brief Regular expression to cleanup video title, mimics Perl's /what/(gi).  */
   char * regexp_orig;	/**< @brief Regular expression to cleanup video title, mimics Perl's /what/(gi) original value given at command line.  */
@@ -115,9 +121,9 @@ struct gengetopt_args_info
   unsigned int version_given ;	/**< @brief Whether version was given.  */
   unsigned int hosts_given ;	/**< @brief Whether hosts was given.  */
   unsigned int background_given ;	/**< @brief Whether background was given.  */
+  unsigned int emit_csv_given ;	/**< @brief Whether emit-csv was given.  */
   unsigned int quiet_given ;	/**< @brief Whether quiet was given.  */
   unsigned int debug_given ;	/**< @brief Whether debug was given.  */
-  unsigned int emit_csv_given ;	/**< @brief Whether emit-csv was given.  */
   unsigned int print_fname_given ;	/**< @brief Whether print-fname was given.  */
   unsigned int logfile_given ;	/**< @brief Whether logfile was given.  */
   unsigned int logfile_interval_given ;	/**< @brief Whether logfile-interval was given.  */

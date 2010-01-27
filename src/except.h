@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Toni Gundogdu.
+ * Copyright (C) 2009,2010 Toni Gundogdu.
  *
  * This file is part of cclive.
  * 
@@ -36,9 +36,45 @@ private:
     std::string error;
 };
 
+class ParseException : public RuntimeException {
+public:
+    ParseException(const std::string&);
+};
+
+class NoSupportException : public RuntimeException {
+public:
+    NoSupportException(const std::string&);
+};
+
+class NothingToDoException : public RuntimeException {
+public:
+    NothingToDoException();
+};
+
 class FileOpenException : public RuntimeException {
 public:
     FileOpenException(const std::string&);
+};
+
+class QuviException : public RuntimeException {
+public:
+    QuviException(const std::string&);
+    QuviException(const std::string&, const long &httpcode);
+    const long& getHttpCode() const;
+    const long& getCurlCode() const;
+private:
+    long httpcode;
+    long curlcode;
+};
+
+class QuviNoVideoLinkException : public RuntimeException {
+public:
+    QuviNoVideoLinkException();
+};
+
+class NoMoreRetriesException : public RuntimeException {
+public:
+    NoMoreRetriesException();
 };
 
 #endif

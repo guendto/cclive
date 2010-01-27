@@ -173,11 +173,11 @@ output filenames. Supports (and mimics) Perl's /g (global, find all) and /i
 
 Mimics Perl's s/old/new/(gi) substitution. This option can be used to
 replace occurences in output filenames. Supports /g (global, find all
-occurences) and /i (case-insensitive). To use multiple regexps, separate
-each with whitespace.
+occurences) and /i (case-insensitive).
 
-Note that substitution is made I<after> pattern matching (B<--regexp>)
-and formatting the filename (B<--filename-format>).
+Use of multiple regular expressions is also supported. You can separate
+each with with a whitespace. The number of regular expressions is
+currently unlimited.
 
 See also L</EXAMPLES>.
 
@@ -228,9 +228,11 @@ B<Streaming>
 
 Expression to be invoked with C<--stream> and C<--stream-pass>.
 
-=item B<-s, --stream-pass>
+If a "%i" specifier is used in the I<expression>, it will be replaced
+with either the video pathname (C<--stream>) or the parsed video link
+(C<--stream-pass>).
 
-Pass parsed video link to the expression specified with C<--stream-exec>.
+=item B<-s, --stream-pass>
 
 In addition to the "%i" specifier, if the specifier "%f" appears
 anywhere in C<--stream-exec> I<expression> it will be replaced
@@ -430,14 +432,27 @@ Format: flv|mp4
 
 mp4 may not always be available.
 
-=item spyfilms.com
+=item sevenload.com
 
-Format: flv|hd
+=item break.com
 
-=item Other
+=item liveleak.com
 
-All other supported websites (see --host output) support
-the flv format only.
+=item evisor.tv
+
+=item clipfish.de
+
+=item funnyhub.com
+
+=item myubo.com
+
+=item tv.cctv.com
+
+=item ehrensenf.de
+
+=item redtube.com
+
+Format: flv
 
 =back
 
@@ -519,7 +534,7 @@ cclive exits 0 on success, and E<gt>0 if an error occurs.
   CCLIVE_OK           = 0
   CCLIVE_OPT          = 1  // cmdline option parsing error
   CCLIVE_OPTARG       = 2  // cmdline option arg error
-  CCLIVE_CURLINIT     = 3  // curl init error
+  CCLIVE_CURLINIT     = 3  // curl init error (unused since 0.6.0+)
   CCLIVE_NOTHINGTODO  = 4  // file already retrieved
   CCLIVE_SYSTEM       = 5  // system call failed
   CCLIVE_NOSUPPORT    = 6  // host not supported

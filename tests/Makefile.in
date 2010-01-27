@@ -34,13 +34,7 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 target_triplet = @target@
-check_PROGRAMS = returncode$(EXEEXT) youtube$(EXEEXT) break$(EXEEXT) \
-	liveleak$(EXEEXT) dailymotion$(EXEEXT) evisor$(EXEEXT) \
-	google$(EXEEXT) sevenload$(EXEEXT) golem$(EXEEXT) \
-	clipfish$(EXEEXT) funnyhub$(EXEEXT) myubo$(EXEEXT) \
-	cctv$(EXEEXT) ehrensenf$(EXEEXT) spiegel$(EXEEXT) \
-	vimeo$(EXEEXT) youjizz$(EXEEXT) xvideos$(EXEEXT) \
-	tube8$(EXEEXT) spyfilms$(EXEEXT) multi$(EXEEXT)
+check_PROGRAMS = returncode$(EXEEXT) multi$(EXEEXT)
 subdir = tests
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -53,69 +47,12 @@ CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__objects_1 = test.$(OBJEXT)
-am_break_OBJECTS = break.$(OBJEXT) $(am__objects_1)
-break_OBJECTS = $(am_break_OBJECTS)
-break_LDADD = $(LDADD)
-am_cctv_OBJECTS = cctv.$(OBJEXT) $(am__objects_1)
-cctv_OBJECTS = $(am_cctv_OBJECTS)
-cctv_LDADD = $(LDADD)
-am_clipfish_OBJECTS = clipfish.$(OBJEXT) $(am__objects_1)
-clipfish_OBJECTS = $(am_clipfish_OBJECTS)
-clipfish_LDADD = $(LDADD)
-am_dailymotion_OBJECTS = dailymotion.$(OBJEXT) $(am__objects_1)
-dailymotion_OBJECTS = $(am_dailymotion_OBJECTS)
-dailymotion_LDADD = $(LDADD)
-am_ehrensenf_OBJECTS = ehrensenf.$(OBJEXT) $(am__objects_1)
-ehrensenf_OBJECTS = $(am_ehrensenf_OBJECTS)
-ehrensenf_LDADD = $(LDADD)
-am_evisor_OBJECTS = evisor.$(OBJEXT) $(am__objects_1)
-evisor_OBJECTS = $(am_evisor_OBJECTS)
-evisor_LDADD = $(LDADD)
-am_funnyhub_OBJECTS = funnyhub.$(OBJEXT) $(am__objects_1)
-funnyhub_OBJECTS = $(am_funnyhub_OBJECTS)
-funnyhub_LDADD = $(LDADD)
-am_golem_OBJECTS = golem.$(OBJEXT) $(am__objects_1)
-golem_OBJECTS = $(am_golem_OBJECTS)
-golem_LDADD = $(LDADD)
-am_google_OBJECTS = google.$(OBJEXT) $(am__objects_1)
-google_OBJECTS = $(am_google_OBJECTS)
-google_LDADD = $(LDADD)
-am_liveleak_OBJECTS = liveleak.$(OBJEXT) $(am__objects_1)
-liveleak_OBJECTS = $(am_liveleak_OBJECTS)
-liveleak_LDADD = $(LDADD)
 am_multi_OBJECTS = multi.$(OBJEXT) $(am__objects_1)
 multi_OBJECTS = $(am_multi_OBJECTS)
 multi_LDADD = $(LDADD)
-am_myubo_OBJECTS = myubo.$(OBJEXT) $(am__objects_1)
-myubo_OBJECTS = $(am_myubo_OBJECTS)
-myubo_LDADD = $(LDADD)
 am_returncode_OBJECTS = returncode.$(OBJEXT) $(am__objects_1)
 returncode_OBJECTS = $(am_returncode_OBJECTS)
 returncode_LDADD = $(LDADD)
-am_sevenload_OBJECTS = sevenload.$(OBJEXT) $(am__objects_1)
-sevenload_OBJECTS = $(am_sevenload_OBJECTS)
-sevenload_LDADD = $(LDADD)
-am_spiegel_OBJECTS = spiegel.$(OBJEXT) $(am__objects_1)
-spiegel_OBJECTS = $(am_spiegel_OBJECTS)
-spiegel_LDADD = $(LDADD)
-am_spyfilms_OBJECTS = spyfilms.$(OBJEXT) $(am__objects_1)
-spyfilms_OBJECTS = $(am_spyfilms_OBJECTS)
-spyfilms_LDADD = $(LDADD)
-am_tube8_OBJECTS = tube8.$(OBJEXT) $(am__objects_1)
-tube8_OBJECTS = $(am_tube8_OBJECTS)
-tube8_LDADD = $(LDADD)
-am_vimeo_OBJECTS = vimeo.$(OBJEXT) $(am__objects_1)
-vimeo_OBJECTS = $(am_vimeo_OBJECTS)
-vimeo_LDADD = $(LDADD)
-am_xvideos_OBJECTS = xvideos.$(OBJEXT) $(am__objects_1)
-xvideos_OBJECTS = $(am_xvideos_OBJECTS)
-xvideos_LDADD = $(LDADD)
-am_youjizz_OBJECTS = youjizz.$(OBJEXT) $(am__objects_1)
-youjizz_OBJECTS = $(am_youjizz_OBJECTS)
-youjizz_LDADD = $(LDADD)
-am_youtube_OBJECTS = youtube.$(OBJEXT) $(am__objects_1)
-youtube_OBJECTS = $(am_youtube_OBJECTS)
-youtube_LDADD = $(LDADD)
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/config.aux/depcomp
 am__depfiles_maybe = depfiles
@@ -129,20 +66,8 @@ COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
 LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
-SOURCES = $(break_SOURCES) $(cctv_SOURCES) $(clipfish_SOURCES) \
-	$(dailymotion_SOURCES) $(ehrensenf_SOURCES) $(evisor_SOURCES) \
-	$(funnyhub_SOURCES) $(golem_SOURCES) $(google_SOURCES) \
-	$(liveleak_SOURCES) $(multi_SOURCES) $(myubo_SOURCES) \
-	$(returncode_SOURCES) $(sevenload_SOURCES) $(spiegel_SOURCES) \
-	$(spyfilms_SOURCES) $(tube8_SOURCES) $(vimeo_SOURCES) \
-	$(xvideos_SOURCES) $(youjizz_SOURCES) $(youtube_SOURCES)
-DIST_SOURCES = $(break_SOURCES) $(cctv_SOURCES) $(clipfish_SOURCES) \
-	$(dailymotion_SOURCES) $(ehrensenf_SOURCES) $(evisor_SOURCES) \
-	$(funnyhub_SOURCES) $(golem_SOURCES) $(google_SOURCES) \
-	$(liveleak_SOURCES) $(multi_SOURCES) $(myubo_SOURCES) \
-	$(returncode_SOURCES) $(sevenload_SOURCES) $(spiegel_SOURCES) \
-	$(spyfilms_SOURCES) $(tube8_SOURCES) $(vimeo_SOURCES) \
-	$(xvideos_SOURCES) $(youjizz_SOURCES) $(youtube_SOURCES)
+SOURCES = $(multi_SOURCES) $(returncode_SOURCES)
+DIST_SOURCES = $(multi_SOURCES) $(returncode_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 am__tty_colors = \
@@ -179,10 +104,8 @@ INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
 LDFLAGS = @LDFLAGS@
-LIBICONV = @LIBICONV@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
-LTLIBICONV = @LTLIBICONV@
 LTLIBOBJS = @LTLIBOBJS@
 MAKEINFO = @MAKEINFO@
 MKDIR_P = @MKDIR_P@
@@ -241,6 +164,8 @@ libdir = @libdir@
 libexecdir = @libexecdir@
 libpcrecpp_CFLAGS = @libpcrecpp_CFLAGS@
 libpcrecpp_LIBS = @libpcrecpp_LIBS@
+libquvi_CFLAGS = @libquvi_CFLAGS@
+libquvi_LIBS = @libquvi_LIBS@
 localedir = @localedir@
 localstatedir = @localstatedir@
 mandir = @mandir@
@@ -267,25 +192,6 @@ TESTS = $(check_PROGRAMS)
 common = test.cpp test.h
 AM_CXXFLAGS = -DCCLIVE_PATH="\"$(top_builddir)/src/cclive\""
 returncode_SOURCES = returncode.cpp $(common)
-youtube_SOURCES = youtube.cpp $(common)
-break_SOURCES = break.cpp $(common)
-liveleak_SOURCES = liveleak.cpp $(common)
-dailymotion_SOURCES = dailymotion.cpp $(common)
-evisor_SOURCES = evisor.cpp $(common)
-google_SOURCES = google.cpp $(common)
-vimeo_SOURCES = vimeo.cpp $(common)
-sevenload_SOURCES = sevenload.cpp $(common)
-golem_SOURCES = golem.cpp $(common)
-clipfish_SOURCES = clipfish.cpp $(common)
-funnyhub_SOURCES = funnyhub.cpp $(common)
-myubo_SOURCES = myubo.cpp $(common)
-cctv_SOURCES = cctv.cpp $(common)
-ehrensenf_SOURCES = ehrensenf.cpp $(common)
-spiegel_SOURCES = spiegel.cpp $(common)
-youjizz_SOURCES = youjizz.cpp $(common)
-xvideos_SOURCES = xvideos.cpp $(common)
-tube8_SOURCES = tube8.cpp $(common)
-spyfilms_SOURCES = spyfilms.cpp $(common)
 multi_SOURCES = multi.cpp $(common)
 all: all-am
 
@@ -324,69 +230,12 @@ $(am__aclocal_m4_deps):
 
 clean-checkPROGRAMS:
 	-test -z "$(check_PROGRAMS)" || rm -f $(check_PROGRAMS)
-break$(EXEEXT): $(break_OBJECTS) $(break_DEPENDENCIES) 
-	@rm -f break$(EXEEXT)
-	$(CXXLINK) $(break_OBJECTS) $(break_LDADD) $(LIBS)
-cctv$(EXEEXT): $(cctv_OBJECTS) $(cctv_DEPENDENCIES) 
-	@rm -f cctv$(EXEEXT)
-	$(CXXLINK) $(cctv_OBJECTS) $(cctv_LDADD) $(LIBS)
-clipfish$(EXEEXT): $(clipfish_OBJECTS) $(clipfish_DEPENDENCIES) 
-	@rm -f clipfish$(EXEEXT)
-	$(CXXLINK) $(clipfish_OBJECTS) $(clipfish_LDADD) $(LIBS)
-dailymotion$(EXEEXT): $(dailymotion_OBJECTS) $(dailymotion_DEPENDENCIES) 
-	@rm -f dailymotion$(EXEEXT)
-	$(CXXLINK) $(dailymotion_OBJECTS) $(dailymotion_LDADD) $(LIBS)
-ehrensenf$(EXEEXT): $(ehrensenf_OBJECTS) $(ehrensenf_DEPENDENCIES) 
-	@rm -f ehrensenf$(EXEEXT)
-	$(CXXLINK) $(ehrensenf_OBJECTS) $(ehrensenf_LDADD) $(LIBS)
-evisor$(EXEEXT): $(evisor_OBJECTS) $(evisor_DEPENDENCIES) 
-	@rm -f evisor$(EXEEXT)
-	$(CXXLINK) $(evisor_OBJECTS) $(evisor_LDADD) $(LIBS)
-funnyhub$(EXEEXT): $(funnyhub_OBJECTS) $(funnyhub_DEPENDENCIES) 
-	@rm -f funnyhub$(EXEEXT)
-	$(CXXLINK) $(funnyhub_OBJECTS) $(funnyhub_LDADD) $(LIBS)
-golem$(EXEEXT): $(golem_OBJECTS) $(golem_DEPENDENCIES) 
-	@rm -f golem$(EXEEXT)
-	$(CXXLINK) $(golem_OBJECTS) $(golem_LDADD) $(LIBS)
-google$(EXEEXT): $(google_OBJECTS) $(google_DEPENDENCIES) 
-	@rm -f google$(EXEEXT)
-	$(CXXLINK) $(google_OBJECTS) $(google_LDADD) $(LIBS)
-liveleak$(EXEEXT): $(liveleak_OBJECTS) $(liveleak_DEPENDENCIES) 
-	@rm -f liveleak$(EXEEXT)
-	$(CXXLINK) $(liveleak_OBJECTS) $(liveleak_LDADD) $(LIBS)
 multi$(EXEEXT): $(multi_OBJECTS) $(multi_DEPENDENCIES) 
 	@rm -f multi$(EXEEXT)
 	$(CXXLINK) $(multi_OBJECTS) $(multi_LDADD) $(LIBS)
-myubo$(EXEEXT): $(myubo_OBJECTS) $(myubo_DEPENDENCIES) 
-	@rm -f myubo$(EXEEXT)
-	$(CXXLINK) $(myubo_OBJECTS) $(myubo_LDADD) $(LIBS)
 returncode$(EXEEXT): $(returncode_OBJECTS) $(returncode_DEPENDENCIES) 
 	@rm -f returncode$(EXEEXT)
 	$(CXXLINK) $(returncode_OBJECTS) $(returncode_LDADD) $(LIBS)
-sevenload$(EXEEXT): $(sevenload_OBJECTS) $(sevenload_DEPENDENCIES) 
-	@rm -f sevenload$(EXEEXT)
-	$(CXXLINK) $(sevenload_OBJECTS) $(sevenload_LDADD) $(LIBS)
-spiegel$(EXEEXT): $(spiegel_OBJECTS) $(spiegel_DEPENDENCIES) 
-	@rm -f spiegel$(EXEEXT)
-	$(CXXLINK) $(spiegel_OBJECTS) $(spiegel_LDADD) $(LIBS)
-spyfilms$(EXEEXT): $(spyfilms_OBJECTS) $(spyfilms_DEPENDENCIES) 
-	@rm -f spyfilms$(EXEEXT)
-	$(CXXLINK) $(spyfilms_OBJECTS) $(spyfilms_LDADD) $(LIBS)
-tube8$(EXEEXT): $(tube8_OBJECTS) $(tube8_DEPENDENCIES) 
-	@rm -f tube8$(EXEEXT)
-	$(CXXLINK) $(tube8_OBJECTS) $(tube8_LDADD) $(LIBS)
-vimeo$(EXEEXT): $(vimeo_OBJECTS) $(vimeo_DEPENDENCIES) 
-	@rm -f vimeo$(EXEEXT)
-	$(CXXLINK) $(vimeo_OBJECTS) $(vimeo_LDADD) $(LIBS)
-xvideos$(EXEEXT): $(xvideos_OBJECTS) $(xvideos_DEPENDENCIES) 
-	@rm -f xvideos$(EXEEXT)
-	$(CXXLINK) $(xvideos_OBJECTS) $(xvideos_LDADD) $(LIBS)
-youjizz$(EXEEXT): $(youjizz_OBJECTS) $(youjizz_DEPENDENCIES) 
-	@rm -f youjizz$(EXEEXT)
-	$(CXXLINK) $(youjizz_OBJECTS) $(youjizz_LDADD) $(LIBS)
-youtube$(EXEEXT): $(youtube_OBJECTS) $(youtube_DEPENDENCIES) 
-	@rm -f youtube$(EXEEXT)
-	$(CXXLINK) $(youtube_OBJECTS) $(youtube_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -394,28 +243,9 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/break.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/cctv.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/clipfish.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/dailymotion.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ehrensenf.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/evisor.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/funnyhub.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/golem.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/google.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liveleak.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/multi.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/myubo.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/returncode.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sevenload.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/spiegel.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/spyfilms.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tube8.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/vimeo.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xvideos.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/youjizz.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/youtube.Po@am__quote@
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<

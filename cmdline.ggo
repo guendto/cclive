@@ -10,17 +10,29 @@ option "background"
     optional
 
 section "Output"
-option "quiet"
-    q "Turn off all output"
-    optional
-option "debug"
-    - "Turn on libcurl verbose mode"
-    optional
 option "emit-csv"
     - "Print video details in csv format to stdout"
     optional
+option "quiet"
+    q "Turn off all output"
+    flag off
+option "debug"
+    - "Turn on libcurl verbose mode"
+    flag off
 option "print-fname"
     - "Print filename before each download starts"
+    flag off
+option "logfile"
+    o "Write output to file while in background"
+    string typestr="<file>"
+    default="cclive.log"
+    dependon="background"
+    optional
+option "logfile-interval"
+    i "Update logfile every n seconds while in background"
+    int typestr="<n>"
+    default="10"
+    dependon="background"
     optional
 option "logfile"
     o "Write output to file while in background"
@@ -37,8 +49,8 @@ option "logfile-interval"
 
 section "HTTP"
 option "agent"
-    - "Identify cclive as agentstring to servers"
-    string typestr="<agentstring>"
+    - "Identify cclive as agent string to servers"
+    string typestr="<agent_string>"
     default="Mozilla/5.0"
     optional
 option "proxy"
@@ -64,9 +76,9 @@ option "retry"
     default="5"
     optional
 option "retry-wait"
-    - "wait 1..seconds between retries"
+    - "wait 5 seconds between retries"
     int typestr="<seconds>"
-    default="1"
+    default="5"
     optional
 
 section "Download"
@@ -76,16 +88,17 @@ option "output-video"
     optional
 option "continue"
     c "Resume partially downloaded file"
-    optional
+    flag off
 option "overwrite"
     W "Overwrite existing file"
-    optional
+    flag off
 option "no-extract"
     n "Do not actually extract video, simulate only"
     optional
 option "limit-rate"
-    l "Limit download speed to amount KB/s"
+    l "Limit download speed to amount KB/s (0=unlimited)"
     int typestr="<amount>"
+    default="0"
     optional
 option "format"
     f "Download format of video"
@@ -103,17 +116,17 @@ option "format"
         # spiegel:
         "vp6_576", "vp6_928", "h264_1400"
     default="flv"
-    typestr="<formatid>"
+    typestr="<format_id>"
     optional
 option "format-map"
     M "Specify format for multiple hosts in a string"
-    string typestr="<mapstring>"
+    string typestr="<map_string>"
     optional
 
 section "Filename formatting"
 option "number-videos"
     N "Prepend a numeric prefix to output filenames"
-    optional
+    flag off
 option "regexp"
     r "Regular expression to cleanup video title, mimics Perl's /what/(gi)"
     string typestr="<regexp>"
@@ -124,7 +137,7 @@ option "substitute"
     optional
 option "filename-format"
     F "Output filename format"
-    string typestr="<formatstring>"
+    string typestr="<format_string>"
     default="%h_%i.%s"
     optional
 
@@ -135,8 +148,8 @@ option "exec"
     optional
 option "exec-run"
     e "Invoke command specified with --exec"
-    optional
     dependon="exec"
+    optional
 
 section "Streaming"
 option "stream-exec"
@@ -145,12 +158,12 @@ option "stream-exec"
     optional
 option "stream-pass"
     s "Pass video link to --stream-exec command"
-    optional
     dependon="stream-exec"
+    optional
 option "stream"
     - "Invoke --stream-exec when transfer reaches %"
     int typestr="<percent>"
-    optional
     dependon="stream-exec"
+    optional
 
 text "\nSee the manual page for examples."

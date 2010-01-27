@@ -20,9 +20,9 @@
 #ifndef curl_h
 #define curl_h
 
-#include <curl/curl.h>
-
 #include "singleton.h"
+
+class QuviVideo;
 
 class CurlMgr : public Singleton<CurlMgr> {
 public:
@@ -32,25 +32,13 @@ public:
     virtual ~CurlMgr  ();
 public:
     void         init           ();
-    std::string  fetchToMem     (std::string url,
+    std::string  fetchToMem     (const std::string& url,
                                     const std::string& what="");
-    void         queryFileLength(VideoProperties&);
-    void         fetchToFile    (VideoProperties&);
+    void         fetchToFile    (QuviVideo&);
     const std::string& unescape (std::string& url) const;
     const std::string& escape   (std::string& url) const;
 private:
     long httpcode;
-public:
-    class FetchException : public RuntimeException {
-    public:
-        FetchException(const std::string&,
-            const long& httpcode, const CURLcode& curlcode);
-        const long& getHTTPCode() const;
-        const CURLcode& getCurlCode() const;
-    protected:
-        long httpcode;
-        CURLcode curlcode;
-    };
 };
 
 #define curlmgr CurlMgr::getInstance()

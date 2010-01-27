@@ -1,4 +1,17 @@
 
+Version 0.6.0
+
+ User-visible changes:
+  * Multi-segment support (e.g. some cctv videos)
+  * Remove "Features" from --version output
+
+ Developer-visible changes:
+  * Add dependency for libquvi (see NEWS and INSTALL files)
+  * --version now reports libquvi version instead of libcurl
+  * Retry changes, see NEWS file for details
+  * Remove libiconv dependency
+
+
 Version 0.5.9
 (January 26, 2010)
 

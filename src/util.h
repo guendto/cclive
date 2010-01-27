@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009,2010 Toni Gundogdu.
+ * Copyright (C) 2009 Toni Gundogdu.
  *
  * This file is part of cclive.
  * 
@@ -20,19 +20,9 @@
 #ifndef util_h
 #define util_h
 
-class VideoProperties;
-
 class Util {
 public:
     static const double fileExists   (const std::string& path);
-    static const std::string   subStr(const std::string& src,
-                                        const std::string& begin,
-                                        const std::string& end,
-                                        const bool& croak_if_not_found=true);
-    static const std::string  rsubStr(const std::string& src,
-                                        const std::string& begin,
-                                        const std::string& end,
-                                        const bool& croak_if_not_found=true);
     static std::string& subStrReplace(std::string& src,
                                         const std::string& what,
                                         const std::string& with);
@@ -44,12 +34,9 @@ public:
                         tokenize     (const std::string& src,
                                         const std::string& delims);
     static std::string parseFormatMap(const std::string& host);
-    static const std::string& toUnicode(std::string& src,
-                                    const std::string& from);
     static const std::string& fromHtmlEntities(std::string& src);
     static const bool perlSubstitute(const std::string& re, std::string& src);
     static const bool perlMatch(const std::string& re, std::string& src);
-    static void cleanupLink(std::string& url);
 };
 
 #endif

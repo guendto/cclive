@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009,2010 Toni Gundogdu.
+ * Copyright (C) 2009 Toni Gundogdu.
  *
  * This file is part of cclive.
  * 
@@ -27,14 +27,12 @@
 #include <cstring>
 #include <cerrno>
 
-#ifdef HAVE_ICONV
-#include <cerrno>
-#include <iconv.h>
-#endif
+#include <pcrecpp.h>
 
-#include "hosthandler.h"
 #include "opts.h"
+#include "except.h"
 #include "log.h"
+#include "util.h"
 
 const double
 Util::fileExists(const std::string& path) {
@@ -50,56 +48,6 @@ Util::fileExists(const std::string& path) {
     }
 
     return len;
-}
-
-const std::string
-Util::subStr(const std::string& src,
-             const std::string& begin,
-             const std::string& end,
-             const bool& croak_if_not_found /*=true*/)
-{
-    const std::string::size_type begin_pos = src.find(begin);
-    if (begin_pos == std::string::npos && croak_if_not_found)
-        throw HostHandler::ParseException("not found: "+begin);
-
-    const std::string::size_type end_pos =
-        src.find(end, begin_pos + begin.length());
-
-    if (end_pos == std::string::npos && croak_if_not_found)
-        throw HostHandler::ParseException("not found: "+end);
-
-    const std::string::size_type from =
-        begin_pos + begin.length();
-
-    const std::string::size_type len =
-        end_pos - begin_pos - begin.length();
-
-    return src.substr(from, len);
-}
-
-const std::string
-Util::rsubStr(const std::string& src,
-        const std::string& begin,
-        const std::string& end,
-        const bool& croak_if_not_found /*=true*/)
-{
-    const std::string::size_type end_pos = src.rfind(end);
-    if (end_pos == std::string::npos && croak_if_not_found)
-        throw HostHandler::ParseException("not found: "+end);
-
-    const std::string::size_type begin_pos =
-        src.rfind(begin, end_pos - end.length());
-
-    if (begin_pos == std::string::npos && croak_if_not_found)
-        throw HostHandler::ParseException("not found: "+begin);
-
-    const std::string::size_type from =
-        begin_pos + begin.length();
-
-    const std::string::size_type len =
-        end_pos - begin_pos - begin.length();
-
-    return src.substr(from, len);
 }
 
 std::string&
@@ -201,78 +149,7 @@ Util::parseFormatMap(const std::string& host) {
 
     return fmt;
 }
-
-const std::string&
-Util::toUnicode(std::string& src, const std::string& from) {
-#ifdef HAVE_ICONV
-    const std::string to = "UTF-8";
-
-    // Try with TRANSLIT first.
-    iconv_t cd =
-        iconv_open( to.c_str(), std::string(from+"//TRANSLIT").c_str() );
-
-    if (cd == (iconv_t)-1) // Then without TRANSLIT.
-        cd = iconv_open( to.c_str(), from.c_str());
-
-    if (cd == (iconv_t)-1) {
-        if (errno == EINVAL) {
-            logmgr.cerr()
-                << "conversion from \""
-                << from
-                << "\" to \""
-                << to
-                << "\" unavailable"
-                << std::endl;
-        }
-        else {
-#ifdef HAVE_STRERROR
-            logmgr.cerr()
-                << "iconv_open: "
-                << strerror(errno)
-                << std::endl;
-#else
-            perror("iconv_open");
-#endif
-            return src;
-        }
-    }
-
-    char inbuf[1024];
-    ICONV_CONST char *inptr = inbuf;
-    size_t insize = src.length();
-
-    if (insize >= sizeof(inbuf))
-        insize = sizeof(inbuf);
-
-    snprintf(inbuf, sizeof(inbuf),
-        "%s", src.c_str());
-
-    char outbuf[1024];
-    size_t avail = sizeof(outbuf);
-    char *wptr   = (char *)outbuf;
-    memset(wptr, 0, sizeof(outbuf));
-
-    const size_t rc =
-        iconv(cd, &inptr, &insize, &wptr, &avail);
-
-    iconv_close(cd);
-    cd = 0;
-
-    if (rc == (size_t)-1) {
-        logmgr.cerr()
-            << "error: converting characters from \""
-            << from
-            << "\" to \""
-            << to
-            << "\" failed"
-            << std::endl;
-    }
-    else
-        src = outbuf;
-#endif
-    return src;
-}
-
+ 
 const std::string&
 Util::fromHtmlEntities(std::string& src) {
 
@@ -280,19 +157,10 @@ Util::fromHtmlEntities(std::string& src) {
 
     maps m;
     m["&quot;"] = "\"";
-    m["&#34;"]  = "\"";
-
     m["&amp;"]  = "&";
-    m["&#38;"]  = "&";
-
     m["&apos;"] = "'";
-    m["&#39;"]  = "'";
-
     m["&lt;"]   = "<";
-    m["&#60;"]  = "<";
-
     m["&gt;"]   = ">";
-    m["&#62;"]  = ">";
 
     for (maps::const_iterator iter = m.begin();
         iter != m.end();
@@ -329,7 +197,7 @@ Util::perlSubstitute(const std::string& re, std::string& src) {
     }
     return false;
 }
-
+ 
 const bool
 Util::perlMatch(const std::string& re, std::string& src) {
     std::string pat, flags;
@@ -363,12 +231,6 @@ Util::perlMatch(const std::string& re, std::string& src) {
         return true;
     }
     return false;
-}
-
-void
-Util::cleanupLink(std::string& url) {
-    // spyvideos:
-    Util::subStrReplace(url, "#", "");
 }
 
 

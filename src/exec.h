@@ -27,17 +27,17 @@ public:
     ExecMgr();
 public:
     void verifyExecArgument();
-    void append(const VideoProperties&); 
+    void append(const QuviVideo&); 
     void playQueue();
-    void playStream(const VideoProperties&);
-    void passStream(const VideoProperties&);
+    void playStream(const QuviVideo&);
+    void passStream(const QuviVideo&);
 private:
     void playPlus();
     void playSemi();
 private:
     enum Mode { Plus, Semi };
 private:
-    typedef std::vector<VideoProperties> propvect;
+    typedef std::vector<QuviVideo> propvect;
     std::tr1::shared_ptr<propvect> queue;
     Mode mode;
 };

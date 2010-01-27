@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2010-01-19" "0.5.9" "cclive manual"
+.TH cclive 1 "2010-01-20" "0.6.0" "cclive manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -254,11 +254,11 @@ output filenames. Supports (and mimics) Perl's /g (global, find all) and /i
 .IX Item "-S, --substitute=regexps"
 Mimics Perl's s/old/new/(gi) substitution. This option can be used to
 replace occurences in output filenames. Supports /g (global, find all
-occurences) and /i (case-insensitive). To use multiple regexps, separate
-each with whitespace.
+occurences) and /i (case-insensitive).
 .Sp
-Note that substitution is made \fIafter\fR pattern matching (\fB\-\-regexp\fR)
-and formatting the filename (\fB\-\-filename\-format\fR).
+Use of multiple regular expressions is also supported. You can separate
+each with with a whitespace. The number of regular expressions is
+currently unlimited.
 .Sp
 See also \*(L"\s-1EXAMPLES\s0\*(R".
 .IP "\fB\-F, \-\-filename\-format\fR=\fIformatstring\fR" 4
@@ -297,10 +297,12 @@ Invokes the expression specified with \f(CW\*(C`\-\-exec\*(C'\fR when download f
 .IP "\fB\-\-stream\-exec\fR=\fIexpression\fR" 4
 .IX Item "--stream-exec=expression"
 Expression to be invoked with \f(CW\*(C`\-\-stream\*(C'\fR and \f(CW\*(C`\-\-stream\-pass\*(C'\fR.
+.Sp
+If a \*(L"%i\*(R" specifier is used in the \fIexpression\fR, it will be replaced
+with either the video pathname (\f(CW\*(C`\-\-stream\*(C'\fR) or the parsed video link
+(\f(CW\*(C`\-\-stream\-pass\*(C'\fR).
 .IP "\fB\-s, \-\-stream\-pass\fR" 4
 .IX Item "-s, --stream-pass"
-Pass parsed video link to the expression specified with \f(CW\*(C`\-\-stream\-exec\*(C'\fR.
-.Sp
 In addition to the \*(L"%i\*(R" specifier, if the specifier \*(L"%f\*(R" appears
 anywhere in \f(CW\*(C`\-\-stream\-exec\*(C'\fR \fIexpression\fR it will be replaced
 with the pathname of the extracted video file.
@@ -495,13 +497,29 @@ For further reading:
 Format: flv|mp4
 .Sp
 mp4 may not always be available.
-.IP "spyfilms.com" 4
-.IX Item "spyfilms.com"
-Format: flv|hd
-.IP "Other" 4
-.IX Item "Other"
-All other supported websites (see \-\-host output) support
-the flv format only.
+.IP "sevenload.com" 4
+.IX Item "sevenload.com"
+.PD 0
+.IP "break.com" 4
+.IX Item "break.com"
+.IP "liveleak.com" 4
+.IX Item "liveleak.com"
+.IP "evisor.tv" 4
+.IX Item "evisor.tv"
+.IP "clipfish.de" 4
+.IX Item "clipfish.de"
+.IP "funnyhub.com" 4
+.IX Item "funnyhub.com"
+.IP "myubo.com" 4
+.IX Item "myubo.com"
+.IP "tv.cctv.com" 4
+.IX Item "tv.cctv.com"
+.IP "ehrensenf.de" 4
+.IX Item "ehrensenf.de"
+.IP "redtube.com" 4
+.IX Item "redtube.com"
+.PD
+Format: flv
 .SH "FILES"
 .IX Header "FILES"
 .ie n .IP "\fB\fB$CCLIVE_HOME\fB|$HOME/.ccliverc\fR" 4
@@ -570,7 +588,7 @@ cclive exits 0 on success, and >0 if an error occurs.
 \&  CCLIVE_OK           = 0
 \&  CCLIVE_OPT          = 1  // cmdline option parsing error
 \&  CCLIVE_OPTARG       = 2  // cmdline option arg error
-\&  CCLIVE_CURLINIT     = 3  // curl init error
+\&  CCLIVE_CURLINIT     = 3  // curl init error (unused since 0.6.0+)
 \&  CCLIVE_NOTHINGTODO  = 4  // file already retrieved
 \&  CCLIVE_SYSTEM       = 5  // system call failed
 \&  CCLIVE_NOSUPPORT    = 6  // host not supported

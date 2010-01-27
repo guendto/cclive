@@ -19,15 +19,13 @@
 
 #include "config.h"
 
-#include <tr1/memory>
 #include <iostream>
 #include <sstream>
 #include <iomanip>
 #include <cstdlib>
 #include <cstring>
-#include <string>
-#include <vector>
 #include <cerrno>
+#include <string>
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
@@ -52,9 +50,9 @@
 #endif
 
 #include "except.h"
-#include "video.h"
 #include "opts.h"
 #include "macros.h"
+#include "quvi.h"
 #include "util.h"
 #include "exec.h"
 #include "log.h"
@@ -86,22 +84,22 @@ getTermWidth() {
 #endif
 
 ProgressBar::ProgressBar()
-    : props(VideoProperties()), lastUpdate(0),
-      started(0),               lastLogfileUpdate(0),
+    : props(QuviVideo()), lastUpdate(0),
+      started(0),         lastLogfileUpdate(0),
       initial(0),
-      total(0),                 count(0),
-      done(false),              width(0),
-      termWidth(0),             streamFlag(false),
+      total(0),           count(0),
+      done(false),        width(0),
+      termWidth(0),       streamFlag(false),
       streamPid(-1)
 {
 }
 
 void
-ProgressBar::init(const VideoProperties& props) {
+ProgressBar::init(const QuviVideo& props) {
     this->props = props;
 
-    initial = props.getInitial(); // bytes dl previously
-    total   = props.getLength();  // expected bytes
+    initial = props.getInitialFileLength(); // bytes dl previously
+    total   = props.getFileLength();        // expected bytes
 
     if (initial > total)
         total = initial;
@@ -118,7 +116,7 @@ ProgressBar::init(const VideoProperties& props) {
     width = termWidth-1; // do not use the last column
     time(&started);
 }
-
+ 
 typedef unsigned int _uint;
 
 void
@@ -162,7 +160,7 @@ ProgressBar::update(double now) {
     register _uint l = 32;
     if (width > DEFAULT_TERM_WIDTH)
         l += width - DEFAULT_TERM_WIDTH;
-    b << props.getFilename().substr(0,l);
+    b << props.getFileName().substr(0,l);
 
     if (total > 0) {
         const double _size = !done ? size:now;
@@ -327,7 +325,7 @@ ProgressBar::forkStreamer() {
             << strerror(errno)
             << std::endl;
 #else
-            perror("waitpid");
+        perror("fork");
 #endif
     }
     else if (streamPid == 0) {
