@@ -34,18 +34,6 @@ option "logfile-interval"
     default="10"
     dependon="background"
     optional
-option "logfile"
-    o "Write output to file while in background"
-    string typestr="<file>"
-    default="cclive.log"
-    dependon="background"
-    optional
-option "logfile-interval"
-    i "Update logfile every n seconds while in background"
-    int typestr="<n>"
-    default="10"
-    dependon="background"
-    optional
 
 section "HTTP"
 option "agent"
