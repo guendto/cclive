@@ -140,7 +140,7 @@ QuviMgr::handle() const {
 void
 QuviMgr::curlHandle(CURL **curl) {
     assert(curl != 0);
-    quvi_getinfo(quvi, QUVII_CURL, curl);
+    quvi_getinfo(quvi, QUVIINFO_CURL, curl);
 }
 
 static int video_num; // --number-videos index
@@ -197,10 +197,10 @@ QuviVideo::parse(std::string url /*=""*/) {
 #define wrap_getprop(id,dst,type) \
     do { type tmp; quvi_getprop(video, id, &tmp); dst = tmp; } while (0)
 
-    wrap_getprop(QUVIP_HOSTID,      hostId,     char*);
-    wrap_getprop(QUVIP_PAGEURL,     pageUrl,    char*);
-    wrap_getprop(QUVIP_PAGETITLE,   pageTitle,  char*);
-    wrap_getprop(QUVIP_VIDEOID,     videoId,    char*);
+    wrap_getprop(QUVIPROP_HOSTID,      hostId,     char*);
+    wrap_getprop(QUVIPROP_PAGEURL,     pageUrl,    char*);
+    wrap_getprop(QUVIPROP_PAGETITLE,   pageTitle,  char*);
+    wrap_getprop(QUVIPROP_VIDEOID,     videoId,    char*);
 
     size_t count = 0;
     do    { ++count; }
@@ -210,10 +210,10 @@ QuviVideo::parse(std::string url /*=""*/) {
     do {
         quvi::SHPQuviVideoLink q(new QuviVideoLink);
         try {
-            wrap_getprop(QUVIP_VIDEOURL,              q->url,       char*);
-            wrap_getprop(QUVIP_VIDEOFILECONTENTTYPE,  q->ct,        char*);
-            wrap_getprop(QUVIP_VIDEOFILESUFFIX,       q->suffix,    char*);
-            wrap_getprop(QUVIP_VIDEOFILELENGTH,       q->length,    double);
+            wrap_getprop(QUVIPROP_VIDEOURL,              q->url,       char*);
+            wrap_getprop(QUVIPROP_VIDEOFILECONTENTTYPE,  q->ct,        char*);
+            wrap_getprop(QUVIPROP_VIDEOFILESUFFIX,       q->suffix,    char*);
+            wrap_getprop(QUVIPROP_VIDEOFILELENGTH,       q->length,    double);
 
             QuviVideo::toFileName(
                 pageTitle,

@@ -90,8 +90,8 @@ QuviException::QuviException(const std::string& error)
 {
     const quvi_t quvi = quvimgr.handle();
     assert(quvi != 0);
-    quvi_getinfo(quvi, QUVII_HTTPCODE, &httpcode);
-    quvi_getinfo(quvi, QUVII_CURLCODE, &curlcode);
+    quvi_getinfo(quvi, QUVIINFO_HTTPCODE, &httpcode);
+    quvi_getinfo(quvi, QUVIINFO_CURLCODE, &curlcode);
 }
 
 QuviException::QuviException(
