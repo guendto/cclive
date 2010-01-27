@@ -78,7 +78,7 @@ status_callback(long param, void *data) {
     quvi_word type   = quvi_hiword(param);
 
     switch (status) {
-    case QUVIS_FETCH:
+    case QUVISTATUS_FETCH:
         switch (type) {
         default:
             logmgr.cout()
@@ -86,15 +86,15 @@ status_callback(long param, void *data) {
                 << static_cast<char *>(data)
                 << " ...";
             break;
-        case QUVIST_CONFIG:
+        case QUVISTATUSTYPE_CONFIG:
             logmgr.cout()
                 << "fetch config ...";
             break;
-        case QUVIST_PLAYLIST:
+        case QUVISTATUSTYPE_PLAYLIST:
             logmgr.cout()
                 << "fetch playlist ...";
             break;
-        case QUVIST_DONE:
+        case QUVISTATUSTYPE_DONE:
             logmgr.cout()
                 << "done."
                 << std::endl;
@@ -102,13 +102,13 @@ status_callback(long param, void *data) {
         }
         break;
 
-    case QUVIS_VERIFY:
+    case QUVISTATUS_VERIFY:
         switch (type) {
         default:
             logmgr.cout()
                 << "verify video link ...";
             break;
-        case QUVIST_DONE:
+        case QUVISTATUSTYPE_DONE:
             logmgr.cout()
                 << "done."
                 << std::endl;
