@@ -41,6 +41,11 @@ obsolete due to the above change
 page fetching and parsing, e.g. spiegel videos now skip
 the video page fetch altogether
 
+* spyfilms videos ids are now generated differently,
+this was, and is being done, only because these videos
+do not appear to have any that we could use, all other
+websites use unique ids for their videos
+
 
 0.5.7
 -------------
