@@ -4,34 +4,42 @@ cclive News
 0.6.0
 -------------
 
+Significant changes to the project. 0.6.0 has gone through
+tedious testing but expect bugs.
+
 * Added new dependency for libquvi (http://quvi.googlecode.com/)
+  - libquvi is a brand new a spinoff library
+  - based on cclive 0.5 host specific code
+  - takes care of all of the page fetching and parsing
 
-* libquvi will now take care of fetching pages, parsing them
-for video links and verifying the links
-
-* cclive will print "error: libquvi: ..." if the error occurred
-in the library, and bug reports should therefore filed to the
-quvi bug tracker, not cclive's tracker
+* cclive will now prepend "error: libquvi:" if an error occurs
+in the library, this means that any such bug should be reported
+to the *quvi bug tracker* (see the link above)
 
 * Added support for (cctv) multi-segment videos, see also:
   http://code.google.com/p/clive/issues/detail?id=45
 
-* Adult websites are only supported if libquvi was built with
-the support (default:no)
+* Adult websites are now only supported if libquvi was built
+with the support (default:no)
 
-* CCLIVE_CURLINIT return code is now obsolete as libquvi
-initializes libcurl
+* CCLIVE_CURLINIT return code is now obsolete, libquvi
+initializes libcurl and spews out the init error
 
-* Cleaned up code wise the retrying support
+* The code responsible for the underlaying "retry-transfer"
+logic was rewritten for better readability
 
-* Removed libiconv dependency; libquvi will take care of
-character set conversions instead
+* Removed the libiconv dependency, libquvi takes care of
+the character set conversions now
 
-* Tests ("make check") no longer run host specific tests,
-this is now done in quvi
+* Tests no longer run any of the old host specific checks,
+the quvi package takes care of this now
 
-* Similarly, the ADULT_OK environment variable is no longer
-used by the tests ("make check")
+* On a related matter, ADULT_OK environment variable is now
+obsolete due to the above change
+
+* libquvi introduces some misc. minor improvements to the 
+page fetching and parsing, e.g. spiegel videos now skip
+the video page fetch altogether
 
 
 0.5.7
