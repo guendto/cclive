@@ -143,9 +143,6 @@ ExecMgr::passStream(const QuviVideo& props) {
     std::stringstream fname;
     fname << "\"" << props.getFileName() << "\"";
 
-    std::stringstream fname;
-    fname << "\"" << props.getFilename() << "\"";
-
     Util::subStrReplace(cmd, "%i", lnk.str());
     Util::subStrReplace(cmd, "%f", fname.str());
 
