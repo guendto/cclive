@@ -7,6 +7,7 @@ TESTS_ENVIRONMENT = $(PERL) -w -mstrict -mccliveTest -I $(top_builddir)/tests
 
 TESTS =\
 nosupport-eval.pl\
+multi-segment.pl\
 multi-dl.pl
 
 else # HAVE_PERL

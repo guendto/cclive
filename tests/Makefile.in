@@ -170,6 +170,7 @@ EXTRA_DIST = ccliveTest.pm.in $(TESTS)
 @HAVE_PERL_TRUE@TESTS_ENVIRONMENT = $(PERL) -w -mstrict -mccliveTest -I $(top_builddir)/tests
 @HAVE_PERL_TRUE@TESTS = \
 @HAVE_PERL_TRUE@nosupport-eval.pl\
+@HAVE_PERL_TRUE@multi-segment.pl\
 @HAVE_PERL_TRUE@multi-dl.pl
 
 all: all-am
