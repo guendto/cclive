@@ -16,17 +16,6 @@
  Typically "./configure && make install". See `./configure --help' for
  additional options.
 
- --enable-tests
-    Enable tests that can be run by typing "make check". Ignores ~/.ccliverc.
-
-    `make check' respects the following environment variables:
-      - NO_INTERNET (skip internet based tests)
-      - MULTI_TEST (dl 2 ~1MB videos to /dev/null, skipped by default)
-      - CCLIVE_TEST_OPTS (any extra cclive command line options to use)
-
-    Example:
-      - NO_INTERNET=1 CCLIVE_TEST_OPTS=--proxy=http://foo:1234 make check
-
  --without-man
     Skip manual (cclive.1) installation.
 
