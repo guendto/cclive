@@ -19,6 +19,10 @@
  --without-man
     Skip manual (cclive.1) installation.
 
+ By setting NO_INTERNET, any tests that require internet connection
+ will be skipped. You can pass additional options to cclive by
+ setting CCLIVE_TEST_OPTIONS.
+
 
             Getting started
 

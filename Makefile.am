@@ -1,7 +1,4 @@
-SUBDIRS= src
-if ENABLE_TESTS
-SUBDIRS+= tests
-endif
+SUBDIRS= src tests
 
 EXTRA_DIST=\
 cmdline.ggo\

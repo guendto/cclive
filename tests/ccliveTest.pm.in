@@ -1,0 +1,117 @@
+#
+# Copyright (C) 2010 Toni Gundogdu.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+package ccliveTest;
+
+use warnings;
+use strict;
+
+use POSIX ":sys_wait_h";
+
+require Exporter;
+use vars qw(@ISA @EXPORT @EXPORT_OK);
+
+our @ISA       = qw(Exporter);
+our @EXPORT    = ();
+our @EXPORT_OK = qw(run run_formats);
+
+use constant CCLIVE_PATH => "@top_builddir@/src/cclive";
+
+sub run {
+    my @args = ( CCLIVE_PATH, );
+
+    my $extra = $ENV{CCLIVE_TEST_OPTIONS};
+
+    @args = ( @args, split( / /, $extra ) )
+        if ($extra);
+
+    foreach (@_) {
+        if ($_ =~ /--remote/) {
+            if ($ENV{NO_INTERNET}) {
+                print STDERR "SKIP: No internet.\n";
+                return 0;
+            }
+        }
+        else {
+            push @args, $_;
+        }
+    }
+
+    print "\nRUN: ";
+    print "$_ " foreach @args;
+    print "\n";
+
+    my $child = fork;
+    if ( $child < 0 ) {
+        die "fork: $! ($?)";
+    }
+    elsif ( $child == 0 ) {
+        exit( system(@args) >> 8 );
+    }
+
+    print "\n";
+
+    my $rc;
+    while (1) {
+        my $result = waitpid( $child, 0 );
+
+        if ( $result == -1 ) {
+            die "no more processes to wait: pid $child not found";
+        }
+        elsif ( $result == 0 ) {
+
+            # $child is still running.
+            next;
+        }
+        elsif ( $result != $child ) {
+            die "got invalid pid $result (expected $child)";
+        }
+
+        print STDERR "  ";
+
+        my $status = $?;
+        if ( WIFEXITED($status) ) {
+            $rc = WEXITSTATUS($status);
+            print STDERR "-> child: normal termination ($rc)\n";
+            last;
+        }
+        elsif ( WIFSIGNALED($status) ) {
+            $rc = WTERMSIG($status);
+            print STDERR "-> child: abnormal termination ($rc)\n";
+            last;
+        }
+        elsif ( WIFSTOPPED($status) ) {
+            $rc = WSTOPSIG($status);
+            print STDERR "-> child: stopped ($rc)\n";
+            last;
+        }
+    }
+
+    return $rc;
+}
+
+sub run_formats {
+    my $formats = shift;
+    my $rc;
+    foreach ( @{$formats} ) {
+        $rc = run( "-f", $_, @_ );
+        last if $rc != 0;
+    }
+    return $rc;
+}
+
+1;

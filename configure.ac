@@ -38,6 +38,10 @@ AC_PATH_PROG(GENGETOPT, gengetopt, no)
 AM_CONDITIONAL([HAVE_GENGETOPT], [test x"$GENGETOPT" != "xno"])
 AC_SUBST(GENGETOPT)
 
+AC_PATH_PROG(PERL, perl, no)
+AM_CONDITIONAL([HAVE_PERL], [test x"$PERL" != "xno"])
+AC_SUBST(PERL)
+
 AC_PATH_PROG(PODCHECKER, podchecker, no)
 AM_CONDITIONAL([HAVE_PODCHECKER], [test x"$PODCHECKER" != "xno"])
 AC_SUBST(PODCHECKER)
@@ -109,7 +113,8 @@ fi
 
 AC_CONFIG_FILES([Makefile
                  src/Makefile
-                 tests/Makefile])
+                 tests/Makefile
+                 tests/ccliveTest.pm])
 AC_OUTPUT
 
 AC_MSG_NOTICE([Configured to build cclive:
@@ -120,6 +125,11 @@ AC_MSG_NOTICE([Configured to build cclive:
     compiler:       ${CXX}
     cxxflags:       ${CXXFLAGS}
     install manual: ${with_man}
+    gengetopt:      ${GENGETOPT}
+    perl:           ${PERL}
+    podchecker:     ${PODCHECKER}
+    pod2man:        ${POD2MAN}
+    pod2html:       ${POD2HTML}
 ])
 
 

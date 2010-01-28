@@ -1,18 +1,16 @@
 
-EXTRA_DIST=
+EXTRA_DIST = ccliveTest.pm.in $(TESTS)
 
-check_PROGRAMS=\
-returncode\
-multi
+if HAVE_PERL
 
-TESTS=		$(check_PROGRAMS)
-common=		test.cpp test.h
-AM_CXXFLAGS=	-DCCLIVE_PATH="\"$(top_builddir)/src/cclive\""
+TESTS_ENVIRONMENT = $(PERL) -w -mstrict -mccliveTest -I $(top_builddir)/tests
 
-returncode_SOURCES=	returncode.cpp $(common)
-multi_SOURCES=		multi.cpp $(common)
+TESTS =\
+nosupport-eval.pl\
+multi-dl.pl
 
-local-clean:
-	@rm -rf *.core
+else # HAVE_PERL
+@echo perl not found.
+endif # HAVE_PERL
 
-distclean-local: local-clean
+
