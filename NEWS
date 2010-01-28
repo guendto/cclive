@@ -32,19 +32,24 @@ logic was rewritten for better readability
 the character set conversions now
 
 * Tests no longer run any of the old host specific checks,
-the quvi package takes care of this now
+the quvi package takes care of this now, other changes
+to the test suite include:
 
-* On a related matter, ADULT_OK environment variable is now
-obsolete due to the above change
+  * ADULT_OK environment variable is now obsolete,
+  this is now libquvi territory
+
+  * Renamed CCLIVE_TEST_OPTS -> CCLIVE_TEST_OPTIONS
 
 * libquvi introduces some misc. minor improvements to the 
 page fetching and parsing, e.g. spiegel videos now skip
 the video page fetch altogether
 
-* spyfilms videos ids are now generated differently,
-this was, and is being done, only because these videos
-do not appear to have any that we could use, all other
-websites use unique ids for their videos
+* spyfilms video ids were previously (0.5.9) glued together
+from various video page elements, as of 0.6.0 (and libquvi)
+spyfilms video ids are generated using different scheme
+
+  * this is a special case, all other supported websites
+  use unique ids for their videos
 
 
 0.5.7
