@@ -19,9 +19,13 @@
  --without-man
     Skip manual (cclive.1) installation.
 
- By setting NO_INTERNET, any tests that require internet connection
- will be skipped. You can pass additional options to cclive by
- setting CCLIVE_TEST_OPTIONS.
+ Environment settings:
+
+ NO_INTERNET=1      Skip _all_ tests that depend on internet
+ NO_MULTIDL=1       Skip tests/multi-dl.pl, downloads 2x ~1MB videos to /dev/null
+ NO_MULTISEGMENT=1  Skip tests/multi-segment.pl, cctv multi-segment test
+
+ You can pass additional options to cclive by setting CCLIVE_TEST_OPTIONS.
 
 
             Getting started
