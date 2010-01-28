@@ -40,15 +40,17 @@ to the test suite include:
 
   * Renamed CCLIVE_TEST_OPTS -> CCLIVE_TEST_OPTIONS
 
+  * Tests are now perl scripts
+
 * libquvi introduces some misc. minor improvements to the 
 page fetching and parsing, e.g. spiegel videos now skip
 the video page fetch altogether
 
-* spyfilms video ids were previously (0.5.9) glued together
+* Spyfilms video ids were previously (0.5.9) glued together
 from various video page elements, as of 0.6.0 (and libquvi)
 spyfilms video ids are generated using different scheme
 
-  * this is a special case, all other supported websites
+  * This is a special case, all other supported websites
   use unique ids for their videos
 
 
