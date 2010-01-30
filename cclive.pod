@@ -334,31 +334,46 @@ overrides this setting.
 
 =head1 FORMATS
 
+Note that libquvi is responsible for maintaining the current
+list of the formats. You can get a full list of the hosts
+and the supported formats with the C<--hosts>.
+
+The default for all of the supported websites is "flv".
+The quality of the default format can vary greatly, and
+some hosts have the habit changing the default quality
+from time to time. That said, do not read too much
+into the details listed below.
+
+Also note that the file suffix is parsed from the content-type
+field of the returned HTTP header when the video link is
+verified.
+
+All of the above are done by libquvi, not cclive. So if you
+see anything funny, please see the L</OTHER> section.
+
 =over 4
 
 =item youtube.com
 
 Format: flv|fmt17|fmt18|fmt22|fmt35
 
-If --format option is not unused, cclive defaults to whatever
-Youtube defaults to. Technically speaking, we leaving the "&fmt="
-from the video link.
+cclive defaults to to whatever Youtube defaults to at the
+time. This is usually the fmt34 (see below).
 
-Youtube likes to rehash these from time to time so don't be
-surprised if, for example, the quality is not what you expected.
-The same applies to the suffices listed below.
+Also, do not be surprised if the quality is not what you
+expected, the good folks at Youtube like to keep things
+interesting (for those who care).
 
- YoutubeID Alias    Suffix  Resolution
+ FormatID  Alias    Suffix  Resolution
  fmt22     hd       mp4     1280x720
  fmt35     hq       flv      640x380
  fmt18     mp4      mp4      480x360
  fmt34     -        flv      320x180 (quality reportedly varies)
  fmt17     3gp      3gp      176x144
 
-You can use either, the "alias" (e.g. "hd") or the "YoutubeID"
-(e.g. "fmt22") with --format. The aliases exist for historical
-reasons. The suffix is parsed from the content-type field of
-the returned HTTP header.
+You can use either, the "alias" (e.g. "hd") or the "format id"
+(e.g. "fmt22"), with --format. The aliases are supported for
+historical reasons.
 
 cclive can also download videos that last.fm lists as Youtube
 hosted videos.
@@ -407,27 +422,17 @@ Format: flv|mp4
 
 mp4 may not always be available.
 
-=item sevenload.com
+=item spyfilms.com
 
-=item break.com
+Format: flv|hd
 
-=item liveleak.com
-
-=item evisor.tv
-
-=item clipfish.de
-
-=item funnyhub.com
-
-=item myubo.com
-
-=item tv.cctv.com
-
-=item ehrensenf.de
-
-=item redtube.com
+=item All other supported websites
 
 Format: flv
+
+Check also the C<--hosts>. libquvi is likely to get
+updated more frequently than cclive, so the output of
+this option may change.
 
 =back
 
@@ -459,8 +464,9 @@ For example, in bash and urxvt terms:
   % LANG=en_US.UTF8 urxvt&
   % cclive ... # in new terminal
 
-cclive converts the characters to unicode if the video HTML specifies
-the charset meta tag. Otherwise the characters are copied as they are.
+cclive (libquvi) converts the characters to unicode if the video HTML
+specifies the charset meta tag. Otherwise the characters are copied as
+they are.
 
 If you are missing the unicode characters when using C<--regexp> and
 C<--filename-format>, make sure the regular expression includes "\pL".
@@ -493,7 +499,7 @@ Useful options for debugging cclive.
 
 =item cclive --debug URL
 
-Turn on libcurl verbose mode.
+Spew out libcurl verbose messages.
 
 =item cclive -n URL
 
@@ -525,6 +531,22 @@ cclive exits 0 on success, and E<gt>0 if an error occurs.
 =item Project page:
 
 <http://cclive.googlecode.com/>
+
+=item Reporting bugs:
+
+Note that if the error message contains "libquvi:", that
+means the error occurred in libquvi. Doh. This means that
+the bug report should go here:
+
+<http://quvi.googlecode.com/>
+
+Everything else (cclive related) should go here:
+
+<http://cclive.googlecode.com/>
+
+See under the "Issues". Please search the tracker first
+before you submit a new one. The issue may have already
+been addressed and closed. Thanks.
 
 =item FAQ:
 

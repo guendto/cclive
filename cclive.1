@@ -400,20 +400,35 @@ the Dailymotion video. Note that the use of \-f (or \f(CW\*(C`\-\-format\*(C'\fR
 overrides this setting.
 .SH "FORMATS"
 .IX Header "FORMATS"
+Note that libquvi is responsible for maintaining the current
+list of the formats. You can get a full list of the hosts
+and the supported formats with the \f(CW\*(C`\-\-hosts\*(C'\fR.
+.PP
+The default for all of the supported websites is \*(L"flv\*(R".
+The quality of the default format can vary greatly, and
+some hosts have the habit changing the default quality
+from time to time. That said, do not read too much
+into the details listed below.
+.PP
+Also note that the file suffix is parsed from the content-type
+field of the returned \s-1HTTP\s0 header when the video link is
+verified.
+.PP
+All of the above are done by libquvi, not cclive. So if you
+see anything funny, please see the \*(L"\s-1OTHER\s0\*(R" section.
 .IP "youtube.com" 4
 .IX Item "youtube.com"
 Format: flv|fmt17|fmt18|fmt22|fmt35
 .Sp
-If \-\-format option is not unused, cclive defaults to whatever
-Youtube defaults to. Technically speaking, we leaving the \*(L"&fmt=\*(R"
-from the video link.
+cclive defaults to to whatever Youtube defaults to at the
+time. This is usually the fmt34 (see below).
 .Sp
-Youtube likes to rehash these from time to time so don't be
-surprised if, for example, the quality is not what you expected.
-The same applies to the suffices listed below.
+Also, do not be surprised if the quality is not what you
+expected, the good folks at Youtube like to keep things
+interesting (for those who care).
 .Sp
 .Vb 6
-\& YoutubeID Alias    Suffix  Resolution
+\& FormatID  Alias    Suffix  Resolution
 \& fmt22     hd       mp4     1280x720
 \& fmt35     hq       flv      640x380
 \& fmt18     mp4      mp4      480x360
@@ -421,10 +436,9 @@ The same applies to the suffices listed below.
 \& fmt17     3gp      3gp      176x144
 .Ve
 .Sp
-You can use either, the \*(L"alias\*(R" (e.g. \*(L"hd\*(R") or the \*(L"YoutubeID\*(R"
-(e.g. \*(L"fmt22\*(R") with \-\-format. The aliases exist for historical
-reasons. The suffix is parsed from the content-type field of
-the returned \s-1HTTP\s0 header.
+You can use either, the \*(L"alias\*(R" (e.g. \*(L"hd\*(R") or the \*(L"format id\*(R"
+(e.g. \*(L"fmt22\*(R"), with \-\-format. The aliases are supported for
+historical reasons.
 .Sp
 cclive can also download videos that last.fm lists as Youtube
 hosted videos.
@@ -473,29 +487,16 @@ For further reading:
 Format: flv|mp4
 .Sp
 mp4 may not always be available.
-.IP "sevenload.com" 4
-.IX Item "sevenload.com"
-.PD 0
-.IP "break.com" 4
-.IX Item "break.com"
-.IP "liveleak.com" 4
-.IX Item "liveleak.com"
-.IP "evisor.tv" 4
-.IX Item "evisor.tv"
-.IP "clipfish.de" 4
-.IX Item "clipfish.de"
-.IP "funnyhub.com" 4
-.IX Item "funnyhub.com"
-.IP "myubo.com" 4
-.IX Item "myubo.com"
-.IP "tv.cctv.com" 4
-.IX Item "tv.cctv.com"
-.IP "ehrensenf.de" 4
-.IX Item "ehrensenf.de"
-.IP "redtube.com" 4
-.IX Item "redtube.com"
-.PD
+.IP "spyfilms.com" 4
+.IX Item "spyfilms.com"
+Format: flv|hd
+.IP "All other supported websites" 4
+.IX Item "All other supported websites"
 Format: flv
+.Sp
+Check also the \f(CW\*(C`\-\-hosts\*(C'\fR. libquvi is likely to get
+updated more frequently than cclive, so the output of
+this option may change.
 .SH "FILES"
 .IX Header "FILES"
 .ie n .IP "\fB\fB$CCLIVE_HOME\fB|$HOME/.ccliverc\fR" 4
@@ -524,8 +525,9 @@ For example, in bash and urxvt terms:
 \&  % cclive ... # in new terminal
 .Ve
 .PP
-cclive converts the characters to unicode if the video \s-1HTML\s0 specifies
-the charset meta tag. Otherwise the characters are copied as they are.
+cclive (libquvi) converts the characters to unicode if the video \s-1HTML\s0
+specifies the charset meta tag. Otherwise the characters are copied as
+they are.
 .PP
 If you are missing the unicode characters when using \f(CW\*(C`\-\-regexp\*(C'\fR and
 \&\f(CW\*(C`\-\-filename\-format\*(C'\fR, make sure the regular expression includes \*(L"\epL\*(R".
@@ -551,7 +553,7 @@ defined in terms of \ew and \eW.\*(R" \*(-- man pcrepattern
 Useful options for debugging cclive.
 .IP "cclive \-\-debug \s-1URL\s0" 4
 .IX Item "cclive --debug URL"
-Turn on libcurl verbose mode.
+Spew out libcurl verbose messages.
 .IP "cclive \-n \s-1URL\s0" 4
 .IX Item "cclive -n URL"
 Simulate only; cclive will parse and verify the video link without
@@ -578,6 +580,21 @@ cclive exits 0 on success, and >0 if an error occurs.
 .IP "Project page:" 4
 .IX Item "Project page:"
 <http://cclive.googlecode.com/>
+.IP "Reporting bugs:" 4
+.IX Item "Reporting bugs:"
+Note that if the error message contains \*(L"libquvi:\*(R", that
+means the error occurred in libquvi. Doh. This means that
+the bug report should go here:
+.Sp
+<http://quvi.googlecode.com/>
+.Sp
+Everything else (cclive related) should go here:
+.Sp
+<http://cclive.googlecode.com/>
+.Sp
+See under the \*(L"Issues\*(R". Please search the tracker first
+before you submit a new one. The issue may have already
+been addressed and closed. Thanks.
 .IP "\s-1FAQ:\s0" 4
 .IX Item "FAQ:"
 <http://code.google.com/p/cclive/wiki/FAQ>
