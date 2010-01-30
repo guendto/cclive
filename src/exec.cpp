@@ -30,7 +30,7 @@
 #include "exec.h"
 
 ExecMgr::ExecMgr()
-    : queue(new propvect), mode(Plus)
+    : queue(new vquvi), mode(Plus)
 {
 }
 
@@ -89,8 +89,6 @@ invokeCommand(const std::string& cmd, const char *what=0) {
         throw RuntimeException(CCLIVE_SYSTEM, tmp.str());
     }
 }
-
-typedef std::vector<QuviVideo> vquvi;
 
 void
 ExecMgr::playPlus() {

@@ -37,8 +37,8 @@ private:
 private:
     enum Mode { Plus, Semi };
 private:
-    typedef std::vector<QuviVideo> propvect;
-    std::tr1::shared_ptr<propvect> queue;
+    typedef std::vector<QuviVideo> vquvi;
+    std::tr1::shared_ptr<vquvi> queue;
     Mode mode;
 };
 
