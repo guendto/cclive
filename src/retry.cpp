@@ -42,28 +42,36 @@ static void
 check_counter() {
     const Options opts = optsmgr.getOptions();
 
-    if (retries_so_far++ >= opts.retry_arg)
+    if (++retries_so_far > opts.retry_arg+1)
         throw NoMoreRetriesException();
-
 }
 
 static void
 retry_msg(const QuviException& x) {
+
     const Options opts = optsmgr.getOptions();
+    const bool retry   = retries_so_far <= opts.retry_arg;
 
     std::stringstream b;
+
     b << "\nerror: "
-      << x.what()
-      << "\nretry "
-      << retries_so_far
-      << "/"
-      << opts.retry_arg
-      << " ... wait "
-      << opts.retry_wait_arg
-      << "s";
+      << x.what();
+
+    if (retry) {
+      b << "\nretry "
+        << retries_so_far
+        << "/"
+        << opts.retry_arg
+        << " ... wait "
+        << opts.retry_wait_arg
+        << "s";
+    }
 
     logmgr.cerr(b.str(), false, false, false);
-    sleep(opts.retry_wait_arg);
+
+    if (retry)
+        sleep(opts.retry_wait_arg);
+
     logmgr.cerr() << std::endl;
 }
 
