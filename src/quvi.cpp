@@ -291,7 +291,9 @@ QuviVideo::toFileName(
     const Options opts = optsmgr.getOptions();
 
     const bool throw_nothing_todo =
-        (!opts.no_extract_given && !opts.emit_csv_given);
+        (!opts.no_extract_given
+        && !opts.emit_csv_given
+        && !opts.stream_pass_given);
 
     if (!opts.output_video_given) {
         std::stringstream b;

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Toni Gundogdu.
+ * Copyright (C) 2009,2010 Toni Gundogdu.
  *
  * This file is part of cclive.
  * 
@@ -30,7 +30,7 @@ public:
     void append(const QuviVideo&); 
     void playQueue();
     void playStream(const QuviVideo&);
-    void passStream(const QuviVideo&);
+    void passStream(QuviVideo&);
 private:
     void playPlus();
     void playSemi();
