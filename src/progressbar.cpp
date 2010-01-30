@@ -80,7 +80,7 @@ getTermWidth() {
 #endif
 
 ProgressBar::ProgressBar()
-    : props(QuviVideo()), lastUpdate(0),
+    : qv(QuviVideo()), lastUpdate(0),
       started(0),         lastLogfileUpdate(0),
       initial(0),         total(0),
       count(0),           done(false),
@@ -89,11 +89,11 @@ ProgressBar::ProgressBar()
 }
 
 void
-ProgressBar::init(const QuviVideo& props) {
-    this->props = props;
+ProgressBar::init(const QuviVideo& qv) {
+    this->qv = qv;
 
-    initial = props.getInitialFileLength(); // bytes dl previously
-    total   = props.getFileLength();        // expected bytes
+    initial = qv.getInitialFileLength(); // bytes dl previously
+    total   = qv.getFileLength();        // expected bytes
 
     if (initial > total)
         total = initial;
@@ -154,7 +154,7 @@ ProgressBar::update(double now) {
     register _uint l = 32;
     if (width > DEFAULT_TERM_WIDTH)
         l += width - DEFAULT_TERM_WIDTH;
-    b << props.getFileName().substr(0,l);
+    b << qv.getFileName().substr(0,l);
 
     if (total > 0) {
         const double _size = !done ? size:now;

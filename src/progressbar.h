@@ -31,7 +31,7 @@ private:
     const std::string timeToStr    (const int& secs) const;
     const std::string getUnit      (double& rate) const;
 private:
-    QuviVideo props;
+    QuviVideo qv;
     time_t lastUpdate;
     time_t started;
     time_t lastLogfileUpdate;

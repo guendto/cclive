@@ -128,9 +128,9 @@ callback_progress(
 }
 
 void
-CurlMgr::fetchToFile(QuviVideo& props) {
+CurlMgr::fetchToFile(QuviVideo& qv) {
 
-    if (props.getNothingTodo()) // Set in QuviVideo::parse.
+    if (qv.getNothingTodo()) // Set in QuviVideo::parse.
         return;
 
     const Options opts  = optsmgr.getOptions();
@@ -141,17 +141,17 @@ CurlMgr::fetchToFile(QuviVideo& props) {
     if (number_of_retries() > 1) {
         // Flag as continue. Expect the unexpected: updateInitialLength
         // throws NothingToDoException if current_length >= expected_bytes.
-        props.updateInitialLength();
+        qv.updateInitialLength();
         continue_given = true;
     }
 
     const double initial =
-        props.getInitialFileLength();
+        qv.getInitialFileLength();
 
     if (continue_given && initial > 0) {
 
         const double remaining =
-            props.getFileLength() - initial;
+            qv.getFileLength() - initial;
 
         logmgr.cout()
             << "from: "
@@ -170,14 +170,14 @@ CurlMgr::fetchToFile(QuviVideo& props) {
             << std::endl;
     }
 
-    curl_easy_setopt(curl, CURLOPT_URL, props.getFileUrl().c_str());
+    curl_easy_setopt(curl, CURLOPT_URL, qv.getFileUrl().c_str());
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, callback_writefile);
 
     write_s write;
     memset(&write, 0, sizeof(write));
 
     const char *mode = initial > 0 ? "ab" : "wb";
-    const char *fname = props.getFileName().c_str();
+    const char *fname = qv.getFileName().c_str();
 
     write.file = fopen(fname, mode);
 
@@ -199,7 +199,7 @@ CurlMgr::fetchToFile(QuviVideo& props) {
     curl_easy_setopt(curl, CURLOPT_PROGRESSFUNCTION, &callback_progress);
 
     ProgressBar pb;
-    pb.init(props);
+    pb.init(qv);
 
     curl_easy_setopt(curl, CURLOPT_PROGRESSDATA, &pb);
 

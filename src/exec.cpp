@@ -50,8 +50,8 @@ ExecMgr::verifyExecArgument() {
 }
 
 void
-ExecMgr::append(const QuviVideo& props) {
-    queue->push_back(props);
+ExecMgr::append(const QuviVideo& qv) {
+    queue->push_back(qv);
 }
 
 void
