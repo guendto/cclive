@@ -156,9 +156,6 @@ handle_video(QuviVideo& qv) {
 
         fetch_file(qv, true);
 
-        if (opts.exec_run_given)
-            execmgr.append(qv);
-
         qv.nextVideoLink();
         handle_video(qv);
     }

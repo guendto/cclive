@@ -55,6 +55,7 @@ public:
     double length;
     double initial;
     std::string filename;
+    bool nothing_todo;
 };
 
 namespace quvi {
@@ -86,7 +87,9 @@ public:
     const double& getInitialFileLength() const;
     const std::string& getFileName() const;
     const std::string& getHostId() const;
+    const bool& getNothingTodo() const;
 public:
+    void resetVideoLink();
     void nextVideoLink();
     void updateInitialLength();
 private:

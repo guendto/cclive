@@ -90,48 +90,6 @@ invokeCommand(const std::string& cmd, const char *what=0) {
     }
 }
 
-void
-ExecMgr::playPlus() {
-    // TODO:
-    const Options opts = optsmgr.getOptions();
-
-    std::string cmd = opts.exec_arg;
-    Util::subStrReplace(cmd, "%i", " ");
-    Util::subStrReplace(cmd, "+",  "");
-    cmd += " ";
-
-    for (vquvi::const_iterator iter=queue->begin();
-        iter != queue->end();
-        ++iter)
-    {
-        cmd += " \"";
-        cmd += (*iter).getFileName();
-        cmd += "\"";
-    }
-
-    invokeCommand(cmd, "--exec");
-}
-
-void
-ExecMgr::playSemi() {
-    // TODO:
-    const Options opts = optsmgr.getOptions();
-
-    for (vquvi::const_iterator iter = queue->begin();
-        iter != queue->end();
-        ++iter)
-    {
-        std::stringstream fname;
-        fname << "\"" << (*iter).getFileName() << "\"";
-
-        std::string cmd = opts.exec_arg;
-        Util::subStrReplace(cmd, "%i", fname.str());
-        Util::subStrReplace(cmd, ";", "");
-
-        invokeCommand(cmd, "--exec");
-    }
-}
-
 #define try_while \
     try { while (1) {
 
@@ -139,8 +97,59 @@ ExecMgr::playSemi() {
     } } catch (const QuviNoVideoLinkException&) { }
 
 void
+ExecMgr::playPlus() {
+
+    const Options opts = optsmgr.getOptions();
+
+    std::string cmd = opts.exec_arg;
+    Util::subStrReplace(cmd, "%i", " ");
+    Util::subStrReplace(cmd, "+",  "");
+    cmd += " ";
+
+    for (vquvi::iterator iter=queue->begin();
+        iter != queue->end();
+        ++iter)
+    {
+        (*iter).resetVideoLink();
+        try_while
+            cmd += " \"";
+            cmd += (*iter).getFileName();
+            cmd += "\"";
+            (*iter).nextVideoLink();
+        end_try_while
+    }
+
+    invokeCommand(cmd, "--exec");
+}
+
+void
+ExecMgr::playSemi() {
+
+    const Options opts = optsmgr.getOptions();
+
+    for (vquvi::iterator iter = queue->begin();
+        iter != queue->end();
+        ++iter)
+    {
+        (*iter).resetVideoLink();
+        try_while
+            std::stringstream fname;
+            fname << "\"" << (*iter).getFileName() << "\"";
+
+            std::string cmd = opts.exec_arg;
+            Util::subStrReplace(cmd, "%i", fname.str());
+            Util::subStrReplace(cmd, ";", "");
+
+            invokeCommand(cmd, "--exec");
+
+            (*iter).nextVideoLink();
+        end_try_while
+    }
+}
+
+void
 ExecMgr::passStream(QuviVideo& qv) {
-    // For each video link.
+    qv.resetVideoLink();
     try_while
         std::string cmd = 
             optsmgr.getOptions().stream_exec_arg;

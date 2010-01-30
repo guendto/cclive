@@ -129,18 +129,19 @@ callback_progress(
 
 void
 CurlMgr::fetchToFile(QuviVideo& props) {
-    const Options opts   = optsmgr.getOptions();
+
+    if (props.getNothingTodo()) // Set in QuviVideo::parse.
+        return;
+
+    const Options opts  = optsmgr.getOptions();
 
     bool continue_given =
         static_cast<bool>(opts.continue_given);
 
     if (number_of_retries() > 1) {
-        // Make an attempt to continue if we're retrying a file transfer.
-
-        // (QuviVideo::updateInitialLength) Throws NothingToDoException
-        // if in some bizarre way we managed to get the file in whole already.
+        // Flag as continue. Expect the unexpected: updateInitialLength
+        // throws NothingToDoException if current_length >= expected_bytes.
         props.updateInitialLength();
-
         continue_given = true;
     }
 
@@ -199,6 +200,7 @@ CurlMgr::fetchToFile(QuviVideo& props) {
 
     ProgressBar pb;
     pb.init(props);
+
     curl_easy_setopt(curl, CURLOPT_PROGRESSDATA, &pb);
 
     curl_easy_setopt(curl, CURLOPT_ENCODING, "identity");

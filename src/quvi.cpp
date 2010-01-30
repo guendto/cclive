@@ -32,6 +32,7 @@
 #include "opts.h"
 #include "util.h"
 #include "quvi.h"
+#include "exec.h"
 
 QuviMgr::QuviMgr()
     : quvi(NULL)
@@ -209,6 +210,7 @@ QuviVideo::parse(std::string url /*=""*/) {
     int i = 0;
     do {
         quvi::SHPQuviVideoLink q(new QuviVideoLink);
+        q->nothing_todo = false;
         try {
             wrap_getprop(QUVIPROP_VIDEOURL,              q->url,       char*);
             wrap_getprop(QUVIPROP_VIDEOFILECONTENTTYPE,  q->ct,        char*);
@@ -223,13 +225,15 @@ QuviVideo::parse(std::string url /*=""*/) {
                 ++i,
                 count
             );
-
-            videoLinks.push_back(q);
         }
         catch (const NothingToDoException& x) {
             logmgr.cerr() << "file: " << q->filename << "\n";
             logmgr.cerr(x, false);
+            q->nothing_todo = true;
         }
+
+        videoLinks.push_back(q);
+
     } while (quvi_next_videolink(video) == QUVI_OK);
 
 #undef wrap_getprop
@@ -239,12 +243,18 @@ QuviVideo::parse(std::string url /*=""*/) {
     if (videoLinks.size() == 0)
         throw QuviNoVideoLinkException();
 
+    if (opts.exec_run_given)
+        execmgr.append(*this);
+
     // Start from the first link.
-    currentVideoLink = videoLinks.begin();
+    resetVideoLink();
 }
 
 #define wrap_get_s(n,r) \
     const std::string& QuviVideo::n() const { return r; }
+
+#define wrap_get_b(n,r) \
+    const bool& QuviVideo::n() const { return r; }
 
 wrap_get_s(getPageUrl,          pageUrl)
 wrap_get_s(getPageTitle,        pageTitle)
@@ -262,6 +272,14 @@ wrap_get_s(getFileName,         (*currentVideoLink)->filename)
 wrap_get_f(getFileLength,       (*currentVideoLink)->length)
 wrap_get_f(getInitialFileLength,(*currentVideoLink)->initial)
 #undef wrap_get_s
+
+wrap_get_b(getNothingTodo,      (*currentVideoLink)->nothing_todo)
+#undef wrap_get_b
+
+void
+QuviVideo::resetVideoLink() {
+    currentVideoLink = videoLinks.begin();
+}
 
 void
 QuviVideo::nextVideoLink() {
@@ -289,11 +307,6 @@ QuviVideo::toFileName(
     const int& totalLinks)
 {
     const Options opts = optsmgr.getOptions();
-
-    const bool throw_nothing_todo =
-        (!opts.no_extract_given
-        && !opts.emit_csv_given
-        && !opts.stream_pass_given);
 
     if (!opts.output_video_given) {
         std::stringstream b;
@@ -364,11 +377,8 @@ QuviVideo::toFileName(
                 qvl->initial = Util::fileExists(qvl->filename);
                 if (!qvl->initial)
                     break;
-                else if (qvl->initial >= qvl->length) {
-                    if (throw_nothing_todo)
-                        throw NothingToDoException();
-                    break;
-                }
+                else if (qvl->initial >= qvl->length)
+                    throw NothingToDoException();
                 else {
                     if (opts.continue_given)
                         break;
@@ -382,10 +392,8 @@ QuviVideo::toFileName(
     else {
         qvl->initial = Util::fileExists(opts.output_video_arg);
 
-        if (qvl->initial >= qvl->length) {
-            if (throw_nothing_todo)
-                throw NothingToDoException();
-        }
+        if (qvl->initial >= qvl->length)
+            throw NothingToDoException();
 
         qvl->filename = opts.output_video_arg;
     }
