@@ -136,7 +136,7 @@ print_csv(QuviVideo& qv) {
     catch (const QuviNoVideoLinkException&) { }
 }
 
-#define next_video(log_error, prepend_newline) \
+#define next_video_link(log_error, prepend_newline) \
     do { \
         if (log_error) \
             logmgr.cerr(x, prepend_newline); \
@@ -166,14 +166,14 @@ handle_video(QuviVideo& qv) {
     // * We no longer rely on libquvi here
     // * Reuse the QuviException class
     catch (const QuviException& x)
-        { next_video(true, true); }
+        { next_video_link(true, true); }
     catch (const NothingToDoException& x)
-        { next_video(true, false); }
+        { next_video_link(true, false); }
     catch (const FileOpenException& x)
-        { next_video(true, false); }
+        { next_video_link(true, false); }
     catch (const NoMoreRetriesException& x)
         { logmgr.cerr() << "give up trying." << std::endl;
-          next_video(false, false); }
+          next_video_link(false, false); }
     catch (const QuviNoVideoLinkException& x)
         { /* Triggered by qv.nextvideoLink() in the above try-block. */ }
 }
