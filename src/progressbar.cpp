@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Toni Gundogdu.
+ * Copyright (C) 2009,2010 Toni Gundogdu.
  *
  * This file is part of cclive.
  * 
@@ -33,10 +33,6 @@
 
 #ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
-#endif
-
-#ifdef HAVE_SYS_WAIT_H
-#include <sys/wait.h>
 #endif
 
 #include <time.h>
@@ -86,11 +82,9 @@ getTermWidth() {
 ProgressBar::ProgressBar()
     : props(QuviVideo()), lastUpdate(0),
       started(0),         lastLogfileUpdate(0),
-      initial(0),
-      total(0),           count(0),
-      done(false),        width(0),
-      termWidth(0),       streamFlag(false),
-      streamPid(-1)
+      initial(0),         total(0),
+      count(0),           done(false),
+      width(0),           termWidth(0)
 {
 }
 
@@ -178,17 +172,6 @@ ProgressBar::update(double now) {
           << std::setprecision(1)
           << _TOMB(total)
           << "M";
-
-#if defined(HAVE_FORK) && defined(HAVE_WORKING_FORK)
-        const Options opts = optsmgr.getOptions();
-        if (opts.stream_given
-            && opts.stream_exec_given
-            && !streamFlag)
-        {
-            if (percent >= opts.stream_arg)
-                forkStreamer();
-        }
-#endif
     }
 
     std::stringstream tmp;
@@ -260,22 +243,6 @@ ProgressBar::finish() {
     }
     done = true;
     update(-1);
-
-#ifdef HAVE_SYS_WAIT_H
-    if (streamFlag) {
-        if (waitpid(streamPid, 0, 0) != streamPid) {
-#ifdef HAVE_STRERROR
-            logmgr.cerr()
-                << "waitpid: "
-                << strerror(errno)
-                << std::endl;
-#else
-            perror("waitpid");
-#endif
-        }
-        streamFlag = false;
-    }
-#endif
 }
 
 const std::string
@@ -312,27 +279,6 @@ ProgressBar::getUnit(double& rate) const {
         i = 2;
     }
     return units[i];
-}
-
-void
-ProgressBar::forkStreamer() {
-#if defined(HAVE_FORK) && defined(HAVE_WORKING_FORK)
-    streamFlag = true;
-    if ((streamPid = fork()) < 0) {
-#ifdef HAVE_STRERROR
-        logmgr.cerr()
-            << "fork: "
-            << strerror(errno)
-            << std::endl;
-#else
-        perror("fork");
-#endif
-    }
-    else if (streamPid == 0) {
-        execmgr.playStream(props);
-        exit(0);
-    }
-#endif
 }
 
 

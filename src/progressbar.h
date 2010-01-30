@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Toni Gundogdu.
+ * Copyright (C) 2009,2010 Toni Gundogdu.
  *
  * This file is part of cclive.
  * 
@@ -30,7 +30,6 @@ public:
 private:
     const std::string timeToStr    (const int& secs) const;
     const std::string getUnit      (double& rate) const;
-    void              forkStreamer ();
 private:
     QuviVideo props;
     time_t lastUpdate;
@@ -42,8 +41,6 @@ private:
     bool   done;
     int    width;
     int    termWidth;
-    bool   streamFlag;
-    pid_t  streamPid;
 private:
     enum { DEFAULT_TERM_WIDTH=80 };
 };

@@ -170,16 +170,4 @@ ExecMgr::passStream(QuviVideo& qv) {
     end_try_while
 }
 
-void
-ExecMgr::playStream(const QuviVideo& props) {
-    // TODO:
-    std::string cmd = optsmgr.getOptions().stream_exec_arg;
-
-    std::stringstream fname;
-    fname << "\"" << props.getFileName() << "\"";
-
-    Util::subStrReplace(cmd, "%i", fname.str());
-    invokeCommand(cmd);
-}
-
 

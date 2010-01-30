@@ -113,9 +113,6 @@ struct gengetopt_args_info
   char * stream_exec_orig;	/**< @brief Stream command to be invoked original value given at command line.  */
   const char *stream_exec_help; /**< @brief Stream command to be invoked help description.  */
   const char *stream_pass_help; /**< @brief Pass video link to --stream-exec command help description.  */
-  int stream_arg;	/**< @brief Invoke --stream-exec when transfer reaches %.  */
-  char * stream_orig;	/**< @brief Invoke --stream-exec when transfer reaches % original value given at command line.  */
-  const char *stream_help; /**< @brief Invoke --stream-exec when transfer reaches % help description.  */
   
   unsigned int help_given ;	/**< @brief Whether help was given.  */
   unsigned int version_given ;	/**< @brief Whether version was given.  */
@@ -149,7 +146,6 @@ struct gengetopt_args_info
   unsigned int exec_run_given ;	/**< @brief Whether exec-run was given.  */
   unsigned int stream_exec_given ;	/**< @brief Whether stream-exec was given.  */
   unsigned int stream_pass_given ;	/**< @brief Whether stream-pass was given.  */
-  unsigned int stream_given ;	/**< @brief Whether stream was given.  */
 
   char **inputs ; /**< @brief unamed options (options without names) */
   unsigned inputs_num ; /**< @brief unamed options number */

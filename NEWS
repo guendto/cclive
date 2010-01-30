@@ -53,6 +53,12 @@ spyfilms video ids are generated using different scheme
   * This is a special case, all other supported websites
   use unique ids for their videos
 
+* Option changes
+
+  * Remove --stream option. This option was supported for historical
+  reasons only, until now. It has been considered deprecated since
+  the introduction of --stream-pass in 0.4.6.
+
 
 0.5.7
 -------------

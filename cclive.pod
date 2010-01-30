@@ -241,22 +241,6 @@ with the pathname of the extracted video file.
 See also L</EXAMPLES>. This feature is based on clive wrapper script
 contributed by Bill Squire.
 
-=item B<--stream>=I<percentage>
-
-Mimics "streaming" by forking the expression specified with C<--stream-exec>
-when the progress reaches I<percentage>. cclive continues to download the
-video while the child process works (e.g. plays) in the background.
-See also L</EXAMPLES>. 
-
-Note that this feature is very simple. For example, it does not check if
-the child process runs out of data. 
-
-If there are more than one video in the batch, cclive continues to download
-the next video only when the child process terminates.
-
-This mode is supported for historical reasons only and should be considered
-I<deprecated>. See C<--stream-pass> for a better solution.
-
 =back
 
 =head1 EXAMPLES
@@ -306,15 +290,6 @@ Play the downloaded video with C<mplayer(1)> when download finishes.
 
 Similar but re-encode audio from the video using C<ffmpeg(1)> to a vorbis
 file.
-
-=item cclive --stream-exec="mplayer -really-quiet %i" --stream=20 URL
-
-Mimics "streaming" by starting a child process (C<mplayer(1)>) when the
-progress reaches 20% complete. cclive then continues to download the video
-file while C<mplayer(1)> plays the video file in the background.
-
-See the next example for a better solution if you are not interested in
-keeping a local copy of the video.
 
 =item echo 'stream-exec = "mplayer -really-quiet %i"' E<gt>E<gt> ~/.ccliverc
 

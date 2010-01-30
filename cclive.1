@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2010-01-20" "0.6.0" "cclive manual"
+.TH cclive 1 "2010-01-30" "0.6.0" "cclive manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -309,21 +309,6 @@ with the pathname of the extracted video file.
 .Sp
 See also \*(L"\s-1EXAMPLES\s0\*(R". This feature is based on clive wrapper script
 contributed by Bill Squire.
-.IP "\fB\-\-stream\fR=\fIpercentage\fR" 4
-.IX Item "--stream=percentage"
-Mimics \*(L"streaming\*(R" by forking the expression specified with \f(CW\*(C`\-\-stream\-exec\*(C'\fR
-when the progress reaches \fIpercentage\fR. cclive continues to download the
-video while the child process works (e.g. plays) in the background.
-See also \*(L"\s-1EXAMPLES\s0\*(R".
-.Sp
-Note that this feature is very simple. For example, it does not check if
-the child process runs out of data.
-.Sp
-If there are more than one video in the batch, cclive continues to download
-the next video only when the child process terminates.
-.Sp
-This mode is supported for historical reasons only and should be considered
-\&\fIdeprecated\fR. See \f(CW\*(C`\-\-stream\-pass\*(C'\fR for a better solution.
 .SH "EXAMPLES"
 .IX Header "EXAMPLES"
 .IP "cclive \s-1URL\s0" 4
@@ -368,15 +353,6 @@ Play the downloaded video with \f(CWmplayer(1)\fR when download finishes.
 .IX Item "cclive --exec=ffmpeg -i %i -acodec libvorbis %i.ogg; -e URL"
 Similar but re-encode audio from the video using \f(CWffmpeg(1)\fR to a vorbis
 file.
-.ie n .IP "cclive \-\-stream\-exec=""mplayer \-really\-quiet %i"" \-\-stream=20 \s-1URL\s0" 4
-.el .IP "cclive \-\-stream\-exec=``mplayer \-really\-quiet \f(CW%i\fR'' \-\-stream=20 \s-1URL\s0" 4
-.IX Item "cclive --stream-exec=mplayer -really-quiet %i --stream=20 URL"
-Mimics \*(L"streaming\*(R" by starting a child process (\f(CWmplayer(1)\fR) when the
-progress reaches 20% complete. cclive then continues to download the video
-file while \f(CWmplayer(1)\fR plays the video file in the background.
-.Sp
-See the next example for a better solution if you are not interested in
-keeping a local copy of the video.
 .ie n .IP "echo 'stream\-exec = ""mplayer \-really\-quiet %i""' >> ~/.ccliverc" 4
 .el .IP "echo 'stream\-exec = ``mplayer \-really\-quiet \f(CW%i\fR''' >> ~/.ccliverc" 4
 .IX Item "echo 'stream-exec = mplayer -really-quiet %i' >> ~/.ccliverc"

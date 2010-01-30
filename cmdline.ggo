@@ -148,10 +148,5 @@ option "stream-pass"
     s "Pass video link to --stream-exec command"
     dependon="stream-exec"
     optional
-option "stream"
-    - "Invoke --stream-exec when transfer reaches %"
-    int typestr="<percent>"
-    dependon="stream-exec"
-    optional
 
 text "\nSee the manual page for examples."

@@ -29,7 +29,6 @@ public:
     void verifyExecArgument();
     void append(const QuviVideo&); 
     void playQueue();
-    void playStream(const QuviVideo&);
     void passStream(QuviVideo&);
 private:
     void playPlus();

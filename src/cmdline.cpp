@@ -70,7 +70,6 @@ const char *gengetopt_args_info_help[] = {
   "\nStreaming:",
   "      --stream-exec=<expr>      Stream command to be invoked",
   "  -s, --stream-pass             Pass video link to --stream-exec command",
-  "      --stream=<percent>        Invoke --stream-exec when transfer reaches %",
   "\nSee the manual page for examples.",
     0
 };
@@ -157,7 +156,6 @@ void clear_given (struct gengetopt_args_info *args_info)
   args_info->exec_run_given = 0 ;
   args_info->stream_exec_given = 0 ;
   args_info->stream_pass_given = 0 ;
-  args_info->stream_given = 0 ;
 }
 
 static
@@ -204,7 +202,6 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->exec_orig = NULL;
   args_info->stream_exec_arg = NULL;
   args_info->stream_exec_orig = NULL;
-  args_info->stream_orig = NULL;
   
 }
 
@@ -245,7 +242,6 @@ void init_args_info(struct gengetopt_args_info *args_info)
   args_info->exec_run_help = gengetopt_args_info_help[34] ;
   args_info->stream_exec_help = gengetopt_args_info_help[36] ;
   args_info->stream_pass_help = gengetopt_args_info_help[37] ;
-  args_info->stream_help = gengetopt_args_info_help[38] ;
   
 }
 
@@ -357,7 +353,6 @@ cmdline_parser_release (struct gengetopt_args_info *args_info)
   free_string_field (&(args_info->exec_orig));
   free_string_field (&(args_info->stream_exec_arg));
   free_string_field (&(args_info->stream_exec_orig));
-  free_string_field (&(args_info->stream_orig));
   
   
   for (i = 0; i < args_info->inputs_num; ++i)
@@ -498,8 +493,6 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "stream-exec", args_info->stream_exec_orig, 0);
   if (args_info->stream_pass_given)
     write_into_file(outfile, "stream-pass", 0, 0 );
-  if (args_info->stream_given)
-    write_into_file(outfile, "stream", args_info->stream_orig, 0);
   
 
   i = EXIT_SUCCESS;
@@ -636,11 +629,6 @@ cmdline_parser_required2 (struct gengetopt_args_info *args_info, const char *pro
   if (args_info->stream_pass_given && ! args_info->stream_exec_given)
     {
       fprintf (stderr, "%s: '--stream-pass' ('-s') option depends on option 'stream-exec'%s\n", prog_name, (additional_error ? additional_error : ""));
-      error = 1;
-    }
-  if (args_info->stream_given && ! args_info->stream_exec_given)
-    {
-      fprintf (stderr, "%s: '--stream' option depends on option 'stream-exec'%s\n", prog_name, (additional_error ? additional_error : ""));
       error = 1;
     }
 
@@ -844,7 +832,6 @@ cmdline_parser_internal (
         { "exec-run",	0, NULL, 'e' },
         { "stream-exec",	1, NULL, 0 },
         { "stream-pass",	0, NULL, 's' },
-        { "stream",	1, NULL, 0 },
         { 0,  0, 0, 0 }
       };
 
@@ -1241,20 +1228,6 @@ cmdline_parser_internal (
                 &(local_args_info.stream_exec_given), optarg, 0, 0, ARG_STRING,
                 check_ambiguity, override, 0, 0,
                 "stream-exec", '-',
-                additional_error))
-              goto failure;
-          
-          }
-          /* Invoke --stream-exec when transfer reaches %.  */
-          else if (strcmp (long_options[option_index].name, "stream") == 0)
-          {
-          
-          
-            if (update_arg( (void *)&(args_info->stream_arg), 
-                 &(args_info->stream_orig), &(args_info->stream_given),
-                &(local_args_info.stream_given), optarg, 0, 0, ARG_INT,
-                check_ambiguity, override, 0, 0,
-                "stream", '-',
                 additional_error))
               goto failure;
           
