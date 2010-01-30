@@ -66,13 +66,14 @@ static void
 invokeCommand(const std::string& cmd, const char *what=0) {
 
     if (what) {
-        logmgr.cout() << "invoke "
-                      << what
-                      << " ..."
-                      << std::flush;
+        logmgr.cout()
+            << "invoke "
+            << what
+            << " ..."
+            << std::flush;
     }
 
-    int n = system(cmd.c_str());
+    const int n = system( cmd.c_str() );
 
     std::stringstream tmp;
 
