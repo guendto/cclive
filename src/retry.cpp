@@ -75,9 +75,7 @@ fetch_page(QuviVideo& qv, const bool& reset_counter=false) {
 
     check_counter();
 
-    try {
-        qv.parse();
-    }
+    try   { qv.parse(); }
     catch (const QuviException& x) {
         const long httpcode = x.getHttpCode();
 
@@ -98,9 +96,7 @@ fetch_file(QuviVideo& qv, const bool& reset_counter=false) {
 
     check_counter();
 
-    try {
-        curlmgr.fetchToFile(qv);
-    }
+    try   { curlmgr.fetchToFile(qv); }
     // This is actually a curl error:
     // * We reuse the QuviException class
     catch (const QuviException& x) {
