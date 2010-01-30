@@ -404,18 +404,6 @@ Format: vp6_(64|576|928)|h264_1400
 
 Format: flv|high|ipod
 
-=item vimeo.com
-
-Format: flv|hd
-
-HD should be available for the vimeo.com/hd channel videos at least.
-Note that "flv" only means the "default flv". Some of the hosted
-"default" videos are actually "mp4", not "flv".
-
-For further reading:
-
-  http://vimeo.com/help/hd
-
 =item video.google.com
 
 Format: flv|mp4
