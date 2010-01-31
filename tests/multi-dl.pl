@@ -1,5 +1,5 @@
-if ($ENV{NO_MULTIDL}) {
-    print STDERR "SKIP: No multi download.\n";
+unless ($ENV{TEST_DOWNLOAD}) {
+    print STDERR "SKIP: No download. Set TEST_DOWNLOAD to enable.\n";
     exit 0;
 }
 exit ccliveTest::run(

@@ -1,5 +1,5 @@
-if ($ENV{NO_MULTISEGMENT}) {
-    print STDERR "SKIP: No multi-segment.\n";
+unless ($ENV{TEST_MULTISEGMENT}) {
+    print STDERR "SKIP: No multi-segment. Set TEST_MULTISEGMENT to enable.\n";
     exit 0;
 }
 exit ccliveTest::run(
