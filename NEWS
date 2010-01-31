@@ -42,6 +42,9 @@ to the test suite include:
 
   * Tests are now perl scripts
 
+  * See INSTALL file for the list of test suite supported
+  environment variables
+
 * libquvi introduces some misc. minor improvements to the 
 page fetching and parsing, e.g. spiegel videos now skip
 the video page fetch altogether
