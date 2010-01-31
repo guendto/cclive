@@ -1,7 +1,5 @@
 /*
- * Copyright (C) 2009 Toni Gundogdu.
- *
- * This file is part of cclive.
+ * Copyright (C) 2009,2010 Toni Gundogdu.
  * 
  * cclive is free software: you can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software
@@ -39,10 +37,8 @@
 #include "opts.h"
 
 OptionsMgr::OptionsMgr()
-    : opts(Options()), path(""),
-        locale("undefined"), toUnicodeFlag(false)
-{
-}
+    : opts(Options()), path(""), locale("undefined")
+{ }
 
 OptionsMgr::~OptionsMgr() {
     cmdline_parser_free(&opts);
@@ -50,7 +46,9 @@ OptionsMgr::~OptionsMgr() {
 
 void
 OptionsMgr::init(const int& argc, char * const *argv) {
+
     const char *tmp = setlocale(LC_ALL, "");
+
     if (tmp) {
         locale = tmp;
 #ifdef HAVE_NL_LANGINFO
@@ -60,7 +58,6 @@ OptionsMgr::init(const int& argc, char * const *argv) {
             locale = tocode;
 #endif
     }
-    this->toUnicodeFlag = tmp != 0;
 
     const char *no_config =
         getenv("CCLIVE_NO_CONFIG");
@@ -120,11 +117,6 @@ OptionsMgr::getPath() const {
 const std::string&
 OptionsMgr::getLocale() const {
     return locale;
-}
-
-const bool&
-OptionsMgr::getToUnicodeFlag() const {
-    return toUnicodeFlag;
 }
 
 
