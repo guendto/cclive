@@ -11,6 +11,9 @@ Version 0.6.0
   * Add dependency for libquvi (see NEWS and INSTALL files)
   * Remove libiconv dependency (ditto)
 
+ General changes:
+  * Tidy up project description (e.g. README)
+
 
 Version 0.5.9
 (January 26, 2010)
