@@ -10,13 +10,15 @@ cclive [options] [url...]
 
 =head1 DESCRIPTION
 
-cclive is a lightweight command line video extraction tool for Youtube and other
-similar video websites. It is a rewrite of the clive software in C++ with lower
-system footprint and fewer dependencies.
+cclive is a lightweight commandline video extraction tool for Youtube
+and similar video Websites. It is a rewrite of the clive software in
+C++ with a smaller system footprint and fewer dependencies. It is
+primarily a "video download tool", but can be used with video player
+software like "mplayer" for viewing streamed videos in place of the
+Adobe flash player. 
 
-cclive is primarily a "video download tool" but it can also be used along side
-with video player software, like C<mplayer>, for viewing streamed videos instead
-of the Adobe flash player.
+cclive is designed to be used as a workaround tool for websites that
+require the Adobe flash player plugin for viewing the video content.
 
 =head1 OPTIONS
 
@@ -258,7 +260,9 @@ Download fmt18 (mp4) format of the video.
 =item cclive -F "%t.%s" URL
 
 Use video titles in filenames. cclive uses "%i_%h.%s" by default.
-For the supported specifiers, refer to the C<--filename-format> description.
+Note that cclive will apply --regexp pattern, if any, to the title
+before using it. For the supported specifiers, see the
+C<--filename-format> description.
 
 =item cclive -F "%t.%s" -r "/(\w+)/" URL
 
@@ -288,26 +292,33 @@ Play the downloaded video with C<mplayer(1)> when download finishes.
 
 =item cclive --exec="ffmpeg -i %i -acodec libvorbis %i.ogg;" -e URL
 
-Similar but re-encode audio from the video using C<ffmpeg(1)> to a vorbis
-file.
+Similar but re-encode audio from the downloaded video to a vorbis
+audio file, using C<ffmpeg(1)>.
 
 =item echo 'stream-exec = "mplayer -really-quiet %i"' E<gt>E<gt> ~/.ccliverc
 
+Adds C<--stream-exec> to the config file for permanent use. Saves typing
+as shown below:
+
 =item cclive -s URL
 
-Leaves streaming to C<mplayer(1)> altogether. cclive only parses the video link
-and passes it to the command specified with C<--stream-exec>. This can be used
-as an alternative to the Adobe flash player if you only want to view the streamed
-videos without getting a local copy of the video file.
+Stream and play the video from the URL using C<mplayer(1)>, as defined with
+C<--stream-exec> above.
 
-We have added C<--stream-exec> to the config file to save ourselves from retyping it
-later, allowing us to stream the video by just typing C<-s>.
+Note that cclive itself does not stream or play the media, it only parses
+and passes the video link to C<mplayer(1)>.
 
-Other player software, e.g. C<vlc(1)> and C<totem(1)>, should work also.
+You can use the above as an alternative to the Adobe flash player if you
+cannot view the streamed videos otherwise, or if you want to play them in
+an external player while streaming.
+
+The above should work with other player software, like C<vlc(1)> and
+C<totem(1)>.
 
 =item cclive -s URL --stream-exec="wget %i -O %f"
 
-Use C<wget(1)> to download the video.
+Use C<wget(1)> to download the video. Note the use of the "%f" specifier
+which is unique to C<--pass-stream, -s>.
 
 =item cat E<gt> url.lst
 
@@ -316,13 +327,21 @@ Use C<wget(1)> to download the video.
   http://break.com/index/beach-tackle-whip-lash.html
   http://www.liveleak.com/view?i=704_1228511265
 
+Create a file that will contain multiple URLs, each separated with a newline.
+We can use the created file with cclive as shown below:
+
 =item cclive E<lt> url.lst
+
+Or:
 
 =item cat url.lst | cclive
 
-Alternative to passing multiple links to cclive as command line arguments.
+This may save you some typing, as you would normally have to type each
+URL to the command line as an argument.
 
 =item echo 'format-map = "youtube:mp4|dailymotion:vp6_hq"' E<gt>E<gt> ~/.ccliverc
+
+Save C<--format-map> to config file for permanent use.
 
 =item cclive Youtube_URL Dailymotion_URL
 
@@ -334,22 +353,21 @@ overrides this setting.
 
 =head1 FORMATS
 
-Note that libquvi is responsible for maintaining the current
-list of the formats. You can get a full list of the hosts
-and the supported formats with the C<--hosts>.
+Note that cclive (0.6.0+) depends on libquvi for parsing
+video links. You can get a more complete list of the
+websites (hosts) and the supported formats with the
+C<--hosts> option.
 
-The default for all of the supported websites is "flv".
-The quality of the default format can vary greatly, and
-some hosts have the habit changing the default quality
-from time to time. That said, do not read too much
-into the details listed below.
+cclive defaults to download "flv", unless C<--format>
+is used, or if the requested format cannot be found.
 
-Also note that the file suffix is parsed from the content-type
-field of the returned HTTP header when the video link is
-verified.
+The quality of the "default flv" can vary. Some hosts may use
+different "default resolution" and "default quality" for their
+videos.
 
-All of the above are done by libquvi, not cclive. So if you
-see anything funny, please see the L</OTHER> section.
+Same goes for the video details listed below. The resolutions
+may vary, depending on the hosts settings, so the list below
+may be inaccurate at times.
 
 =over 4
 
@@ -368,7 +386,7 @@ interesting (for those who care).
  fmt22     hd       mp4     1280x720
  fmt35     hq       flv      640x380
  fmt18     mp4      mp4      480x360
- fmt34     -        flv      320x180 (quality reportedly varies)
+ fmt34     flv      flv      320x180 [default] (resolution may vary)
  fmt17     3gp      3gp      176x144
 
 You can use either, the "alias" (e.g. "hd") or the "format id"
@@ -384,21 +402,23 @@ Format: flv|spark-mini|vp6-hq|vp6-hd|vp6|h264
 
 The HD and HQ videos may not always be available.
 
-  vp6-hd    .. on2   (1280x720)
-  vp6-hq    .. on2     (848x480)
-  h264      .. h264    (512x384)
-  vp6       .. on2     (320x240)
-  flv       .. flv     (320x240)
-  spark-mini.. flv       (80x60)
+  FormatID      Suffix  Resolution
+  vp6-hd        on2     1280x720
+  vp6-hq        on2      848x480
+  h264          h264     512x384
+  vp6           on2      320x240
+  flv           flv      320x240 [default]
+  spark-mini    flv        80x60
 
 =item spiegel.de
 
-Format: vp6_(64|576|928)|h264_1400
+Format: vp6_(576|928)|h264_1400
 
-  h264_1400 .. mp4 (996x560)
-  vp6_928   .. flv (996x560)
-  vp6_576   .. flv (560x315)
-  flv       .. flv (180x100) [default]
+  FormatID   Suffix  Resolution
+  h264_1400  mp4     996x560
+  vp6_928    flv     996x560
+  vp6_576    flv     560x315
+  flv        flv     180x100 [default]
 
 =item golem.de
 
@@ -471,13 +491,21 @@ defined in terms of \w and \W." -- man pcrepattern
 
 =head1 BUGS
 
-=over 4
+Sure to be some. Please report them.
 
-=item Sure to be some. Please report them:
+Note that if the error message contains "libquvi:", that means
+the error occurred in libquvi. Please file the libquvi related
+issues at:
 
-<http://code.google.com/p/cclive/issues/>
+  <http://quvi.googlecode.com/>
 
-=back
+And everything else at:
+
+  <http://cclive.googlecode.com/>
+
+Please search the tracker for both open and closed issues
+before you file a new one. The issue may have already been
+reported, addressed or closed. Thanks.
 
 =head1 DEBUGGING
 
@@ -519,22 +547,6 @@ cclive exits 0 on success, and E<gt>0 if an error occurs.
 =item Project page:
 
 <http://cclive.googlecode.com/>
-
-=item Reporting bugs:
-
-Note that if the error message contains "libquvi:", that
-means the error occurred in libquvi. Doh. This means that
-the bug report should go here:
-
-<http://quvi.googlecode.com/>
-
-Everything else (cclive related) should go here:
-
-<http://cclive.googlecode.com/>
-
-See under the "Issues". Please search the tracker first
-before you submit a new one. The issue may have already
-been addressed and closed. Thanks.
 
 =item FAQ:
 

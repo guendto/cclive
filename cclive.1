@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2010-01-31" "0.6.0" "cclive manual"
+.TH cclive 1 "2010-02-02" "0.6.0" "cclive manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -136,13 +136,15 @@ cclive \- lightweight video extraction tool
 cclive [options] [url...]
 .SH "DESCRIPTION"
 .IX Header "DESCRIPTION"
-cclive is a lightweight command line video extraction tool for Youtube and other
-similar video websites. It is a rewrite of the clive software in \*(C+ with lower
-system footprint and fewer dependencies.
+cclive is a lightweight commandline video extraction tool for Youtube
+and similar video Websites. It is a rewrite of the clive software in
+\&\*(C+ with a smaller system footprint and fewer dependencies. It is
+primarily a \*(L"video download tool\*(R", but can be used with video player
+software like \*(L"mplayer\*(R" for viewing streamed videos in place of the
+Adobe flash player.
 .PP
-cclive is primarily a \*(L"video download tool\*(R" but it can also be used along side
-with video player software, like \f(CW\*(C`mplayer\*(C'\fR, for viewing streamed videos instead
-of the Adobe flash player.
+cclive is designed to be used as a workaround tool for websites that
+require the Adobe flash player plugin for viewing the video content.
 .SH "OPTIONS"
 .IX Header "OPTIONS"
 .IP "\fB\-h, \-\-help\fR" 4
@@ -321,7 +323,9 @@ Download fmt18 (mp4) format of the video.
 .el .IP "cclive \-F ``%t.%s'' \s-1URL\s0" 4
 .IX Item "cclive -F %t.%s URL"
 Use video titles in filenames. cclive uses \*(L"%i_%h.%s\*(R" by default.
-For the supported specifiers, refer to the \f(CW\*(C`\-\-filename\-format\*(C'\fR description.
+Note that cclive will apply \-\-regexp pattern, if any, to the title
+before using it. For the supported specifiers, see the
+\&\f(CW\*(C`\-\-filename\-format\*(C'\fR description.
 .ie n .IP "cclive \-F ""%t.%s"" \-r ""/(\ew+)/"" \s-1URL\s0" 4
 .el .IP "cclive \-F ``%t.%s'' \-r ``/(\ew+)/'' \s-1URL\s0" 4
 .IX Item "cclive -F %t.%s -r /(w+)/ URL"
@@ -351,28 +355,32 @@ Play the downloaded video with \f(CWmplayer(1)\fR when download finishes.
 .ie n .IP "cclive \-\-exec=""ffmpeg \-i %i \-acodec libvorbis %i.ogg;"" \-e \s-1URL\s0" 4
 .el .IP "cclive \-\-exec=``ffmpeg \-i \f(CW%i\fR \-acodec libvorbis \f(CW%i\fR.ogg;'' \-e \s-1URL\s0" 4
 .IX Item "cclive --exec=ffmpeg -i %i -acodec libvorbis %i.ogg; -e URL"
-Similar but re-encode audio from the video using \f(CWffmpeg(1)\fR to a vorbis
-file.
+Similar but re-encode audio from the downloaded video to a vorbis
+audio file, using \f(CWffmpeg(1)\fR.
 .ie n .IP "echo 'stream\-exec = ""mplayer \-really\-quiet %i""' >> ~/.ccliverc" 4
 .el .IP "echo 'stream\-exec = ``mplayer \-really\-quiet \f(CW%i\fR''' >> ~/.ccliverc" 4
 .IX Item "echo 'stream-exec = mplayer -really-quiet %i' >> ~/.ccliverc"
-.PD 0
+Adds \f(CW\*(C`\-\-stream\-exec\*(C'\fR to the config file for permanent use. Saves typing
+as shown below:
 .IP "cclive \-s \s-1URL\s0" 4
 .IX Item "cclive -s URL"
-.PD
-Leaves streaming to \f(CWmplayer(1)\fR altogether. cclive only parses the video link
-and passes it to the command specified with \f(CW\*(C`\-\-stream\-exec\*(C'\fR. This can be used
-as an alternative to the Adobe flash player if you only want to view the streamed
-videos without getting a local copy of the video file.
+Stream and play the video from the \s-1URL\s0 using \f(CWmplayer(1)\fR, as defined with
+\&\f(CW\*(C`\-\-stream\-exec\*(C'\fR above.
 .Sp
-We have added \f(CW\*(C`\-\-stream\-exec\*(C'\fR to the config file to save ourselves from retyping it
-later, allowing us to stream the video by just typing \f(CW\*(C`\-s\*(C'\fR.
+Note that cclive itself does not stream or play the media, it only parses
+and passes the video link to \f(CWmplayer(1)\fR.
 .Sp
-Other player software, e.g. \f(CWvlc(1)\fR and \f(CWtotem(1)\fR, should work also.
+You can use the above as an alternative to the Adobe flash player if you
+cannot view the streamed videos otherwise, or if you want to play them in
+an external player while streaming.
+.Sp
+The above should work with other player software, like \f(CWvlc(1)\fR and
+\&\f(CWtotem(1)\fR.
 .ie n .IP "cclive \-s \s-1URL\s0 \-\-stream\-exec=""wget %i \-O %f""" 4
 .el .IP "cclive \-s \s-1URL\s0 \-\-stream\-exec=``wget \f(CW%i\fR \-O \f(CW%f\fR''" 4
 .IX Item "cclive -s URL --stream-exec=wget %i -O %f"
-Use \f(CWwget(1)\fR to download the video.
+Use \f(CWwget(1)\fR to download the video. Note the use of the \*(L"%f\*(R" specifier
+which is unique to \f(CW\*(C`\-\-pass\-stream, \-s\*(C'\fR.
 .IP "cat > url.lst" 4
 .IX Item "cat > url.lst"
 .Vb 4
@@ -381,41 +389,42 @@ Use \f(CWwget(1)\fR to download the video.
 \&  http://break.com/index/beach\-tackle\-whip\-lash.html
 \&  http://www.liveleak.com/view?i=704_1228511265
 .Ve
+.Sp
+Create a file that will contain multiple URLs, each separated with a newline.
+We can use the created file with cclive as shown below:
 .IP "cclive < url.lst" 4
 .IX Item "cclive < url.lst"
-.PD 0
+Or:
 .IP "cat url.lst | cclive" 4
 .IX Item "cat url.lst | cclive"
-.PD
-Alternative to passing multiple links to cclive as command line arguments.
+This may save you some typing, as you would normally have to type each
+\&\s-1URL\s0 to the command line as an argument.
 .ie n .IP "echo 'format\-map = ""youtube:mp4|dailymotion:vp6_hq""' >> ~/.ccliverc" 4
 .el .IP "echo 'format\-map = ``youtube:mp4|dailymotion:vp6_hq''' >> ~/.ccliverc" 4
 .IX Item "echo 'format-map = youtube:mp4|dailymotion:vp6_hq' >> ~/.ccliverc"
-.PD 0
+Save \f(CW\*(C`\-\-format\-map\*(C'\fR to config file for permanent use.
 .IP "cclive Youtube_URL Dailymotion_URL" 4
 .IX Item "cclive Youtube_URL Dailymotion_URL"
-.PD
 Causes cclive to download mp4 of the Youtube video and vp6_hq of
 the Dailymotion video. Note that the use of \-f (or \f(CW\*(C`\-\-format\*(C'\fR)
 overrides this setting.
 .SH "FORMATS"
 .IX Header "FORMATS"
-Note that libquvi is responsible for maintaining the current
-list of the formats. You can get a full list of the hosts
-and the supported formats with the \f(CW\*(C`\-\-hosts\*(C'\fR.
+Note that cclive (0.6.0+) depends on libquvi for parsing
+video links. You can get a more complete list of the
+websites (hosts) and the supported formats with the
+\&\f(CW\*(C`\-\-hosts\*(C'\fR option.
 .PP
-The default for all of the supported websites is \*(L"flv\*(R".
-The quality of the default format can vary greatly, and
-some hosts have the habit changing the default quality
-from time to time. That said, do not read too much
-into the details listed below.
+cclive defaults to download \*(L"flv\*(R", unless \f(CW\*(C`\-\-format\*(C'\fR
+is used, or if the requested format cannot be found.
 .PP
-Also note that the file suffix is parsed from the content-type
-field of the returned \s-1HTTP\s0 header when the video link is
-verified.
+The quality of the \*(L"default flv\*(R" can vary. Some hosts may use
+different \*(L"default resolution\*(R" and \*(L"default quality\*(R" for their
+videos.
 .PP
-All of the above are done by libquvi, not cclive. So if you
-see anything funny, please see the \*(L"\s-1OTHER\s0\*(R" section.
+Same goes for the video details listed below. The resolutions
+may vary, depending on the hosts settings, so the list below
+may be inaccurate at times.
 .IP "youtube.com" 4
 .IX Item "youtube.com"
 Format: flv|fmt17|fmt18|fmt22|fmt35
@@ -432,7 +441,7 @@ interesting (for those who care).
 \& fmt22     hd       mp4     1280x720
 \& fmt35     hq       flv      640x380
 \& fmt18     mp4      mp4      480x360
-\& fmt34     \-        flv      320x180 (quality reportedly varies)
+\& fmt34     flv      flv      320x180 [default] (resolution may vary)
 \& fmt17     3gp      3gp      176x144
 .Ve
 .Sp
@@ -448,23 +457,25 @@ Format: flv|spark\-mini|vp6\-hq|vp6\-hd|vp6|h264
 .Sp
 The \s-1HD\s0 and \s-1HQ\s0 videos may not always be available.
 .Sp
-.Vb 6
-\&  vp6\-hd    .. on2   (1280x720)
-\&  vp6\-hq    .. on2     (848x480)
-\&  h264      .. h264    (512x384)
-\&  vp6       .. on2     (320x240)
-\&  flv       .. flv     (320x240)
-\&  spark\-mini.. flv       (80x60)
+.Vb 7
+\&  FormatID      Suffix  Resolution
+\&  vp6\-hd        on2     1280x720
+\&  vp6\-hq        on2      848x480
+\&  h264          h264     512x384
+\&  vp6           on2      320x240
+\&  flv           flv      320x240 [default]
+\&  spark\-mini    flv        80x60
 .Ve
 .IP "spiegel.de" 4
 .IX Item "spiegel.de"
-Format: vp6_(64|576|928)|h264_1400
+Format: vp6_(576|928)|h264_1400
 .Sp
-.Vb 4
-\&  h264_1400 .. mp4 (996x560)
-\&  vp6_928   .. flv (996x560)
-\&  vp6_576   .. flv (560x315)
-\&  flv       .. flv (180x100) [default]
+.Vb 5
+\&  FormatID   Suffix  Resolution
+\&  h264_1400  mp4     996x560
+\&  vp6_928    flv     996x560
+\&  vp6_576    flv     560x315
+\&  flv        flv     180x100 [default]
 .Ve
 .IP "golem.de" 4
 .IX Item "golem.de"
@@ -532,9 +543,25 @@ for efficiency reasons. Note that this also affects \eb, because it is
 defined in terms of \ew and \eW.\*(R" \*(-- man pcrepattern
 .SH "BUGS"
 .IX Header "BUGS"
-.IP "Sure to be some. Please report them:" 4
-.IX Item "Sure to be some. Please report them:"
-<http://code.google.com/p/cclive/issues/>
+Sure to be some. Please report them.
+.PP
+Note that if the error message contains \*(L"libquvi:\*(R", that means
+the error occurred in libquvi. Please file the libquvi related
+issues at:
+.PP
+.Vb 1
+\&  <http://quvi.googlecode.com/>
+.Ve
+.PP
+And everything else at:
+.PP
+.Vb 1
+\&  <http://cclive.googlecode.com/>
+.Ve
+.PP
+Please search the tracker for both open and closed issues
+before you file a new one. The issue may have already been
+reported, addressed or closed. Thanks.
 .SH "DEBUGGING"
 .IX Header "DEBUGGING"
 Useful options for debugging cclive.
@@ -567,21 +594,6 @@ cclive exits 0 on success, and >0 if an error occurs.
 .IP "Project page:" 4
 .IX Item "Project page:"
 <http://cclive.googlecode.com/>
-.IP "Reporting bugs:" 4
-.IX Item "Reporting bugs:"
-Note that if the error message contains \*(L"libquvi:\*(R", that
-means the error occurred in libquvi. Doh. This means that
-the bug report should go here:
-.Sp
-<http://quvi.googlecode.com/>
-.Sp
-Everything else (cclive related) should go here:
-.Sp
-<http://cclive.googlecode.com/>
-.Sp
-See under the \*(L"Issues\*(R". Please search the tracker first
-before you submit a new one. The issue may have already
-been addressed and closed. Thanks.
 .IP "\s-1FAQ:\s0" 4
 .IX Item "FAQ:"
 <http://code.google.com/p/cclive/wiki/FAQ>
