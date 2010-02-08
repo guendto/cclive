@@ -447,7 +447,7 @@ uninstall-am:
 	uninstall-am
 
 
-@HAVE_PERL_FALSE@@echo perl not found.
+@HAVE_PERL_FALSE@	@echo SKIP: perl not found.
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

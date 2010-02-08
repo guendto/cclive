@@ -11,7 +11,7 @@ multi-segment.pl\
 multi-dl.pl
 
 else # HAVE_PERL
-@echo perl not found.
+	@echo SKIP: perl not found.
 endif # HAVE_PERL
 
 
