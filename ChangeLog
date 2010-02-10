@@ -1,4 +1,10 @@
 
+Version 0.6.1
+
+ Developer-visible changes:
+  * tests/Makefile.am: fix missing separator
+
+
 Version 0.6.0
 (February 2, 2010)
 
