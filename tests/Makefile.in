@@ -34,6 +34,7 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 target_triplet = @target@
+@HAVE_PERL_POD_CHECKER_TRUE@@HAVE_PERL_TRUE@am__append_1 = $(TESTS_POD)
 subdir = tests
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(srcdir)/ccliveTest.pm.in
@@ -100,7 +101,6 @@ PERL = @PERL@
 PKG_CONFIG = @PKG_CONFIG@
 POD2HTML = @POD2HTML@
 POD2MAN = @POD2MAN@
-PODCHECKER = @PODCHECKER@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 STRIP = @STRIP@
@@ -166,12 +166,12 @@ target_vendor = @target_vendor@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-EXTRA_DIST = ccliveTest.pm.in $(TESTS)
+EXTRA_DIST = ccliveTest.pm.in $(TESTS) $(TESTS_POD)
 @HAVE_PERL_TRUE@TESTS_ENVIRONMENT = $(PERL) -w -mstrict -mccliveTest -I $(top_builddir)/tests
-@HAVE_PERL_TRUE@TESTS = \
-@HAVE_PERL_TRUE@nosupport-eval.pl\
-@HAVE_PERL_TRUE@multi-segment.pl\
-@HAVE_PERL_TRUE@multi-dl.pl
+@HAVE_PERL_TRUE@TESTS = nosupport-eval.pl multi-segment.pl multi-dl.pl \
+@HAVE_PERL_TRUE@	$(am__append_1)
+@HAVE_PERL_TRUE@TESTS_POD = \
+@HAVE_PERL_TRUE@pod-check.pl
 
 all: all-am
 

@@ -11,7 +11,7 @@ if WITH_MAN
 dist_man_MANS= cclive.1
 endif
 
-.PHONY: cmdline man checkpod
+.PHONY: cmdline man
 cmdline:
 if HAVE_GENGETOPT
 	@GENGETOPT@ < $(top_srcdir)/cmdline.ggo -C --unamed-opts=URL \
@@ -32,12 +32,6 @@ if HAVE_POD2HTML
         --outfile=$(top_builddir)/cclive.1.html
 else
 	@echo "error: configure did not find 'pod2html' command"
-endif
-checkpod:
-if HAVE_PODCHECKER
-	@PODCHECKER@ $(top_srcdir)/cclive.pod
-else
-	@echo "error: configure did not find 'podchecker' command"
 endif
 
 local-clean:

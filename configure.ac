@@ -42,9 +42,13 @@ AC_PATH_PROG(PERL, perl, no)
 AM_CONDITIONAL([HAVE_PERL], [test x"$PERL" != "xno"])
 AC_SUBST(PERL)
 
-AC_PATH_PROG(PODCHECKER, podchecker, no)
-AM_CONDITIONAL([HAVE_PODCHECKER], [test x"$PODCHECKER" != "xno"])
-AC_SUBST(PODCHECKER)
+have_pod_checker=no
+AC_MSG_CHECKING([for Pod::Checker])
+if [ $PERL -mPod::Checker >/dev/null 2>&1 ]; then
+    have_pod_checker=yes
+fi
+AC_MSG_RESULT([${have_pod_checker}])
+AM_CONDITIONAL([HAVE_PERL_POD_CHECKER], [test x"$have_pod_checker" = "xyes"])
 
 AC_PATH_PROG(POD2MAN, pod2man, no)
 AM_CONDITIONAL([HAVE_POD2MAN], [test x"$POD2MAN" != "xno"])
@@ -127,7 +131,6 @@ AC_MSG_NOTICE([Configured to build cclive:
     install manual: ${with_man}
     gengetopt:      ${GENGETOPT}
     perl:           ${PERL}
-    podchecker:     ${PODCHECKER}
     pod2man:        ${POD2MAN}
     pod2html:       ${POD2HTML}
 ])

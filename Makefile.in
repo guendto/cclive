@@ -179,7 +179,6 @@ PERL = @PERL@
 PKG_CONFIG = @PKG_CONFIG@
 POD2HTML = @POD2HTML@
 POD2MAN = @POD2MAN@
-PODCHECKER = @PODCHECKER@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
 STRIP = @STRIP@
@@ -797,7 +796,7 @@ uninstall-man: uninstall-man1
 	uninstall-man1
 
 
-.PHONY: cmdline man checkpod
+.PHONY: cmdline man
 cmdline:
 @HAVE_GENGETOPT_TRUE@	@GENGETOPT@ < $(top_srcdir)/cmdline.ggo -C --unamed-opts=URL \
 @HAVE_GENGETOPT_TRUE@		--output-dir $(top_srcdir)/src --no-version -c cpp
@@ -810,9 +809,6 @@ man:
 @HAVE_POD2HTML_TRUE@		--infile=$(top_srcdir)/cclive.pod \
 @HAVE_POD2HTML_TRUE@        --outfile=$(top_builddir)/cclive.1.html
 @HAVE_POD2HTML_FALSE@	@echo "error: configure did not find 'pod2html' command"
-checkpod:
-@HAVE_PODCHECKER_TRUE@	@PODCHECKER@ $(top_srcdir)/cclive.pod
-@HAVE_PODCHECKER_FALSE@	@echo "error: configure did not find 'podchecker' command"
 
 local-clean:
 	@rm -rf *.tmp *.core *.html

@@ -27,7 +27,7 @@ use vars qw(@ISA @EXPORT @EXPORT_OK);
 
 our @ISA       = qw(Exporter);
 our @EXPORT    = ();
-our @EXPORT_OK = qw(run run_formats);
+our @EXPORT_OK = qw(run run_formats pod_checks check_codeset);
 
 use constant CCLIVE_PATH => "@top_builddir@/src/cclive";
 
@@ -111,6 +111,13 @@ sub run_formats {
         $rc = run( "-f", $_, @_ );
         last if $rc != 0;
     }
+    return $rc;
+}
+
+# Check the pod markup.
+sub pod_checks {
+    require Pod::Checker;
+    my $rc = Pod::Checker::podchecker("@top_srcdir@/cclive.pod");
     return $rc;
 }
 
