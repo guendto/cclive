@@ -27,7 +27,7 @@ use vars qw(@ISA @EXPORT @EXPORT_OK);
 
 our @ISA       = qw(Exporter);
 our @EXPORT    = ();
-our @EXPORT_OK = qw(run run_formats pod_checks check_codeset);
+our @EXPORT_OK = qw(run pod_checks check_codeset);
 
 use constant CCLIVE_PATH => "@top_builddir@/src/cclive";
 
@@ -101,16 +101,6 @@ sub run {
         }
     }
 
-    return $rc;
-}
-
-sub run_formats {
-    my $formats = shift;
-    my $rc;
-    foreach ( @{$formats} ) {
-        $rc = run( "-f", $_, @_ );
-        last if $rc != 0;
-    }
     return $rc;
 }
 
