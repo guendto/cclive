@@ -2,6 +2,8 @@
 Version 0.6.1
 
  Developer-visible changes:
+  * configure: cleanup notice message
+  * tests/pod-check.pl: replaces "make checkpod"
   * tests/Makefile.am: fix missing separator
 
 
