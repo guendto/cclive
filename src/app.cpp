@@ -236,6 +236,30 @@ verify_format_id (const Options& opts) {
     throw RuntimeException(CCLIVE_OPTARG, b.str());
 }
 
+static void
+print_hosts () {
+    std::vector<std::string> hosts;
+    char *domain, *formats;
+
+    while (quvi_next_host(&domain, &formats) == QUVI_OK) {
+        hosts.push_back(
+            std::string(domain)
+            + "\t"
+            + std::string(formats)
+            + "\n"
+        );
+    }
+
+    std::sort(hosts.begin(), hosts.end());
+
+    std::copy(hosts.begin(), hosts.end(),
+        std::ostream_iterator<std::string>(std::cout));
+
+    std::cout
+        << "\nNote: Some videos may have limited number "
+        << "of formats available." << std::endl;
+}
+
 void
 App::run() {
 
@@ -248,27 +272,7 @@ App::run() {
     }
 
     if (opts.hosts_given) {
-        std::vector<std::string> hosts;
-        char *domain, *formats;
-
-        while (quvi_next_host(&domain, &formats) == QUVI_OK) {
-            hosts.push_back(
-                std::string(domain)
-                + "\t"
-                + std::string(formats)
-                + "\n"
-            );
-        }
-
-        std::sort(hosts.begin(), hosts.end());
-
-        std::copy(hosts.begin(), hosts.end(),
-            std::ostream_iterator<std::string>(std::cout));
-
-        std::cout
-            << "\nNote: Some videos may have limited number "
-            << "of formats available." << std::endl;
-
+        print_hosts();
         return;
     }
  
