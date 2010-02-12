@@ -1,6 +1,13 @@
 cclive News
 -----------
 
+0.6.1
+-------------
+
+--format no longer uses hardcoded values. The accepted
+values are now provided by libquvi.
+
+
 0.6.0
 -------------
 

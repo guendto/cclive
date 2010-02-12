@@ -1,6 +1,10 @@
 
 Version 0.6.1
 
+ User-visible changes:
+  * Remove hardcoded --format values
+    # Use libquvi provided values instead
+
  Developer-visible changes:
   * configure: cleanup notice message
   * tests/pod-check.pl: replaces "make checkpod"
