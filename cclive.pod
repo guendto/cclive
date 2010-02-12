@@ -339,13 +339,13 @@ Or:
 This may save you some typing, as you would normally have to type each
 URL to the command line as an argument.
 
-=item echo 'format-map = "youtube:mp4|dailymotion:vp6_hq"' E<gt>E<gt> ~/.ccliverc
+=item echo 'format-map = "youtube:mp4|dailymotion:h264-hq"' E<gt>E<gt> ~/.ccliverc
 
 Save C<--format-map> to config file for permanent use.
 
 =item cclive Youtube_URL Dailymotion_URL
 
-Causes cclive to download mp4 of the Youtube video and vp6_hq of
+Causes cclive to download mp4 of the Youtube video and h264-hq of
 the Dailymotion video. Note that the use of -f (or C<--format>)
 overrides this setting.
 
@@ -398,15 +398,14 @@ hosted videos.
 
 =item dailymotion.com
 
-Format: flv|spark-mini|vp6-hq|vp6-hd|vp6|h264
+Format: flv|spark-mini|h264|h264-hq|h264-hd
 
 The HD and HQ videos may not always be available.
 
   FormatID      Suffix  Resolution
-  vp6-hd        on2     1280x720
-  vp6-hq        on2      848x480
-  h264          h264     512x384
-  vp6           on2      320x240
+  h264-hd       mp4     1280x720
+  h264-hq       mp4      848x480
+  h264          mp4      512x384
   flv           flv      320x240 [default]
   spark-mini    flv        80x60
 

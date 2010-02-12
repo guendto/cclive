@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2010-02-02" "0.6.0" "cclive manual"
+.TH cclive 1 "2010-02-12" "0.6.1" "cclive manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -399,13 +399,13 @@ Or:
 .IX Item "cat url.lst | cclive"
 This may save you some typing, as you would normally have to type each
 \&\s-1URL\s0 to the command line as an argument.
-.ie n .IP "echo 'format\-map = ""youtube:mp4|dailymotion:vp6_hq""' >> ~/.ccliverc" 4
-.el .IP "echo 'format\-map = ``youtube:mp4|dailymotion:vp6_hq''' >> ~/.ccliverc" 4
-.IX Item "echo 'format-map = youtube:mp4|dailymotion:vp6_hq' >> ~/.ccliverc"
+.ie n .IP "echo 'format\-map = ""youtube:mp4|dailymotion:h264\-hq""' >> ~/.ccliverc" 4
+.el .IP "echo 'format\-map = ``youtube:mp4|dailymotion:h264\-hq''' >> ~/.ccliverc" 4
+.IX Item "echo 'format-map = youtube:mp4|dailymotion:h264-hq' >> ~/.ccliverc"
 Save \f(CW\*(C`\-\-format\-map\*(C'\fR to config file for permanent use.
 .IP "cclive Youtube_URL Dailymotion_URL" 4
 .IX Item "cclive Youtube_URL Dailymotion_URL"
-Causes cclive to download mp4 of the Youtube video and vp6_hq of
+Causes cclive to download mp4 of the Youtube video and h264\-hq of
 the Dailymotion video. Note that the use of \-f (or \f(CW\*(C`\-\-format\*(C'\fR)
 overrides this setting.
 .SH "FORMATS"
@@ -453,16 +453,15 @@ cclive can also download videos that last.fm lists as Youtube
 hosted videos.
 .IP "dailymotion.com" 4
 .IX Item "dailymotion.com"
-Format: flv|spark\-mini|vp6\-hq|vp6\-hd|vp6|h264
+Format: flv|spark\-mini|h264|h264\-hq|h264\-hd
 .Sp
 The \s-1HD\s0 and \s-1HQ\s0 videos may not always be available.
 .Sp
-.Vb 7
+.Vb 6
 \&  FormatID      Suffix  Resolution
-\&  vp6\-hd        on2     1280x720
-\&  vp6\-hq        on2      848x480
-\&  h264          h264     512x384
-\&  vp6           on2      320x240
+\&  h264\-hd       mp4     1280x720
+\&  h264\-hq       mp4      848x480
+\&  h264          mp4      512x384
 \&  flv           flv      320x240 [default]
 \&  spark\-mini    flv        80x60
 .Ve
