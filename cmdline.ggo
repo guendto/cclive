@@ -90,21 +90,8 @@ option "limit-rate"
     optional
 option "format"
     f "Download format of video"
-    values="flv","best",
-        # youtube:
-        "fmt17","fmt18","fmt22", "fmt34","fmt35","hq","3gp",
-        # dmotion:
-        "spark-mini","vp6-hq","vp6-hd","vp6","h264",
-        # vimeo:
-        "hd",
-        # google:
-        "mp4",
-        # golem:
-        "high", "ipod",
-        # spiegel:
-        "vp6_576", "vp6_928", "h264_1400"
     default="flv"
-    typestr="<format_id>"
+    string typestr="<format_id>"
     optional
 option "format-map"
     M "Specify format for multiple hosts in a string"

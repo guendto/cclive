@@ -57,7 +57,7 @@ const char *gengetopt_args_info_help[] = {
   "  -W, --overwrite               Overwrite existing file  (default=off)",
   "  -n, --no-extract              Do not actually extract video, simulate only",
   "  -l, --limit-rate=<amount>     Limit download speed to amount KB/s \n                                  (0=unlimited)  (default=`0')",
-  "  -f, --format=<format_id>      Download format of video  (possible \n                                  values=\"flv\", \"best\", \"fmt17\", \n                                  \"fmt18\", \"fmt22\", \"fmt34\", \"fmt35\", \n                                  \"hq\", \"3gp\", \"spark-mini\", \"vp6-hq\", \n                                  \"vp6-hd\", \"vp6\", \"h264\", \"hd\", \n                                  \"mp4\", \"high\", \"ipod\", \"vp6_576\", \n                                  \"vp6_928\", \"h264_1400\" default=`flv')",
+  "  -f, --format=<format_id>      Download format of video  (default=`flv')",
   "  -M, --format-map=<map_string> Specify format for multiple hosts in a string",
   "\nFilename formatting:",
   "  -N, --number-videos           Prepend a numeric prefix to output filenames  \n                                  (default=off)",
@@ -115,8 +115,6 @@ free_cmd_list(void)
     }
 }
 
-
-const char *cmdline_parser_format_values[] = {"flv", "best", "fmt17", "fmt18", "fmt22", "fmt34", "fmt35", "hq", "3gp", "spark-mini", "vp6-hq", "vp6-hd", "vp6", "h264", "hd", "mp4", "high", "ipod", "vp6_576", "vp6_928", "h264_1400", 0}; /*< Possible values for format. */
 
 static char *
 gengetopt_strdup (const char *s);
@@ -364,54 +362,13 @@ cmdline_parser_release (struct gengetopt_args_info *args_info)
   clear_given (args_info);
 }
 
-/**
- * @param val the value to check
- * @param values the possible values
- * @return the index of the matched value:
- * -1 if no value matched,
- * -2 if more than one value has matched
- */
-static int
-check_possible_values(const char *val, const char *values[])
-{
-  int i, found, last;
-  size_t len;
-
-  if (!val)   /* otherwise strlen() crashes below */
-    return -1; /* -1 means no argument for the option */
-
-  found = last = 0;
-
-  for (i = 0, len = strlen(val); values[i]; ++i)
-    {
-      if (strncmp(val, values[i], len) == 0)
-        {
-          ++found;
-          last = i;
-          if (strlen(values[i]) == len)
-            return i; /* exact macth no need to check more */
-        }
-    }
-
-  if (found == 1) /* one match: OK */
-    return last;
-
-  return (found ? -2 : -1); /* return many values or none matched */
-}
-
 
 static void
 write_into_file(FILE *outfile, const char *opt, const char *arg, const char *values[])
 {
-  int found = -1;
+  FIX_UNUSED (values);
   if (arg) {
-    if (values) {
-      found = check_possible_values(arg, values);      
-    }
-    if (found >= 0)
-      fprintf(outfile, "%s=\"%s\" # %s\n", opt, arg, values[found]);
-    else
-      fprintf(outfile, "%s=\"%s\"\n", opt, arg);
+    fprintf(outfile, "%s=\"%s\"\n", opt, arg);
   } else {
     fprintf(outfile, "%s\n", opt);
   }
@@ -474,7 +431,7 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
   if (args_info->limit_rate_given)
     write_into_file(outfile, "limit-rate", args_info->limit_rate_orig, 0);
   if (args_info->format_given)
-    write_into_file(outfile, "format", args_info->format_orig, cmdline_parser_format_values);
+    write_into_file(outfile, "format", args_info->format_orig, 0);
   if (args_info->format_map_given)
     write_into_file(outfile, "format-map", args_info->format_map_orig, 0);
   if (args_info->number_videos_given)
@@ -689,18 +646,7 @@ int update_arg(void *field, char **orig_field,
       return 1; /* failure */
     }
 
-  if (possible_values && (found = check_possible_values((value ? value : default_value), possible_values)) < 0)
-    {
-      if (short_opt != '-')
-        fprintf (stderr, "%s: %s argument, \"%s\", for option `--%s' (`-%c')%s\n", 
-          package_name, (found == -2) ? "ambiguous" : "invalid", value, long_opt, short_opt,
-          (additional_error ? additional_error : ""));
-      else
-        fprintf (stderr, "%s: %s argument, \"%s\", for option `--%s'%s\n", 
-          package_name, (found == -2) ? "ambiguous" : "invalid", value, long_opt,
-          (additional_error ? additional_error : ""));
-      return 1; /* failure */
-    }
+  FIX_UNUSED (default_value);
     
   if (field_given && *field_given && ! override)
     return 0;
@@ -977,7 +923,7 @@ cmdline_parser_internal (
         
           if (update_arg( (void *)&(args_info->format_arg), 
                &(args_info->format_orig), &(args_info->format_given),
-              &(local_args_info.format_given), optarg, cmdline_parser_format_values, "flv", ARG_STRING,
+              &(local_args_info.format_given), optarg, 0, "flv", ARG_STRING,
               check_ambiguity, override, 0, 0,
               "format", 'f',
               additional_error))

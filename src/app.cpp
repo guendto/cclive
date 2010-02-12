@@ -30,6 +30,8 @@
 #include <cstring>
 #include <cerrno>
 
+#include <pcrecpp.h>
+
 #ifdef HAVE_SYS_IOCTL_H
 #include <sys/ioctl.h>
 #endif
@@ -205,6 +207,35 @@ handle_url(const std::string& url) {
         { }
 }
 
+static void
+verify_format_id (const Options& opts) {
+
+    if (!opts.format_given)
+        return;
+
+    pcrecpp::RE_Options re_opts;
+    re_opts.set_caseless(true);
+
+    std::stringstream pattern;
+    pattern
+        << "(?:\\||^)"
+        << opts.format_arg
+        << "(?:\\||$)";
+
+    pcrecpp::RE re(pattern.str(), re_opts);
+
+    char *domain, *formats;
+    while (quvi_next_host(&domain, &formats) == QUVI_OK) {
+        if (re.PartialMatch(formats))
+            return;
+    }
+
+    std::stringstream b;
+    b << "--format=" << opts.format_arg;
+
+    throw RuntimeException(CCLIVE_OPTARG, b.str());
+}
+
 void
 App::run() {
 
@@ -259,6 +290,7 @@ App::run() {
         }
     }
 
+    verify_format_id(opts);
     execmgr.verifyExecArgument();
 
 #if !defined(HAVE_FORK) || !defined(HAVE_WORKING_FORK)

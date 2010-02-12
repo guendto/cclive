@@ -295,8 +295,6 @@ int cmdline_parser_config_file (const char *filename,
 int cmdline_parser_required (struct gengetopt_args_info *args_info,
   const char *prog_name);
 
-extern const char *cmdline_parser_format_values[];  /**< @brief Possible values for format. */
-
 
 #ifdef __cplusplus
 }
