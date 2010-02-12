@@ -8313,9 +8313,14 @@ fi
     install prefix: ${prefix}
     compiler:       ${CXX}
     cxxflags:       ${CXXFLAGS}
+
+Options:
     install manual: ${with_man}
+
+Other:
     gengetopt:      ${GENGETOPT}
     perl:           ${PERL}
+    Pod::Checker:   ${have_pod_checker}
     pod2man:        ${POD2MAN}
     pod2html:       ${POD2HTML}
 " >&5
@@ -8326,9 +8331,14 @@ $as_echo "$as_me: Configured to build cclive:
     install prefix: ${prefix}
     compiler:       ${CXX}
     cxxflags:       ${CXXFLAGS}
+
+Options:
     install manual: ${with_man}
+
+Other:
     gengetopt:      ${GENGETOPT}
     perl:           ${PERL}
+    Pod::Checker:   ${have_pod_checker}
     pod2man:        ${POD2MAN}
     pod2html:       ${POD2HTML}
 " >&6;}

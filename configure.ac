@@ -128,9 +128,14 @@ AC_MSG_NOTICE([Configured to build cclive:
     install prefix: ${prefix}
     compiler:       ${CXX}
     cxxflags:       ${CXXFLAGS}
+
+Options:
     install manual: ${with_man}
+
+Other:
     gengetopt:      ${GENGETOPT}
     perl:           ${PERL}
+    Pod::Checker:   ${have_pod_checker}
     pod2man:        ${POD2MAN}
     pod2html:       ${POD2HTML}
 ])
