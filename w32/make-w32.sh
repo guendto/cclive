@@ -6,16 +6,16 @@ PREFIX=`pwd`/dist # ./configure --prefix=$PREFIX
 CXXFLAGS="-Os -pipe -march=i686"
 
 QUVI_PREFIX=\
-"/home/legatvs/quvi.git/w32/quvi-0.1.0"
+"/home/legatvs/quvi.git/w32/quvi-0.1.1"
 
 CURL_PREFIX=\
-"/home/legatvs/src/non-installed/curl-7.19.7"
+"/home/legatvs/src/non-installed/curl-7.20.0"
 
 CURL_CONFIG=\
 "$CURL_PREFIX/release/dist/bin/curl-config"
 
 PCRE_PREFIX=\
-"/home/legatvs/src/non-installed/pcre-8.00"
+"/home/legatvs/src/non-installed/pcre-8.01"
 
 PCRE_CONFIG=\
 "$PCRE_PREFIX/release/dist/bin/pcre-config"
