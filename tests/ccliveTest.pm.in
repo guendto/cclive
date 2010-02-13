@@ -21,6 +21,7 @@ use warnings;
 use strict;
 
 use POSIX ":sys_wait_h";
+use File::Basename qw(basename);
 
 require Exporter;
 use vars qw(@ISA @EXPORT @EXPORT_OK);
@@ -51,8 +52,9 @@ sub run {
         }
     }
 
-    print "\nRUN: ";
-    print "$_ " foreach @args;
+
+    printf "\nTEST: %s\nRUN: ", basename($0);
+    print qq/"$_"/ . " " foreach @args;
     print "\n";
 
     my $child = fork;
