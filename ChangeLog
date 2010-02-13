@@ -1,16 +1,16 @@
 
 Version 0.6.1
 
- User-visible changes:
-  * Update manual to reflect the libquvi dailymotion format changes
-  * Remove hardcoded --format values
+Changes:
+  * Updated manual to reflect the dailymotion format id changes
+  * Remove the hardcoded --format values
     # Use libquvi provided values instead
+  * Add tests/noformat-eval.pl
+  * Cleanup notice message (configure)
+  * Add tests/pod-check.pl (replaces "make checkpod")
 
- Developer-visible changes:
-  * tests/noformat-eval.pl: add
-  * configure: cleanup notice message
-  * tests/pod-check.pl: replaces "make checkpod"
-  * tests/Makefile.am: fix missing separator
+Bugfixes:
+  * tests/Makefile.am: Missing separator (Makefile:450, rep. FreeBSD)
 
 
 Version 0.6.0
