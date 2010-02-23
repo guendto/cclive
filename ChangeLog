@@ -1,4 +1,10 @@
 
+Version 0.6.2
+
+Bugfixes:
+  * -f best, accepted again (closes issue #24)
+
+
 Version 0.6.1
 (Feburary 13, 2010)
 
