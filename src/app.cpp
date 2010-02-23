@@ -210,7 +210,7 @@ handle_url(const std::string& url) {
 static void
 verify_format_id (const Options& opts) {
 
-    if (!opts.format_given)
+    if (!opts.format_given || !strcmp(opts.format_arg, "best"))
         return;
 
     pcrecpp::RE_Options re_opts;
