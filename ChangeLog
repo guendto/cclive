@@ -1,6 +1,9 @@
 
 Version 0.6.2
 
+Changes:
+  * tests/multi-segment.pl now checks for locale
+
 Bugfixes:
   * -f best, accepted again (closes issue #24)
 
