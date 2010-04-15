@@ -18,6 +18,7 @@ AC_DEFINE_UNQUOTED(CANONICAL_TARGET, "$target", [Canonical target])
 AC_DEFINE_UNQUOTED(CANONICAL_HOST, "$host", [Canonical host])
 
 AM_INIT_AUTOMAKE([-Wall -Werror foreign dist-bzip2])
+AM_SILENT_RULES
 
 # Check host.
 case "$host" in
