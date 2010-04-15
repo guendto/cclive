@@ -1,4 +1,10 @@
 
+Version 0.6.3
+
+Changes:
+  * Add AM_SILENT_RULES([yes])
+
+
 Version 0.6.2
 (February 23, 2010)
 
