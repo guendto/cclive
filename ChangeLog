@@ -2,6 +2,7 @@
 Version 0.6.3
 
 Changes:
+  * Update to use libquvi 0.1.5 interface
   * Add AM_SILENT_RULES([yes])
 
 
