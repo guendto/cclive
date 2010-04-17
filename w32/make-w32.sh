@@ -29,6 +29,8 @@ ICONV_DIST=\
 pack_it()
 {
     quvi_dll="$QUVI_PREFIX/bin/libquvi-0.dll"
+    quvi_lua="$QUVI_PREFIX/bin/lua"
+    lua_dll="$QUVI_PREFIX/bin/lua51.dll"
 
     curl_prefix="`$CURL_CONFIG --prefix`"
     curl_dll="$curl_prefix/bin/libcurl-4.dll"
@@ -47,15 +49,19 @@ pack_it()
     && make install-strip \
     && make man \
     && cp $quvi_dll dist/bin \
-    && cp $QUVI_PREFIX/../../COPYING dist/libquvi-COPYING.TXT \
+    && cp -r $quvi_lua dist/bin \
+    && cp $lua_dll dist/bin \
     && cp $curl_dll dist/bin \
-    && cp $CURL_PREFIX/COPYING dist/libcurl-COPYING.TXT \
     && cp $pcre_dll dist/bin \
-    && cp $PCRE_PREFIX/LICENCE dist/libpcre-LICENSE.TXT \
     && cp $pcrecpp_dll dist/bin \
     && cp $iconv_dll dist/bin \
-    && cp $ICONV_PREFIX/COPYING.LIB dist/libiconv-COPYING.TXT \
-    && cp ../COPYING dist/cclive-COPYING.TXT \
+    && mkdir -p dist/licenses/ \
+    && cp $QUVI_PREFIX/../../COPYING dist/licenses/libquvi-COPYING.TXT \
+    && cp $QUVI_PREFIX/licenses/liblua-COPYRIGHT.txt dist/licenses/ \
+    && cp $CURL_PREFIX/COPYING dist/licenses/libcurl-COPYING.TXT \
+    && cp $PCRE_PREFIX/LICENCE dist/licenses/libpcre-LICENSE.TXT \
+    && cp $ICONV_PREFIX/COPYING.LIB dist/licenses/libiconv-COPYING.TXT \
+    && cp ../COPYING dist/licenses/cclive-COPYING.TXT \
     && cp ../ChangeLog dist/ChangeLog.TXT \
     && cp README.w32.TXT dist/ \
     && cp cclive.1.html dist/ \
