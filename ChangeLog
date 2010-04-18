@@ -2,7 +2,7 @@
 Version 0.6.3
 
 Changes:
-  * Update to use libquvi 0.1.5 interface
+  * Update to use libquvi's quvi_next_supported_website function
   * Add AM_SILENT_RULES([yes])
 
 
