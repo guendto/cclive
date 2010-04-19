@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2010-02-12" "0.6.1" "cclive manual"
+.TH cclive 1 "2010-04-19" "0.6.3" "cclive manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -145,6 +145,9 @@ Adobe flash player.
 .PP
 cclive is designed to be used as a workaround tool for websites that
 require the Adobe flash player plugin for viewing the video content.
+.PP
+Any self-respecting command-line-toolist still using clive, should
+consider switching to cclive.
 .SH "OPTIONS"
 .IX Header "OPTIONS"
 .IP "\fB\-h, \-\-help\fR" 4
@@ -316,9 +319,9 @@ contributed by Bill Squire.
 .IP "cclive \s-1URL\s0" 4
 .IX Item "cclive URL"
 Download video from \s-1URL\s0.
-.IP "cclive \-f fmt18 Youtube_URL" 4
-.IX Item "cclive -f fmt18 Youtube_URL"
-Download fmt18 (mp4) format of the video.
+.IP "cclive \-f best Youtube_URL" 4
+.IX Item "cclive -f best Youtube_URL"
+Download best available format from Youtube_URL.
 .ie n .IP "cclive \-F ""%t.%s"" \s-1URL\s0" 4
 .el .IP "cclive \-F ``%t.%s'' \s-1URL\s0" 4
 .IX Item "cclive -F %t.%s URL"
@@ -399,106 +402,51 @@ Or:
 .IX Item "cat url.lst | cclive"
 This may save you some typing, as you would normally have to type each
 \&\s-1URL\s0 to the command line as an argument.
-.ie n .IP "echo 'format\-map = ""youtube:mp4|dailymotion:h264\-hq""' >> ~/.ccliverc" 4
-.el .IP "echo 'format\-map = ``youtube:mp4|dailymotion:h264\-hq''' >> ~/.ccliverc" 4
-.IX Item "echo 'format-map = youtube:mp4|dailymotion:h264-hq' >> ~/.ccliverc"
+.ie n .IP "echo 'format\-map = ""youtube:best|dailymotion:hq""' >> ~/.ccliverc" 4
+.el .IP "echo 'format\-map = ``youtube:best|dailymotion:hq''' >> ~/.ccliverc" 4
+.IX Item "echo 'format-map = youtube:best|dailymotion:hq' >> ~/.ccliverc"
 Save \f(CW\*(C`\-\-format\-map\*(C'\fR to config file for permanent use.
 .IP "cclive Youtube_URL Dailymotion_URL" 4
 .IX Item "cclive Youtube_URL Dailymotion_URL"
-Causes cclive to download mp4 of the Youtube video and h264\-hq of
-the Dailymotion video. Note that the use of \-f (or \f(CW\*(C`\-\-format\*(C'\fR)
-overrides this setting.
+Would set \-\-format=best for Youtube_URL and \-\-format=hq for Dailymotion_URL.
+Note that the use of \f(CW\*(C`\-\-format\*(C'\fR overrides \-\-format\-map setting.
 .SH "FORMATS"
 .IX Header "FORMATS"
-Note that cclive (0.6.0+) depends on libquvi for parsing
-video links. You can get a more complete list of the
-websites (hosts) and the supported formats with the
-\&\f(CW\*(C`\-\-hosts\*(C'\fR option.
+cclive (0.6.0+) uses libquvi (<http://quvi.googlecode.com>) to parse
+the video links. You can get a complete list of the supported video
+websites that libquvi supports with the \f(CW\*(C`\-\-hosts\*(C'\fR option. The
+dumped details also include the supported video format IDs that
+can be used with the \f(CW\*(C`\-\-format\*(C'\fR option.
 .PP
-cclive defaults to download \*(L"flv\*(R", unless \f(CW\*(C`\-\-format\*(C'\fR
-is used, or if the requested format cannot be found.
+Note that cclive no longer uses hardcoded values or keeps track
+of the format IDs (or quality, resolution etc., for that matter).
+This is a tedious task as some of the supported websites reshuffle
+the IDs and other details every now and then. Instead cclive only
+dumps whatever libquvi returns and leaves it at that. libquvi
+does not go much further than that for the same reasons.
 .PP
-The quality of the \*(L"default flv\*(R" can vary. Some hosts may use
-different \*(L"default resolution\*(R" and \*(L"default quality\*(R" for their
-videos.
+Before you write an email to anyone involved with the project,
+consider experimenting with different \f(CW\*(C`\-\-format\*(C'\fR values. The
+chances are that no one knows any better, as most websites simply
+choose to keep the details unannounced or well buried under tons
+of mindnumbing web pages.
 .PP
-Same goes for the video details listed below. The resolutions
-may vary, depending on the hosts settings, so the list below
-may be inaccurate at times.
-.IP "youtube.com" 4
-.IX Item "youtube.com"
-Format: flv|fmt17|fmt18|fmt22|fmt35
-.Sp
-cclive defaults to to whatever Youtube defaults to at the
-time. This is usually the fmt34 (see below).
-.Sp
-Also, do not be surprised if the quality is not what you
-expected, the good folks at Youtube like to keep things
-interesting (for those who care).
-.Sp
-.Vb 6
-\& FormatID  Alias    Suffix  Resolution
-\& fmt22     hd       mp4     1280x720
-\& fmt35     hq       flv      640x380
-\& fmt18     mp4      mp4      480x360
-\& fmt34     flv      flv      320x180 [default] (resolution may vary)
-\& fmt17     3gp      3gp      176x144
-.Ve
-.Sp
-You can use either, the \*(L"alias\*(R" (e.g. \*(L"hd\*(R") or the \*(L"format id\*(R"
-(e.g. \*(L"fmt22\*(R"), with \-\-format. The aliases are supported for
-historical reasons.
-.Sp
-cclive can also download videos that last.fm lists as Youtube
-hosted videos.
-.IP "dailymotion.com" 4
-.IX Item "dailymotion.com"
-Format: flv|spark\-mini|h264|h264\-hq|h264\-hd
-.Sp
-The \s-1HD\s0 and \s-1HQ\s0 videos may not always be available.
-.Sp
-.Vb 6
-\&  FormatID      Suffix  Resolution
-\&  h264\-hd       mp4     1280x720
-\&  h264\-hq       mp4      848x480
-\&  h264          mp4      512x384
-\&  flv           flv      320x240 [default]
-\&  spark\-mini    flv        80x60
-.Ve
-.IP "spiegel.de" 4
-.IX Item "spiegel.de"
-Format: vp6_(576|928)|h264_1400
-.Sp
-.Vb 5
-\&  FormatID   Suffix  Resolution
-\&  h264_1400  mp4     996x560
-\&  vp6_928    flv     996x560
-\&  vp6_576    flv     560x315
-\&  flv        flv     180x100 [default]
-.Ve
-.IP "golem.de" 4
-.IX Item "golem.de"
-Format: flv|high|ipod
-.IP "video.google.com" 4
-.IX Item "video.google.com"
-Format: flv|mp4
-.Sp
-mp4 may not always be available.
-.IP "spyfilms.com" 4
-.IX Item "spyfilms.com"
-Format: flv|hd
-.IP "All other supported websites" 4
-.IX Item "All other supported websites"
-Format: flv
-.Sp
-Check also the \f(CW\*(C`\-\-hosts\*(C'\fR. libquvi is likely to get
-updated more frequently than cclive, so the output of
-this option may change.
+Note that \*(L"default\*(R" format is just a common denominator for whatever
+the video website defaults to. The \*(L"best\*(R" format is usually a some
+kind of a compromise unless a proper way to determine the best format
+has been found.
+.PP
+If you have additional info about the formats, please report them
+to the quvi project <http://quvi.googlecode.com>. This is strictly
+(lib)quvi territory.
 .SH "FILES"
 .IX Header "FILES"
-.ie n .IP "\fB\fB$CCLIVE_HOME\fB|$HOME/.ccliverc\fR" 4
-.el .IP "\fB\f(CB$CCLIVE_HOME\fB|$HOME/.ccliverc\fR" 4
-.IX Item "$CCLIVE_HOME|$HOME/.ccliverc"
+.ie n .IP "\fB\fB$HOME\fB/.ccliverc\fR" 4
+.el .IP "\fB\f(CB$HOME\fB/.ccliverc\fR" 4
+.IX Item "$HOME/.ccliverc"
+Most of the program options can be specified in the ~/.ccliverc
+config file. For example:
+.Sp
 .Vb 4
 \& agent      = Furball/1.0       # \-\-agent=...
 \& proxy      = http://foo:1234   # \-\-proxy=...
@@ -506,8 +454,12 @@ this option may change.
 \& no\-extract                     # \-\-no\-extract
 .Ve
 .Sp
-Most of the program options can be specified in the ~/.ccliverc
-config file.
+Note that you can also define \s-1CCLIVE_HOME\s0.
+.ie n .IP "\fB\fB$prefix\fB/share/quvi/lua/website\fR" 4
+.el .IP "\fB\f(CB$prefix\fB/share/quvi/lua/website\fR" 4
+.IX Item "$prefix/share/quvi/lua/website"
+Contains the quvi website rule scripts used to parse the video links.
+See also \*(L"\s-1DEBUGGING\s0\*(R".
 .SH "UNICODE"
 .IX Header "UNICODE"
 If you are seeing mangled characters in output filenames (titles), this may
@@ -542,25 +494,20 @@ for efficiency reasons. Note that this also affects \eb, because it is
 defined in terms of \ew and \eW.\*(R" \*(-- man pcrepattern
 .SH "BUGS"
 .IX Header "BUGS"
-Sure to be some. Please report them.
+Consider reporting them. Consider even fixing them if you think you
+can. Any additional information that you may have been able to dig up
+is always welcome and appreciated.
 .PP
-Note that if the error message contains \*(L"libquvi:\*(R", that means
-the error occurred in libquvi. Please file the libquvi related
-issues at:
+Please, have a look at the already reported (and closed) bugs before
+you open another.
 .PP
-.Vb 1
-\&  <http://quvi.googlecode.com/>
-.Ve
+If you see \*(L"libquvi:\*(R" in the error message, this indicates that the
+error occurred in libquvi. Those bugs should always be reported to
+quvi project's tracker (<http://quvi.googlecode.com/>), and not
+cclive's tracker.
 .PP
-And everything else at:
-.PP
-.Vb 1
-\&  <http://cclive.googlecode.com/>
-.Ve
-.PP
-Please search the tracker for both open and closed issues
-before you file a new one. The issue may have already been
-reported, addressed or closed. Thanks.
+Otherwise you can report the bugs to:
+  <http://cclive.googlecode.com/>
 .SH "DEBUGGING"
 .IX Header "DEBUGGING"
 Useful options for debugging cclive.
@@ -571,6 +518,25 @@ Spew out libcurl verbose messages.
 .IX Item "cclive -n URL"
 Simulate only; cclive will parse and verify the video link without
 downloading it.
+.ie n .IP "$prefix/share/quvi/lua/README" 4
+.el .IP "\f(CW$prefix\fR/share/quvi/lua/README" 4
+.IX Item "$prefix/share/quvi/lua/README"
+.PD 0
+.ie n .IP "$prefix/share/quvi/lua/website/README" 4
+.el .IP "\f(CW$prefix\fR/share/quvi/lua/website/README" 4
+.IX Item "$prefix/share/quvi/lua/website/README"
+.PD
+cclive relies heavily on libquvi for parsing the video links. If
+video link parsing breaks, have a look at these files.
+.Sp
+For example, you can copy a website script (rule) to  your working
+directory (./lua/website/) and tweak it without having to make
+any changes to the cclive or libquvi source code.
+.ie n .IP "$prefix/share/quvi/docs/howtos" 4
+.el .IP "\f(CW$prefix\fR/share/quvi/docs/howtos" 4
+.IX Item "$prefix/share/quvi/docs/howtos"
+Although these are quvi specific howtos, the guidelines can also
+be followed in cclive development.
 .SH "EXIT STATUS"
 .IX Header "EXIT STATUS"
 cclive exits 0 on success, and >0 if an error occurs.
@@ -602,13 +568,6 @@ cclive exits 0 on success, and >0 if an error occurs.
 .IP "Development code:" 4
 .IX Item "Development code:"
 % git clone git://repo.or.cz/cclive.git
-.SH "SEE ALSO"
-.IX Header "SEE ALSO"
-\&\f(CWclive(1)\fR
 .SH "AUTHOR"
 .IX Header "AUTHOR"
-Toni Gundogdu <legatvs@gmail.com>
-.PP
-Thanks to all those who have contributed to the project
-by sending patches, reporting bugs and writing feedback.
-You know who you are.
+Toni Gundogdu <legatvs@gmail.com>.
