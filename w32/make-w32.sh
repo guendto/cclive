@@ -6,16 +6,16 @@ PREFIX=`pwd`/dist # ./configure --prefix=$PREFIX
 CXXFLAGS="-Os -pipe -march=i686"
 
 QUVI_PREFIX=\
-"/home/legatvs/quvi.git/w32/quvi-0.1.1"
+"/home/legatvs/quvi.git/w32/quvi-0.2.0"
 
 CURL_PREFIX=\
-"/home/legatvs/src/non-installed/curl-7.20.0"
+"/home/legatvs/src/non-installed/curl-7.20.1"
 
 CURL_CONFIG=\
 "$CURL_PREFIX/release/dist/bin/curl-config"
 
 PCRE_PREFIX=\
-"/home/legatvs/src/non-installed/pcre-8.01"
+"/home/legatvs/src/non-installed/pcre-8.02"
 
 PCRE_CONFIG=\
 "$PCRE_PREFIX/release/dist/bin/pcre-config"
@@ -57,12 +57,13 @@ pack_it()
     && cp $iconv_dll dist/bin \
     && mkdir -p dist/licenses/ \
     && cp $QUVI_PREFIX/../../COPYING dist/licenses/libquvi-COPYING.TXT \
-    && cp $QUVI_PREFIX/licenses/liblua-COPYRIGHT.txt dist/licenses/ \
+    && cp $QUVI_PREFIX/licenses/liblua-COPYRIGHT.TXT dist/licenses/ \
     && cp $CURL_PREFIX/COPYING dist/licenses/libcurl-COPYING.TXT \
     && cp $PCRE_PREFIX/LICENCE dist/licenses/libpcre-LICENSE.TXT \
     && cp $ICONV_PREFIX/COPYING.LIB dist/licenses/libiconv-COPYING.TXT \
     && cp ../COPYING dist/licenses/cclive-COPYING.TXT \
     && cp ../ChangeLog dist/ChangeLog.TXT \
+    && cp ChangeLog.w32.TXT dist/ChangeLog.w32.TXT \
     && cp README.w32.TXT dist/ \
     && cp cclive.1.html dist/ \
     && rm -rf dist/share \
