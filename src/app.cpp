@@ -238,10 +238,10 @@ verify_format_id (const Options& opts) {
 
         case QUVI_OK: {
             const bool found = re.PartialMatch(formats);
-            free(domain);
-            free(formats);
+            quvi_free(domain);
+            quvi_free(formats);
             if (found) return;
-            } break;
+        } break;
 
         case QUVI_LAST:
             done = true;
