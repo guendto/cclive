@@ -2,17 +2,12 @@
 About cclive
 ------------
 
-cclive is a lightweight commandline video extraction tool for Youtube
-and similar video Websites. It is a rewrite of the clive software in
-C++ with a smaller system footprint and fewer dependencies. It is
-primarily a "video download tool", but can be used with video player
-software like "mplayer" for viewing streamed videos in place of the
-Adobe flash player. 
+cclive is a command line tool for downloading videos for Youtube
+and similar websites. It is a rewrite of the clive software in
+C++ with a smaller system footprint and fewer dependencies.
 
-cclive is designed to be used as a workaround tool for websites that
-require the Adobe flash player plugin for viewing the video content.
+cclive was written to be used as a workaround tool for websites
+that require the Adobe flash plugin to view the videos.
 
-For downloads and FAQ (in wiki), please visit:
-  http://cclive.googlecode.com/
-
-See also INSTALL file.
+HOME: http://cclive.googlecode.com/
+REPO: git://repo.or.cz/cclive.git
