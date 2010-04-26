@@ -7,9 +7,6 @@
  * libpcre  7.8+     <http://pcre.org/>
  * gcc      4.2+     (cclive uses the tr1 extensions)
 
-
-Behold!
-
     [cclive]-\
      |     |  \
      |     |   \
@@ -19,11 +16,9 @@ Behold!
           [libpcre]  \
                      [dragons be here]
 
-  Illustr. #1: Demonstrating mad ASCII skillz.
 
-
- Platform specific and other additional information available at:
-   http://code.google.com/p/cclive/wiki/HowtoInstall
+  Some additional platform specific notes:
+    http://code.google.com/p/cclive/wiki/HowtoInstall
 
 
 
