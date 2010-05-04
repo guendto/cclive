@@ -7,7 +7,7 @@ exit ccliveTest::run(
     "http://break.com/index/beach-tackle-whip-lash.html",
     "--remote", # implies internet requirement
     "-f",
-    "3gp",
+    "mobile",
     "-O",
     "/dev/null"
 );
