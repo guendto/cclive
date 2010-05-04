@@ -3,9 +3,7 @@ SUBDIRS= src tests
 EXTRA_DIST=\
 cmdline.ggo\
 cclive.pod\
-examples/config\
-docs/AddingSupport\
-docs/SubmittingPatches
+examples/config
 
 if WITH_MAN
 dist_man_MANS= cclive.1

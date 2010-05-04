@@ -255,9 +255,7 @@ SUBDIRS = src tests
 EXTRA_DIST = \
 cmdline.ggo\
 cclive.pod\
-examples/config\
-docs/AddingSupport\
-docs/SubmittingPatches
+examples/config
 
 @WITH_MAN_TRUE@dist_man_MANS = cclive.1
 all: config.h
