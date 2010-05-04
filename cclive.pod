@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-cclive - lightweight video extraction tool
+cclive - command line video download tool
 
 =head1 SYNOPSIS
 
@@ -10,18 +10,8 @@ cclive [options] [url...]
 
 =head1 DESCRIPTION
 
-cclive is a lightweight commandline video extraction tool for Youtube
-and similar video Websites. It is a rewrite of the clive software in
-C++ with a smaller system footprint and fewer dependencies. It is
-primarily a "video download tool", but can be used with video player
-software like "mplayer" for viewing streamed videos in place of the
-Adobe flash player. 
-
-cclive is designed to be used as a workaround tool for websites that
-require the Adobe flash player plugin for viewing the video content.
-
-Any self-respecting command-line-toolist still using clive, should
-consider switching to cclive.
+cclive is a command line video download tool for Youtube and similar websites.
+It is a rewrite of the clive software in C++.
 
 =head1 OPTIONS
 
@@ -355,33 +345,12 @@ Note that the use of C<--format> overrides --format-map setting.
 
 =head1 FORMATS
 
-cclive (0.6.0+) uses libquvi (<http://quvi.googlecode.com>) to parse
-the video links. You can get a complete list of the supported video
-websites that libquvi supports with the C<--hosts> option. The
-dumped details also include the supported video format IDs that
-can be used with the C<--format> option.
+cclive uses libquvi <http://quvi.googlecode.com> to parse the video
+download links. You can get a complete list of the supported formats
+with the C<--hosts> option.
 
-Note that cclive no longer uses hardcoded values or keeps track
-of the format IDs (or quality, resolution etc., for that matter).
-This is a tedious task as some of the supported websites reshuffle
-the IDs and other details every now and then. Instead cclive only
-dumps whatever libquvi returns and leaves it at that. libquvi
-does not go much further than that for the same reasons.
-
-Before you write an email to anyone involved with the project,
-consider experimenting with different C<--format> values. The
-chances are that no one knows any better, as most websites simply
-choose to keep the details unannounced or well buried under tons
-of mindnumbing web pages.
-
-Note that "default" format is just a common denominator for whatever
-the video website defaults to. The "best" format is usually a some
-kind of a compromise unless a proper way to determine the best format
-has been found.
-
-If you have additional info about the formats, please report them
-to the quvi project <http://quvi.googlecode.com>. This is strictly
-(lib)quvi territory.
+If you have any additional info regarding the formats, report them
+to the quvi project (see above link) as this is strictly quvi territory.
 
 =head1 FILES
 
@@ -389,20 +358,15 @@ to the quvi project <http://quvi.googlecode.com>. This is strictly
 
 =item B<$HOME/.ccliverc>
 
-Most of the program options can be specified in the ~/.ccliverc
+Most of the program options can be specified in the $HOME/.ccliverc
 config file. For example:
 
- agent      = Furball/1.0       # --agent=...
- proxy      = http://foo:1234   # --proxy=...
- limit-rate = 50                # --limit-rate=...
- no-extract                     # --no-extract
+ agent      = JBond/1.0       # --agent
+ proxy      = http://foo:1234 # --proxy
+ limit-rate = 50              # --limit-rate
+ no-extract                   # --no-extract
 
-Note that you can also define CCLIVE_HOME.
-
-=item B<$prefix/share/quvi/lua/website>
-
-Contains the quvi website rule scripts used to parse the video links.
-See also L</DEBUGGING>.
+You can also use $CCLIVE_HOME instead of $HOME.
 
 =back
 
@@ -437,51 +401,49 @@ defined in terms of \w and \W." -- man pcrepattern
 
 =head1 BUGS
 
-Consider reporting them. Consider even fixing them if you think you
-can. Any additional information that you may have been able to dig up
-is always welcome and appreciated.
+Report them at <http://cclive.googlecode.com/>. Please see if the issue has
+already been reported (or closed) before you submit another. You can use
+the issue tracker's search feature for this, just be sure to search "All
+issues".
 
-Please, have a look at the already reported (and closed) bugs before
-you open another.
+If your bug report contains an error message starting with "error: libquvi:",
+report the bug to the quvi tracker instead (<http://quvi.googlecode.com/>).
 
-If you see "libquvi:" in the error message, this indicates that the
-error occurred in libquvi. Those bugs should always be reported to
-quvi project's tracker (<http://quvi.googlecode.com/>), and not
-cclive's tracker.
-
-Otherwise you can report the bugs to:
-  <http://cclive.googlecode.com/>
+You can use the issue trackers for submitting your patches.
 
 =head1 DEBUGGING
 
-Useful options for debugging cclive.
+The following lists some of the cclive options that may be useful
+while debugging. Other tools, like C<strace(1)>, C<gdb(1)> and C<valgrind(1)>
+may also prove helpful.
 
 =over 4
 
 =item cclive --debug URL
 
-Spew out libcurl verbose messages.
+Enable libcurl verbose mode.
 
 =item cclive -n URL
 
-Simulate only; cclive will parse and verify the video link without
-downloading it.
+Simulate only. Fetch, parse but skip get.
 
 =item $prefix/share/quvi/lua/README
 
 =item $prefix/share/quvi/lua/website/README
 
-cclive relies heavily on libquvi for parsing the video links. If
-video link parsing breaks, have a look at these files.
+cclive relies on libquvi for parsing the video download links.
+If the parsing ever breaks, the above two files cover some
+of the essential details.
 
-For example, you can copy a website script (rule) to  your working
-directory (./lua/website/) and tweak it without having to make
-any changes to the cclive or libquvi source code.
+The latter directory also contains the website specific Lua
+scripts that libquvi calls to parse the video links.
 
-=item $prefix/share/quvi/docs/howtos
+=item $prefix/share/doc/quvi
 
-Although these are quvi specific howtos, the guidelines can also
-be followed in cclive development.
+The above directory contains quvi related HOWTOs which may
+also prove helpful reading for those interested in cclive.
+The guidelines that the HOWTOs list are also followed in
+this project.
 
 =back
 
@@ -508,18 +470,6 @@ cclive exits 0 on success, and E<gt>0 if an error occurs.
 =item Project page:
 
 <http://cclive.googlecode.com/>
-
-=item FAQ:
-
-<http://code.google.com/p/cclive/wiki/FAQ>
-
-=item Front-end:
-
-<http://abby.googlecode.com/>
-
-=item Development code:
-
-% git clone git://repo.or.cz/cclive.git
 
 =back
 
