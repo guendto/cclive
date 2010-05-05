@@ -1,5 +1,6 @@
 
 Version 0.6.3
+May 6, 2010
 
 Changes:
   * Update to use libquvi's quvi_next_supported_website function
