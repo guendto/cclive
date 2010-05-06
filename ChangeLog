@@ -1,4 +1,10 @@
 
+Version 0.6.4
+
+Changes:
+  * Bump PKG_CHECK_MODULES(libquvi) to 0.2.0
+
+
 Version 0.6.3
 May 6, 2010
 
