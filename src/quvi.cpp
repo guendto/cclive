@@ -65,7 +65,8 @@ handle_error(QUVIcode rc) {
     switch (rc) {
     case QUVI_NOSUPPORT:
         throw NoSupportException(s.str());
-    case QUVI_PCRE:
+    case QUVI_PCRE: // Replaced largely by QUVI_LUA.
+    case QUVI_LUA:
         throw ParseException(s.str());
     default:
         break;
