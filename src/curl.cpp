@@ -205,7 +205,10 @@ CurlMgr::fetchToFile(QuviVideo& qv) {
 
     curl_easy_setopt(curl, CURLOPT_ENCODING, "identity");
     curl_easy_setopt(curl, CURLOPT_HEADER, 0L);
-    curl_easy_setopt(curl, CURLOPT_RESUME_FROM, static_cast<long>(initial));
+
+    curl_off_t resume_from = static_cast<curl_off_t>(initial>0 ? initial:0L);
+    curl_easy_setopt(curl, CURLOPT_RESUME_FROM_LARGE, resume_from);
+
     curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT,
                      opts.connect_timeout_arg);
 
@@ -217,7 +220,7 @@ CurlMgr::fetchToFile(QuviVideo& qv) {
 
     curl_easy_setopt(curl, CURLOPT_HEADER, 1L);
     curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1L);
-    curl_easy_setopt(curl, CURLOPT_RESUME_FROM, 0L);
+    curl_easy_setopt(curl, CURLOPT_RESUME_FROM_LARGE, 0L);
     curl_easy_setopt(curl, CURLOPT_MAX_RECV_SPEED_LARGE, (curl_off_t) 0);
 
     if (NULL != write.file) {
