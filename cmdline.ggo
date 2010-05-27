@@ -90,7 +90,7 @@ option "limit-rate"
     optional
 option "format"
     f "Download format of video"
-    default="flv"
+    default="default"
     string typestr="<format_id>"
     optional
 option "format-map"

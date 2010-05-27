@@ -57,7 +57,7 @@ const char *gengetopt_args_info_help[] = {
   "  -W, --overwrite               Overwrite existing file  (default=off)",
   "  -n, --no-extract              Do not actually extract video, simulate only",
   "  -l, --limit-rate=<amount>     Limit download speed to amount KB/s \n                                  (0=unlimited)  (default=`0')",
-  "  -f, --format=<format_id>      Download format of video  (default=`flv')",
+  "  -f, --format=<format_id>      Download format of video  (default=`default')",
   "  -M, --format-map=<map_string> Specify format for multiple hosts in a string",
   "\nFilename formatting:",
   "  -N, --number-videos           Prepend a numeric prefix to output filenames  \n                                  (default=off)",
@@ -185,7 +185,7 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->overwrite_flag = 0;
   args_info->limit_rate_arg = 0;
   args_info->limit_rate_orig = NULL;
-  args_info->format_arg = gengetopt_strdup ("flv");
+  args_info->format_arg = gengetopt_strdup ("default");
   args_info->format_orig = NULL;
   args_info->format_map_arg = NULL;
   args_info->format_map_orig = NULL;
@@ -923,7 +923,7 @@ cmdline_parser_internal (
         
           if (update_arg( (void *)&(args_info->format_arg), 
                &(args_info->format_orig), &(args_info->format_given),
-              &(local_args_info.format_given), optarg, 0, "flv", ARG_STRING,
+              &(local_args_info.format_given), optarg, 0, "default", ARG_STRING,
               check_ambiguity, override, 0, 0,
               "format", 'f',
               additional_error))

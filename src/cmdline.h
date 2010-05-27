@@ -88,7 +88,7 @@ struct gengetopt_args_info
   int limit_rate_arg;	/**< @brief Limit download speed to amount KB/s (0=unlimited) (default='0').  */
   char * limit_rate_orig;	/**< @brief Limit download speed to amount KB/s (0=unlimited) original value given at command line.  */
   const char *limit_rate_help; /**< @brief Limit download speed to amount KB/s (0=unlimited) help description.  */
-  char * format_arg;	/**< @brief Download format of video (default='flv').  */
+  char * format_arg;	/**< @brief Download format of video (default='default').  */
   char * format_orig;	/**< @brief Download format of video original value given at command line.  */
   const char *format_help; /**< @brief Download format of video help description.  */
   char * format_map_arg;	/**< @brief Specify format for multiple hosts in a string.  */
