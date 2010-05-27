@@ -166,17 +166,14 @@ QuviVideo::parse(std::string url /*=""*/) {
 
     assert(!url.empty());
 
-    const Options opts =
-        optsmgr.getOptions();
-
-    if (opts.format_given) {
-        quvi_setopt(quvimgr.handle(),
-            QUVIOPT_FORMAT, opts.format_arg);
-    }
+    quvi_setopt(quvimgr.handle(),
+        QUVIOPT_FORMAT, Util::parseFormatMap(url).c_str());
 
     CURL *curl = 0;
     quvimgr.curlHandle(&curl);
     assert(curl != 0);
+
+    const Options opts = optsmgr.getOptions();
 
     curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT,
         opts.connect_timeout_arg);
