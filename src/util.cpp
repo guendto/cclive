@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Toni Gundogdu.
+ * Copyright (C) 2009,2010 Toni Gundogdu.
  *
  * This file is part of cclive.
  * 
@@ -26,12 +26,14 @@
 #include <map>
 #include <cstring>
 #include <cerrno>
+#include <sstream>
 
 #include <pcrecpp.h>
 
 #include "opts.h"
 #include "except.h"
 #include "log.h"
+#include "quvi.h"
 #include "util.h"
 
 const double
@@ -128,24 +130,99 @@ Util::tokenize(const std::string& src, const std::string& delims) {
     return v;
 }
 
-std::string
-Util::parseFormatMap(const std::string& host) {
+static bool
+verify_format (const std::string& url, const std::string& format) {
 
-    const Options opts =
-        optsmgr.getOptions();
+    pcrecpp::RE_Options re_opts;
+    re_opts.set_caseless(true);
 
-    std::string fmt;
+    std::stringstream pattern;
+    pattern << "(?:\\||^)" << format << "(?:\\||$)";
 
-    if (opts.format_map_given) {
-        pcrecpp::RE re(host + ":(.*?)(\\||$)");
-        re.PartialMatch(opts.format_map_arg, &fmt);
+    pcrecpp::RE re(pattern.str(), re_opts);
+    const quvi_t quvi = quvimgr.handle();
+
+    // Note: We need to go over the entire list, otherwise
+    // the next time we use quvi_next_supported_website will
+    // continue from where we left.
+
+    bool done = false;
+    bool m = false;
+
+    while (!done) {
+
+        char *d=NULL, *f=NULL;
+        const QUVIcode rc = quvi_next_supported_website(quvi, &d, &f);
+
+        switch (rc) {
+
+        case QUVI_OK:
+            if (url.find(d) != std::string::npos)
+                m = re.PartialMatch(f);
+            quvi_free(d);
+            quvi_free(f);
+            break;
+
+        case QUVI_LAST:
+            done = true;
+            break;
+
+        default:
+            throw RuntimeException (CCLIVE_QUVI, quvi_strerror(quvi,rc));
+        }
     }
 
-    if (opts.format_given) // Override.
+    return m;
+}
+
+std::string
+Util::parseFormatMap (const std::string& url) {
+
+    static const char unsupported_m[] =
+        "\n  >> Website does not support the specified format. "
+        "See `--hosts' output.";
+
+    const Options opts = optsmgr.getOptions();
+    std::string fmt    = "default";
+
+    if (opts.format_map_given) {
+
+        // Match URL to --format-map=$domain:$format
+        // NOTE: Use full domain names for better results.
+
+        pcrecpp::StringPiece in(opts.format_map_arg);
+        pcrecpp::RE re("(\\w+):([\\w-_]+)");
+        std::string domain;
+
+        while (re.FindAndConsume(&in, &domain, &fmt)) {
+
+            if (url.find(domain) != std::string::npos) {
+
+                if (verify_format(url, fmt))
+                    break;
+
+                logmgr.cerr()
+                    << "  > Warning: ignoring `--format-map="
+                    << "(" << domain << ":" << fmt << ")'"
+                    << " for " << url
+                    << unsupported_m
+                    << std::endl;
+            }
+        }
+    }
+
+    if (opts.format_given) { // Overrides.
+
         fmt = opts.format_arg;
 
-    if (fmt.empty())
-        fmt = "flv";
+        if (!verify_format(url, fmt)) {
+
+            logmgr.cerr()
+                << "  > Warning: ignoring `--format=" << fmt << "' for " << url
+                << unsupported_m
+                << std::endl;
+        }
+    }
 
     return fmt;
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 Toni Gundogdu.
+ * Copyright (C) 2009,2010 Toni Gundogdu.
  *
  * This file is part of cclive.
  * 
@@ -33,7 +33,7 @@ public:
     static std::vector<std::string>
                         tokenize     (const std::string& src,
                                         const std::string& delims);
-    static std::string parseFormatMap(const std::string& host);
+    static std::string parseFormatMap(const std::string& url);
     static const std::string& fromHtmlEntities(std::string& src);
     static const bool perlSubstitute(const std::string& re, std::string& src);
     static const bool perlMatch(const std::string& re, std::string& src);
