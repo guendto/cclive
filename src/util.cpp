@@ -157,10 +157,13 @@ verify_format (const std::string& url, const std::string& format) {
         switch (rc) {
 
         case QUVI_OK:
+
             if (url.find(d) != std::string::npos)
                 m = re.PartialMatch(f);
+
             quvi_free(d);
             quvi_free(f);
+
             break;
 
         case QUVI_LAST:
@@ -192,18 +195,20 @@ Util::parseFormatMap (const std::string& url) {
 
         pcrecpp::StringPiece in(opts.format_map_arg);
         pcrecpp::RE re("(\\w+):([\\w-_]+)");
-        std::string domain;
+        std::string domain, format;
 
-        while (re.FindAndConsume(&in, &domain, &fmt)) {
+        while (re.FindAndConsume(&in, &domain, &format)) {
 
             if (url.find(domain) != std::string::npos) {
 
-                if (verify_format(url, fmt))
+                if (verify_format(url, format)) {
+                    fmt = format;
                     break;
+                }
 
                 logmgr.cerr()
                     << "  > Warning: ignoring `--format-map="
-                    << "(" << domain << ":" << fmt << ")'"
+                    << "(" << domain << ":" << format << ")'"
                     << " for " << url
                     << unsupported_m
                     << std::endl;
@@ -213,15 +218,15 @@ Util::parseFormatMap (const std::string& url) {
 
     if (opts.format_given) { // Overrides.
 
-        fmt = opts.format_arg;
-
-        if (!verify_format(url, fmt)) {
-
+        if (!verify_format(url, opts.format_arg)) {
             logmgr.cerr()
-                << "  > Warning: ignoring `--format=" << fmt << "' for " << url
+                << "  > Warning: ignoring `--format="
+                << opts.format_arg << "' for " << url
                 << unsupported_m
                 << std::endl;
         }
+        else
+            fmt = opts.format_arg;
     }
 
     return fmt;
