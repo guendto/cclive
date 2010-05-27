@@ -208,66 +208,6 @@ handle_url(const std::string& url) {
 }
 
 static void
-verify_format_id (const Options& opts) {
-
-    if (!opts.format_given || !strcmp(opts.format_arg, "best"))
-        return;
-
-    pcrecpp::RE_Options re_opts;
-    re_opts.set_caseless(true);
-
-    std::stringstream pattern;
-    pattern
-        << "(?:\\||^)"
-        << opts.format_arg
-        << "(?:\\||$)";
-
-    pcrecpp::RE re(pattern.str(), re_opts);
-
-    bool done = false;
-    while (!done) {
-        char *domain, *formats;
-
-        QUVIcode rc = quvi_next_supported_website(
-            quvimgr.handle(),
-            &domain,
-            &formats
-        );
-
-        switch (rc) {
-
-        case QUVI_OK: {
-            const bool found = re.PartialMatch(formats);
-            quvi_free(domain);
-            quvi_free(formats);
-            if (found) return;
-        } break;
-
-        case QUVI_LAST:
-            done = true;
-            break;
-
-        default:
-            logmgr.cerr()
-                << quvi_strerror(quvimgr.handle(), rc)
-                << std::endl;
-            break;
-        }
-    }
-
-    char *domain, *formats;
-    while (quvi_next_host(&domain, &formats) == QUVI_OK) {
-        if (re.PartialMatch(formats))
-            return;
-    }
-
-    std::stringstream b;
-    b << "--format=" << opts.format_arg;
-
-    throw RuntimeException(CCLIVE_OPTARG, b.str());
-}
-
-static void
 print_hosts () {
     std::vector<std::string> hosts;
     bool done = false;
@@ -346,7 +286,6 @@ App::run() {
         }
     }
 
-    verify_format_id(opts);
     execmgr.verifyExecArgument();
 
 #if !defined(HAVE_FORK) || !defined(HAVE_WORKING_FORK)
