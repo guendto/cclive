@@ -2,6 +2,7 @@
 Version 0.6.4
 
 Changes:
+  * Bump autoconf prereq to 2.66
   * New default --format value (`flv' -> `default').
   * Warn if --format, --format-map use invalid values
   * Handle QUVI_LUA
