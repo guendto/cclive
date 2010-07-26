@@ -26,7 +26,7 @@
 #include "app.h"
 
 int
-main (const int argc, char * const *argv) {
+main (int argc, char **argv) {
     App app;
     try {
         app.main(argc, argv);

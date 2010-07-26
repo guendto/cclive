@@ -28,7 +28,7 @@ public:
     OptionsMgr();
     virtual ~OptionsMgr();
 public:
-    void                init        (const int& argc, char *const *argv);
+    void                init        (int,char **);
     const Options&      getOptions  () const;
     const std::string&  getPath     () const;
     const std::string&  getLocale   () const;

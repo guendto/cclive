@@ -34,6 +34,7 @@ const char *gengetopt_args_info_description = "";
 const char *gengetopt_args_info_help[] = {
   "  -h, --help                    Print help and exit",
   "  -v, --version                 Print version and exit",
+  "      --license                 Print license and exit",
   "      --hosts                   List supported hosts",
   "  -b, --background              Go to background immediately after startup",
   "\nOutput:",
@@ -124,6 +125,7 @@ void clear_given (struct gengetopt_args_info *args_info)
 {
   args_info->help_given = 0 ;
   args_info->version_given = 0 ;
+  args_info->license_given = 0 ;
   args_info->hosts_given = 0 ;
   args_info->background_given = 0 ;
   args_info->emit_csv_given = 0 ;
@@ -210,36 +212,37 @@ void init_args_info(struct gengetopt_args_info *args_info)
 
   args_info->help_help = gengetopt_args_info_help[0] ;
   args_info->version_help = gengetopt_args_info_help[1] ;
-  args_info->hosts_help = gengetopt_args_info_help[2] ;
-  args_info->background_help = gengetopt_args_info_help[3] ;
-  args_info->emit_csv_help = gengetopt_args_info_help[5] ;
-  args_info->quiet_help = gengetopt_args_info_help[6] ;
-  args_info->debug_help = gengetopt_args_info_help[7] ;
-  args_info->print_fname_help = gengetopt_args_info_help[8] ;
-  args_info->logfile_help = gengetopt_args_info_help[9] ;
-  args_info->logfile_interval_help = gengetopt_args_info_help[10] ;
-  args_info->agent_help = gengetopt_args_info_help[12] ;
-  args_info->proxy_help = gengetopt_args_info_help[13] ;
-  args_info->no_proxy_help = gengetopt_args_info_help[14] ;
-  args_info->connect_timeout_help = gengetopt_args_info_help[15] ;
-  args_info->connect_timeout_socks_help = gengetopt_args_info_help[16] ;
-  args_info->retry_help = gengetopt_args_info_help[17] ;
-  args_info->retry_wait_help = gengetopt_args_info_help[18] ;
-  args_info->output_video_help = gengetopt_args_info_help[20] ;
-  args_info->continue_help = gengetopt_args_info_help[21] ;
-  args_info->overwrite_help = gengetopt_args_info_help[22] ;
-  args_info->no_extract_help = gengetopt_args_info_help[23] ;
-  args_info->limit_rate_help = gengetopt_args_info_help[24] ;
-  args_info->format_help = gengetopt_args_info_help[25] ;
-  args_info->format_map_help = gengetopt_args_info_help[26] ;
-  args_info->number_videos_help = gengetopt_args_info_help[28] ;
-  args_info->regexp_help = gengetopt_args_info_help[29] ;
-  args_info->substitute_help = gengetopt_args_info_help[30] ;
-  args_info->filename_format_help = gengetopt_args_info_help[31] ;
-  args_info->exec_help = gengetopt_args_info_help[33] ;
-  args_info->exec_run_help = gengetopt_args_info_help[34] ;
-  args_info->stream_exec_help = gengetopt_args_info_help[36] ;
-  args_info->stream_pass_help = gengetopt_args_info_help[37] ;
+  args_info->license_help = gengetopt_args_info_help[2] ;
+  args_info->hosts_help = gengetopt_args_info_help[3] ;
+  args_info->background_help = gengetopt_args_info_help[4] ;
+  args_info->emit_csv_help = gengetopt_args_info_help[6] ;
+  args_info->quiet_help = gengetopt_args_info_help[7] ;
+  args_info->debug_help = gengetopt_args_info_help[8] ;
+  args_info->print_fname_help = gengetopt_args_info_help[9] ;
+  args_info->logfile_help = gengetopt_args_info_help[10] ;
+  args_info->logfile_interval_help = gengetopt_args_info_help[11] ;
+  args_info->agent_help = gengetopt_args_info_help[13] ;
+  args_info->proxy_help = gengetopt_args_info_help[14] ;
+  args_info->no_proxy_help = gengetopt_args_info_help[15] ;
+  args_info->connect_timeout_help = gengetopt_args_info_help[16] ;
+  args_info->connect_timeout_socks_help = gengetopt_args_info_help[17] ;
+  args_info->retry_help = gengetopt_args_info_help[18] ;
+  args_info->retry_wait_help = gengetopt_args_info_help[19] ;
+  args_info->output_video_help = gengetopt_args_info_help[21] ;
+  args_info->continue_help = gengetopt_args_info_help[22] ;
+  args_info->overwrite_help = gengetopt_args_info_help[23] ;
+  args_info->no_extract_help = gengetopt_args_info_help[24] ;
+  args_info->limit_rate_help = gengetopt_args_info_help[25] ;
+  args_info->format_help = gengetopt_args_info_help[26] ;
+  args_info->format_map_help = gengetopt_args_info_help[27] ;
+  args_info->number_videos_help = gengetopt_args_info_help[29] ;
+  args_info->regexp_help = gengetopt_args_info_help[30] ;
+  args_info->substitute_help = gengetopt_args_info_help[31] ;
+  args_info->filename_format_help = gengetopt_args_info_help[32] ;
+  args_info->exec_help = gengetopt_args_info_help[34] ;
+  args_info->exec_run_help = gengetopt_args_info_help[35] ;
+  args_info->stream_exec_help = gengetopt_args_info_help[37] ;
+  args_info->stream_pass_help = gengetopt_args_info_help[38] ;
   
 }
 
@@ -390,6 +393,8 @@ cmdline_parser_dump(FILE *outfile, struct gengetopt_args_info *args_info)
     write_into_file(outfile, "help", 0, 0 );
   if (args_info->version_given)
     write_into_file(outfile, "version", 0, 0 );
+  if (args_info->license_given)
+    write_into_file(outfile, "license", 0, 0 );
   if (args_info->hosts_given)
     write_into_file(outfile, "hosts", 0, 0 );
   if (args_info->background_given)
@@ -748,6 +753,7 @@ cmdline_parser_internal (
       static struct option long_options[] = {
         { "help",	0, NULL, 'h' },
         { "version",	0, NULL, 'v' },
+        { "license",	0, NULL, 0 },
         { "hosts",	0, NULL, 0 },
         { "background",	0, NULL, 'b' },
         { "emit-csv",	0, NULL, 0 },
@@ -1014,8 +1020,22 @@ cmdline_parser_internal (
           break;
 
         case 0:	/* Long option with no short option */
+          /* Print license and exit.  */
+          if (strcmp (long_options[option_index].name, "license") == 0)
+          {
+          
+          
+            if (update_arg( 0 , 
+                 0 , &(args_info->license_given),
+                &(local_args_info.license_given), optarg, 0, 0, ARG_NO,
+                check_ambiguity, override, 0, 0,
+                "license", '-',
+                additional_error))
+              goto failure;
+          
+          }
           /* List supported hosts.  */
-          if (strcmp (long_options[option_index].name, "hosts") == 0)
+          else if (strcmp (long_options[option_index].name, "hosts") == 0)
           {
           
           

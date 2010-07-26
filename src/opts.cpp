@@ -45,7 +45,7 @@ OptionsMgr::~OptionsMgr() {
 }
 
 void
-OptionsMgr::init(const int& argc, char * const *argv) {
+OptionsMgr::init (int argc, char **argv) {
 
     const char *tmp = setlocale(LC_ALL, "");
 

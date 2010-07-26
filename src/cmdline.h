@@ -43,6 +43,7 @@ struct gengetopt_args_info
 {
   const char *help_help; /**< @brief Print help and exit help description.  */
   const char *version_help; /**< @brief Print version and exit help description.  */
+  const char *license_help; /**< @brief Print license and exit help description.  */
   const char *hosts_help; /**< @brief List supported hosts help description.  */
   const char *background_help; /**< @brief Go to background immediately after startup help description.  */
   const char *emit_csv_help; /**< @brief Print video details in csv format to stdout help description.  */
@@ -116,6 +117,7 @@ struct gengetopt_args_info
   
   unsigned int help_given ;	/**< @brief Whether help was given.  */
   unsigned int version_given ;	/**< @brief Whether version was given.  */
+  unsigned int license_given ;	/**< @brief Whether license was given.  */
   unsigned int hosts_given ;	/**< @brief Whether hosts was given.  */
   unsigned int background_given ;	/**< @brief Whether background was given.  */
   unsigned int emit_csv_given ;	/**< @brief Whether emit-csv was given.  */

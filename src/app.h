@@ -22,11 +22,10 @@
 
 class App {
 public:
-    void main (const int& argc, char * const *argv);
+    void main (int, char **);
     void run  ();
 protected:
     std::vector<std::string> parseInput ();
-    void printVersion                   ();
     void daemonize                      ();
 };
 

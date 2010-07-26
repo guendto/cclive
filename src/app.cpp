@@ -84,7 +84,7 @@ extern void fetch_page(QuviVideo&, const bool&); // src/retry.cpp
 extern void fetch_file(QuviVideo&, const bool&); // src/retry.cpp
 
 void
-App::main(const int& argc, char * const *argv) {
+App::main(int argc, char **argv) {
     optsmgr.init(argc, argv);
     logmgr.init();  // apply --quiet
     quvimgr.init(); // creates also curl handle which we'll reuse
@@ -252,6 +252,33 @@ print_hosts () {
         std::ostream_iterator<std::string>(std::cout));
 }
 
+static void
+print_version () {
+    std::cout
+        << CMDLINE_PARSER_PACKAGE       << " version "
+        << CMDLINE_PARSER_VERSION       << " with libquvi version "
+        << quvi_version(QUVI_VERSION)   << "  ["
+#ifdef BUILD_DATE
+        << BUILD_DATE << "-"
+#endif
+        << CANONICAL_TARGET
+        << "]\n"
+        << "locale="
+        << optsmgr.getLocale()
+        << ", config="
+        << optsmgr.getPath()
+        << std::endl;
+}
+
+static const char notice[] =
+"Copyright (C) 2009,2010 Toni Gundogdu. License: GNU GPL version  3 or  later\n"
+"This is free software; see the  source for  copying conditions.  There is NO\n"
+"warranty;  not even for MERCHANTABILITY or FITNESS FOR A  PARTICULAR PURPOSE.";
+
+static void
+print_license ()
+    { std::cout << notice << std::endl; }
+
 void
 App::run() {
 
@@ -259,7 +286,12 @@ App::run() {
         optsmgr.getOptions();
 
     if (opts.version_given) {
-        printVersion();
+        print_version();
+        return;
+    }
+
+    if (opts.license_given) {
+        print_license();
         return;
     }
 
@@ -354,29 +386,6 @@ App::parseInput() {
     );
 
     return tokens;
-}
-
-void
-App::printVersion() {
-static const char copyr_notice[] =
-"Copyright (C) 2009,2010 Toni Gundogdu. "
-"License: GNU GPL version  3 or  later\n"
-"This is free software; see the  source for  copying conditions.  There is NO\n"
-"warranty;  not even for MERCHANTABILITY or FITNESS FOR A  PARTICULAR PURPOSE.";
-
-    std::cout
-        << CMDLINE_PARSER_PACKAGE       << " version "
-        << CMDLINE_PARSER_VERSION       << " with libquvi version "
-        << quvi_version(QUVI_VERSION)   << "  ["
-#ifdef BUILD_DATE
-        << BUILD_DATE << "-"
-#endif
-        << CANONICAL_TARGET             << "]\n"
-        << copyr_notice                 << "\n"
-        << "\n  Locale/codeset  : "     << optsmgr.getLocale()
-        << "\n  Config          : "     << optsmgr.getPath()
-        << "\n  Home            : "     << "<http://cclive.googlecode.com/>"
-        << std::endl;
 }
 
 void
