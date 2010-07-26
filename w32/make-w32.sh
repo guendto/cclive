@@ -3,7 +3,7 @@
 # Configure
 HOST=i486-mingw32 # ./configure --host=$HOST
 PREFIX=`pwd`/dist # ./configure --prefix=$PREFIX
-CXXFLAGS="-Os -pipe -march=i686"
+CXXFLAGS="-Os -pipe -march=i686  -static-libgcc -static-libstdc++"
 
 QUVI_PREFIX=\
 "/home/legatvs/quvi.git/w32/quvi-0.2.0"
