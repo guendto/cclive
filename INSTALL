@@ -2,7 +2,7 @@
 
             Prerequisites
 
- * libquvi  0.1.0+   <http://quvi.googlecode.com/>
+ * libquvi  0.2.0+   <http://quvi.googlecode.com/>
  * libcurl  7.18.0+  <http://curl.haxx.se/>
  * libpcre  7.8+     <http://pcre.org/>
  * gcc      4.2+     (cclive uses the tr1 extensions)
