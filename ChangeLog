@@ -3,6 +3,8 @@ Version 0.6.5
 
 Changes:
   * Add --license option
+  * Add --regexp default "/(\w|\s|\pL)/g" (issue #43)
+  * Add --disable-tests (configure)
 
 
 Version 0.6.4
