@@ -27,14 +27,13 @@
  Typically "./configure && make install". See `./configure --help' for
  additional options.
 
- --without-man
-    Skip manual (cclive.1) installation.
+    --without-man       Do not install manual page.
+    --disable-tests     Disable tests
 
  Environment settings:
 
  NO_INTERNET=1          Skip _all_ tests that depend on internet
  TEST_DOWNLOAD=1        Enable tests that require downloading
- TEST_MULTISEGMENT=1    Enable cctv multi-segment test
 
  You can pass additional options to cclive by setting CCLIVE_TEST_OPTIONS.
 

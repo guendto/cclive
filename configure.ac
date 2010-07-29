@@ -98,9 +98,9 @@ AC_CHECK_FUNCS([memset setenv strchr strcspn strspn strtol setlocale nl_langinfo
 # --enable-tests
 AC_ARG_ENABLE([tests],
     [AS_HELP_STRING([--enable-tests],
-        [enable "make check" tests @<:@default=no@:>@])],
+        [enable tests @<:@default=yes@:>@])],
     [],
-    [enable_tests=no])
+    [enable_tests=yes])
 AM_CONDITIONAL([ENABLE_TESTS], [test x"$enable_tests" != "xno"])
 
 # --with-man
@@ -131,6 +131,7 @@ AC_MSG_NOTICE([Configured to build cclive:
     cxxflags:       ${CXXFLAGS}
 
 Options:
+    enable tests:   ${enable_tests}
     install manual: ${with_man}
 
 Other:
