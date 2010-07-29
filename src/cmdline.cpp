@@ -62,7 +62,7 @@ const char *gengetopt_args_info_help[] = {
   "  -M, --format-map=<map_string> Specify format for multiple hosts in a string",
   "\nFilename formatting:",
   "  -N, --number-videos           Prepend a numeric prefix to output filenames  \n                                  (default=off)",
-  "  -r, --regexp=<regexp>         Regular expression to cleanup video title, \n                                  mimics Perl's /what/(gi)",
+  "  -r, --regexp=<regexp>         Regular expression to cleanup video title  \n                                  (default=`/(\\w|\\s|\\pL)/g')",
   "  -S, --substitute=<regexp>     Replace matched occurences in filename, mimics \n                                  Perl's s/old/new/(gi)",
   "  -F, --filename-format=<format_string>\n                                Output filename format  (default=`%h_%i.%s')",
   "\nSubsequent:",
@@ -192,7 +192,7 @@ void clear_args (struct gengetopt_args_info *args_info)
   args_info->format_map_arg = NULL;
   args_info->format_map_orig = NULL;
   args_info->number_videos_flag = 0;
-  args_info->regexp_arg = NULL;
+  args_info->regexp_arg = gengetopt_strdup ("/(\\w|\\s|\\pL)/g");
   args_info->regexp_orig = NULL;
   args_info->substitute_arg = NULL;
   args_info->substitute_orig = NULL;
@@ -958,12 +958,12 @@ cmdline_parser_internal (
             goto failure;
         
           break;
-        case 'r':	/* Regular expression to cleanup video title, mimics Perl's /what/(gi).  */
+        case 'r':	/* Regular expression to cleanup video title.  */
         
         
           if (update_arg( (void *)&(args_info->regexp_arg), 
                &(args_info->regexp_orig), &(args_info->regexp_given),
-              &(local_args_info.regexp_given), optarg, 0, 0, ARG_STRING,
+              &(local_args_info.regexp_given), optarg, 0, "/(\\w|\\s|\\pL)/g", ARG_STRING,
               check_ambiguity, override, 0, 0,
               "regexp", 'r',
               additional_error))

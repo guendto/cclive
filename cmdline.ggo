@@ -106,8 +106,9 @@ option "number-videos"
     N "Prepend a numeric prefix to output filenames"
     flag off
 option "regexp"
-    r "Regular expression to cleanup video title, mimics Perl's /what/(gi)"
+    r "Regular expression to cleanup video title"
     string typestr="<regexp>"
+    default="/(\\w|\\s|\\pL)/g"
     optional
 option "substitute"
     S "Replace matched occurences in filename, mimics Perl's s/old/new/(gi)"

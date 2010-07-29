@@ -334,8 +334,7 @@ QuviVideo::toFileName(
         std::string title = pageTitle;
 
         // --regexp
-        if (opts.regexp_given)
-            Util::perlMatch(opts.regexp_arg, title);
+        Util::perlMatch(opts.regexp_arg, title);
 
         // Remove leading and trailing whitespace.
         pcrecpp::RE("^[\\s]+", pcrecpp::UTF8())

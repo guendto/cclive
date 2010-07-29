@@ -162,7 +162,7 @@ Prepend a numeric prefix (e.g. "001_") to the output filenames.
 
 Regular expression used to clean up video titles before they are used for
 output filenames. Supports (and mimics) Perl's /g (global, find all) and /i
-(case-insensitive). See also L</EXAMPLES>.
+(case-insensitive). The default is "/(\w|\s|\pL)/g". See also L</EXAMPLES>.
 
 =item B<-S, --substitute>=I<regexps>
 

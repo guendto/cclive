@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2010-05-04" "0.6.3" "cclive manual"
+.TH cclive 1 "2010-07-29" "0.6.5" "cclive manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -244,7 +244,7 @@ Prepend a numeric prefix (e.g. \*(L"001_\*(R") to the output filenames.
 .IX Item "-r, --regexp=regexp"
 Regular expression used to clean up video titles before they are used for
 output filenames. Supports (and mimics) Perl's /g (global, find all) and /i
-(case-insensitive). See also \*(L"\s-1EXAMPLES\s0\*(R".
+(case-insensitive). The default is \*(L"/(\ew|\es|\epL)/g\*(R". See also \*(L"\s-1EXAMPLES\s0\*(R".
 .IP "\fB\-S, \-\-substitute\fR=\fIregexps\fR" 4
 .IX Item "-S, --substitute=regexps"
 Mimics Perl's s/old/new/(gi) substitution. This option can be used to

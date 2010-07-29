@@ -97,9 +97,9 @@ struct gengetopt_args_info
   const char *format_map_help; /**< @brief Specify format for multiple hosts in a string help description.  */
   int number_videos_flag;	/**< @brief Prepend a numeric prefix to output filenames (default=off).  */
   const char *number_videos_help; /**< @brief Prepend a numeric prefix to output filenames help description.  */
-  char * regexp_arg;	/**< @brief Regular expression to cleanup video title, mimics Perl's /what/(gi).  */
-  char * regexp_orig;	/**< @brief Regular expression to cleanup video title, mimics Perl's /what/(gi) original value given at command line.  */
-  const char *regexp_help; /**< @brief Regular expression to cleanup video title, mimics Perl's /what/(gi) help description.  */
+  char * regexp_arg;	/**< @brief Regular expression to cleanup video title (default='/(\\w|\\s|\\pL)/g').  */
+  char * regexp_orig;	/**< @brief Regular expression to cleanup video title original value given at command line.  */
+  const char *regexp_help; /**< @brief Regular expression to cleanup video title help description.  */
   char * substitute_arg;	/**< @brief Replace matched occurences in filename, mimics Perl's s/old/new/(gi).  */
   char * substitute_orig;	/**< @brief Replace matched occurences in filename, mimics Perl's s/old/new/(gi) original value given at command line.  */
   const char *substitute_help; /**< @brief Replace matched occurences in filename, mimics Perl's s/old/new/(gi) help description.  */
