@@ -1,1 +1,1 @@
-m4_define(_CCLIVE_VERSION, [0.6.5])
+m4_define(_CCLIVE_VERSION, [0.6.6])
