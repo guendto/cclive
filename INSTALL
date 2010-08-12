@@ -21,21 +21,26 @@
     http://code.google.com/p/cclive/wiki/HowtoInstall
 
 
-
             Installation
 
  Typically "./configure && make install". See `./configure --help' for
  additional options.
 
-    --without-man       Do not install manual page.
-    --disable-tests     Disable tests
+    --without-man   Do not install manual page.
+    --enable-tests  Enable tests (e.g. "make check")
 
- Environment settings:
+
+            Tests
+
+ e.g. "make check", the following environment variables can be used:
 
  NO_INTERNET=1          Skip _all_ tests that depend on internet
  TEST_DOWNLOAD=1        Enable tests that require downloading
 
  You can pass additional options to cclive by setting CCLIVE_TEST_OPTIONS.
+
+ Examples:
+    NO_INTERNET=1 make check    # See --enable-tests
 
 
             Getting started
@@ -43,6 +48,6 @@
  Typical use:
     % cclive "http://youtube.com/watch?v=3HD220e0bx4"
 
- Be sure to read the manual also and see also examples/config.
+ Read the manual. See also examples/config.
 
 

@@ -98,9 +98,9 @@ AC_CHECK_FUNCS([memset setenv strchr strcspn strspn strtol setlocale nl_langinfo
 # --enable-tests
 AC_ARG_ENABLE([tests],
     [AS_HELP_STRING([--enable-tests],
-        [enable tests @<:@default=yes@:>@])],
+        [enable tests @<:@default=no@:>@])],
     [],
-    [enable_tests=yes])
+    [enable_tests=no])
 AM_CONDITIONAL([ENABLE_TESTS], [test x"$enable_tests" != "xno"])
 
 # --with-man
