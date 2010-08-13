@@ -1,8 +1,17 @@
 
 This file details the w32 binary package changes only.
 
+Version 0.6.5
+
+Changes:
+  * Bump
+
+Version 0.6.4
+
+Changes:
+  * Bump
+
 Version 0.6.3
--------------
 
 Changes:
   * Include ChangeLog.w32.TXT
