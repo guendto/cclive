@@ -1,9 +1,11 @@
-# Default location: $HOME/.ccliverc
+# Default location is $HOME/.ccliverc, you can use the --config-file
+# option to override this.
+#
+# You can specify the configurable program options in this file, e.g.:
 
-# You can define most of the command line options in this file.
-# For example:
+agent           = foo/0.1.0
+proxy           = http://foo:1234
+throttle        = 50
+connect-timeout = 120
 
-agent      = foo/0.1.0       # --agent
-proxy      = http://foo:1234 # --proxy
-limit-rate = 50              # --limit-rate
-no-extract                   # --no-extract
+
