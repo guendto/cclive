@@ -2,52 +2,66 @@
 
             Prerequisites
 
- * libquvi  0.2.0+   <http://quvi.googlecode.com/>
- * libcurl  7.18.0+  <http://curl.haxx.se/>
- * libpcre  7.8+     <http://pcre.org/>
- * gcc      4.2+     (cclive uses the tr1 extensions)
+* libquvi    (0.2.0+)
+* libboost   (1.43.0+)
+* libpcrecpp (8.10+)
+* libcurl    (7.20.0+)
 
-    [cclive]-\
-     |     |  \
-     |     |   \
- [libquvi]------\
-       |  \|    [libcurl]
-    [lua]  \        \
-          [libpcre]  \
-                     [dragons be here]
+-- Additionally for building
 
+* gcc/++ (4.5.0+, 4.2 should be OK)
+* cmake  (2.8.2+, looks for 2.8, see top-level CMakeLists.txt)
 
-  Some additional platform specific notes:
-    http://code.google.com/p/cclive/wiki/HowtoInstall
+Note that cclive may or may not compile with earlier versions.
+The above versions are the ones that I've tested.
 
 
-            Installation
+    Installation
 
- Typically "./configure && make install". See `./configure --help' for
- additional options.
-
-    --without-man   Do not install manual page.
-    --enable-tests  Enable tests (e.g. "make check")
-
-
-            Tests
-
- e.g. "make check", the following environment variables can be used:
-
- NO_INTERNET=1          Skip _all_ tests that depend on internet
- TEST_DOWNLOAD=1        Enable tests that require downloading
-
- You can pass additional options to cclive by setting CCLIVE_TEST_OPTIONS.
-
- Examples:
-    NO_INTERNET=1 make check    # See --enable-tests
+% mkdir  tmp; cd tmp
+% cmake -DCMAKE_BUILD_TYPE=debug -DCMAKE_INSTALL_PREFIX=/usr ..
+% make install
+...
+% make uninstall
 
 
-            Getting started
+    Installation: Variables
 
- Typical use:
-    % cclive "http://youtube.com/watch?v=3HD220e0bx4"
+These are some of the frequently used ones.
 
- Read the manual. See also examples/config.
+    * CMAKE_INSTALL_PREFIX=(...PATH...)
+        Install destination for cclive, default may vary.
+
+    * CMAKE_BUILD_TYPE=(none|debug|release|relwithdebinfo|minsizerel)
+        Type of build, default is debug.
+
+    * CMAKE_VERBOSE_MAKEFILE=(true,false)
+        Build with verbose makefiles, default is false.
+
+    * WITHOUT_DOC=(true|false)
+        Install without documentation (e.g. man/cclive.1), default is false.
+
+Example:
+    % mkdir tmp; cd tmp
+    % cmake -DWITHOUT_DOC=true -DCMAKE_INSTALL_PREFIX=/usr/local ..
+    % make install
+
+Take a look at the CMakeLists.txt files found in the source tree,
+if you need to dig deeper. The cmake (2.8) documentation can be
+found at:
+    <http://www.cmake.org/cmake/help/cmake-2-8-docs.html>
+
+Note that you could also run cmake with -i (wizard mode).
+
+
+    Notes for porters and packagers
+
+Please ask the platform specific questions from those familiar with your
+platform. I develop cclive on Linux for Linux, and test it occasionally on
+FreeBSD.
+
+If you need an additional check for, e.g. a symbol or a function, see
+the top-level CMakeLists.txt and config.h.in files. We can add those
+at the upstream if that makes the porting easier.
 
 
