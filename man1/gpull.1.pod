@@ -1,0 +1,355 @@
+=pod
+
+=head1 NAME
+
+cclive - video download tool
+
+=head1 SYNOPSIS
+
+cclive [options] [url...]
+
+=head1 DESCRIPTION
+
+cclive is a command line tool for downloading videos from
+Youtube and similar websites that require flash for viewing.
+
+=head1 OPTIONS
+
+=over 4
+
+=item B<--version>
+
+Print version and exit.
+
+=item B<--help>
+
+Print help and exit.
+
+=item B<--license>
+
+Print license and exit.
+
+=item B<--support>
+
+Print supported websites and video formats and exit.
+
+=item B<--verbose-libcurl>
+
+Turn on libcurl verbose output.
+
+=item B<-q, --quiet>
+
+Omit output to standard output/error.
+
+=item B<-b, --background>
+
+Go to background after startup. Output will be written to
+the file specified with C<--log-file>.
+
+=item B<-f, --format>=I<arg>
+
+Download I<arg> format of the video.
+
+=item B<-c, --continue>
+
+Resume partially downloaded file.
+
+=item B<-W, --overwrite>
+
+Overwrite existing file.
+
+=item B<-O, --output-file>=I<arg>
+
+Write video to I<arg> file.
+
+=item B<-n, --no-download>
+
+Do not download the video. Display details only.
+
+=item B<--no-proxy>
+
+Disable all use of HTTP proxy. http_proxy setting will be ignored.
+
+=item B<--log-file>=I<arg>
+
+Write log data to I<arg> file. Ignored unless C<--background> is used.
+Overwrites the existing file. Default is "cclive_log". See also
+C<--background> and C<--update-interval>.
+
+=item B<--update-interval>=I<arg>
+
+Specify I<arg> progressbar update interval. Default is 1 second.
+You can use double type values, e.g. 0.2 or 1.99.
+
+=item B<--config-file>=I<arg>
+
+Path to a file to read cclive arguments from. The default is ~/.ccliverc .
+
+=back
+
+=head1 OPTIONS - CONFIGURATION
+
+You can specify these options also in the configuration file.
+
+=over 4
+
+=item B<--filename-format>=I<arg>
+
+Use I<arg> to specify video output filename. The default is "%t.%s".
+cclive supports the following specifiers:
+  %t    video title
+  %i    video id
+  %h    video host id
+  %s    video file suffix
+
+=item B<-r, --regexp>=I<arg>
+
+Use I<arg> regular expression to clean up the video title before
+it is used in the filename. The default is "/(\w|\pL|\s)/g".
+Supports "i" (case-insensitive) and "g" (global, find all).
+
+=item B<-s, --subst>=I<arg> ...
+
+Use I<arg> substitution regular expression to replace the matched
+occurences in the title before it is used in the filename. More than
+one expression can be specified in I<arg> if each is separated by a
+whitespace. Supports "i" (case-insensitive) and "g" (global, find all).
+
+You can use the following delimiters:
+  <> {} () /
+
+Please make a note that, cclive currently considers:
+  s/old/new/    Invalid
+  s/old//new/   OK
+
+=item B<--exec>=I<arg>
+
+Invoke I<arg> after video download finishes. cclive recognizes the
+following specifiers in the I<arg>:
+  %f    full path to the downloaded video file
+
+=item B<--proxy>=I<arg>
+
+Use I<arg> for HTTP proxy, e.g. "http://foo:1234".
+
+=item B<--throttle>=I<arg>
+
+Limit download transfer rate to I<arg> KB/s.
+
+=item B<--connect-timeout>=I<arg>
+
+This option wraps the CURLOPT_CONNECTTIMEOUT (libcurl).
+
+  "Pass a long. It should contain the maximum time in seconds that
+  you allow the connection to the server to take.
+
+  This only limits the connection phase, once it has connected,
+  this option is of no more use. Set to zero to disable connection
+  timeout (it will then only timeout on the system's internal
+  timeouts). See also the CURLOPT_TIMEOUT option."
+        -- C<curl_easy_setopt(3)>
+
+=item B<--transfer-timeout>=I<arg>
+
+This option wraps the CURLOPT_TIMEOUT (libcurl).
+
+  "Pass a long as parameter containing the maximum time in seconds
+  that you allow the libcurl transfer operation to take.
+
+  Normally, name lookups can take a considerable time and limiting
+  operations to less than a few minutes risk aborting perfectly
+  normal operations. This option will cause curl to use the
+  SIGALRM to enable time-outing system calls."
+        -- C<curl_easy_setopt(3)>
+
+=item B<--dns-cache-timeout>=I<arg>
+
+This option wraps the CURLOPT_DNS_CACHE_TIMEOUT (libcurl).
+
+  "Pass a long, this sets the timeout in seconds. Name resolves will
+  be kept in memory for this number of seconds. Set to zero to
+  completely disable caching, or set to -1 to make the cached
+  entries remain forever. By default, libcurl caches this info
+  for 60 seconds.
+
+  The name resolve functions of various libc implementations don't
+  re-read name server information unless explicitly told so
+  (for example, by calling C<res_init(3)>). This may cause libcurl
+  to keep using the older server even if DHCP has updated the
+  server info, and this may look like a DNS cache issue to the
+  casual libcurl-app user." -- C<curl_easy_setopt(3)>
+
+=back
+
+=head1 EXAMPLES
+
+=over 4
+
+=item B<cclive "http://www.youtube.com/watch?v=DeWsZ2b_pK4">
+
+Typical use.
+
+=item B<cclive "http://www.youtube.com/watch?v=DeWsZ2b_pK4" -f sd_270p>
+
+Same but get the sd_270p (Youtube specific) format instead. See
+C<--support> for a complete list of websites and formats.
+
+=item B<cclive "http://www.youtube.com/watch?v=DeWsZ2b_pK4" -n>
+
+Do not download the video file. Dump the video details only.
+
+=item B<echo "http://www.youtube.com/watch?v=DeWsZ2b_pK4" | cclive>
+
+Another way to feed cclive with an URL. You can specify multiple URLs
+as long as each is separated by a newline. So for example, you could
+place a number of URLs to a file and then C<cclive E<lt> url.lst>.
+
+=item B<cclive "URL" -s "s{Alice}{Malice}">
+
+Replace "Alice" in the video title with "Malice" before using it in the
+filename.
+
+=item B<cclive "URL" -s "s{Alice}E<lt>MaliceE<gt> s{wonderland}E<lt>UberlandE<gt>i">
+
+Similar but makes two substitions, the former was explained above, the latter
+replaces "Wonderland" with "Uberland". Note the use of "i" (case-insensitive).
+
+You can use "g" for global (find all), e.g. if you wanted to replace all of
+the "Alice" occurences with "Malice", you could use "s{Alice}E<lt>MaliceE<gt>g".
+
+=back
+
+=head1 FILES
+
+=over 4
+
+=item B<$HOME/.ccliverc>
+
+You can specify the configurable options (see L</OPTIONS - CONFIGURATION>)
+in this file, e.g.:
+
+ filename-format = %h_%i_(%t).%s
+ regexp = /(\w|\pL)/g
+ exec = /usr/bin/vlc %f
+ proxy = http://foo:1234
+ throttle = 10
+ connect-timeout = 120
+
+Note that you can also specify this file with C<--config-file>.
+
+=back
+
+=head1 EXIT STATUS
+
+cclive exits with 0 on success and E<gt>0 if an error occurred.
+There are no plans to introduce a series of different return values
+to the program. You may try C<quvi(1)> for this if that's what
+you need.
+
+=head1 MANGLED CHARACTERS
+
+Check your terminal settings for an invalid locale setting. You can get
+a list of the available locale names with C<locale -a>. Make sure your
+terminal supports unicode. e.g.:
+  % LANG=en_US.UTF8 urxvt&
+  % cclive ... # in the new opened terminal
+
+libquvi (which cclive uses) converts the characters to unicode if the
+parsed data contains the charset meta tag. Otherwise the characters are
+copied from the original context as they are without any conversion.
+
+=head1 MISSING UNICODE CHARACTERS
+
+Missing unicode characters are likely result of invalid use of C<--regexp>.
+Check that the C<--regexp> contains "\pL". cclive uses libpcre for regular
+expressions, the "\pL" is specific to PCRE.
+
+"In UTF-8 mode, characters with values greater than 128 never match \d,
+\s, or \w, and always match \D, \S, and \W. This is true even when Unicode 
+character property support is available. These sequences retain their original
+meanings from before UTF-8 support was available, mainly for efficiency
+reasons. Note that this also affects \b, because it is defined in
+terms of \w and \W." -- C<pcrepattern(3)>
+
+=head1 BUGS
+
+=over 4
+
+=item B<Instructions, read carefully>
+
+<http://code.google.com/p/cclive/wiki/ReportingIssues>
+
+=item B<Tracker>
+
+<http://code.google.com/p/cclive/issues/list/>
+
+=back
+
+=head1 DEBUGGING TIPS
+
+=over 4
+
+=item B<--no-download>
+
+Use the C<--no-download> switch if you don't need to download the video.
+
+=item B<Verbose libcurl>
+
+Use the C<--verbose-libcurl> switch, while debugging network related issues. 
+
+=item B<-g>
+
+Make sure you compile cclive with C<-g> (see C<g++(1)>) for debug symbols.
+See C<Other tools>.
+
+=item B<Other tools>
+
+See if other tools, such as, C<strace(1)>, C<gdb(1)> and C<valgrind(1)>
+are any further help.
+
+=back
+
+=head1 CONTRIBUTING
+
+=over 4
+
+=item B<Add support for another website>
+
+As cclive does not parse the video links but uses libquvi
+<http://quvi.googlecode.com/> for this, you should look into contributing
+to it instead. You can find the related documentation, e.g. READMEs and
+HOWTOs, typically from the $prefix/share/quvi and $prefix/share/doc/quvi
+directories in your system. The same files are also available in the
+git repository and the source tarballs (of quvi).
+
+=item B<Submitting patches>
+
+If you have cooked up a patch, you can submit it to the trackers (see L</BUGS>).
+Please make sure you use the correct tracker.
+
+=back
+
+=head1 OTHER
+
+=over 4
+
+=item B<Project:>
+
+<http://cclive.googlecode.com/>
+
+=item B<Development repository:>
+
+<git://repo.or.cz/cclive.git>
+
+e.g. git clone git://repo.or.cz/cclive.git
+
+=back
+
+=head1 AUTHOR
+
+Toni Gundogdu <legatvs gmail com>. See also L</BUGS>, L</DEBUGGING TIPS>
+and L</CONTRIBUTING>.
+
+=cut
+
+
