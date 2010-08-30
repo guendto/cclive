@@ -83,6 +83,7 @@ set (boost_LIBS
     program_options
     iostreams
     filesystem
+    system
 # foreach   -- this is a header-only library
 # format    -- ditto
 # date_time -- ...
