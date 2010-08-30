@@ -10,7 +10,7 @@ add_definitions (-Wall)
 
 # Version.
 
-set (VERSION "0.7.0")
+set (VERSION "0.7.0b1")
 set (VERSION_LONG "${VERSION}")
 
 if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/.git/info/refs")
