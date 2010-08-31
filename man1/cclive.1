@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2010-08-23" "0.0.1" "cclive manual"
+.TH cclive 1 "2010-08-31" "0.7.0b1" "cclive manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -179,7 +179,8 @@ Write video to \fIarg\fR file.
 Do not download the video. Display details only.
 .IP "\fB\-\-no\-proxy\fR" 4
 .IX Item "--no-proxy"
-Disable all use of \s-1HTTP\s0 proxy. http_proxy setting will be ignored.
+Do not use \s-1HTTP\s0 proxy at all. libcurl will not use http_proxy defined
+value either.
 .IP "\fB\-\-log\-file\fR=\fIarg\fR" 4
 .IX Item "--log-file=arg"
 Write log data to \fIarg\fR file. Ignored unless \f(CW\*(C`\-\-background\*(C'\fR is used.
@@ -191,10 +192,10 @@ Specify \fIarg\fR progressbar update interval. Default is 1 second.
 You can use double type values, e.g. 0.2 or 1.99.
 .IP "\fB\-\-config\-file\fR=\fIarg\fR" 4
 .IX Item "--config-file=arg"
-Path to a file to read cclive arguments from. The default is ~/.ccliverc .
+Path to a file to read cclive arguments from. The default is \*(L"~/.ccliverc\*(R".
 .SH "OPTIONS \- CONFIGURATION"
 .IX Header "OPTIONS - CONFIGURATION"
-You can specify these options also in the configuration file.
+You can specify these options in the configuration file.
 .IP "\fB\-\-filename\-format\fR=\fIarg\fR" 4
 .IX Item "--filename-format=arg"
 Use \fIarg\fR to specify video output filename. The default is \*(L"%t.%s\*(R".
@@ -228,13 +229,15 @@ following specifiers in the \fIarg\fR:
   \f(CW%f\fR    full path to the downloaded video file
 .IP "\fB\-\-proxy\fR=\fIarg\fR" 4
 .IX Item "--proxy=arg"
-Use \fIarg\fR for \s-1HTTP\s0 proxy, e.g. \*(L"http://foo:1234\*(R".
+Use \fIarg\fR for \s-1HTTP\s0 proxy, e.g. \*(L"http://foo:1234\*(R". Note that libcurl,
+which cclive uses, will use http_proxy value if defined. See also
+\&\f(CW\*(C`\-\-no\-proxy\*(C'\fR.
 .IP "\fB\-\-throttle\fR=\fIarg\fR" 4
 .IX Item "--throttle=arg"
-Limit download transfer rate to \fIarg\fR KB/s.
+Limit download transfer rate to \fIarg\fR KB/s. Default is zero (disabled).
 .IP "\fB\-\-connect\-timeout\fR=\fIarg\fR" 4
 .IX Item "--connect-timeout=arg"
-This option wraps the \s-1CURLOPT_CONNECTTIMEOUT\s0 (libcurl).
+This option wraps the \s-1CURLOPT_CONNECTTIMEOUT\s0 (libcurl). Default is 30.
 .Sp
 .Vb 2
 \&  "Pass a long. It should contain the maximum time in seconds that
@@ -248,7 +251,7 @@ This option wraps the \s-1CURLOPT_CONNECTTIMEOUT\s0 (libcurl).
 .Ve
 .IP "\fB\-\-transfer\-timeout\fR=\fIarg\fR" 4
 .IX Item "--transfer-timeout=arg"
-This option wraps the \s-1CURLOPT_TIMEOUT\s0 (libcurl).
+This option wraps the \s-1CURLOPT_TIMEOUT\s0 (libcurl). Default is zero (disabled).
 .Sp
 .Vb 2
 \&  "Pass a long as parameter containing the maximum time in seconds
@@ -262,7 +265,7 @@ This option wraps the \s-1CURLOPT_TIMEOUT\s0 (libcurl).
 .Ve
 .IP "\fB\-\-dns\-cache\-timeout\fR=\fIarg\fR" 4
 .IX Item "--dns-cache-timeout=arg"
-This option wraps the \s-1CURLOPT_DNS_CACHE_TIMEOUT\s0 (libcurl).
+This option wraps the \s-1CURLOPT_DNS_CACHE_TIMEOUT\s0 (libcurl). Default is 60.
 .Sp
 .Vb 5
 \&  "Pass a long, this sets the timeout in seconds. Name resolves will
@@ -359,6 +362,19 @@ character property support is available. These sequences retain their original
 meanings from before \s-1UTF\-8\s0 support was available, mainly for efficiency
 reasons. Note that this also affects \eb, because it is defined in
 terms of \ew and \eW.\*(R" \*(-- \f(CWpcrepattern(3)\fR
+.SH "CONTRIBUTING"
+.IX Header "CONTRIBUTING"
+.IP "\fBAdd support for another website\fR" 4
+.IX Item "Add support for another website"
+Refer to the libquvi <http://quvi.googlecode.com/> documentation instead.
+On most systems, you can find the READMEs and HOWTOs in \f(CW$prefix\fR/share/quvi
+and \f(CW$prefix\fR/share/doc/quvi directories, source tarballs and at:
+    <http://repo.or.cz/w/quvi.git/tree/HEAD:/doc>
+    <http://repo.or.cz/w/quvi.git/tree/HEAD:/share/lua>
+    <http://repo.or.cz/w/quvi.git/tree/HEAD:/share/lua/website>
+.IP "\fBSubmitting patches\fR" 4
+.IX Item "Submitting patches"
+If you have cooked up a patch, please submit it to the tracker (see \*(L"\s-1BUGS\s0\*(R").
 .SH "BUGS"
 .IX Header "BUGS"
 .IP "\fBInstructions, read carefully\fR" 4
@@ -375,28 +391,13 @@ Use the \f(CW\*(C`\-\-no\-download\*(C'\fR switch if you don't need to download 
 .IP "\fBVerbose libcurl\fR" 4
 .IX Item "Verbose libcurl"
 Use the \f(CW\*(C`\-\-verbose\-libcurl\*(C'\fR switch, while debugging network related issues.
-.IP "\fB\-g\fR" 4
-.IX Item "-g"
-Make sure you compile cclive with \f(CW\*(C`\-g\*(C'\fR (see \f(CW\*(C`g++(1)\*(C'\fR) for debug symbols.
-See \f(CW\*(C`Other tools\*(C'\fR.
+.IP "\fBDebug symbols\fR" 4
+.IX Item "Debug symbols"
+Compile cclive with \f(CW\*(C`\-g\*(C'\fR (see \f(CW\*(C`g++(1)\*(C'\fR) for debug symbols.
 .IP "\fBOther tools\fR" 4
 .IX Item "Other tools"
 See if other tools, such as, \f(CWstrace(1)\fR, \f(CWgdb(1)\fR and \f(CWvalgrind(1)\fR
 are any further help.
-.SH "CONTRIBUTING"
-.IX Header "CONTRIBUTING"
-.IP "\fBAdd support for another website\fR" 4
-.IX Item "Add support for another website"
-As cclive does not parse the video links but uses libquvi
-<http://quvi.googlecode.com/> for this, you should look into contributing
-to it instead. You can find the related documentation, e.g. READMEs and
-HOWTOs, typically from the \f(CW$prefix\fR/share/quvi and \f(CW$prefix\fR/share/doc/quvi
-directories in your system. The same files are also available in the
-git repository and the source tarballs (of quvi).
-.IP "\fBSubmitting patches\fR" 4
-.IX Item "Submitting patches"
-If you have cooked up a patch, you can submit it to the trackers (see \*(L"\s-1BUGS\s0\*(R").
-Please make sure you use the correct tracker.
 .SH "OTHER"
 .IX Header "OTHER"
 .IP "\fBProject:\fR" 4
