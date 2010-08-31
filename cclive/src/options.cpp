@@ -45,7 +45,11 @@ options::exec (int argc, char **argv) {
     if (home && strlen (home) > 0)
         config_path = fs::system_complete (fs::path (home));
 
-    config_path /= ".ccliverc";
+    config_path /=
+#ifndef _WIN32
+    std::string (".") +
+#endif
+    std::string ("ccliverc");
 
     // Construct options.
 
