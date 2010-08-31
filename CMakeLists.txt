@@ -122,7 +122,7 @@ subdirs (lib cclive man1)
 # Status.
 
 message (STATUS)
-message (STATUS "cclive version      : ${VERSION}")
+message (STATUS "cclive version     : ${VERSION}")
 message (STATUS "host setup         : ${HOST_SETUP}")
 message (STATUS "install prefix     : ${CMAKE_INSTALL_PREFIX}")
 message (STATUS "build type         : ${CMAKE_BUILD_TYPE}")
