@@ -15,8 +15,9 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <iostream>
+
 #include "cclive/application.h"
-#include "cclive/log.h"
 
 int
 main (int argc, char *argv[]) {
@@ -27,10 +28,10 @@ main (int argc, char *argv[]) {
     try { rc = app.exec(argc,argv); }
 
     catch (const quvicpp::error& e)
-        { cclive::log << "error: " << e.what() << std::endl; }
+        { std::clog << "libquvi: error: " << e.what() << std::endl; }
 
     catch (const std::runtime_error& e)
-        { std::cerr  << "error: " << e.what() << std::endl; }
+        { std::clog << "error: " << e.what() << std::endl; }
 
     return rc;
 }
