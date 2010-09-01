@@ -6,9 +6,7 @@ This is essentially a rewrite of the project. Build system has been changed
 from GNU Autotools to CMake. cclive now uses Boost library.
 
 Read also:
-    <http://code.google.com/p/cclive/wiki/0.7.0_Development>
-    <http://code.google.com/p/cclive/wiki/0.7.0_Summary>
-
+    <http://code.google.com/p/cclive/wiki/Development_0_7_0>
 
 
 0.6.1
