@@ -10,6 +10,25 @@ Repo  : <git://repo.or.cz/cclive.git>
 Browse: <http://repo.or.cz/w/cclive.git>
 
 
+    Submitting patches
+
+If you are using git:
+  * Check for unnecessary whitespace with "git diff --check" and fix them
+  * Use "git format-patch -M" to create the patch
+
+If you are working with diff, then at very least, use "diff -u" when you
+generate the patch.
+
+  * Submit your patch to the issue tracker:
+    <http://code.google.com/p/cclive/issues/>
+
+  * Or directly to the author (see below). The former is the
+  preferred method.
+
+Which ever method you choose, please use "[PATCH]" in your submission
+subject/topic line.
+
+
     Author
 
 Toni Gundogdu <legatvs gmail com>.
