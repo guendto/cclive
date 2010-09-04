@@ -113,7 +113,13 @@ application::exec (int argc, char **argv) {
     }
 
     if (map.count("version")) {
-        std::clog << "cclive version " << VERSION_LONG << std::endl;
+        std::clog
+            << "cclive version "
+            << VERSION_LONG
+            << "\n"
+            << "libquvi version "
+            << quvi_version (QUVI_VERSION_LONG)
+            << std::endl;
         return ok;
     }
 
