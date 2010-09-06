@@ -12,6 +12,7 @@ set (cclive_SRC
     src/options.cpp
     src/progressbar.cpp
     src/re.cpp
+    src/wait.cpp
 )
 
 add_executable (cclive ${cclive_SRC})
