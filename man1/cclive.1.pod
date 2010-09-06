@@ -182,6 +182,14 @@ This option wraps the CURLOPT_DNS_CACHE_TIMEOUT (libcurl). Default is 60.
   server info, and this may look like a DNS cache issue to the
   casual libcurl-app user." -- C<curl_easy_setopt(3)>
 
+=item B<--max-retries>=I<arg>
+
+Retry downloading I<arg> times before giving up. Default is 5.
+
+=item B<--retry-wait>=I<arg>
+
+Wait I<arg> seconds before retrying after a failed attempt. Default is 5.
+
 =back
 
 =head1 EXAMPLES
