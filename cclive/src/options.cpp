@@ -112,6 +112,10 @@ options::exec (int argc, char **argv) {
             "seconds transfer allowed to take")
         ("dns-cache-timeout", opts::value<int>()->default_value(60),
             "seconds dns resolves kept in memory")
+        ("max-retries", opts::value<int>()->default_value(5),
+            "max download attempts before giving up")
+        ("retry-wait", opts::value<int>()->default_value(5),
+            "time to wait before retrying")
     ;
 
     // Hidden.

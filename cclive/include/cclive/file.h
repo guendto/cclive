@@ -28,7 +28,7 @@ public:
     file (const file&);
     file& operator=(const file&);
 public:
-    void write (const quvicpp::query&, const quvicpp::link&,
+    bool write (const quvicpp::query&, const quvicpp::link&,
                 const options&) const;
 public:
     double             initial_length   () const;

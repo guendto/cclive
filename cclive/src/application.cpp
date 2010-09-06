@@ -32,6 +32,7 @@
 #include "cclive/get.h"
 #include "cclive/error.h"
 #include "cclive/log.h"
+#include "cclive/wait.h"
 #include "cclive/background.h"
 
 namespace cclive {
@@ -91,6 +92,15 @@ make_unique (Iterator first, Iterator last) {
     return last;
 }
 
+static void
+print_quvi_error (const quvicpp::error& e)
+    { std::clog << "libquvi: error: " << e.what() << std::endl; }
+
+static void
+print_error (const std::exception& e)
+    { std::clog << "error: " << e.what() << std::endl; }
+
+
 extern char LICENSE[]; // cclive/license.cpp
 
 int
@@ -98,8 +108,8 @@ application::exec (int argc, char **argv) {
 
     try   { _opts.exec(argc,argv); }
 
-    catch (const std::exception& x) {
-        std::clog << "error: " << x.what() << std::endl;
+    catch (const std::exception& e) {
+        print_error (e);
         return invalid_option;
     }
 
@@ -189,25 +199,70 @@ application::exec (int argc, char **argv) {
     const size_t n = input.size();
     size_t i = 0;
 
+    const int max_retries  = map["max-retries"].as<int>();
+    const int retry_wait   = map["retry-wait"].as<int>();
+
     foreach(std::string url, input) {
+
+        ++i;
 
         try {
 
-            if (n > 1)
-                cclive::log << "(" << ++i << " of " << n << ") ";
+            int retry = 0;
 
-            cclive::log << "Checking ";
+            while (retry <= max_retries) {
 
-            quvicpp::video v = query.parse (url, qopts);
+                if (retry > 0) {
 
-            cclive::get (query, v, _opts);
+                    std::clog
+                        << "Retrying "
+                        << retry
+                        << " of "
+                        << max_retries
+                        << " ... "
+                        << std::flush;
+
+                    cclive::wait (retry_wait);
+                }
+
+                ++retry;
+
+                if (n > 1)
+                    cclive::log << "(" << i << " of " << n << ") ";
+
+                cclive::log << "Checking ";
+
+                quvicpp::video v;
+
+                try { v = query.parse (url, qopts); }
+
+                catch (const quvicpp::error& e) {
+
+                    const long resp_code = e.response_code ();
+
+                    if (resp_code >= 400 && resp_code <= 500)
+                        throw e;
+
+                    else {
+
+                        print_quvi_error (e);
+
+                        continue; // Retry.
+                    }
+
+                }
+
+                cclive::get (query, v, _opts);
+            }
+
         }
 
         catch (const quvicpp::error& e)
-            { cclive::log << "libquvi: error: " << e.what() << std::endl; }
+            { print_quvi_error (e); }
 
         catch (const std::runtime_error& e)
-            { cclive::log << "error: " << e.what() << std::endl; }
+            { print_error (e); }
+
     }
 
     return ok;

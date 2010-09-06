@@ -22,6 +22,7 @@
 #include "cclive/options.h"
 #include "cclive/file.h"
 #include "cclive/exec.h"
+#include "cclive/wait.h"
 #include "cclive/get.h"
 
 namespace cclive {
@@ -39,23 +40,50 @@ get (
     const bool no_download = map.count ("no-download");
     const bool exec        = map.count ("exec");
 
+    const int max_retries  = map["max-retries"].as<int>();
+    const int retry_wait   = map["retry-wait"].as<int>();
+
     int n = 0;
 
     quvicpp::link link;
 
     while ( (link = video.next_link ()).ok ()) {
 
-        cclive::file file (video, link, ++n, opts);
+        ++n;
 
-        if (!no_download) {
+        int retry = 0;
 
-            file.write (query, link, opts);
+        while (retry <= max_retries) {
 
-            if (exec)
-                cclive::exec (file, link, opts);
+            cclive::file file (video, link, n, opts);
+
+            if (retry > 0) {
+
+                std::clog
+                    << "Retrying "
+                    << retry
+                    << " of "
+                    << max_retries
+                    << " ... "
+                    << std::flush;
+
+                cclive::wait (retry_wait);
+            }
+
+            ++retry;
+
+            if (!no_download) {
+
+                if (!file.write (query, link, opts))
+                    continue;
+
+                if (exec)
+                    cclive::exec (file, link, opts);
+            }
+
+            else
+                std::clog << file.to_s (link) << std::endl;
         }
-        else
-            std::clog << file.to_s (link) << std::endl;
     }
 }
 

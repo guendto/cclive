@@ -111,7 +111,7 @@ progress_cb (void *ptr, double, double now, double, double) {
 
 namespace po = boost::program_options;
 
-void
+bool
 file::write (
     const quvicpp::query& q,
     const quvicpp::link& l,
@@ -204,13 +204,22 @@ file::write (
     }
 
     if ( !error.empty() ) {
+
         cclive::log << std::endl;
-        throw std::runtime_error (error);
+
+        if (resp_code >= 400 && resp_code <= 500)
+            throw std::runtime_error (error);
+        else
+            std::clog << "error: " << error << std::endl;
+
+        return false; // Retry.
     }
 
     pb.finish();
 
     cclive::log << std::endl;
+
+    return true;
 }
 
 double file::initial_length   () const { return _initial_length; }
