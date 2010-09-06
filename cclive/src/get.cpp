@@ -75,7 +75,7 @@ get (
             if (!no_download) {
 
                 if (!file.write (query, link, opts))
-                    continue;
+                    continue; // Retry.
 
                 if (exec)
                     cclive::exec (file, link, opts);
