@@ -152,11 +152,13 @@ public:
     error (const error&);
     error& operator=(const error&);
     const std::string& what() const;
+    long response_code () const;
     virtual ~error();
 private:
     void _swap (const error&);
 private:
     std::string _what;
+    long _resp_code;
 };
 
 } // End namespace.

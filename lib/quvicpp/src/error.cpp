@@ -22,12 +22,17 @@ namespace quvicpp {
 // Constructor.
 
 error::error (quvi_t q, QUVIcode c)
+    : _resp_code (0)
+{
     // Friend of quvicpp::error class -> clean API.
-    { _what = quvi_strerror(q,c); }
+    _what = quvi_strerror (q, c);
+    quvi_getinfo (q, QUVIINFO_HTTPCODE, &_resp_code);
+}
 
 // Copy constructor.
 
 error::error (const error& e)
+    : _resp_code (0)
     { _swap(e); }
 
 // Copy assignment operator.
@@ -45,14 +50,18 @@ error::~error () { }
 // Swap.
 
 void
-error::_swap (const error& e)
-    { _what = e._what; }
+error::_swap (const error& e) {
+    _what      = e._what;
+    _resp_code = e._resp_code;
+}
 
 // Get.
 
 const std::string&
-error::what () const
-    { return _what; }
+error::what () const { return _what; }
+
+long
+error::response_code () const { return _resp_code; }
 
 } // End namespace.
 
