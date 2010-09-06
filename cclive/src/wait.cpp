@@ -37,10 +37,10 @@ wait (const int retry_wait) {
 
     for (int i=1; i<=retry_wait; ++i) {
 
-        std::clog << ".";
-
         if (i % 5 == 0)
             std::clog << i;
+        else
+            std::clog << ".";
 
         std::clog << std::flush;
 
