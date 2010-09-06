@@ -253,6 +253,8 @@ application::exec (int argc, char **argv) {
                 }
 
                 cclive::get (query, v, _opts);
+
+                break; // Stop retrying.
             }
 
         }

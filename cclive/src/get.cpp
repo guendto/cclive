@@ -83,6 +83,8 @@ get (
 
             else
                 std::clog << file.to_s (link) << std::endl;
+
+            break; // Stop retrying.
         }
     }
 }
