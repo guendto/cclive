@@ -39,7 +39,8 @@ Turn on libcurl verbose output.
 
 =item B<-q, --quiet>
 
-Omit output to standard output/error.
+Turn off all output, excluding errors and warnings. cclive
+prints everything to stderr.
 
 =item B<-b, --background>
 
