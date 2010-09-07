@@ -151,12 +151,15 @@ public:
     error (quvi_t, QUVIcode);
     error (const error&);
     error& operator=(const error&);
+    virtual ~error();
+public:
     const std::string& what() const;
     long response_code () const;
-    virtual ~error();
+    QUVIcode quvi_code () const;
 private:
     void _swap (const error&);
 private:
+    QUVIcode _quvi_code;
     std::string _what;
     long _resp_code;
 };
