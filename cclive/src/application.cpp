@@ -118,7 +118,7 @@ print_checking (const int i, const int n) {
     if (n > 1)
         cclive::log << "(" << i << " of " << n << ") ";
 
-    cclive::log << "Checking " << std::flush;
+    cclive::log << "Checking ... " << std::flush;
 }
 
 static void
