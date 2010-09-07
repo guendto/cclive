@@ -61,7 +61,7 @@ options::exec (int argc, char **argv) {
         ("license",         "print license and exit")
         ("support",         "print supported websites and exit")
         ("verbose-libcurl", "turn on libcurl verbose output")
-        ("quiet,q",         "omit output to standard/error")
+        ("quiet,q",         "turn off all output, excl. errors")
         ("background,b",    "go to background")
         ("format,f",
             opts::value<std::string>()->default_value("default"),
