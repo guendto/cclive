@@ -12,11 +12,18 @@ add_definitions (-Wall)
 
 set (VERSION "0.7.0b2")
 set (VERSION_LONG "${VERSION}")
+set (BRANCH "0.7.0")
 
-if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/.git/info/refs")
-    file (STRINGS "${CMAKE_CURRENT_SOURCE_DIR}/.git/info/refs" REF LIMIT_INPUT 9)
-    if (REF)
-        set (VERSION_LONG "${VERSION_LONG} (${REF})")
+if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/.git")
+    find_program (GIT_PROG "git")
+    if (GIT_PROG)
+        execute_process (
+            COMMAND ${GIT_PROG} "describe" "${BRANCH}"
+            OUTPUT_VARIABLE DESCR
+            OUTPUT_STRIP_TRAILING_WHITESPACE)
+        if (DESCR)
+            set (VERSION_LONG "${DESCR}")
+        endif ()
     endif ()
 endif ()
 
