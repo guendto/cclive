@@ -310,9 +310,10 @@ If you have cooked up a patch, please submit it to the tracker (see L</BUGS>).
 
 <http://code.google.com/p/cclive/wiki/ReportingIssues>
 
-=item B<Tracker>
+=item B<Trackers>
 
-<http://code.google.com/p/cclive/issues/list/>
+Bugs, support, etc. trackers can be found at:
+  <http://sourceforge.net/tracker/?group_id=354617>
 
 =back
 
@@ -357,7 +358,7 @@ e.g. git clone git://repo.or.cz/cclive.git
 
 =head1 AUTHOR
 
-Toni Gundogdu <legatvs gmail com>. See also L</BUGS>, L</DEBUGGING TIPS>
+Toni Gundogdu <legatvs at sign gmail com>. See also L</BUGS>, L</DEBUGGING TIPS>
 and L</CONTRIBUTING>.
 
 =cut
