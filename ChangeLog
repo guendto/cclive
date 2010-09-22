@@ -2,6 +2,7 @@
 Version 0.7.0 beta 2
 
 Changes:
+  * Migrated issue tracker to sf.net (read more: <http://is.gd/fnDU2>)
   * Use "git describe" for version instead
   * Add --max-retries, --retry-wait (#47)
   * --version, print libquvi
