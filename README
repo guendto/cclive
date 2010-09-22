@@ -21,18 +21,9 @@ If you are using git:
 If you are working with diff, then at very least, use "diff -u" when you
 generate the patch.
 
-  * Submit your patch to the issue tracker:
-    <http://code.google.com/p/cclive/issues/>
+  * Preferred way to submit your patch is to use the patch tracker at:
+    <http://sourceforge.net/tracker/?group_id=354617&atid=1481233>
 
-  * Or directly to the author (see below). The former is the
-  preferred method.
-
-Which ever method you choose, please use "[PATCH]" in your submission
-subject/topic line.
-
-
-    Author
-
-Toni Gundogdu <legatvs gmail com>.
+  * Or directly to the author <legatvs at sign gmail com>
 
 
