@@ -185,7 +185,8 @@ This option wraps the CURLOPT_DNS_CACHE_TIMEOUT (libcurl). Default is 60.
 
 =item B<--max-retries>=I<arg>
 
-Retry downloading I<arg> times before giving up. Default is 5.
+Retry downloading I<arg> times before giving up. Setting I<arg> to zero will
+disable retrying. Default is 5.
 
 =item B<--retry-wait>=I<arg>
 
