@@ -4,6 +4,9 @@ Version 0.6.6
 Changes:
   * Bump autoconf prereq to 2.67
 
+Bugfixes:
+  * Incorrect documentation for --retry=0
+
 
 Version 0.6.5
 August 12, 2010
