@@ -170,12 +170,12 @@ application::exec (int argc, char **argv) {
     // Dump and terminate options.
 
     if (map.count("help")) {
-        std::clog << _opts;
+        std::cout << _opts << std::flush;
         return ok;
     }
 
     if (map.count("version")) {
-        std::clog
+        std::cout
             << "cclive version "
             << VERSION_LONG
             << "\n"
@@ -186,7 +186,7 @@ application::exec (int argc, char **argv) {
     }
 
     if (map.count("license")) {
-        std::clog << LICENSE << std::endl;
+        std::cout << LICENSE << std::endl;
         return ok;
     }
 
@@ -195,7 +195,7 @@ application::exec (int argc, char **argv) {
     quvicpp::query query; // Throws quvicpp::error caught in main.cpp .
 
     if (map.count("support")) {
-        std::clog << quvicpp::support_to_s (query.support ()) << std::flush;
+        std::cout << quvicpp::support_to_s (query.support ()) << std::flush;
         return ok;
     }
 
