@@ -213,9 +213,19 @@ Do not download the video file. Dump the video details only.
 
 =item B<echo "http://www.youtube.com/watch?v=DeWsZ2b_pK4" | cclive>
 
-Another way to feed cclive with an URL. You can specify multiple URLs
-as long as each is separated by a newline. So for example, you could
-place a number of URLs to a file and then C<cclive E<lt> url.lst>.
+Is just another way to feed cclive with an URL.
+
+You can also feed cclive several URLs on one go, either by adding each
+on the command line (arg1, arg2, ...) or by redirecting them, for example,
+from a file. Each URL must be separated with a newline (or a whitespace).
+
+Consider the following example:
+
+  cat >> urls.lst
+  http://www.youtube.com/watch?v=DeWsZ2b_pK4
+  http://www.youtube.com/watch?v=DUM1284TqFc
+  (ctrl+d)
+  cclive < urls.lst
 
 =item B<cclive "URL" -s "s{Alice}{Malice}">
 
