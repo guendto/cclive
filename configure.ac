@@ -1,7 +1,7 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_PREREQ([2.67])
+AC_PREREQ([2.68])
 
 m4_include([m4/version.m4])
 AC_INIT([cclive], [_CCLIVE_VERSION], [legatvs@gmail.com])
