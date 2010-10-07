@@ -2,28 +2,10 @@
 
     In brief
 
-cclive is a command line tool for downloading videos from Youtube and
-similar websites that require flash for viewing. It is a rewrite of the
-clive software in C++ with a smaller system footprint. It is not, nor
-intended to become, an universal flash video download tool.
+cclive is a free, no-nonsense, command line tool that will help you download
+videos from Youtube and similar video-sharing websites. It is a rewrite in
+C++ of the clive command line tool.
 
 Home  : <http://cclive.googlecode.com/>
 Repo  : <git://repo.or.cz/cclive.git>
 Browse: <http://repo.or.cz/w/cclive.git>
-
-
-    Submitting patches
-
-If you are using git:
-  * Check for unnecessary whitespace with "git diff --check" and fix them
-  * Use "git format-patch -M" to create the patch
-
-If you are working with diff, then at very least, use "diff -u" when you
-generate the patch.
-
-  * Preferred way to submit your patch is to use the patch tracker at:
-    <http://sourceforge.net/tracker/?group_id=354617&atid=1481233>
-
-  * Or directly to the author <legatvs at sign gmail com>
-
-
