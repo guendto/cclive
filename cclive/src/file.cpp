@@ -240,7 +240,7 @@ file::to_s (const quvicpp::link& link) const {
     return fmt.str();
 }
 
-#define E_NOTHINGTODO "video completely retrieved already"
+#define E_NOTHINGTODO "video retrieved completely already"
 
 namespace fs = boost::filesystem;
 
