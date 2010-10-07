@@ -240,6 +240,8 @@ file::to_s (const quvicpp::link& link) const {
     return fmt.str();
 }
 
+#define E_NOTHINGTODO "video completely retrieved already"
+
 namespace fs = boost::filesystem;
 
 void
@@ -264,7 +266,7 @@ file::_init (
         _initial_length = file::exists (_path);
 
         if ( _initial_length >= link.length() && !map.count("overwrite") )
-            throw std::runtime_error ("nothing todo");
+            throw std::runtime_error (E_NOTHINGTODO);
     }
 
     else {
@@ -336,7 +338,7 @@ file::_init (
                     break;
 
                 else if (_initial_length >= link.length())
-                    throw std::runtime_error ("nothing todo");
+                    throw std::runtime_error (E_NOTHINGTODO);
 
                 else {
                     if (map.count("continue"))
@@ -357,6 +359,8 @@ file::_init (
     if ( map.count("overwrite") )
         _initial_length = 0;
 }
+
+#undef E_NOTHINGTODO
 
 double
 file::exists (const std::string& path) {
