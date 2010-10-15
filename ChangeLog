@@ -1,5 +1,6 @@
 
 Version 0.7.0 beta 3
+October 15, 2010
 
 Changes:
   * Print --help, --version, --license, --support to stdout
