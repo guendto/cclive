@@ -31,7 +31,7 @@ Print license and exit.
 
 =item B<--support>
 
-Print supported websites and video formats and exit.
+Print supported websites, formats and exit.
 
 =item B<--verbose-libcurl>
 
@@ -39,51 +39,49 @@ Turn on libcurl verbose output.
 
 =item B<-q, --quiet>
 
-Turn off all output, excluding errors and warnings. cclive
-prints everything to stderr.
+Turn off all output but errors.
 
 =item B<-b, --background>
 
 Go to background after startup. Output will be written to
 the file specified with C<--log-file>.
 
-=item B<-f, --format>=I<arg>
+=item B<-f, --format> I<arg>
 
 Download I<arg> format of the video.
 
 =item B<-c, --continue>
 
-Resume partially downloaded file.
+Resume partially downloaded video.
 
 =item B<-W, --overwrite>
 
-Overwrite existing file.
+Overwrite existing video.
 
-=item B<-O, --output-file>=I<arg>
+=item B<-O, --output-file> I<arg>
 
-Write video to I<arg> file.
+Write video to I<arg>.
 
 =item B<-n, --no-download>
 
-Do not download the video. Display details only.
+Do not download the video, display video details only.
 
 =item B<--no-proxy>
 
-Do not use HTTP proxy at all. libcurl will not use http_proxy defined
-value either.
+Do not use HTTP proxy at all, even if http_proxy is defined.
 
-=item B<--log-file>=I<arg>
+=item B<--log-file> I<arg>
 
 Write log data to I<arg> file. Ignored unless C<--background> is used.
 Overwrites the existing file. Default is "cclive_log". See also
 C<--background> and C<--update-interval>.
 
-=item B<--update-interval>=I<arg>
+=item B<--update-interval> I<arg>
 
 Specify I<arg> progressbar update interval. Default is 1 second.
 You can use double type values, e.g. 0.2 or 1.99.
 
-=item B<--config-file>=I<arg>
+=item B<--config-file> I<arg>
 
 Path to a file to read cclive arguments from. The default is "~/.ccliverc".
 
@@ -95,22 +93,28 @@ You can specify these options in the configuration file.
 
 =over 4
 
-=item B<--filename-format>=I<arg>
+=item B<--filename-format> I<arg>
 
-Use I<arg> to specify video output filename. The default is "%t.%s".
-cclive supports the following specifiers:
+Use I<arg> to specify the video output filename format. The default
+is "%t.%s". The following specifiers are supported: %t video title
+%i video ID %h video host ID %s video file suffix
+
   %t    video title
   %i    video id
   %h    video host id
   %s    video file suffix
 
-=item B<-r, --regexp>=I<arg>
+Note that I<all> occurences of the specifier will be replaced.
 
-Use I<arg> regular expression to clean up the video title before
-it is used in the filename. The default is "/(\w|\pL|\s)/g".
-Supports "i" (case-insensitive) and "g" (global, find all).
+=item B<-r, --regexp> I<arg>
 
-=item B<-s, --subst>=I<arg> ...
+Use regular expression I<arg> to clean up the video title before it
+is used in the output filename. The default is "/(\w|\s)/g".
+
+Note that the syntax supports both "i" (case-insensitive) and "g"
+(global or find all).
+
+=item B<-s, --subst> I<arg> ...
 
 Use I<arg> substitution regular expression to replace the matched
 occurences in the title before it is used in the filename. More than
@@ -118,31 +122,41 @@ one expression can be specified in I<arg> if each is separated by a
 whitespace. Supports "i" (case-insensitive) and "g" (global, find all).
 
 You can use the following delimiters:
+
   <> {} () /
 
 Please make a note that, cclive currently considers:
+
   s/old/new/    Invalid
   s/old//new/   OK
 
-=item B<--exec>=I<arg>
+=item B<--exec> I<arg>
 
-Invoke I<arg> after video download finishes. cclive recognizes the
-following specifiers in the I<arg>:
+Invoke I<arg> after video download finishes. The following specifiers
+are supported:
+
   %f    full path to the downloaded video file
 
-=item B<--proxy>=I<arg>
+Note that I<all> occurences of the specifier will be replaced.
 
-Use I<arg> for HTTP proxy, e.g. "http://foo:1234". Note that libcurl,
-which cclive uses, will use http_proxy value if defined. See also
-C<--no-proxy>.
+=item B<--agent> I<arg>
 
-=item B<--throttle>=I<arg>
+Identify as I<arg> to the HTTP servers.
 
-Limit download transfer rate to I<arg> KB/s. Default is zero (disabled).
+=item B<--proxy> I<arg>
 
-=item B<--connect-timeout>=I<arg>
+Use I<arg> for HTTP proxy, e.g. "http://foo:1234". Note that libcurl
+which this program ultimately uses, also supports the http_proxy
+environment setting. See also C<--no-proxy>.
 
-This option wraps the CURLOPT_CONNECTTIMEOUT (libcurl). Default is 30.
+=item B<--throttle> I<arg>
+
+Limit download transfer rate to I<arg> KB/s. Default is 0 (disabled).
+
+=item B<--connect-timeout> I<arg>
+
+This option essentially wraps the CURLOPT_CONNECTTIMEOUT of libcurl.
+Default is 30.
 
   "Pass a long. It should contain the maximum time in seconds that
   you allow the connection to the server to take.
@@ -153,9 +167,10 @@ This option wraps the CURLOPT_CONNECTTIMEOUT (libcurl). Default is 30.
   timeouts). See also the CURLOPT_TIMEOUT option."
         -- C<curl_easy_setopt(3)>
 
-=item B<--transfer-timeout>=I<arg>
+=item B<--transfer-timeout> I<arg>
 
-This option wraps the CURLOPT_TIMEOUT (libcurl). Default is zero (disabled).
+This option essentially wraps the CURLOPT_TIMEOUT of libcurl.
+Default is 0 (disabled).
 
   "Pass a long as parameter containing the maximum time in seconds
   that you allow the libcurl transfer operation to take.
@@ -166,9 +181,10 @@ This option wraps the CURLOPT_TIMEOUT (libcurl). Default is zero (disabled).
   SIGALRM to enable time-outing system calls."
         -- C<curl_easy_setopt(3)>
 
-=item B<--dns-cache-timeout>=I<arg>
+=item B<--dns-cache-timeout> I<arg>
 
-This option wraps the CURLOPT_DNS_CACHE_TIMEOUT (libcurl). Default is 60.
+This option essentially wraps the CURLOPT_DNS_CACHE_TIMEOUT of
+libcurl. Default is 60.
 
   "Pass a long, this sets the timeout in seconds. Name resolves will
   be kept in memory for this number of seconds. Set to zero to
@@ -183,12 +199,12 @@ This option wraps the CURLOPT_DNS_CACHE_TIMEOUT (libcurl). Default is 60.
   server info, and this may look like a DNS cache issue to the
   casual libcurl-app user." -- C<curl_easy_setopt(3)>
 
-=item B<--max-retries>=I<arg>
+=item B<--max-retries> I<arg>
 
 Retry downloading I<arg> times before giving up. Setting I<arg> to zero will
 disable retrying. Default is 5.
 
-=item B<--retry-wait>=I<arg>
+=item B<--retry-wait> I<arg>
 
 Wait I<arg> seconds before retrying after a failed attempt. Default is 5.
 
@@ -209,11 +225,11 @@ C<--support> for a complete list of websites and formats.
 
 =item B<cclive "http://www.youtube.com/watch?v=DeWsZ2b_pK4" -n>
 
-Do not download the video file. Dump the video details only.
+Do not download the video. Print the video details only.
 
 =item B<echo "http://www.youtube.com/watch?v=DeWsZ2b_pK4" | cclive>
 
-Is just another way to feed cclive with an URL.
+Yet another way to feed cclive with an URL.
 
 You can also feed cclive several URLs on one go, either by adding each
 on the command line (arg1, arg2, ...) or by redirecting them, for example,
@@ -258,22 +274,21 @@ in this file, e.g.:
  throttle = 10
  connect-timeout = 120
 
-Note that you can also specify this file with C<--config-file>.
+Note that you can use C<--config-file> to specify the file.
 
 =back
 
 =head1 EXIT STATUS
 
-cclive exits with 0 on success and E<gt>0 if an error occurred.
-There are no plans to introduce a series of different return values
-to the program. You may try C<quvi(1)> for this if that's what
-you need.
+cclive exits with 0 on success and >0 if an (unrecoverable) error
+occurred.
 
 =head1 MANGLED CHARACTERS
 
 Check your terminal settings for an invalid locale setting. You can get
 a list of the available locale names with C<locale -a>. Make sure your
 terminal supports unicode. e.g.:
+
   % LANG=en_US.UTF8 urxvt&
   % cclive ... # in the new opened terminal
 
@@ -300,9 +315,15 @@ terms of \w and \W." -- C<pcrepattern(3)>
 
 =item B<Add support for another website>
 
-Refer to the libquvi <http://quvi.googlecode.com/> documentation instead.
-On most systems, you can find the READMEs and HOWTOs in $prefix/share/quvi
-and $prefix/share/doc/quvi directories, source tarballs and at:
+cclive relies on libquvi (via WWW::Quvi) for parsing the video details,
+e.g. download links. Any additional support will therefore have to
+added to the libquvi rather than cclive.
+
+Please refer to the libquvi <http://quvi.googlecode.com/>
+documentation instead. On most systems, you can find the READMEs and
+HOWTOs in $prefix/share/quvi and $prefix/share/doc/quvi directories,
+source tarballs and at:
+
     <http://repo.or.cz/w/quvi.git/tree/HEAD:/doc>
     <http://repo.or.cz/w/quvi.git/tree/HEAD:/share/lua>
     <http://repo.or.cz/w/quvi.git/tree/HEAD:/share/lua/website>
@@ -311,20 +332,25 @@ and $prefix/share/doc/quvi directories, source tarballs and at:
 
 If you have cooked up a patch, please submit it to the tracker (see L</BUGS>).
 
+If you are working with git and you have established a repo from
+which we can pull the changes from, you can use the same tracker for
+leaving pull requests.
+
 =back
 
 =head1 BUGS
 
 =over 4
 
-=item B<Instructions, read carefully>
+=item B<Instructions>
 
-<http://code.google.com/p/cclive/wiki/ReportingIssues>
+Please read them carefully:
+  <http://code.google.com/p/cclive/wiki/ReportingIssues>
 
 =item B<Trackers>
 
-Bugs, support, etc. trackers can be found at:
-  <http://sourceforge.net/tracker/?group_id=354617>
+Bugs, support, patches, etc. trackers for these can be found at:
+  <http://sourceforge.net/projects/cclive/support>
 
 =back
 
@@ -336,9 +362,9 @@ Bugs, support, etc. trackers can be found at:
 
 Use the C<--no-download> switch if you don't need to download the video.
 
-=item B<Verbose libcurl>
+=item B<--verbose-libcurl>
 
-Use the C<--verbose-libcurl> switch, while debugging network related issues. 
+You can use this switch to amp up libcurl verbosity.
 
 =item B<Debug symbols>
 
@@ -346,8 +372,8 @@ Compile cclive with C<-g> (see C<g++(1)>) for debug symbols.
 
 =item B<Other tools>
 
-See if other tools, such as, C<strace(1)>, C<gdb(1)> and C<valgrind(1)>
-are any further help.
+Make use of such tools as C<strace(1)>, C<gdb(1)> and C<valgrind(1)>.
+They may prove invaluable.
 
 =back
 
@@ -355,15 +381,24 @@ are any further help.
 
 =over 4
 
-=item B<Project:>
+=item B<Project>
 
 <http://cclive.googlecode.com/>
 
-=item B<Development repository:>
+<http://cclive.sourceforge.net/> -- redirects to the above
 
-<git://repo.or.cz/cclive.git>
+=item B<Files>
 
-e.g. git clone git://repo.or.cz/cclive.git
+The downloadable files (e.g. source tarballs) can be found at:
+
+<http://cclive.googlecode.com/>
+
+<http://sourceforge.net/projects/cclive/files/> -- mirror
+
+
+=item B<Development repository>
+
+git clone git://repo.or.cz/cclive.git
 
 =back
 

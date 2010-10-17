@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2010-10-04" "0.7.0b3" "cclive manual"
+.TH cclive 1 "2010-10-17" "0.7.0b3" "cclive manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -151,94 +151,115 @@ Print help and exit.
 Print license and exit.
 .IP "\fB\-\-support\fR" 4
 .IX Item "--support"
-Print supported websites and video formats and exit.
+Print supported websites, formats and exit.
 .IP "\fB\-\-verbose\-libcurl\fR" 4
 .IX Item "--verbose-libcurl"
 Turn on libcurl verbose output.
 .IP "\fB\-q, \-\-quiet\fR" 4
 .IX Item "-q, --quiet"
-Turn off all output, excluding errors and warnings. cclive
-prints everything to stderr.
+Turn off all output but errors.
 .IP "\fB\-b, \-\-background\fR" 4
 .IX Item "-b, --background"
 Go to background after startup. Output will be written to
 the file specified with \f(CW\*(C`\-\-log\-file\*(C'\fR.
-.IP "\fB\-f, \-\-format\fR=\fIarg\fR" 4
-.IX Item "-f, --format=arg"
+.IP "\fB\-f, \-\-format\fR \fIarg\fR" 4
+.IX Item "-f, --format arg"
 Download \fIarg\fR format of the video.
 .IP "\fB\-c, \-\-continue\fR" 4
 .IX Item "-c, --continue"
-Resume partially downloaded file.
+Resume partially downloaded video.
 .IP "\fB\-W, \-\-overwrite\fR" 4
 .IX Item "-W, --overwrite"
-Overwrite existing file.
-.IP "\fB\-O, \-\-output\-file\fR=\fIarg\fR" 4
-.IX Item "-O, --output-file=arg"
-Write video to \fIarg\fR file.
+Overwrite existing video.
+.IP "\fB\-O, \-\-output\-file\fR \fIarg\fR" 4
+.IX Item "-O, --output-file arg"
+Write video to \fIarg\fR.
 .IP "\fB\-n, \-\-no\-download\fR" 4
 .IX Item "-n, --no-download"
-Do not download the video. Display details only.
+Do not download the video, display video details only.
 .IP "\fB\-\-no\-proxy\fR" 4
 .IX Item "--no-proxy"
-Do not use \s-1HTTP\s0 proxy at all. libcurl will not use http_proxy defined
-value either.
-.IP "\fB\-\-log\-file\fR=\fIarg\fR" 4
-.IX Item "--log-file=arg"
+Do not use \s-1HTTP\s0 proxy at all, even if http_proxy is defined.
+.IP "\fB\-\-log\-file\fR \fIarg\fR" 4
+.IX Item "--log-file arg"
 Write log data to \fIarg\fR file. Ignored unless \f(CW\*(C`\-\-background\*(C'\fR is used.
 Overwrites the existing file. Default is \*(L"cclive_log\*(R". See also
 \&\f(CW\*(C`\-\-background\*(C'\fR and \f(CW\*(C`\-\-update\-interval\*(C'\fR.
-.IP "\fB\-\-update\-interval\fR=\fIarg\fR" 4
-.IX Item "--update-interval=arg"
+.IP "\fB\-\-update\-interval\fR \fIarg\fR" 4
+.IX Item "--update-interval arg"
 Specify \fIarg\fR progressbar update interval. Default is 1 second.
 You can use double type values, e.g. 0.2 or 1.99.
-.IP "\fB\-\-config\-file\fR=\fIarg\fR" 4
-.IX Item "--config-file=arg"
+.IP "\fB\-\-config\-file\fR \fIarg\fR" 4
+.IX Item "--config-file arg"
 Path to a file to read cclive arguments from. The default is \*(L"~/.ccliverc\*(R".
 .SH "OPTIONS \- CONFIGURATION"
 .IX Header "OPTIONS - CONFIGURATION"
 You can specify these options in the configuration file.
-.IP "\fB\-\-filename\-format\fR=\fIarg\fR" 4
-.IX Item "--filename-format=arg"
-Use \fIarg\fR to specify video output filename. The default is \*(L"%t.%s\*(R".
-cclive supports the following specifiers:
-  \f(CW%t\fR    video title
-  \f(CW%i\fR    video id
-  \f(CW%h\fR    video host id
-  \f(CW%s\fR    video file suffix
-.IP "\fB\-r, \-\-regexp\fR=\fIarg\fR" 4
-.IX Item "-r, --regexp=arg"
-Use \fIarg\fR regular expression to clean up the video title before
-it is used in the filename. The default is \*(L"/(\ew|\epL|\es)/g\*(R".
-Supports \*(L"i\*(R" (case-insensitive) and \*(L"g\*(R" (global, find all).
-.IP "\fB\-s, \-\-subst\fR=\fIarg\fR ..." 4
-.IX Item "-s, --subst=arg ..."
+.IP "\fB\-\-filename\-format\fR \fIarg\fR" 4
+.IX Item "--filename-format arg"
+Use \fIarg\fR to specify the video output filename format. The default
+is \*(L"%t.%s\*(R". The following specifiers are supported: \f(CW%t\fR video title
+\&\f(CW%i\fR video \s-1ID\s0 \f(CW%h\fR video host \s-1ID\s0 \f(CW%s\fR video file suffix
+.Sp
+.Vb 4
+\&  %t    video title
+\&  %i    video id
+\&  %h    video host id
+\&  %s    video file suffix
+.Ve
+.Sp
+Note that \fIall\fR occurences of the specifier will be replaced.
+.IP "\fB\-r, \-\-regexp\fR \fIarg\fR" 4
+.IX Item "-r, --regexp arg"
+Use regular expression \fIarg\fR to clean up the video title before it
+is used in the output filename. The default is \*(L"/(\ew|\es)/g\*(R".
+.Sp
+Note that the syntax supports both \*(L"i\*(R" (case-insensitive) and \*(L"g\*(R"
+(global or find all).
+.IP "\fB\-s, \-\-subst\fR \fIarg\fR ..." 4
+.IX Item "-s, --subst arg ..."
 Use \fIarg\fR substitution regular expression to replace the matched
 occurences in the title before it is used in the filename. More than
 one expression can be specified in \fIarg\fR if each is separated by a
 whitespace. Supports \*(L"i\*(R" (case-insensitive) and \*(L"g\*(R" (global, find all).
 .Sp
 You can use the following delimiters:
-  <> {} () /
+.Sp
+.Vb 1
+\&  <> {} () /
+.Ve
 .Sp
 Please make a note that, cclive currently considers:
-  s/old/new/    Invalid
-  s/old//new/   \s-1OK\s0
-.IP "\fB\-\-exec\fR=\fIarg\fR" 4
-.IX Item "--exec=arg"
-Invoke \fIarg\fR after video download finishes. cclive recognizes the
-following specifiers in the \fIarg\fR:
-  \f(CW%f\fR    full path to the downloaded video file
-.IP "\fB\-\-proxy\fR=\fIarg\fR" 4
-.IX Item "--proxy=arg"
-Use \fIarg\fR for \s-1HTTP\s0 proxy, e.g. \*(L"http://foo:1234\*(R". Note that libcurl,
-which cclive uses, will use http_proxy value if defined. See also
-\&\f(CW\*(C`\-\-no\-proxy\*(C'\fR.
-.IP "\fB\-\-throttle\fR=\fIarg\fR" 4
-.IX Item "--throttle=arg"
-Limit download transfer rate to \fIarg\fR KB/s. Default is zero (disabled).
-.IP "\fB\-\-connect\-timeout\fR=\fIarg\fR" 4
-.IX Item "--connect-timeout=arg"
-This option wraps the \s-1CURLOPT_CONNECTTIMEOUT\s0 (libcurl). Default is 30.
+.Sp
+.Vb 2
+\&  s/old/new/    Invalid
+\&  s/old//new/   OK
+.Ve
+.IP "\fB\-\-exec\fR \fIarg\fR" 4
+.IX Item "--exec arg"
+Invoke \fIarg\fR after video download finishes. The following specifiers
+are supported:
+.Sp
+.Vb 1
+\&  %f    full path to the downloaded video file
+.Ve
+.Sp
+Note that \fIall\fR occurences of the specifier will be replaced.
+.IP "\fB\-\-agent\fR \fIarg\fR" 4
+.IX Item "--agent arg"
+Identify as \fIarg\fR to the \s-1HTTP\s0 servers.
+.IP "\fB\-\-proxy\fR \fIarg\fR" 4
+.IX Item "--proxy arg"
+Use \fIarg\fR for \s-1HTTP\s0 proxy, e.g. \*(L"http://foo:1234\*(R". Note that libcurl
+which this program ultimately uses, also supports the http_proxy
+environment setting. See also \f(CW\*(C`\-\-no\-proxy\*(C'\fR.
+.IP "\fB\-\-throttle\fR \fIarg\fR" 4
+.IX Item "--throttle arg"
+Limit download transfer rate to \fIarg\fR KB/s. Default is 0 (disabled).
+.IP "\fB\-\-connect\-timeout\fR \fIarg\fR" 4
+.IX Item "--connect-timeout arg"
+This option essentially wraps the \s-1CURLOPT_CONNECTTIMEOUT\s0 of libcurl.
+Default is 30.
 .Sp
 .Vb 2
 \&  "Pass a long. It should contain the maximum time in seconds that
@@ -250,9 +271,10 @@ This option wraps the \s-1CURLOPT_CONNECTTIMEOUT\s0 (libcurl). Default is 30.
 \&  timeouts). See also the CURLOPT_TIMEOUT option."
 \&        \-\- C<curl_easy_setopt(3)>
 .Ve
-.IP "\fB\-\-transfer\-timeout\fR=\fIarg\fR" 4
-.IX Item "--transfer-timeout=arg"
-This option wraps the \s-1CURLOPT_TIMEOUT\s0 (libcurl). Default is zero (disabled).
+.IP "\fB\-\-transfer\-timeout\fR \fIarg\fR" 4
+.IX Item "--transfer-timeout arg"
+This option essentially wraps the \s-1CURLOPT_TIMEOUT\s0 of libcurl.
+Default is 0 (disabled).
 .Sp
 .Vb 2
 \&  "Pass a long as parameter containing the maximum time in seconds
@@ -264,9 +286,10 @@ This option wraps the \s-1CURLOPT_TIMEOUT\s0 (libcurl). Default is zero (disable
 \&  SIGALRM to enable time\-outing system calls."
 \&        \-\- C<curl_easy_setopt(3)>
 .Ve
-.IP "\fB\-\-dns\-cache\-timeout\fR=\fIarg\fR" 4
-.IX Item "--dns-cache-timeout=arg"
-This option wraps the \s-1CURLOPT_DNS_CACHE_TIMEOUT\s0 (libcurl). Default is 60.
+.IP "\fB\-\-dns\-cache\-timeout\fR \fIarg\fR" 4
+.IX Item "--dns-cache-timeout arg"
+This option essentially wraps the \s-1CURLOPT_DNS_CACHE_TIMEOUT\s0 of
+libcurl. Default is 60.
 .Sp
 .Vb 5
 \&  "Pass a long, this sets the timeout in seconds. Name resolves will
@@ -282,12 +305,12 @@ This option wraps the \s-1CURLOPT_DNS_CACHE_TIMEOUT\s0 (libcurl). Default is 60.
 \&  server info, and this may look like a DNS cache issue to the
 \&  casual libcurl\-app user." \-\- C<curl_easy_setopt(3)>
 .Ve
-.IP "\fB\-\-max\-retries\fR=\fIarg\fR" 4
-.IX Item "--max-retries=arg"
+.IP "\fB\-\-max\-retries\fR \fIarg\fR" 4
+.IX Item "--max-retries arg"
 Retry downloading \fIarg\fR times before giving up. Setting \fIarg\fR to zero will
 disable retrying. Default is 5.
-.IP "\fB\-\-retry\-wait\fR=\fIarg\fR" 4
-.IX Item "--retry-wait=arg"
+.IP "\fB\-\-retry\-wait\fR \fIarg\fR" 4
+.IX Item "--retry-wait arg"
 Wait \fIarg\fR seconds before retrying after a failed attempt. Default is 5.
 .SH "EXAMPLES"
 .IX Header "EXAMPLES"
@@ -303,11 +326,11 @@ Same but get the sd_270p (Youtube specific) format instead. See
 .ie n .IP "\fBcclive ""http://www.youtube.com/watch?v=DeWsZ2b_pK4"" \-n\fR" 4
 .el .IP "\fBcclive ``http://www.youtube.com/watch?v=DeWsZ2b_pK4'' \-n\fR" 4
 .IX Item "cclive http://www.youtube.com/watch?v=DeWsZ2b_pK4 -n"
-Do not download the video file. Dump the video details only.
+Do not download the video. Print the video details only.
 .ie n .IP "\fBecho ""http://www.youtube.com/watch?v=DeWsZ2b_pK4"" | cclive\fR" 4
 .el .IP "\fBecho ``http://www.youtube.com/watch?v=DeWsZ2b_pK4'' | cclive\fR" 4
 .IX Item "echo http://www.youtube.com/watch?v=DeWsZ2b_pK4 | cclive"
-Is just another way to feed cclive with an \s-1URL\s0.
+Yet another way to feed cclive with an \s-1URL\s0.
 .Sp
 You can also feed cclive several URLs on one go, either by adding each
 on the command line (arg1, arg2, ...) or by redirecting them, for example,
@@ -352,20 +375,21 @@ in this file, e.g.:
 \& connect\-timeout = 120
 .Ve
 .Sp
-Note that you can also specify this file with \f(CW\*(C`\-\-config\-file\*(C'\fR.
+Note that you can use \f(CW\*(C`\-\-config\-file\*(C'\fR to specify the file.
 .SH "EXIT STATUS"
 .IX Header "EXIT STATUS"
-cclive exits with 0 on success and >0 if an error occurred.
-There are no plans to introduce a series of different return values
-to the program. You may try \f(CWquvi(1)\fR for this if that's what
-you need.
+cclive exits with 0 on success and >0 if an (unrecoverable) error
+occurred.
 .SH "MANGLED CHARACTERS"
 .IX Header "MANGLED CHARACTERS"
 Check your terminal settings for an invalid locale setting. You can get
 a list of the available locale names with \f(CW\*(C`locale \-a\*(C'\fR. Make sure your
 terminal supports unicode. e.g.:
-  % LANG=en_US.UTF8 urxvt&
-  % cclive ... # in the new opened terminal
+.PP
+.Vb 2
+\&  % LANG=en_US.UTF8 urxvt&
+\&  % cclive ... # in the new opened terminal
+.Ve
 .PP
 libquvi (which cclive uses) converts the characters to unicode if the
 parsed data contains the charset meta tag. Otherwise the characters are
@@ -386,49 +410,69 @@ terms of \ew and \eW.\*(R" \*(-- \f(CWpcrepattern(3)\fR
 .IX Header "CONTRIBUTING"
 .IP "\fBAdd support for another website\fR" 4
 .IX Item "Add support for another website"
-Refer to the libquvi <http://quvi.googlecode.com/> documentation instead.
-On most systems, you can find the READMEs and HOWTOs in \f(CW$prefix\fR/share/quvi
-and \f(CW$prefix\fR/share/doc/quvi directories, source tarballs and at:
-    <http://repo.or.cz/w/quvi.git/tree/HEAD:/doc>
-    <http://repo.or.cz/w/quvi.git/tree/HEAD:/share/lua>
-    <http://repo.or.cz/w/quvi.git/tree/HEAD:/share/lua/website>
+cclive relies on libquvi (via WWW::Quvi) for parsing the video details,
+e.g. download links. Any additional support will therefore have to
+added to the libquvi rather than cclive.
+.Sp
+Please refer to the libquvi <http://quvi.googlecode.com/>
+documentation instead. On most systems, you can find the READMEs and
+HOWTOs in \f(CW$prefix\fR/share/quvi and \f(CW$prefix\fR/share/doc/quvi directories,
+source tarballs and at:
+.Sp
+.Vb 3
+\&    <http://repo.or.cz/w/quvi.git/tree/HEAD:/doc>
+\&    <http://repo.or.cz/w/quvi.git/tree/HEAD:/share/lua>
+\&    <http://repo.or.cz/w/quvi.git/tree/HEAD:/share/lua/website>
+.Ve
 .IP "\fBSubmitting patches\fR" 4
 .IX Item "Submitting patches"
 If you have cooked up a patch, please submit it to the tracker (see \*(L"\s-1BUGS\s0\*(R").
+.Sp
+If you are working with git and you have established a repo from
+which we can pull the changes from, you can use the same tracker for
+leaving pull requests.
 .SH "BUGS"
 .IX Header "BUGS"
-.IP "\fBInstructions, read carefully\fR" 4
-.IX Item "Instructions, read carefully"
-<http://code.google.com/p/cclive/wiki/ReportingIssues>
+.IP "\fBInstructions\fR" 4
+.IX Item "Instructions"
+Please read them carefully:
+  <http://code.google.com/p/cclive/wiki/ReportingIssues>
 .IP "\fBTrackers\fR" 4
 .IX Item "Trackers"
-Bugs, support, etc. trackers can be found at:
-  <http://sourceforge.net/tracker/?group_id=354617>
+Bugs, support, patches, etc. trackers for these can be found at:
+  <http://sourceforge.net/projects/cclive/support>
 .SH "DEBUGGING TIPS"
 .IX Header "DEBUGGING TIPS"
 .IP "\fB\-\-no\-download\fR" 4
 .IX Item "--no-download"
 Use the \f(CW\*(C`\-\-no\-download\*(C'\fR switch if you don't need to download the video.
-.IP "\fBVerbose libcurl\fR" 4
-.IX Item "Verbose libcurl"
-Use the \f(CW\*(C`\-\-verbose\-libcurl\*(C'\fR switch, while debugging network related issues.
+.IP "\fB\-\-verbose\-libcurl\fR" 4
+.IX Item "--verbose-libcurl"
+You can use this switch to amp up libcurl verbosity.
 .IP "\fBDebug symbols\fR" 4
 .IX Item "Debug symbols"
 Compile cclive with \f(CW\*(C`\-g\*(C'\fR (see \f(CW\*(C`g++(1)\*(C'\fR) for debug symbols.
 .IP "\fBOther tools\fR" 4
 .IX Item "Other tools"
-See if other tools, such as, \f(CWstrace(1)\fR, \f(CWgdb(1)\fR and \f(CWvalgrind(1)\fR
-are any further help.
+Make use of such tools as \f(CWstrace(1)\fR, \f(CWgdb(1)\fR and \f(CWvalgrind(1)\fR.
+They may prove invaluable.
 .SH "OTHER"
 .IX Header "OTHER"
-.IP "\fBProject:\fR" 4
-.IX Item "Project:"
+.IP "\fBProject\fR" 4
+.IX Item "Project"
 <http://cclive.googlecode.com/>
-.IP "\fBDevelopment repository:\fR" 4
-.IX Item "Development repository:"
-<git://repo.or.cz/cclive.git>
 .Sp
-e.g. git clone git://repo.or.cz/cclive.git
+<http://cclive.sourceforge.net/> \*(-- redirects to the above
+.IP "\fBFiles\fR" 4
+.IX Item "Files"
+The downloadable files (e.g. source tarballs) can be found at:
+.Sp
+<http://cclive.googlecode.com/>
+.Sp
+<http://sourceforge.net/projects/cclive/files/> \*(-- mirror
+.IP "\fBDevelopment repository\fR" 4
+.IX Item "Development repository"
+git clone git://repo.or.cz/cclive.git
 .SH "AUTHOR"
 .IX Header "AUTHOR"
 Toni Gundogdu <legatvs at sign gmail com>. See also \*(L"\s-1BUGS\s0\*(R", \*(L"\s-1DEBUGGING\s0 \s-1TIPS\s0\*(R"
