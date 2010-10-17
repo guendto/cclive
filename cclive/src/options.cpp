@@ -66,8 +66,8 @@ options::exec (int argc, char **argv) {
         ("format,f",
             opts::value<std::string>()->default_value("default"),
             "download video format")
-        ("continue,c",      "resume partially downloaded file")
-        ("overwrite,W",     "overwrite existing file")
+        ("continue,c",      "resume partially downloaded video")
+        ("overwrite,W",     "overwrite existing video")
         ("output-file,O",   opts::value<std::string>(),
             "write downloaded video to file")
         ("no-download,n",   "do not download video, print info only")
