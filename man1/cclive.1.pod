@@ -321,8 +321,8 @@ added to the libquvi rather than cclive.
 
 Please refer to the libquvi <http://quvi.googlecode.com/>
 documentation instead. On most systems, you can find the READMEs and
-HOWTOs in $prefix/share/quvi and $prefix/share/doc/quvi directories,
-source tarballs and at:
+HOWTOs in $prefix/share/quvi and $prefix/share/doc/quvi directories.
+You can find the same files in release source tarballs and at:
 
     <http://repo.or.cz/w/quvi.git/tree/HEAD:/doc>
     <http://repo.or.cz/w/quvi.git/tree/HEAD:/share/lua>
@@ -394,7 +394,6 @@ The downloadable files (e.g. source tarballs) can be found at:
 <http://cclive.googlecode.com/>
 
 <http://sourceforge.net/projects/cclive/files/> -- mirror
-
 
 =item B<Development repository>
 
