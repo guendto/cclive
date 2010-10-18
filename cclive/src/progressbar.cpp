@@ -318,12 +318,12 @@ progressbar::_normal (
 
     // Filename. Slice and dice.
 
-    std::stringstream b;
-
     int l = _width - tmp.str ().length () - 2;
 
     if (_width > default_term_width)
         l += _width - default_term_width;
+
+    std::stringstream b;
 
     b << fname.substr (0,l);
 
