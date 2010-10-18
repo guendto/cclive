@@ -205,7 +205,7 @@ file::write (
 
     if ( !error.empty() ) {
 
-        cclive::log << std::endl;
+        std::clog << std::endl;
 
         if (resp_code >= 400 && resp_code <= 500)
             throw std::runtime_error (error);
