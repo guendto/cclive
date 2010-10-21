@@ -5,6 +5,9 @@ Revision history for cclive.
 Changes:
   * Clean up manual page
 
+Bugfixes:
+  * Progressbar resizing anomalies
+
 
 Version 0.7.0 beta 3
 October 15, 2010
