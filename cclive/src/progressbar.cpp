@@ -63,7 +63,7 @@ handle_sigwinch (int s) {
     signal(SIGWINCH, handle_sigwinch);
 }
 
-static int
+static size_t
 get_term_width () {
 
     const int fd = fileno (stderr);
@@ -90,6 +90,7 @@ progressbar::progressbar (
       _last_update (0),
       _term_width (0),
       _dot_count  (0),
+      _old_width (0),
       _count (0),
       _width (0),
       _file (f),
@@ -113,7 +114,8 @@ progressbar::progressbar (
     _term_width = default_term_width;
 #endif
 
-    _width = _term_width-1; // Don't use the last column.
+    _width     = _term_width-1; // Don't use the last column.
+    _old_width = _width;
 
     time (&_time_started);
 
@@ -172,15 +174,16 @@ progressbar::update (double now) {
 #ifdef WITH_RESIZE
     if (recv_sigwinch && _mode == normal) {
 
-        const int old_width = _term_width;
+        const size_t old_term_width = _term_width;
 
         _term_width = get_term_width ();
 
         if (!_term_width)
             _term_width = default_term_width;
 
-        if (_term_width != old_width) {
-            _width = _term_width-1;
+        if (_term_width != old_term_width) {
+            _old_width  = _width;
+            _width = _term_width - 1; // Do not use the last column.
             force_update = true;
         }
 
@@ -318,23 +321,29 @@ progressbar::_normal (
 
     // Filename. Slice and dice.
 
-    int l = _width - tmp.str ().length () - 2;
-
-    if (_width > default_term_width)
-        l += _width - default_term_width;
+    const size_t tmp_len = tmp.str ().length ();
+    const int sub_len    = _width - tmp_len;
 
     std::stringstream b;
 
-    b << fname.substr (0,l);
+    if (sub_len > 0) {
 
-    // Pad to max. terminal width (filename <-> other details).
+        b << fname.substr (0, sub_len);
 
-    l = _width - tmp.str ().length ();
+        // Pad to max. terminal width (filename <-> other details).
 
-    for (int i = b.str ().length (); i<l; ++i)
+        while (b.str ().length () < (_width - tmp_len))
+            b << " ";
+
+        b << tmp.str ();
+    }
+
+    // Clear the last column if the terminal shrunk.
+
+    if (_old_width > _width) {
+        _old_width = _width;
         b << " ";
-
-    b << tmp.str ();
+    }
 
     // Print.
 

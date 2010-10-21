@@ -52,10 +52,11 @@ private:
     double  _initial_bytes;
     time_t  _time_started;
     time_t  _last_update;
-    int     _term_width;
+    size_t  _term_width;
     int     _dot_count;
+    size_t  _old_width;
     double  _count;
-    int     _width;
+    size_t  _width;
     file    _file;
     bool    _done;
     mode    _mode;
