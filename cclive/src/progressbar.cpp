@@ -203,7 +203,10 @@ progressbar::update (double now) {
 
     // Current size.
 
-    const double size = _initial_bytes + now;
+    const double size =
+        (!_done)
+        ? _initial_bytes + now
+        : now;
 
     std::stringstream size_s;
 
@@ -211,7 +214,7 @@ progressbar::update (double now) {
 
     size_s
         << std::setprecision (1)
-        << to_mb (!_done ? size:now)
+        << to_mb (size)
         << "M";
 
     // Rate.
