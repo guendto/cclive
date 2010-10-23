@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2010-10-18" "0.7.0b4" "cclive manual"
+.TH cclive 1 "2010-10-22" "0.7.0b4" "cclive manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -314,22 +314,22 @@ disable retrying. Default is 5.
 Wait \fIarg\fR seconds before retrying after a failed attempt. Default is 5.
 .SH "EXAMPLES"
 .IX Header "EXAMPLES"
-.ie n .IP "\fBcclive ""http://www.youtube.com/watch?v=DeWsZ2b_pK4""\fR" 4
-.el .IP "\fBcclive ``http://www.youtube.com/watch?v=DeWsZ2b_pK4''\fR" 4
-.IX Item "cclive http://www.youtube.com/watch?v=DeWsZ2b_pK4"
+.ie n .IP "\fBcclive ""http://www.youtube.com/watch?v=DUM1284TqFc""\fR" 4
+.el .IP "\fBcclive ``http://www.youtube.com/watch?v=DUM1284TqFc''\fR" 4
+.IX Item "cclive http://www.youtube.com/watch?v=DUM1284TqFc"
 Typical use.
-.ie n .IP "\fBcclive ""http://www.youtube.com/watch?v=DeWsZ2b_pK4"" \-f sd_270p\fR" 4
-.el .IP "\fBcclive ``http://www.youtube.com/watch?v=DeWsZ2b_pK4'' \-f sd_270p\fR" 4
-.IX Item "cclive http://www.youtube.com/watch?v=DeWsZ2b_pK4 -f sd_270p"
+.ie n .IP "\fBcclive ""http://www.youtube.com/watch?v=DUM1284TqFc"" \-f sd_270p\fR" 4
+.el .IP "\fBcclive ``http://www.youtube.com/watch?v=DUM1284TqFc'' \-f sd_270p\fR" 4
+.IX Item "cclive http://www.youtube.com/watch?v=DUM1284TqFc -f sd_270p"
 Same but get the sd_270p (Youtube specific) format instead. See
 \&\f(CW\*(C`\-\-support\*(C'\fR for a complete list of websites and formats.
-.ie n .IP "\fBcclive ""http://www.youtube.com/watch?v=DeWsZ2b_pK4"" \-n\fR" 4
-.el .IP "\fBcclive ``http://www.youtube.com/watch?v=DeWsZ2b_pK4'' \-n\fR" 4
-.IX Item "cclive http://www.youtube.com/watch?v=DeWsZ2b_pK4 -n"
+.ie n .IP "\fBcclive ""http://www.youtube.com/watch?v=DUM1284TqFc"" \-n\fR" 4
+.el .IP "\fBcclive ``http://www.youtube.com/watch?v=DUM1284TqFc'' \-n\fR" 4
+.IX Item "cclive http://www.youtube.com/watch?v=DUM1284TqFc -n"
 Do not download the video. Print the video details only.
-.ie n .IP "\fBecho ""http://www.youtube.com/watch?v=DeWsZ2b_pK4"" | cclive\fR" 4
-.el .IP "\fBecho ``http://www.youtube.com/watch?v=DeWsZ2b_pK4'' | cclive\fR" 4
-.IX Item "echo http://www.youtube.com/watch?v=DeWsZ2b_pK4 | cclive"
+.ie n .IP "\fBecho ""http://www.youtube.com/watch?v=DUM1284TqFc"" | cclive\fR" 4
+.el .IP "\fBecho ``http://www.youtube.com/watch?v=DUM1284TqFc'' | cclive\fR" 4
+.IX Item "echo http://www.youtube.com/watch?v=DUM1284TqFc | cclive"
 Yet another way to feed cclive with an \s-1URL\s0.
 .Sp
 You can also feed cclive several URLs on one go, either by adding each
@@ -340,8 +340,8 @@ Consider the following example:
 .Sp
 .Vb 5
 \&  cat >> urls.lst
-\&  http://www.youtube.com/watch?v=DeWsZ2b_pK4
 \&  http://www.youtube.com/watch?v=DUM1284TqFc
+\&  http://www.youtube.com/watch?v=TqgTz8ymZl8
 \&  (ctrl+d)
 \&  cclive < urls.lst
 .Ve

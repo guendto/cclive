@@ -214,20 +214,20 @@ Wait I<arg> seconds before retrying after a failed attempt. Default is 5.
 
 =over 4
 
-=item B<cclive "http://www.youtube.com/watch?v=DeWsZ2b_pK4">
+=item B<cclive "http://www.youtube.com/watch?v=DUM1284TqFc">
 
 Typical use.
 
-=item B<cclive "http://www.youtube.com/watch?v=DeWsZ2b_pK4" -f sd_270p>
+=item B<cclive "http://www.youtube.com/watch?v=DUM1284TqFc" -f sd_270p>
 
 Same but get the sd_270p (Youtube specific) format instead. See
 C<--support> for a complete list of websites and formats.
 
-=item B<cclive "http://www.youtube.com/watch?v=DeWsZ2b_pK4" -n>
+=item B<cclive "http://www.youtube.com/watch?v=DUM1284TqFc" -n>
 
 Do not download the video. Print the video details only.
 
-=item B<echo "http://www.youtube.com/watch?v=DeWsZ2b_pK4" | cclive>
+=item B<echo "http://www.youtube.com/watch?v=DUM1284TqFc" | cclive>
 
 Yet another way to feed cclive with an URL.
 
@@ -238,8 +238,8 @@ from a file. Each URL must be separated with a newline (or a whitespace).
 Consider the following example:
 
   cat >> urls.lst
-  http://www.youtube.com/watch?v=DeWsZ2b_pK4
   http://www.youtube.com/watch?v=DUM1284TqFc
+  http://www.youtube.com/watch?v=TqgTz8ymZl8
   (ctrl+d)
   cclive < urls.lst
 
