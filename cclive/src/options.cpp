@@ -176,18 +176,35 @@ std::ostream& operator<<(std::ostream& os, const options& o)
 void
 options::_verify () {
 
+    std::string empty;
+
+    if (_map.count ("regexp")) {
+
+        std::string s = _map["regexp"].as<std::string>();
+
+        if (!cclive::re::match (s, empty)) {
+
+            std::stringstream b;
+
+            b << "invalid syntax (`" << s << "'), "
+              << "expected perl syntax with --regexp,\n"
+              << "\te.g.: \"/(\\w|\\s)/g\"";
+
+            throw std::runtime_error (b.str ());
+        }
+
+    }
+
     if (_map.count ("subst")) {
 
         std::istringstream iss( _map["subst"].as<std::string>());
         std::vector<std::string> v;
 
         std::copy(
-                std::istream_iterator<std::string >(iss),
-                std::istream_iterator<std::string >(),
-                std::back_inserter<std::vector<std::string> >(v)
+            std::istream_iterator<std::string >(iss),
+            std::istream_iterator<std::string >(),
+            std::back_inserter<std::vector<std::string> >(v)
         );
-
-        std::string empty;
 
         foreach (std::string s, v) {
 
