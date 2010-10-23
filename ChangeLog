@@ -3,10 +3,9 @@ Revision history for cclive.
 0.7.0 beta4
 
 Changes:
-  * Clean up manual page
-
-Bugfixes:
-  * Progressbar resizing anomalies
+        - Add --regexp check
+        - Clean up manual page
+        - Improve progressbar line clearing
 
 
 Version 0.7.0 beta 3
