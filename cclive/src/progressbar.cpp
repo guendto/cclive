@@ -325,27 +325,35 @@ progressbar::_normal (
     // Filename. Slice and dice.
 
     const size_t tmp_len = tmp.str ().length ();
-    const int sub_len    = _width - tmp_len;
+    const size_t sub_len = _width - tmp_len;
 
     std::stringstream b;
 
-    if (sub_len > 0) {
+    if ((unsigned)sub_len > 0) {
+
+        // Pad to max. terminal width.
 
         b << fname.substr (0, sub_len);
 
-        // Pad to max. terminal width (filename <-> other details).
-
-        while (b.str ().length () < (_width - tmp_len))
-            b << " ";
+        while (b.str ().length () < sub_len)  b << " ";
 
         b << tmp.str ();
     }
 
-    // Clear the last column if the terminal shrunk.
+    if (_old_width) {
 
-    if (_old_width > _width) {
-        _old_width = _width;
-        b << " ";
+        // Clear line.
+
+        const int m =
+            (_old_width < _width)
+            ? _width
+            : _old_width;
+
+        for (int i=0; i<m; ++i)  cclive::log << " ";
+
+        cclive::log << "\r" << std::flush;
+
+        _old_width = 0;
     }
 
     // Print.
