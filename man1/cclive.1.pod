@@ -106,7 +106,7 @@ is "%t.%s". The following specifiers are supported: %t video title
 
 Note that I<all> occurences of the specifier will be replaced.
 
-=item B<-r, --regexp> I<arg>
+=item B< --regexp> I<arg>
 
 Use regular expression I<arg> to clean up the video title before it
 is used in the output filename. The default is "/(\w|\s)/g".

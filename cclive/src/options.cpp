@@ -92,10 +92,10 @@ options::exec (int argc, char **argv) {
         ("filename-format",
             opts::value<std::string>()->default_value("%t.%s"),
             "output video filename format")
-        ("regexp,r",
+        ("regexp",
             opts::value<std::string>()->default_value("/(\\w|\\pL|\\s)/g"),
             "regexp to clean up video title")
-        ("subst,s", opts::value<std::string>(),
+        ("subst", opts::value<std::string>(),
             "replace matched occurences in filename")
         ("exec", opts::value<std::string>(),
             "invoke arg after download finishes")
