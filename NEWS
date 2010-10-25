@@ -1,12 +1,10 @@
 
 
-Version 0.7.0 beta 1
+0.7.0
 
-This is essentially a rewrite of the project. Build system has been changed
-from GNU Autotools to CMake. cclive now uses Boost library.
-
-Read also:
-    <http://code.google.com/p/cclive/wiki/Development_0_7_0>
+This release is essentially a cleanup rewrite of the program. There
+have been many changes. Please read:
+    <http://code.google.com/p/cclive/wiki/SummaryOfChanges07>
 
 
 0.6.1
