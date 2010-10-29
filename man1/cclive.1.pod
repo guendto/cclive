@@ -10,8 +10,11 @@ cclive [options] [url...]
 
 =head1 DESCRIPTION
 
-cclive is a command line tool for downloading videos from
-Youtube and similar websites that require flash for viewing.
+cclive is a command line tool for downloading videos from Youtube and other
+similar video websites that require Adobe Flash to view the content. It has
+low memory footprint compared to other similar tools and small CPU load. Its
+advanced feature-set makes cclive the perfect command line video download
+tool.
 
 =head1 OPTIONS
 
