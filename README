@@ -10,7 +10,7 @@ PREMISE
 
 The low memory footprint compared to other similar tools, small CPU load.
 cclive is free software, licensed under the GPLv3. It runs on Linux and
-Unix-like operating systems, as well as MSWindows.
+Unix-like operating systems, as well as on MSWindows.
 
 Home  : <http://cclive.googlecode.com/>
 Repo  : <git://repo.or.cz/cclive.git>
