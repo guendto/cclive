@@ -1,7 +1,6 @@
 Revision history for cclive.
 
-0.7.0 beta4
-
+0.7.0 beta4  Wed Nov 03 2010  legatvs
 Changes:
         - Add --regexp check
         - Clean up manual page
