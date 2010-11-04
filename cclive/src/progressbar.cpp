@@ -142,20 +142,18 @@ to_s (const int secs) {
 
 static std::string
 to_unit (double& rate) {
-    int i = 0;
-    if (rate < 1024*1024) {
-        rate /= 1024;
+    std::string units = "K/s";
+    if (rate >= 1024.0*1024.0*1024.0) {
+        rate /= 1024.0*1024.0*1024.0;
+        units = "G/s";
     }
-    else if (rate < 1024*1024) {
-        rate /= 1024*1024;
-        i = 1;
+    else if (rate >= 1024.0*1024.0) {
+        rate /= 1024.0*1024.0;
+        units = "M/s";
     }
-    else if (rate < 1024*1024*1024) {
-        rate /= 1024*1024*1024;
-        i = 2;
-    }
-    static const char *units[] = {"K/s", "M/s", "G/s"};
-    return units[i];
+    else
+        rate /= 1024.0;
+    return units;
 }
 
 namespace fs = boost::filesystem;
