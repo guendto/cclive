@@ -191,7 +191,7 @@ set (CPACK_RESOURCE_FILE_LICENSE ${CMAKE_CURRENT_SOURCE_DIR}/COPYING)
 set (CPACK_RESOURCE_FILE_README  ${CMAKE_CURRENT_SOURCE_DIR}/README)
 
 set (CPACK_SOURCE_IGNORE_FILES
-    "/.git/"
+    "/.git"
     "/.cmake/"
     "/CMakeFiles/"
     "/CMakeCache/"
