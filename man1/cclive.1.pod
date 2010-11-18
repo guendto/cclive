@@ -70,7 +70,8 @@ Do not download the video, display video details only.
 
 =item B<--no-proxy>
 
-Do not use HTTP proxy at all, even if http_proxy is defined.
+Disable use of HTTP proxy. Overrides both C<--proxy> and http_proxy environment
+settings.
 
 =item B<--log-file> I<arg>
 
@@ -147,9 +148,8 @@ Identify as I<arg> to the HTTP servers.
 
 =item B<--proxy> I<arg>
 
-Use I<arg> for HTTP proxy, e.g. "http://foo:1234". Note that libcurl
-which this program ultimately uses, also supports the http_proxy
-environment setting. See also C<--no-proxy>.
+Use I<arg> for HTTP proxy, e.g. "http://foo:1234". Overrides the http_proxy
+environment setting.
 
 =item B<--throttle> I<arg>
 
