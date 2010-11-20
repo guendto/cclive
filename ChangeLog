@@ -1,5 +1,10 @@
 Revision history for cclive.
 
+0.7.0 rc1  Sat Nov 20 2010  legatvs
+Changes:
+        - progressbar.cpp: Rewrite to_unit
+
+
 0.7.0 beta4  Wed Nov 03 2010  legatvs
 Changes:
         - Add --regexp check
