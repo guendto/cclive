@@ -41,6 +41,8 @@ endif ()
 set (HOST_SETUP "${CMAKE_SYSTEM_NAME} ${CMAKE_SYSTEM_PROCESSOR}")
 set (VERSION_LONG "${VERSION_LONG} for ${HOST_SETUP}")
 
+# gzip.
+
 find_program (GZIP_PROG "gzip")
 
 # pod2man.
@@ -138,19 +140,7 @@ message (STATUS "build type         : ${CMAKE_BUILD_TYPE}")
 message (STATUS "  (debug, release, relwithdebinfo, minsizerel)")
 message (STATUS "compiler           : ${CMAKE_CXX_COMPILER}")
 message (STATUS "linker             : ${CMAKE_LINKER}")
-message (STATUS "make program       : ${CMAKE_MAKE_PROGRAM}")
-if (DATE_PROG)
-    message (STATUS "date program       : ${DATE_PROG}")
-else ()
-    message (STATUS "date program       : (not found)")
-endif ()
-if (POD2MAN_PROG)
-    message (STATUS "pod2man program    : ${POD2MAN_PROG}")
-else ()
-    message (STATUS "pod2man program    : (not found)")
-    message (STATUS
-        "  ('pod2man' target disabled, not required for building)")
-endif ()
+message (STATUS "make               : ${CMAKE_MAKE_PROGRAM}")
 message (STATUS "verbose make       : ${CMAKE_VERBOSE_MAKEFILE}")
 message (STATUS "without doc        : ${WITHOUT_DOC}")
 message (STATUS)
