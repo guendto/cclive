@@ -41,6 +41,8 @@ endif ()
 set (HOST_SETUP "${CMAKE_SYSTEM_NAME} ${CMAKE_SYSTEM_PROCESSOR}")
 set (VERSION_LONG "${VERSION_LONG} for ${HOST_SETUP}")
 
+find_program (GZIP_PROG "gzip")
+
 # pod2man.
 
 find_program (POD2MAN_PROG "pod2man")
