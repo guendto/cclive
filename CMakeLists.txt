@@ -109,6 +109,9 @@ find_package (Boost 1.43.0 COMPONENTS ${boost_LIBS} REQUIRED)
 include_directories (AFTER ${Boost_INCLUDE_DIR})
 link_directories (${Boost_LIBRARY_DIRS})
 
+set (boost_VERSION
+    "${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}.${Boost_SUBMINOR_VERSION}")
+
 # Check for headers.
 
 include (CheckIncludeFile)
@@ -133,16 +136,25 @@ subdirs (lib cclive man1)
 # Status.
 
 message (STATUS)
-message (STATUS "cclive version     : ${VERSION}")
-message (STATUS "host setup         : ${HOST_SETUP}")
-message (STATUS "install prefix     : ${CMAKE_INSTALL_PREFIX}")
-message (STATUS "build type         : ${CMAKE_BUILD_TYPE}")
-message (STATUS "  (debug, release, relwithdebinfo, minsizerel)")
-message (STATUS "compiler           : ${CMAKE_CXX_COMPILER}")
-message (STATUS "linker             : ${CMAKE_LINKER}")
-message (STATUS "make               : ${CMAKE_MAKE_PROGRAM}")
-message (STATUS "verbose make       : ${CMAKE_VERBOSE_MAKEFILE}")
-message (STATUS "without doc        : ${WITHOUT_DOC}")
+message (STATUS "Configuration for")
+message (STATUS "   cclive ${VERSION_LONG}")
+message (STATUS)
+message (STATUS "Options:")
+message (STATUS "   Install prefix: ${CMAKE_INSTALL_PREFIX}")
+message (STATUS "   Host setup    : ${HOST_SETUP}")
+message (STATUS "   Build type    : ${CMAKE_BUILD_TYPE}")
+message (STATUS "       (debug, release, relwithdebinfo, minsizerel)")
+message (STATUS "   Verbose make  : ${CMAKE_VERBOSE_MAKEFILE}")
+message (STATUS "   Without doc   : ${WITHOUT_DOC}")
+message (STATUS)
+message (STATUS "Found:")
+message (STATUS "   Compiler: ${CMAKE_CXX_COMPILER}")
+message (STATUS "   Linker  : ${CMAKE_LINKER}")
+message (STATUS "   Make    : ${CMAKE_MAKE_PROGRAM}")
+message (STATUS "   quvi    : ${quvi_VERSION}")
+message (STATUS "   curl    : ${curl_VERSION}")
+message (STATUS "   pcre    : ${pcre_VERSION}")
+message (STATUS "   boost   : ${boost_VERSION}")
 message (STATUS)
 
 # Force these variables to be written to cache.
