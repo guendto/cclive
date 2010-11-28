@@ -3,6 +3,8 @@ Revision history for cclive.
 0.7.0 rc2
 Changes:
         - Add --format [<help>|<list> <pattern>]
+        - gzip manual before installing it
+        - Fix manual install dir
 
 
 0.7.0 rc1  Sat Nov 20 2010  legatvs
