@@ -50,7 +50,7 @@ the file specified with C<--log-file>.
 
 =item B<-f, --format> I<arg>
 
-Download I<arg> format of the video.
+Download I<arg> format of the video. I<arg> can also be C<help>.
 
 =item B<-c, --continue>
 

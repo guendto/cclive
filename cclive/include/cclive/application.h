@@ -26,9 +26,9 @@ namespace cclive {
 
 class application {
 public:
-    enum { ok=0, invalid_option, system } error;
+    typedef enum { ok=0, invalid_option, system } exit_status;
 public:
-    int exec (int,char **);
+    exit_status exec (int,char **);
 private:
     void _read_stdin (std::vector<std::string>&);
     void _tweak_curl_opts (const quvicpp::query&,

@@ -153,9 +153,61 @@ check_quvi_error (const quvicpp::error& e) {
 
 }
 
+static application::exit_status
+print_format_help () {
+    std::cout <<
+"Usage:\n"
+"   --format arg            get format arg\n"
+"   --format list           list websites and supported formats\n"
+"   --format list arg       match arg to websites, list formats for matches\n"
+"Examples:\n"
+"   --format webm_480p      get format webm_480p (youtube)\n"
+"   --format list youtube   list youtube formats\n"
+"   --format list dailym    list dailym(otion) formats"
+    << std::endl;
+    return application::ok;
+}
+
+typedef std::map<std::string,std::string> map_ss;
+
+static void
+print_host (const map_ss::value_type& t)
+    { std::cout << t.first << ":\n  " << t.second << "\n"; }
+
+static application::exit_status
+handle_format_list (
+    const boost::program_options::variables_map& map,
+    const quvicpp::query& query)
+{
+    map_ss m = query.support ();
+
+    // -f list <pattern>
+
+    if (map.count ("url")) {
+
+        const std::string arg0 =
+            map["url"].as< std::vector<std::string> >()[0];
+
+        foreach (map_ss::value_type& t, m) {
+            if (t.first.find (arg0) != std::string::npos)
+                print_host (t);
+        }
+
+    }
+
+    // -f list
+
+    else {
+        foreach (map_ss::value_type& t, m)
+            print_host (t);
+    }
+
+    return application::ok;
+}
+
 extern char LICENSE[]; // cclive/license.cpp
 
-int
+application::exit_status
 application::exec (int argc, char **argv) {
 
     try   { _opts.exec(argc,argv); }
@@ -190,14 +242,24 @@ application::exec (int argc, char **argv) {
         return ok;
     }
 
-    // Set up quvicpp.
+    // --support
 
-    quvicpp::query query; // Throws quvicpp::error caught in main.cpp .
+    quvicpp::query query; // Throws quvicpp::error caught in main.cpp
 
     if (map.count("support")) {
         std::cout << quvicpp::support_to_s (query.support ()) << std::flush;
         return ok;
     }
+
+    // --format [<id> | [<help> | <list> [<pattern]]]
+
+    const std::string format = map["format"].as<std::string>();
+
+    if (format == "help")
+        return print_format_help ();
+
+    else if (format == "list")
+        return handle_format_list (map, query);
 
     // Parse input.
 
@@ -223,7 +285,7 @@ application::exec (int argc, char **argv) {
 
     quvicpp::options qopts;
     qopts.statusfunc (status_callback);
-    qopts.format     (map["format"].as<std::string>());
+    qopts.format     (format);
 
     // Seed random generator.
 
