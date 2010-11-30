@@ -104,7 +104,7 @@ set (boost_LIBS
 set (Boost_USE_STATIC_LIBS   OFF)
 set (Boost_USE_MULTITHREADED OFF)
 
-find_package (Boost 1.43.0 COMPONENTS ${boost_LIBS} REQUIRED)
+find_package (Boost 1.42.0 COMPONENTS ${boost_LIBS} REQUIRED)
 
 include_directories (AFTER ${Boost_INCLUDE_DIR})
 link_directories (${Boost_LIBRARY_DIRS})

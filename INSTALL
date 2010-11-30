@@ -3,7 +3,7 @@
             Prerequisites
 
 * libquvi    (0.2.0+)
-* libboost   (1.43.0+)
+* libboost   (1.42.0+)
 * libpcrecpp (8.10+)
 * libcurl    (7.20.0+)
 

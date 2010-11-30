@@ -2,6 +2,7 @@ Revision history for cclive.
 
 0.7.0 rc2
 Changes:
+        - Lower boost prerequisite to 1.42.0, thanks to Alejandro Garrido Mota
         - Add --format [<help>|<list> <pattern>]
         - gzip manual before installing it
         - Fix manual install dir
