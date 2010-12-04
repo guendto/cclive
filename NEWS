@@ -1,5 +1,5 @@
 
-0.7.0 rc2
+0.7.0 rc2  Sat Dec 04 2010  Toni Gundogdu
 Changes:
         - Lower boost prerequisite to 1.42.0, thanks to Alejandro Garrido Mota
         - Add --format [<help>|<list> <pattern>]
