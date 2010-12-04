@@ -3,8 +3,6 @@ cmake_minimum_required (VERSION 2.8.0)
 
 project (cclive)
 
-set (CMAKE_VERBOSE_MAKEFILE false)
-
 add_definitions (-Wall)
 #add_definitions (-Werror)
 
@@ -56,13 +54,19 @@ if (POD2MAN_PROG)
     )
 endif ()
 
-# Set default build type.
+# Set build type default.
 
 if (NOT CMAKE_BUILD_TYPE)
     set (CMAKE_BUILD_TYPE "debug")
 endif ()
 
-# Set default for WITHOUT_DOC.
+# Set verbose makefile default.
+
+if (NOT CMAKE_VERBOSE_MAKEFILE)
+    set (CMAKE_VERBOSE_MAKEFILE false)
+endif ()
+
+# Set WITHOUT_DOC default.
 
 if (NOT WITHOUT_DOC)
     set (WITHOUT_DOC false)
