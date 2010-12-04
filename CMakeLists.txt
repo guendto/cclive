@@ -8,7 +8,7 @@ add_definitions (-Wall)
 
 # Version.
 
-set (VERSION "0.7.0rc2")
+set (VERSION "0.7.0.1")
 set (VERSION_LONG "${VERSION}")
 set (BRANCH "0.7.0")
 
