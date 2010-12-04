@@ -204,10 +204,19 @@ set (CPACK_SOURCE_IGNORE_FILES
     "/OLD/"
     "/old/"
     "TODO"
+    "/.gar"
 )
 
 # Notice the inclusion here, after setting the cpack variables.
 include (CPack)
+
+# dist.
+
+add_custom_target (
+    dist
+    git log --stat --after="Thu Aug 12 15:54:58 2010" >
+        "${CMAKE_CURRENT_SOURCE_DIR}/ChangeLog" && make package_source
+)
 
 # Uninstall.
 
