@@ -220,9 +220,9 @@ Wait I<arg> seconds before retrying after a failed attempt. Default is 5.
 
 Typical use.
 
-=item B<cclive "http://www.youtube.com/watch?v=DUM1284TqFc" -f sd_270p>
+=item B<cclive "http://www.youtube.com/watch?v=DUM1284TqFc" -f mp4_360p>
 
-Same but get the sd_270p (Youtube specific) format instead. See
+Same but get the mp4_360p (Youtube specific) format instead. See
 C<--support> for a complete list of websites and formats.
 
 =item B<cclive "http://www.youtube.com/watch?v=DUM1284TqFc" -n>
