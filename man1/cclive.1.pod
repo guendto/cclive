@@ -285,77 +285,6 @@ Note that you can use C<--config-file> to specify the file.
 cclive exits with 0 on success and >0 if an (unrecoverable) error
 occurred.
 
-=head1 MANGLED CHARACTERS
-
-Check your terminal settings for an invalid locale setting. You can get
-a list of the available locale names with C<locale -a>. Make sure your
-terminal supports unicode. e.g.:
-
-  % LANG=en_US.UTF8 urxvt&
-  % cclive ... # in the new opened terminal
-
-libquvi (which cclive uses) converts the characters to unicode if the
-parsed data contains the charset meta tag. Otherwise the characters are
-copied from the original context as they are without any conversion.
-
-=head1 MISSING UNICODE CHARACTERS
-
-Missing unicode characters are likely result of invalid use of C<--regexp>.
-Check that the C<--regexp> contains "\pL". cclive uses libpcre for regular
-expressions, the "\pL" is specific to PCRE.
-
-"In UTF-8 mode, characters with values greater than 128 never match \d,
-\s, or \w, and always match \D, \S, and \W. This is true even when Unicode 
-character property support is available. These sequences retain their original
-meanings from before UTF-8 support was available, mainly for efficiency
-reasons. Note that this also affects \b, because it is defined in
-terms of \w and \W." -- C<pcrepattern(3)>
-
-=head1 CONTRIBUTING
-
-=over 4
-
-=item B<Add support for another website>
-
-cclive relies on libquvi (via WWW::Quvi) for parsing the video details,
-e.g. download links. Any additional support will therefore have to
-added to the libquvi rather than cclive.
-
-Please refer to the libquvi <http://quvi.googlecode.com/>
-documentation instead. On most systems, you can find the READMEs and
-HOWTOs in $prefix/share/quvi and $prefix/share/doc/quvi directories.
-You can find the same files in release source tarballs and at:
-
-    <http://repo.or.cz/w/quvi.git/tree/HEAD:/doc>
-    <http://repo.or.cz/w/quvi.git/tree/HEAD:/share/lua>
-    <http://repo.or.cz/w/quvi.git/tree/HEAD:/share/lua/website>
-
-=item B<Submitting patches>
-
-If you have cooked up a patch, please submit it to the tracker (see L</BUGS>).
-
-If you are working with git and you have established a repo from
-which we can pull the changes from, you can use the same tracker for
-leaving pull requests.
-
-=back
-
-=head1 BUGS
-
-=over 4
-
-=item B<Instructions>
-
-Please read them carefully:
-  <http://code.google.com/p/cclive/wiki/ReportingIssues>
-
-=item B<Trackers>
-
-Bugs, support, patches, etc. trackers for these can be found at:
-  <http://sourceforge.net/projects/cclive/support>
-
-=back
-
 =head1 DEBUGGING TIPS
 
 =over 4
@@ -379,35 +308,16 @@ They may prove invaluable.
 
 =back
 
-=head1 OTHER
+=head1 WWW
 
-=over 4
-
-=item B<Project>
-
-<http://cclive.googlecode.com/>
-
-<http://cclive.sourceforge.net/> -- redirects to the above
-
-=item B<Files>
-
-The downloadable files (e.g. source tarballs) can be found at:
-
-<http://cclive.googlecode.com/>
-
-<http://sourceforge.net/projects/cclive/files/> -- mirror
-
-=item B<Development repository>
-
-git clone git://repo.or.cz/cclive.git
-
-=back
+<http://cclive.sourceforge.net/>
 
 =head1 AUTHOR
 
-Toni Gundogdu <legatvs at sign gmail com>. See also L</BUGS>, L</DEBUGGING TIPS>
-and L</CONTRIBUTING>.
+Toni Gundogdu <legatvs at sign gmail com>.
+
+Thanks to all those who have contributed to the project
+by sending patches, reporting bugs and writing feedback.
+You know who you are.
 
 =cut
-
-

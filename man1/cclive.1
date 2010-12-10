@@ -382,67 +382,6 @@ Note that you can use \f(CW\*(C`\-\-config\-file\*(C'\fR to specify the file.
 .IX Header "EXIT STATUS"
 cclive exits with 0 on success and >0 if an (unrecoverable) error
 occurred.
-.SH "MANGLED CHARACTERS"
-.IX Header "MANGLED CHARACTERS"
-Check your terminal settings for an invalid locale setting. You can get
-a list of the available locale names with \f(CW\*(C`locale \-a\*(C'\fR. Make sure your
-terminal supports unicode. e.g.:
-.PP
-.Vb 2
-\&  % LANG=en_US.UTF8 urxvt&
-\&  % cclive ... # in the new opened terminal
-.Ve
-.PP
-libquvi (which cclive uses) converts the characters to unicode if the
-parsed data contains the charset meta tag. Otherwise the characters are
-copied from the original context as they are without any conversion.
-.SH "MISSING UNICODE CHARACTERS"
-.IX Header "MISSING UNICODE CHARACTERS"
-Missing unicode characters are likely result of invalid use of \f(CW\*(C`\-\-regexp\*(C'\fR.
-Check that the \f(CW\*(C`\-\-regexp\*(C'\fR contains \*(L"\epL\*(R". cclive uses libpcre for regular
-expressions, the \*(L"\epL\*(R" is specific to \s-1PCRE\s0.
-.PP
-\&\*(L"In \s-1UTF\-8\s0 mode, characters with values greater than 128 never match \ed,
-\&\es, or \ew, and always match \eD, \eS, and \eW. This is true even when Unicode 
-character property support is available. These sequences retain their original
-meanings from before \s-1UTF\-8\s0 support was available, mainly for efficiency
-reasons. Note that this also affects \eb, because it is defined in
-terms of \ew and \eW.\*(R" \*(-- \f(CWpcrepattern(3)\fR
-.SH "CONTRIBUTING"
-.IX Header "CONTRIBUTING"
-.IP "\fBAdd support for another website\fR" 4
-.IX Item "Add support for another website"
-cclive relies on libquvi (via WWW::Quvi) for parsing the video details,
-e.g. download links. Any additional support will therefore have to
-added to the libquvi rather than cclive.
-.Sp
-Please refer to the libquvi <http://quvi.googlecode.com/>
-documentation instead. On most systems, you can find the READMEs and
-HOWTOs in \f(CW$prefix\fR/share/quvi and \f(CW$prefix\fR/share/doc/quvi directories.
-You can find the same files in release source tarballs and at:
-.Sp
-.Vb 3
-\&    <http://repo.or.cz/w/quvi.git/tree/HEAD:/doc>
-\&    <http://repo.or.cz/w/quvi.git/tree/HEAD:/share/lua>
-\&    <http://repo.or.cz/w/quvi.git/tree/HEAD:/share/lua/website>
-.Ve
-.IP "\fBSubmitting patches\fR" 4
-.IX Item "Submitting patches"
-If you have cooked up a patch, please submit it to the tracker (see \*(L"\s-1BUGS\s0\*(R").
-.Sp
-If you are working with git and you have established a repo from
-which we can pull the changes from, you can use the same tracker for
-leaving pull requests.
-.SH "BUGS"
-.IX Header "BUGS"
-.IP "\fBInstructions\fR" 4
-.IX Item "Instructions"
-Please read them carefully:
-  <http://code.google.com/p/cclive/wiki/ReportingIssues>
-.IP "\fBTrackers\fR" 4
-.IX Item "Trackers"
-Bugs, support, patches, etc. trackers for these can be found at:
-  <http://sourceforge.net/projects/cclive/support>
 .SH "DEBUGGING TIPS"
 .IX Header "DEBUGGING TIPS"
 .IP "\fB\-\-no\-download\fR" 4
@@ -458,24 +397,13 @@ Compile cclive with \f(CW\*(C`\-g\*(C'\fR (see \f(CW\*(C`g++(1)\*(C'\fR) for deb
 .IX Item "Other tools"
 Make use of such tools as \f(CWstrace(1)\fR, \f(CWgdb(1)\fR and \f(CWvalgrind(1)\fR.
 They may prove invaluable.
-.SH "OTHER"
-.IX Header "OTHER"
-.IP "\fBProject\fR" 4
-.IX Item "Project"
-<http://cclive.googlecode.com/>
-.Sp
-<http://cclive.sourceforge.net/> \*(-- redirects to the above
-.IP "\fBFiles\fR" 4
-.IX Item "Files"
-The downloadable files (e.g. source tarballs) can be found at:
-.Sp
-<http://cclive.googlecode.com/>
-.Sp
-<http://sourceforge.net/projects/cclive/files/> \*(-- mirror
-.IP "\fBDevelopment repository\fR" 4
-.IX Item "Development repository"
-git clone git://repo.or.cz/cclive.git
+.SH "WWW"
+.IX Header "WWW"
+<http://cclive.sourceforge.net/>
 .SH "AUTHOR"
 .IX Header "AUTHOR"
-Toni Gundogdu <legatvs at sign gmail com>. See also \*(L"\s-1BUGS\s0\*(R", \*(L"\s-1DEBUGGING\s0 \s-1TIPS\s0\*(R"
-and \*(L"\s-1CONTRIBUTING\s0\*(R".
+Toni Gundogdu <legatvs at sign gmail com>.
+.PP
+Thanks to all those who have contributed to the project
+by sending patches, reporting bugs and writing feedback.
+You know who you are.

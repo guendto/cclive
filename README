@@ -7,5 +7,5 @@ similar video websites that require Adobe Flash to view the video content.
 It has low memory footprint compared to other similar tools. It is a rewrite
 of the clive software in C++ and it is free software, licensed under the GPLv3.
 
-WWW: <http://cclive.googlecode.com/>
-GIT: <git://repo.or.cz/cclive.git>
+WWW: <http://cclive.sourceforge.net/>
+GIT: <git://repo.or.cz/w/cclive.git>
