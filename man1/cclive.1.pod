@@ -62,7 +62,7 @@ Overwrite existing video.
 
 =item B<-O, --output-file> I<arg>
 
-Write video to I<arg>.
+Write video to I<arg>. Overrides C<--filename-format>.
 
 =item B<-n, --no-download>
 
@@ -107,7 +107,12 @@ is "%t.%s". The following specifiers are supported: %t video title
   %h    video host id
   %s    video file suffix
 
-Note that I<all> occurences of the specifier will be replaced.
+Note that I<all> occurences of the specifier will be replaced. See also
+C<--output-file>.
+
+=item B<--output-dir> I<arg>
+
+Write downloaded videos to I<arg> directory.
 
 =item B< --regexp> I<arg>
 
