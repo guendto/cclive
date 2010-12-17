@@ -244,6 +244,25 @@ file::to_s (const quvicpp::link& link) const {
 
 namespace fs = boost::filesystem;
 
+static fs::path
+output_dir (const po::variables_map& map) {
+
+    fs::path dir;
+
+    if (map.count ("output-dir"))
+        dir = map["output-dir"].as<std::string>();
+
+    else {
+#ifdef HAVE_GETCWD
+        char tmp[PATH_MAX];
+        getcwd (tmp, sizeof (tmp));
+        dir = tmp;
+#endif
+    }
+
+    return fs::system_complete (dir);
+}
+
 void
 file::_init (
     const quvicpp::video& video,
@@ -255,11 +274,11 @@ file::_init (
 
     if (map.count("output-file")) {
 
-        const std::string output_file =
-            map["output-file"].as<std::string>();
+        // Overrides --filename-format.
 
-        const fs::path p =
-            fs::system_complete (fs::path(output_file));
+        fs::path p = output_dir (map);
+
+        p /= map["output-file"].as<std::string>();
 
         _name           = p.filename();
         _path           = p.string();
@@ -321,9 +340,16 @@ file::_init (
 
         if (n > 1) b << "_" << n;
 
+        // Output dir.
+
+        const fs::path out_dir = output_dir (map);
+        fs::path output_file   = out_dir;
+
+        output_file /= b.str ();
+
         // Path, name.
 
-        fs::path p( fs::system_complete (b.str()) );
+        fs::path p = fs::system_complete (output_file);
 
         _name = p.filename();
         _path = p.string();
@@ -349,7 +375,8 @@ file::_init (
                 boost::format fmt =
                     boost::format ("%1%.%2%") % b.str() % i;
 
-                p     = fs::system_complete( fmt.str() );
+                p     = out_dir;
+                p    /= fs::system_complete (fmt.str ());
                 _name = p.filename();
                 _path = p.string();
             }

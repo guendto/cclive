@@ -92,6 +92,9 @@ options::exec (int argc, char **argv) {
         ("filename-format",
             opts::value<std::string>()->default_value("%t.%s"),
             "output video filename format")
+        ("output-dir",
+            opts::value<std::string>(),
+            "output directory for downloaded videos")
         ("regexp",
             opts::value<std::string>()->default_value("/(\\w|\\pL|\\s)/g"),
             "regexp to clean up video title")
