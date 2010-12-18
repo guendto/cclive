@@ -182,46 +182,6 @@ configure_file (
     "${CMAKE_CURRENT_BINARY_DIR}/config.h"
 )
 
-# CPack.
-
-include (InstallRequiredSystemLibraries)
-
-set (CPACK_SOURCE_PACKAGE_FILE_NAME
-    "cclive-${VERSION}"
-    CACHE INTERNAL
-    "tarball basename"
-)
-
-set (CPACK_PACKAGE_FILE_NAME ${CPACK_SOURCE_PACKAGE_FILE_NAME})
-set (CPACK_GENERATOR "TGZ")
-set (CPACK_SOURCE_GENERATOR "TGZ")
-set (CPACK_RESOURCE_FILE_LICENSE ${CMAKE_CURRENT_SOURCE_DIR}/COPYING)
-set (CPACK_RESOURCE_FILE_README  ${CMAKE_CURRENT_SOURCE_DIR}/README)
-
-set (CPACK_SOURCE_IGNORE_FILES
-    "/.git"
-    "/.cmake/"
-    "/CMakeFiles/"
-    "/CMakeCache/"
-    "/Makefile/"
-    "/tmp/"
-    "/OLD/"
-    "/old/"
-    "TODO"
-    "/.gar"
-)
-
-# Notice the inclusion here, after setting the cpack variables.
-include (CPack)
-
-# dist.
-
-add_custom_target (
-    dist
-    git log --stat --after="Thu Aug 12 15:54:58 2010" >
-        "${CMAKE_CURRENT_SOURCE_DIR}/ChangeLog" && make package_source
-)
-
 # Uninstall.
 
 configure_file (
