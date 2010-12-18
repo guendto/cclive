@@ -10,7 +10,7 @@ add_definitions (-Wall)
 
 set (VERSION "0.7.0.1")
 set (VERSION_LONG "${VERSION}")
-set (BRANCH "0.7.0")
+set (BRANCH "master")
 
 if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/.git")
     find_program (GIT_PROG "git")
