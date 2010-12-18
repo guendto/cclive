@@ -1,0 +1,21 @@
+
+#ifndef config_h
+#define config_h
+
+#define VERSION      "${VERSION}"
+#define VERSION_LONG "${VERSION_LONG}"
+
+#cmakedefine HAVE_UNISTD_H
+#cmakedefine HAVE_SYS_TYPES_H
+#cmakedefine HAVE_SYS_IOCTL_H
+#cmakedefine HAVE_SYS_STAT_H
+#cmakedefine HAVE_SIGNAL_H
+
+#cmakedefine HAVE_STRERROR_R
+#cmakedefine HAVE_STRERROR
+#cmakedefine HAVE_FORK
+#cmakedefine HAVE_GETCWD
+
+#endif
+
+
