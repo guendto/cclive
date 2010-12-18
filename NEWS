@@ -1,4 +1,9 @@
 
+0.7.0.1  Sat Dec 18 2010  Toni Gundogdu
+Changes:
+        - Add --output-dir
+
+
 0.7.0 rc2  Sat Dec 04 2010  Toni Gundogdu
 Changes:
         - Lower boost prerequisite to 1.42.0, thanks to Alejandro Garrido Mota
