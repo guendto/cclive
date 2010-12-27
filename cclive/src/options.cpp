@@ -58,35 +58,48 @@ options::exec (int argc, char **argv) {
     opts::options_description generic;
 
     generic.add_options()
-        ("version",         "print version and exit")
-        ("help",            "print help and exit")
-        ("license",         "print license and exit")
-        ("support",         "print supported websites and exit")
-        ("verbose-libcurl", "turn on libcurl verbose output")
-        ("quiet,q",         "turn off all output, excl. errors")
-        ("background,b",    "go to background")
+        ("version",
+            "Print version and exit")
+        ("help",
+            "Print help and exit")
+        ("license",
+            "Print license and exit")
+        ("support",
+            "Print supported websites and exit")
+        ("verbose-libcurl",
+            "Turn on libcurl verbose output")
+        ("quiet,q",
+            "Turn off all output, excl. errors")
+        ("background,b",
+            "Go to background")
         ("format,f",
             opts::value<std::string>()->default_value("default"),
-            "download video format")
-        ("continue,c",      "resume partially downloaded video")
-        ("overwrite,W",     "overwrite existing video")
-        ("output-file,O",   opts::value<std::string>(),
-            "write downloaded video to file")
-        ("no-download,n",   "do not download video, print info only")
+            "Download video format")
+        ("continue,c",
+            "Resume partially downloaded video")
+        ("overwrite,W",
+            "Overwrite existing video")
+        ("output-file,O",
+            opts::value<std::string>(),
+            "Write downloaded video to file")
+        ("no-download,n",
+            "Do not download video, print info only")
 #ifdef HAVE_QUVIOPT_NOSHORTENED
-        ("no-shortened,s",  "do not decompress shortened URLs")
+        ("no-shortened,s",
+            "Do not decompress shortened URLs")
 #endif
-        ("no-proxy",        "disable use of http proxy")
+        ("no-proxy",
+            "Disable use of http proxy")
         ("log-file",
             opts::value<std::string>()->default_value("cclive_log"),
-            "write log output to arg")
+            "Write log output to arg")
         ("update-interval",
             opts::value<double>()->default_value(1.0),
-            "update interval of progressbar")
+            "Update interval of progressbar")
         ("config-file",
             opts::value<std::string>(&_config_file)
                 ->default_value(config_path.string()),
-            "file to read cclive arguments from")
+            "File to read cclive arguments from")
     ;
 
     // Config.
@@ -96,34 +109,34 @@ options::exec (int argc, char **argv) {
     config.add_options ()
         ("filename-format",
             opts::value<std::string>()->default_value("%t.%s"),
-            "output video filename format")
+            "Output video filename format")
         ("output-dir",
             opts::value<std::string>(),
-            "output directory for downloaded videos")
+            "Output directory for downloaded videos")
         ("regexp",
             opts::value<std::string>()->default_value("/(\\w|\\pL|\\s)/g"),
-            "regexp to clean up video title")
+            "Regexp to clean up video title")
         ("subst", opts::value<std::string>(),
-            "replace matched occurences in filename")
+            "Replace matched occurences in filename")
         ("exec", opts::value<std::string>(),
-            "invoke arg after download finishes")
+            "Invoke arg after download finishes")
         ("agent",
             opts::value<std::string>()->default_value("Mozilla/5.0"),
-            "identify as arg to http servers")
+            "Identify as arg to http servers")
         ("proxy", opts::value<std::string>(),
-            "use proxy for http connections")
+            "Use proxy for http connections")
         ("throttle", opts::value<int>()->default_value(0),
-            "limit download transfer rate to KB/s")
+            "Limit download transfer rate to KB/s")
         ("connect-timeout", opts::value<int>()->default_value(30),
-            "seconds connecting allowed to take")
+            "Seconds connecting allowed to take")
         ("transfer-timeout", opts::value<int>()->default_value(0),
-            "seconds transfer allowed to take")
+            "Seconds transfer allowed to take")
         ("dns-cache-timeout", opts::value<int>()->default_value(60),
-            "seconds dns resolves kept in memory")
+            "Seconds dns resolves kept in memory")
         ("max-retries", opts::value<int>()->default_value(5),
-            "max download attempts before giving up")
+            "Max download attempts before giving up")
         ("retry-wait", opts::value<int>()->default_value(5),
-            "time to wait before retrying")
+            "Time to wait before retrying")
     ;
 
     // Hidden.
