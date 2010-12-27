@@ -15,6 +15,8 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "config.h"
+
 #include <cassert>
 
 #include <quvicpp/quvicpp.h>
@@ -85,9 +87,14 @@ query::parse (const url& pageURL, const options& opts) const {
     if (!opts._format.empty())
         quvi_setopt(_quvi, QUVIOPT_FORMAT, opts._format.c_str());
 
-    quvi_setopt(_quvi, QUVIOPT_STATUSFUNCTION,  opts._statusfunc);
-    quvi_setopt(_quvi, QUVIOPT_WRITEFUNCTION,   opts._writefunc);
-    quvi_setopt(_quvi, QUVIOPT_NOVERIFY,       !opts._verify ? 1L:0L);
+    quvi_setopt(_quvi, QUVIOPT_STATUSFUNCTION, opts._statusfunc);
+    quvi_setopt(_quvi, QUVIOPT_WRITEFUNCTION,  opts._writefunc);
+#ifdef _0
+    quvi_setopt(_quvi, QUVIOPT_NOVERIFY, opts._verify ? 1L:0L);
+#endif
+#ifdef HAVE_QUVIOPT_NOSHORTENED
+    quvi_setopt(_quvi, QUVIOPT_NOSHORTENED, opts._shortened ? 1L:0L);
+#endif
 
     quvi_video_t qv;
 

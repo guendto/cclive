@@ -15,6 +15,8 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "config.h"
+
 #include <fstream>
 #include <cstring>
 
@@ -71,6 +73,9 @@ options::exec (int argc, char **argv) {
         ("output-file,O",   opts::value<std::string>(),
             "write downloaded video to file")
         ("no-download,n",   "do not download video, print info only")
+#ifdef HAVE_QUVIOPT_NOSHORTENED
+        ("no-shortened,s",  "do not decompress shortened URLs")
+#endif
         ("no-proxy",        "disable use of http proxy")
         ("log-file",
             opts::value<std::string>()->default_value("cclive_log"),

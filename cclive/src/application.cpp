@@ -114,10 +114,7 @@ print_retrying (
 
 static void
 print_checking (const int i, const int n) {
-
-    if (n > 1)
-        cclive::log << "(" << i << " of " << n << ") ";
-
+    if (n > 1)  cclive::log << "(" << i << " of " << n << ") ";
     cclive::log << "Checking ... " << std::flush;
 }
 
@@ -286,6 +283,10 @@ application::exec (int argc, char **argv) {
     quvicpp::options qopts;
     qopts.statusfunc (status_callback);
     qopts.format     (format);
+#ifdef _0
+    qopts.verify     (map.count ("no-verify"));
+#endif
+    qopts.shortened  (map.count ("no-shortened"));
 
     // Seed random generator.
 

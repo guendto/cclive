@@ -26,7 +26,8 @@ options::options ()
     : _statusfunc(NULL),
       _writefunc(NULL),
       _format("default"),
-      _verify(true)
+      _verify(true),
+      _shortened(true)
     { }
 
 // Copy constructor.
@@ -35,7 +36,8 @@ options::options (const options& opts)
     : _statusfunc(NULL),
       _writefunc(NULL),
       _format("default"),
-      _verify(true)
+      _verify(true),
+      _shortened(true)
     { _swap(opts); }
 
 // Copy assignment operator.
@@ -60,23 +62,18 @@ void
 options::_swap (const options& qo) {
     _format     = qo._format;
     _verify     = qo._verify;
+    _shortened  = qo._shortened;
     _statusfunc = qo._statusfunc;
     _writefunc  = qo._writefunc;
 }
 
 // Set.
 
-void options::format (const std::string& fmt)
-    { _format = fmt; }
-
-void options::verify (bool b)
-    { _verify = b; }
-
-void options::statusfunc (quvi_callback_status cb)
-    { _statusfunc = cb; }
-
-void options::writefunc (quvi_callback_write cb)
-    { _writefunc = cb; }
+void options::format (const std::string& fmt)      { _format     = fmt; }
+void options::verify (const bool b)                { _verify     = b; }
+void options::shortened (const bool b)             { _shortened  = b; }
+void options::statusfunc (quvi_callback_status cb) { _statusfunc = cb; }
+void options::writefunc (quvi_callback_write cb)   { _writefunc  = cb; }
 
 } // End namespace.
 

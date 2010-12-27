@@ -68,6 +68,11 @@ Write video to I<arg>. Overrides C<--filename-format>.
 
 Do not download the video, display video details only.
 
+=item B<-s, --no-shortened>
+
+Do not "decompress" shortened URLs before using them. Available only
+with quvi 0.2.8 and later.
+
 =item B<--no-proxy>
 
 Disable use of HTTP proxy. Overrides both C<--proxy> and http_proxy environment

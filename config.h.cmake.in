@@ -16,6 +16,8 @@
 #cmakedefine HAVE_FORK
 #cmakedefine HAVE_GETCWD
 
+#cmakedefine HAVE_QUVIOPT_NOSHORTENED
+
 #endif
 
 

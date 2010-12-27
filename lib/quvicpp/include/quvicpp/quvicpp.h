@@ -55,7 +55,8 @@ public:
     virtual ~options();
 public:
     void format     (const std::string&);
-    void verify     (bool);
+    void verify     (const bool);
+    void shortened  (const bool);
     void statusfunc (quvi_callback_status);
     void writefunc  (quvi_callback_write);
 private:
@@ -65,6 +66,7 @@ private:
     quvi_callback_write  _writefunc;
     std::string          _format;
     bool                 _verify;
+    bool                 _shortened;
 };
 
 // Query.

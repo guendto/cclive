@@ -76,19 +76,23 @@ endif ()
 
 include (FindPkgConfig)
 
-pkg_check_modules (quvi     libquvi>=0.2.0 REQUIRED)
+pkg_check_modules (quvi libquvi>=0.2.0 REQUIRED QUIET)
 include_directories (AFTER ${quvi_INCLUDE_DIRS})
 link_directories (${quvi_LIBRARY_DIRS})
 
-pkg_check_modules (curl     libcurl>=7.20 REQUIRED)
+if (quvi_VERSION VERSION_GREATER 0.2.7)
+    set (HAVE_QUVIOPT_NOSHORTENED true)
+endif ()
+
+pkg_check_modules (curl libcurl>=7.20 REQUIRED QUIET)
 include_directories (AFTER ${curl_INCLUDE_DIRS})
 link_directories (${curl_LIBRARY_DIRS})
 
-pkg_check_modules (pcre libpcrecpp>=8.10 REQUIRED)
+pkg_check_modules (pcre libpcrecpp>=8.10 REQUIRED QUIET)
 include_directories (AFTER ${pcre_INCLUDE_DIRS})
 link_directories (${pcre_LIBRARY_DIRS})
 
-pkg_check_modules (pcrecpp  libpcrecpp>=8.10 REQUIRED)
+pkg_check_modules (pcrecpp libpcrecpp>=8.10 REQUIRED QUIET)
 include_directories (AFTER ${pcrecpp_INCLUDE_DIRS})
 link_directories (${pcrecpp_LIBRARY_DIRS})
 
@@ -107,6 +111,7 @@ set (boost_LIBS
 
 set (Boost_USE_STATIC_LIBS   OFF)
 set (Boost_USE_MULTITHREADED OFF)
+set (Boost_FIND_QUIETLY      ON)
 
 find_package (Boost 1.42.0 COMPONENTS ${boost_LIBS} REQUIRED)
 
@@ -140,16 +145,8 @@ subdirs (lib cclive man1)
 # Status.
 
 message (STATUS)
-message (STATUS "Configuration for")
+message (STATUS "Configured:")
 message (STATUS "   cclive ${VERSION_LONG}")
-message (STATUS)
-message (STATUS "Options:")
-message (STATUS "   Install prefix: ${CMAKE_INSTALL_PREFIX}")
-message (STATUS "   Host setup    : ${HOST_SETUP}")
-message (STATUS "   Build type    : ${CMAKE_BUILD_TYPE}")
-message (STATUS "       (debug, release, relwithdebinfo, minsizerel)")
-message (STATUS "   Verbose make  : ${CMAKE_VERBOSE_MAKEFILE}")
-message (STATUS "   Without doc   : ${WITHOUT_DOC}")
 message (STATUS)
 message (STATUS "Found:")
 message (STATUS "   Compiler: ${CMAKE_CXX_COMPILER}")
@@ -159,6 +156,14 @@ message (STATUS "   quvi    : ${quvi_VERSION}")
 message (STATUS "   curl    : ${curl_VERSION}")
 message (STATUS "   pcre    : ${pcre_VERSION}")
 message (STATUS "   boost   : ${boost_VERSION}")
+message (STATUS)
+message (STATUS "Options:")
+message (STATUS "   Install prefix: ${CMAKE_INSTALL_PREFIX}")
+message (STATUS "   Host setup    : ${HOST_SETUP}")
+message (STATUS "   Build type    : ${CMAKE_BUILD_TYPE}")
+message (STATUS "       (debug, release, relwithdebinfo, minsizerel)")
+message (STATUS "   Verbose make  : ${CMAKE_VERBOSE_MAKEFILE}")
+message (STATUS "   Without doc   : ${WITHOUT_DOC}")
 message (STATUS)
 
 # Force these variables to be written to cache.
@@ -181,6 +186,8 @@ configure_file (
     "${CMAKE_CURRENT_SOURCE_DIR}/config.h.cmake.in"
     "${CMAKE_CURRENT_BINARY_DIR}/config.h"
 )
+
+include_directories (${CMAKE_CURRENT_BINARY_DIR})
 
 # Uninstall.
 
