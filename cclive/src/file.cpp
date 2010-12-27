@@ -209,12 +209,12 @@ file::write (
 
     if ( !error.empty() ) {
 
-        std::clog << std::endl;
+        cclive::log << std::endl;
 
         if (resp_code >= 400 && resp_code <= 500)
             throw std::runtime_error (error);
         else
-            std::clog << "error: " << error << std::endl;
+            cclive::log << "error: " << error << std::endl;
 
         return false; // Retry.
     }

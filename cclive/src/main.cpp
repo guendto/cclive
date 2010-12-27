@@ -17,6 +17,7 @@
 
 #include <iostream>
 
+#include "cclive/log.h"
 #include "cclive/application.h"
 
 int
@@ -28,10 +29,10 @@ main (int argc, char *argv[]) {
     try { rc = app.exec(argc,argv); }
 
     catch (const quvicpp::error& e)
-        { std::clog << "libquvi: error: " << e.what() << std::endl; }
+        { cclive::log << "libquvi: error: " << e.what() << std::endl; }
 
     catch (const std::runtime_error& e)
-        { std::clog << "error: " << e.what() << std::endl; }
+        { cclive::log << "error: " << e.what() << std::endl; }
 
     return rc;
 }

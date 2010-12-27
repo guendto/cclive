@@ -19,6 +19,7 @@
 
 #include "quvicpp/quvicpp.h"
 
+#include "cclive/log.h"
 #include "cclive/options.h"
 #include "cclive/file.h"
 #include "cclive/exec.h"
@@ -59,7 +60,7 @@ get (
 
             if (retry > 0) {
 
-                std::clog
+                cclive::log
                     << "Retrying "
                     << retry
                     << " of "
@@ -82,7 +83,7 @@ get (
             }
 
             else
-                std::clog << file.to_s (link) << std::endl;
+                cclive::log << file.to_s (link) << std::endl;
 
             break; // Stop retrying.
         }

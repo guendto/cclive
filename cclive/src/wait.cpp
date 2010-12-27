@@ -28,6 +28,7 @@
 #define sleep(n) Sleep(n*1000)
 #endif
 
+#include "cclive/log.h"
 #include "cclive/wait.h"
 
 namespace cclive {
@@ -38,16 +39,16 @@ wait (const int retry_wait) {
     for (int i=1; i<=retry_wait; ++i) {
 
         if (i % 5 == 0)
-            std::clog << i;
+            cclive::log << i;
         else
-            std::clog << ".";
+            cclive::log << ".";
 
-        std::clog << std::flush;
+        cclive::log << std::flush;
 
         sleep(1);
     }
 
-    std::clog << std::endl;
+    cclive::log << std::endl;
 }
 
 } // End namespace.

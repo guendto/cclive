@@ -100,7 +100,7 @@ print_retrying (
 {
     if (retry > 0) {
 
-        std::clog
+        cclive::log
             << "Retrying "
             << retry
             << " of "
@@ -123,11 +123,11 @@ print_checking (const int i, const int n) {
 
 static void
 print_quvi_error (const quvicpp::error& e)
-    { std::clog << "libquvi: error: " << e.what() << std::endl; }
+    { cclive::log << "libquvi: error: " << e.what() << std::endl; }
 
 static void
 print_error (const std::exception& e)
-    { std::clog << "error: " << e.what() << std::endl; }
+    { cclive::log << "error: " << e.what() << std::endl; }
 
 static void
 check_quvi_error (const quvicpp::error& e) {

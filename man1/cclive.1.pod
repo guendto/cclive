@@ -41,7 +41,7 @@ Turn on libcurl verbose output.
 
 =item B<-q, --quiet>
 
-Turn off all output but errors.
+Turn off all output to stdout and stderr.
 
 =item B<-b, --background>
 
