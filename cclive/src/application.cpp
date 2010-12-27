@@ -122,9 +122,6 @@ static void
 print_quvi_error (const quvicpp::error& e)
     { cclive::log << "libquvi: error: " << e.what() << std::endl; }
 
-static void
-print_error (const std::exception& e)
-    { cclive::log << "error: " << e.what() << std::endl; }
 
 static void
 check_quvi_error (const quvicpp::error& e) {
@@ -210,7 +207,7 @@ application::exec (int argc, char **argv) {
     try   { _opts.exec(argc,argv); }
 
     catch (const std::exception& e) {
-        print_error (e);
+        std::clog << "error: " << e.what() << std::endl;
         return invalid_option;
     }
 
@@ -351,7 +348,7 @@ application::exec (int argc, char **argv) {
             { print_quvi_error (e); }
 
         catch (const std::runtime_error& e)
-            { print_error (e); }
+            { cclive::log << "error: " << e.what() << std::endl; }
     }
 
     return ok;
