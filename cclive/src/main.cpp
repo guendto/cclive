@@ -17,7 +17,6 @@
 
 #include <iostream>
 
-#include "cclive/log.h"
 #include "cclive/application.h"
 
 int
@@ -28,11 +27,13 @@ main (int argc, char *argv[]) {
 
     try { rc = app.exec(argc,argv); }
 
+    // Thrown by quvicpp::query constructor (e.g. quvi_init failure).
     catch (const quvicpp::error& e)
-        { cclive::log << "libquvi: error: " << e.what() << std::endl; }
+        { std::clog << "libquvi: error: " << e.what() << std::endl; }
 
+    // Thrown by boost (e.g. cclive::go_background failure).
     catch (const std::runtime_error& e)
-        { cclive::log << "error: " << e.what() << std::endl; }
+        { std::clog << "error: " << e.what() << std::endl; }
 
     return rc;
 }

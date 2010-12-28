@@ -297,7 +297,7 @@ application::exec (int argc, char **argv) {
 
     if (map.count ("background")) {
 
-        // Throws std::runtime_error if fails.
+        // (Boost) Throws std::runtime_error if fails.
 
         cclive::go_background (map["log-file"].as<std::string>(), omit);
     }
