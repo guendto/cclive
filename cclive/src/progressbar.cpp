@@ -367,23 +367,40 @@ progressbar::_dotline (
     const std::stringstream& percent_s,
     const std::string& fname)
 {
-    if (++_dot_count >= 31) {
-        cclive::log
-            << "  "
-            << std::setw (6)
-            << size_s.str ()
-            << "  "
-            << rate_s.str ()
-            << "  "
-            << eta_s.str ()
-            << "  "
-            << percent_s.str ()
-            << std::endl;
+#define details \
+    "  " \
+    << std::setw (6) \
+    << size_s.str () \
+    << "  " \
+    << rate_s.str () \
+    << "  " \
+    << eta_s.str () \
+    << "  " \
+    << percent_s.str ()
+
+#define dot \
+    do { \
+        cclive::log \
+            << "." \
+            << (_dot_count % 3 == 0 ? " ":"") \
+            << std::flush; \
+    } while (0)
+
+    ++_dot_count;
+
+    if (_done) {
+        for (; _dot_count < 31; ++_dot_count) dot;
+        cclive::log << details << std::flush;
+        return;
+    }
+    if (_dot_count >= 31) {
+        cclive::log << details << std::endl;
         _dot_count = 0;
     }
-    else {
-        cclive::log << "." << (_dot_count % 3 == 0 ? " ":"") << std::flush;
-    }
+#undef details
+    else
+        dot;
+#undef dot
 }
 
 void
