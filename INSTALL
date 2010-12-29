@@ -4,7 +4,7 @@
 
 * libquvi    (0.2.0+)
 * libboost   (1.42.0+)
-* libpcrecpp (8.10+)
+* libpcrecpp (8.02+)
 * libcurl    (7.20.0+)
 
 -- Additionally for building
