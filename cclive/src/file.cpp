@@ -347,13 +347,13 @@ file::_init (
         // Output dir.
 
         const fs::path out_dir = output_dir (map);
-        fs::path output_file   = out_dir;
+        fs::path templ_path    = out_dir;
 
-        output_file /= b.str ();
+        templ_path /= b.str ();
 
         // Path, name.
 
-        fs::path p = fs::system_complete (output_file);
+        fs::path p = fs::system_complete (templ_path);
 
         _name = p.filename();
         _path = p.string();
@@ -373,14 +373,12 @@ file::_init (
                 else {
                     if (map.count("continue"))
                         break;
-
                 }
 
                 boost::format fmt =
-                    boost::format ("%1%.%2%") % b.str() % i;
+                    boost::format ("%1%.%2%") % templ_path.string () % i;
 
-                p     = out_dir;
-                p    /= fs::system_complete (fmt.str ());
+                p     = fs::system_complete (fmt.str ());
                 _name = p.filename();
                 _path = p.string();
             }
