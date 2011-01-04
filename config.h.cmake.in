@@ -15,6 +15,7 @@
 #cmakedefine HAVE_STRERROR
 #cmakedefine HAVE_FORK
 #cmakedefine HAVE_GETCWD
+#cmakedefine HAVE_GETPID
 
 #cmakedefine HAVE_QUVIOPT_NOSHORTENED
 
