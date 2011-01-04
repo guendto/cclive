@@ -89,4 +89,4 @@ link::ok () const { return _length > -1; }
 
 } // End namespace
 
-
+// vim: set ts=4 sw=4 tw=72 expandtab:

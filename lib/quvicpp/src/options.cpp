@@ -77,4 +77,4 @@ void options::writefunc (quvi_callback_write cb)   { _writefunc  = cb; }
 
 } // End namespace.
 
-
+// vim: set ts=4 sw=4 tw=72 expandtab:

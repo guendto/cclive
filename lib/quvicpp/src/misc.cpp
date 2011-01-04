@@ -42,4 +42,4 @@ support_to_s (const std::map<std::string,std::string>& map) {
 
 } // End namespace
 
-
+// vim: set ts=4 sw=4 tw=72 expandtab:

@@ -170,4 +170,4 @@ private:
 
 #endif
 
-
+// vim: set ts=2 sw=4 tw=72 expandtab:

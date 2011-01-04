@@ -87,4 +87,4 @@ go_background (const std::string& log_file, bool& omit) {
 
 } // End namespace.
 
-
+// vim: set ts=4 sw=4 tw=72 expandtab:

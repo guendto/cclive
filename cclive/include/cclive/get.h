@@ -29,4 +29,4 @@ get (const quvicpp::query&, quvicpp::video&, const options&);
 
 #endif
 
-
+// vim: set ts=4 sw=4 tw=72 expandtab:

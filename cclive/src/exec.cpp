@@ -58,4 +58,4 @@ exec (const file& file, const quvicpp::link& link, const options& opts) {
 
 } // End namespace.
 
-
+// vim: set ts=4 sw=4 tw=72 expandtab:
