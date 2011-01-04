@@ -1,5 +1,5 @@
 /* 
-* Copyright (C) 2010 Toni Gundogdu.
+* Copyright (C) 2010,2011 Toni Gundogdu.
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -40,13 +40,6 @@ void
 go_background (const std::string& log_file, bool& omit) {
 
 #ifdef HAVE_FORK
-
-    // Has to be done here before calling fork.
-
-    cclive::log.push (io::tee (cclive::flushable_file_sink (log_file)));
-
-    omit = true;
-
     const pid_t pid = fork();
 
     if (pid < 0) {
@@ -56,6 +49,8 @@ go_background (const std::string& log_file, bool& omit) {
         exit (application::system);
     }
     else if (pid != 0) {
+
+        // Parent: exit.
 
         std::clog
             << "Run in background (pid: "
@@ -68,20 +63,26 @@ go_background (const std::string& log_file, bool& omit) {
         exit (0);
     }
 
+    // Child: continue, become the session leader.
+
     setsid ();
 
-#ifdef HAVE_GETCWD
-    char buf[PATH_MAX];
-    chdir (getcwd (buf, sizeof(buf) ) );
-#endif
+    // Clear file mode creation mask.
 
     umask (0);
 
-#else // HAVE_FORK
+    // Close unneeded file descriptors/streams.
 
-    std::clog << "warning: ignoring --background, no fork(3)." << std::endl;
+    freopen ("/dev/null", "w", stdout);
+    freopen ("/dev/null", "w", stderr);
+    freopen ("/dev/null", "r", stdin);
 
-#endif
+    // Redirect output to log file.
+
+    cclive::log.push (io::tee (cclive::flushable_file_sink (log_file)));
+
+    omit = true;
+#endif // HAVE_FORK
 }
 
 } // End namespace.
