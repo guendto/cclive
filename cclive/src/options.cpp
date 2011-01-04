@@ -1,5 +1,5 @@
 /* 
-* Copyright (C) 2010 Toni Gundogdu.
+* Copyright (C) 2010,2011 Toni Gundogdu.
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -70,8 +70,10 @@ options::exec (int argc, char **argv) {
             "Turn on libcurl verbose output")
         ("quiet,q",
             "Turn off all output, excl. errors")
+#ifdef HAVE_FORK
         ("background,b",
             "Go to background")
+#endif
         ("format,f",
             opts::value<std::string>()->default_value("default"),
             "Download video format")
