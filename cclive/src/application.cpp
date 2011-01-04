@@ -1,5 +1,5 @@
 /* 
-* Copyright (C) 2010 Toni Gundogdu.
+* Copyright (C) 2010,2011 Toni Gundogdu.
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -295,16 +295,31 @@ application::exec (int argc, char **argv) {
 
     // Go to background.
 
-    if (map.count ("background")) {
+#ifdef HAVE_FORK
+
+    const bool background_given = map.count ("background");
+
+    if (background_given) {
 
         // (Boost) Throws std::runtime_error if fails.
 
         cclive::go_background (map["log-file"].as<std::string>(), omit);
     }
+#endif
 
     // Omit std output. Note that --background flips this above.
 
     cclive::log.push (cclive::omit_sink (omit));
+
+#if defined (HAVE_FORK) && defined (HAVE_GETPID)
+    if (background_given) {
+        cclive::log
+            << "Running in background (pid: "
+            << static_cast<long>(getpid ())
+            << ")."
+            << std::endl;
+    }
+#endif
 
     // For each input URL.
 
