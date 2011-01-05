@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2010-12-28" "0.7.1" "cclive manual"
+.TH cclive 1 "2011-01-05" "0.7.1" "cclive manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -352,7 +352,7 @@ Consider the following example:
 \&  cat >> urls.lst
 \&  http://www.youtube.com/watch?v=DUM1284TqFc
 \&  http://www.youtube.com/watch?v=TqgTz8ymZl8
-\&  (ctrl+d)
+\&  (CTRL+D)
 \&  cclive < urls.lst
 .Ve
 .ie n .IP "\fBcclive ""\s-1URL\s0"" \-s ""s{Alice}{Malice}""\fR" 4
@@ -368,6 +368,10 @@ replaces \*(L"Wonderland\*(R" with \*(L"Uberland\*(R". Note the use of \*(L"i\*(
 .Sp
 You can use \*(L"g\*(R" for global (find all), e.g. if you wanted to replace all of
 the \*(L"Alice\*(R" occurences with \*(L"Malice\*(R", you could use \*(L"s{Alice}<Malice>g\*(R".
+.ie n .IP "\fBcclive ""\s-1URL\s0"" \-b \-\-log\-file my.log\fR" 4
+.el .IP "\fBcclive ``\s-1URL\s0'' \-b \-\-log\-file my.log\fR" 4
+.IX Item "cclive URL -b --log-file my.log"
+Go to background, redirect output to \f(CW\*(C`my.log\*(C'\fR.
 .SH "FILES"
 .IX Header "FILES"
 .ie n .IP "\fB\fB$HOME\fB/.ccliverc\fR" 4

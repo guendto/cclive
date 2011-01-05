@@ -252,7 +252,7 @@ Consider the following example:
   cat >> urls.lst
   http://www.youtube.com/watch?v=DUM1284TqFc
   http://www.youtube.com/watch?v=TqgTz8ymZl8
-  (ctrl+d)
+  (CTRL+D)
   cclive < urls.lst
 
 =item B<cclive "URL" -s "s{Alice}{Malice}">
@@ -267,6 +267,10 @@ replaces "Wonderland" with "Uberland". Note the use of "i" (case-insensitive).
 
 You can use "g" for global (find all), e.g. if you wanted to replace all of
 the "Alice" occurences with "Malice", you could use "s{Alice}E<lt>MaliceE<gt>g".
+
+=item B<cclive "URL" -b --log-file my.log>
+
+Go to background, redirect output to C<my.log>.
 
 =back
 
