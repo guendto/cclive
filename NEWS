@@ -1,4 +1,17 @@
 
+0.7.1   Fri Jan 07 2011 Toni Gundogdu
+Changes:
+        - Lower pcre prereq. to 8.02, thanks to Alejandro Garrido Mota
+        - Show --background in options on platforms that support fork
+        - Print pid to log file with --background
+        - Add getpid check to CMakeLists.txt
+        - Add --no-shortened switch
+        - Make --quiet exclusive
+Bugfixes:
+        - Wrong full path for downloaded file (#5) (d#608393)
+        - Number of various issues with --background log
+
+
 0.7.0.1  Sat Dec 18 2010  Toni Gundogdu
 Changes:
         - Add --output-dir
