@@ -1,4 +1,4 @@
-/* 
+/*
 * Copyright (C) 2010 Toni Gundogdu.
 *
 * This program is free software: you can redistribute it and/or modify
@@ -31,26 +31,29 @@
 #include "cclive/log.h"
 #include "cclive/wait.h"
 
-namespace cclive {
+namespace cclive
+{
 
 void
-wait (const int retry_wait) {
+wait (const int retry_wait)
+{
 
-    for (int i=1; i<=retry_wait; ++i) {
+  for (int i=1; i<=retry_wait; ++i)
+    {
 
-        if (i % 5 == 0)
-            cclive::log << i;
-        else
-            cclive::log << ".";
+      if (i % 5 == 0)
+        cclive::log << i;
+      else
+        cclive::log << ".";
 
-        cclive::log << std::flush;
+      cclive::log << std::flush;
 
-        sleep(1);
+      sleep(1);
     }
 
-    cclive::log << std::endl;
+  cclive::log << std::endl;
 }
 
 } // End namespace.
 
-// vim: set ts=4 sw=4 tw=72 expandtab:
+// vim: set ts=2 sw=2 tw=72 expandtab:

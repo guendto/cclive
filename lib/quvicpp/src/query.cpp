@@ -1,4 +1,4 @@
-/* 
+/*
 * Copyright (C) 2010 Toni Gundogdu.
 *
 * This program is free software: you can redistribute it and/or modify
@@ -21,122 +21,138 @@
 
 #include <quvicpp/quvicpp.h>
 
-namespace quvicpp {
+namespace quvicpp
+{
 
 // Constructor.
 
 query::query ()
-    : _quvi(NULL), _curl(NULL)
-    { _init(); }
+  : _quvi(NULL), _curl(NULL)
+{
+  _init();
+}
 
 // Copy constructor.
 
 query::query (const query& q)
-    : _quvi(NULL), _curl(NULL)
-    { _init(); }
+  : _quvi(NULL), _curl(NULL)
+{
+  _init();
+}
 
 // Copy assignment operator.
 
 query&
-query::operator=(const query& q) {
-    if (this != &q) {
-        _close();
-        _init();
+query::operator=(const query& q)
+{
+  if (this != &q)
+    {
+      _close();
+      _init();
     }
-    return *this;
+  return *this;
 }
 
 // Destructor.
 
 query::~query ()
-    { _close(); }
+{
+  _close();
+}
 
 // Init.
 
 void
-query::_init () {
+query::_init ()
+{
 
-    const QUVIcode rc = quvi_init(&_quvi);
+  const QUVIcode rc = quvi_init(&_quvi);
 
-    if (rc != QUVI_OK)
-        throw error(_quvi,rc);
+  if (rc != QUVI_OK)
+    throw error(_quvi,rc);
 
-    assert (_quvi != NULL);
+  assert (_quvi != NULL);
 
-    quvi_getinfo(_quvi, QUVIINFO_CURL, &_curl);
-    assert (_curl != NULL);
+  quvi_getinfo(_quvi, QUVIINFO_CURL, &_curl);
+  assert (_curl != NULL);
 }
 
 // Close.
 
 void
-query::_close () {
-    if (_quvi)
-        quvi_close (&_quvi); // Resets to NULL.
-    assert (_quvi == NULL);
-    _curl = NULL;
+query::_close ()
+{
+  if (_quvi)
+    quvi_close (&_quvi); // Resets to NULL.
+  assert (_quvi == NULL);
+  _curl = NULL;
 }
 
 // Parse.
 
 video
-query::parse (const url& pageURL, const options& opts) const {
+query::parse (const url& pageURL, const options& opts) const
+{
 
-    // Friend of quvicpp::options class -> clean API.
+  // Friend of quvicpp::options class -> clean API.
 
-    if (!opts._format.empty())
-        quvi_setopt(_quvi, QUVIOPT_FORMAT, opts._format.c_str());
+  if (!opts._format.empty())
+    quvi_setopt(_quvi, QUVIOPT_FORMAT, opts._format.c_str());
 
-    quvi_setopt(_quvi, QUVIOPT_STATUSFUNCTION, opts._statusfunc);
-    quvi_setopt(_quvi, QUVIOPT_WRITEFUNCTION,  opts._writefunc);
+  quvi_setopt(_quvi, QUVIOPT_STATUSFUNCTION, opts._statusfunc);
+  quvi_setopt(_quvi, QUVIOPT_WRITEFUNCTION,  opts._writefunc);
 #ifdef _0
-    quvi_setopt(_quvi, QUVIOPT_NOVERIFY, opts._verify ? 1L:0L);
+  quvi_setopt(_quvi, QUVIOPT_NOVERIFY, opts._verify ? 1L:0L);
 #endif
 #ifdef HAVE_QUVIOPT_NOSHORTENED
-    quvi_setopt(_quvi, QUVIOPT_NOSHORTENED, opts._shortened ? 1L:0L);
+  quvi_setopt(_quvi, QUVIOPT_NOSHORTENED, opts._shortened ? 1L:0L);
 #endif
 
-    quvi_video_t qv;
+  quvi_video_t qv;
 
-    QUVIcode rc =
-        quvi_parse(_quvi, const_cast<char*>(pageURL.c_str()), &qv);
+  QUVIcode rc =
+    quvi_parse(_quvi, const_cast<char*>(pageURL.c_str()), &qv);
 
-    if (rc != QUVI_OK)
-        throw error(_quvi,rc);
+  if (rc != QUVI_OK)
+    throw error(_quvi,rc);
 
-    assert (qv != NULL);
+  assert (qv != NULL);
 
-    video v(qv);
-    quvi_parse_close(&qv);
+  video v(qv);
+  quvi_parse_close(&qv);
 
-    return v;
+  return v;
 }
 
 // Get.
 
 void*
 query::curlHandle () const
-    { return _curl; }
+{
+  return _curl;
+}
 
 // Support.
 
 std::map<std::string,std::string>
-query::support () const {
+query::support () const
+{
 
-    std::map<std::string,std::string> map;
-    char *d=NULL, *f=NULL;
+  std::map<std::string,std::string> map;
+  char *d=NULL, *f=NULL;
 
-    while (quvi_next_supported_website(_quvi, &d, &f) == QUVI_OK) {
-        map[d] = f;
-        quvi_free(d);
-        d = NULL;
-        quvi_free(f);
-        f = NULL;
+  while (quvi_next_supported_website(_quvi, &d, &f) == QUVI_OK)
+    {
+      map[d] = f;
+      quvi_free(d);
+      d = NULL;
+      quvi_free(f);
+      f = NULL;
     }
 
-    return map;
+  return map;
 }
 
 } // End namespace
 
-// vim: set ts=4 sw=4 tw=72 expandtab:
+// vim: set ts=2 sw=2 tw=72 expandtab:

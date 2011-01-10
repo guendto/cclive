@@ -1,4 +1,4 @@
-/* 
+/*
 * Copyright (C) 2010 Toni Gundogdu.
 *
 * This program is free software: you can redistribute it and/or modify
@@ -19,27 +19,35 @@
 
 #include <quvicpp/quvicpp.h>
 
-namespace quvicpp {
+namespace quvicpp
+{
 
 // Version.
 
-std::string version      () { return quvi_version(QUVI_VERSION); }
-std::string version_long () { return quvi_version(QUVI_VERSION_LONG); }
+std::string version      ()
+{
+  return quvi_version(QUVI_VERSION);
+}
+std::string version_long ()
+{
+  return quvi_version(QUVI_VERSION_LONG);
+}
 
 // To string. Mimic quvi(1) behaviour.
 
 std::string
-support_to_s (const std::map<std::string,std::string>& map) {
+support_to_s (const std::map<std::string,std::string>& map)
+{
 
-    std::map<std::string,std::string>::const_iterator iter;
-    std::stringstream b;
+  std::map<std::string,std::string>::const_iterator iter;
+  std::stringstream b;
 
-    for (iter = map.begin(); iter != map.end(); ++iter)
-        b << (*iter).first << "\t" << (*iter).second << "\n";
+  for (iter = map.begin(); iter != map.end(); ++iter)
+    b << (*iter).first << "\t" << (*iter).second << "\n";
 
-    return b.str();
+  return b.str();
 }
 
 } // End namespace
 
-// vim: set ts=4 sw=4 tw=72 expandtab:
+// vim: set ts=2 sw=2 tw=72 expandtab:

@@ -1,4 +1,4 @@
-/* 
+/*
 * Copyright (C) 2010 Toni Gundogdu.
 *
 * This program is free software: you can redistribute it and/or modify
@@ -20,22 +20,30 @@
 #include "cclive/application.h"
 
 int
-main (int argc, char *argv[]) {
+main (int argc, char *argv[])
+{
 
-    cclive::application app;
-    int rc = 0; // OK.
+  cclive::application app;
+  int rc = 0; // OK.
 
-    try { rc = app.exec(argc,argv); }
+  try
+    {
+      rc = app.exec(argc,argv);
+    }
 
-    // Thrown by quvicpp::query constructor (e.g. quvi_init failure).
-    catch (const quvicpp::error& e)
-        { std::clog << "libquvi: error: " << e.what() << std::endl; }
+  // Thrown by quvicpp::query constructor (e.g. quvi_init failure).
+  catch (const quvicpp::error& e)
+    {
+      std::clog << "libquvi: error: " << e.what() << std::endl;
+    }
 
-    // Thrown by boost (e.g. cclive::go_background failure).
-    catch (const std::runtime_error& e)
-        { std::clog << "error: " << e.what() << std::endl; }
+  // Thrown by boost (e.g. cclive::go_background failure).
+  catch (const std::runtime_error& e)
+    {
+      std::clog << "error: " << e.what() << std::endl;
+    }
 
-    return rc;
+  return rc;
 }
 
-// vim: set ts=4 sw=4 tw=72 expandtab:
+// vim: set ts=2 sw=2 tw=72 expandtab:

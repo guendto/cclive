@@ -1,4 +1,4 @@
-/* 
+/*
 * Copyright (C) 2010 Toni Gundogdu.
 *
 * This program is free software: you can redistribute it and/or modify
@@ -23,62 +23,65 @@
 
 #include <boost/iostreams/filtering_stream.hpp>
 
-namespace cclive {
+namespace cclive
+{
 
 extern boost::iostreams::filtering_ostream log;
 
-struct omit_sink : public boost::iostreams::sink {
+struct omit_sink : public boost::iostreams::sink
+{
 
-    explicit omit_sink (bool b=false);
+  explicit omit_sink (bool b=false);
 
-    std::streamsize write (const char *s, std::streamsize n);
+  std::streamsize write (const char *s, std::streamsize n);
 
 private:
-    bool _omit;
+  bool _omit;
 };
 
-struct flushable_file_sink {
+struct flushable_file_sink
+{
 
-    typedef char char_type;
+  typedef char char_type;
 
-    struct category :
-        boost::iostreams::output_seekable,
-        boost::iostreams::device_tag,
-        boost::iostreams::closable_tag,
-        boost::iostreams::flushable_tag {};
+  struct category :
+    boost::iostreams::output_seekable,
+    boost::iostreams::device_tag,
+    boost::iostreams::closable_tag,
+    boost::iostreams::flushable_tag {};
 
-    flushable_file_sink (
-        const std::string&,
-        const std::ios_base::openmode mode = std::ios::trunc|std::ios::out);
+  flushable_file_sink (
+    const std::string&,
+    const std::ios_base::openmode mode = std::ios::trunc|std::ios::out);
 
-    flushable_file_sink (const flushable_file_sink&);
+  flushable_file_sink (const flushable_file_sink&);
 
-    flushable_file_sink& operator=(const flushable_file_sink&);
+  flushable_file_sink& operator=(const flushable_file_sink&);
 
-    bool is_open () const;
+  bool is_open () const;
 
-    std::streamsize write (const char *, std::streamsize);
+  std::streamsize write (const char *, std::streamsize);
 
-    std::streamsize read  (char_type *, std::streamsize);
+  std::streamsize read  (char_type *, std::streamsize);
 
-    std::streampos seek (std::streamoff, std::ios_base::seekdir);
+  std::streampos seek (std::streamoff, std::ios_base::seekdir);
 
-    bool flush ();
+  bool flush ();
 
-    void close ();
-
-private:
-    void _open ();
-    void _swap (const flushable_file_sink&);
+  void close ();
 
 private:
-    std::ios_base::openmode _mode;
-    mutable std::fstream _f;
-    std::string _fpath;
+  void _open ();
+  void _swap (const flushable_file_sink&);
+
+private:
+  std::ios_base::openmode _mode;
+  mutable std::fstream _f;
+  std::string _fpath;
 };
 
 } // End namespace.
 
 #endif
 
-// vim: set ts=4 sw=4 tw=72 expandtab:
+// vim: set ts=2 sw=2 tw=72 expandtab:

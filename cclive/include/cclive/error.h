@@ -1,4 +1,4 @@
-/* 
+/*
 * Copyright (C) 2010 Toni Gundogdu.
 *
 * This program is free software: you can redistribute it and/or modify
@@ -17,7 +17,8 @@
 
 #ifndef cclive_error_h
 
-namespace cclive {
+namespace cclive
+{
 
 std::string
 perror (const std::string& p="");
@@ -26,4 +27,4 @@ perror (const std::string& p="");
 
 #endif
 
-// vim: set ts=4 sw=4 tw=72 expandtab:
+// vim: set ts=2 sw=2 tw=72 expandtab:

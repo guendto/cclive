@@ -1,4 +1,4 @@
-/* 
+/*
 * Copyright (C) 2010 Toni Gundogdu.
 *
 * This program is free software: you can redistribute it and/or modify
@@ -18,7 +18,8 @@
 #ifndef cclive_wait_h
 #define cclive_wait_h
 
-namespace cclive {
+namespace cclive
+{
 
 void
 wait (const int);
@@ -27,4 +28,4 @@ wait (const int);
 
 #endif
 
-// vim: set ts=4 sw=4 tw=72 expandtab:
+// vim: set ts=2 sw=2 tw=72 expandtab:

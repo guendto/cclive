@@ -1,4 +1,4 @@
-/* 
+/*
 * Copyright (C) 2010 Toni Gundogdu.
 *
 * This program is free software: you can redistribute it and/or modify
@@ -17,16 +17,17 @@
 
 #include <quvicpp/quvicpp.h>
 
-namespace quvicpp {
+namespace quvicpp
+{
 
 // Constructors.
 
 link::link ()
-    : _length(-1)
-    { }
+  : _length(-1)
+{ }
 
 link::link (quvi_video_t qv)
-    : _length(-1)
+  : _length(-1)
 {
 #define _wrap(id,dst,type) \
     do { \
@@ -34,26 +35,29 @@ link::link (quvi_video_t qv)
         quvi_getprop(qv,id,&tmp); \
         dst = tmp; \
     } while (0)
-    _wrap(QUVIPROP_VIDEOURL,              _url,         char*);                            
-    _wrap(QUVIPROP_VIDEOFILECONTENTTYPE,  _contentType, char*);                            
-    _wrap(QUVIPROP_VIDEOFILESUFFIX,       _suffix,      char*);                            
-    _wrap(QUVIPROP_VIDEOFILELENGTH,       _length,      double);
+  _wrap(QUVIPROP_VIDEOURL,              _url,         char*);
+  _wrap(QUVIPROP_VIDEOFILECONTENTTYPE,  _contentType, char*);
+  _wrap(QUVIPROP_VIDEOFILESUFFIX,       _suffix,      char*);
+  _wrap(QUVIPROP_VIDEOFILELENGTH,       _length,      double);
 #undef _wrap
 }
 
 // Copy constructor.
 
 link::link (const link& l)
-    : _length(-1)
-    { _swap(l); }
+  : _length(-1)
+{
+  _swap(l);
+}
 
 // Copy assignment operator.
 
 link&
-link::operator=(const link& l) {
-    if (this != &l)
-        _swap(l);
-    return *this;
+link::operator=(const link& l)
+{
+  if (this != &l)
+    _swap(l);
+  return *this;
 }
 
 // Destructor.
@@ -63,30 +67,46 @@ link::~link () { }
 // Swap.
 
 void
-link::_swap (const link& l) {
-    _contentType = l._contentType;
-    _suffix      = l._suffix;
-    _url         = l._url;
-    _length      = l._length;
+link::_swap (const link& l)
+{
+  _contentType = l._contentType;
+  _suffix      = l._suffix;
+  _url         = l._url;
+  _length      = l._length;
 }
 
 // Get.
 
 const std::string&
-link::content_type () const { return _contentType; }
+link::content_type () const
+{
+  return _contentType;
+}
 
 const std::string&
-link::suffix () const { return _suffix; }
+link::suffix () const
+{
+  return _suffix;
+}
 
 const std::string&
-link::url () const { return _url; }
+link::url () const
+{
+  return _url;
+}
 
 double
-link::length () const { return _length; }
+link::length () const
+{
+  return _length;
+}
 
 bool
-link::ok () const { return _length > -1; }
+link::ok () const
+{
+  return _length > -1;
+}
 
 } // End namespace
 
-// vim: set ts=4 sw=4 tw=72 expandtab:
+// vim: set ts=2 sw=2 tw=72 expandtab:

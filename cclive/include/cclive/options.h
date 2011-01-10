@@ -1,4 +1,4 @@
-/* 
+/*
 * Copyright (C) 2010 Toni Gundogdu.
 *
 * This program is free software: you can redistribute it and/or modify
@@ -20,23 +20,25 @@
 
 #include <boost/program_options.hpp>
 
-namespace cclive {
+namespace cclive
+{
 
-class options {
-    friend std::ostream& operator<<(std::ostream&, const options&);
+class options
+{
+  friend std::ostream& operator<<(std::ostream&, const options&);
 public:
-    void exec (int argc, char **argv);
-    const boost::program_options::variables_map& map() const;
+  void exec (int argc, char **argv);
+  const boost::program_options::variables_map& map() const;
 private:
-    void _verify ();
+  void _verify ();
 private:
-    boost::program_options::options_description _visible;
-    boost::program_options::variables_map _map;
-    std::string _config_file;
+  boost::program_options::options_description _visible;
+  boost::program_options::variables_map _map;
+  std::string _config_file;
 };
 
 } // End namespace.
 
 #endif
 
-// vim: set ts=4 sw=4 tw=72 expandtab:
+// vim: set ts=2 sw=2 tw=72 expandtab:

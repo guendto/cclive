@@ -1,4 +1,4 @@
-/* 
+/*
 * Copyright (C) 2010 Toni Gundogdu.
 *
 * This program is free software: you can redistribute it and/or modify
@@ -24,26 +24,28 @@
 
 #include "cclive/error.h"
 
-namespace cclive {
+namespace cclive
+{
 
 std::string
-perror (const std::string& p/*=""*/) {
+perror (const std::string& p/*=""*/)
+{
 
 #if defined (HAVE_STRERROR) || defined (HAVE_STRERROR_R)
-    std::string s;
- #ifdef HAVE_STRERROR_R
-    char buf[256];
-    s = strerror_r (errno, buf, sizeof(buf));
- #else
-    s = strerror (errno);
- #endif
-    return s;
+  std::string s;
+#ifdef HAVE_STRERROR_R
+  char buf[256];
+  s = strerror_r (errno, buf, sizeof(buf));
+#else
+  s = strerror (errno);
+#endif
+  return s;
 #else // No strerror or strerror_r.
-    perror (p.c_str ());
+  perror (p.c_str ());
 #endif
 
 }
 
 } // End namespace.
 
-// vim: set ts=4 sw=4 tw=72 expandtab:
+// vim: set ts=2 sw=2 tw=72 expandtab:

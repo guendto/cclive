@@ -1,4 +1,4 @@
-/* 
+/*
 * Copyright (C) 2010 Toni Gundogdu.
 *
 * This program is free software: you can redistribute it and/or modify
@@ -18,19 +18,23 @@
 #ifndef cclive_re_h
 #define cclive_re_h
 
-namespace cclive { namespace re {
+namespace cclive
+{
+namespace re
+{
 
-bool 
+bool
 subst (const std::string& re, std::string& src);
 
-bool 
+bool
 match (const std::string& re, std::string& src);
 
 void
 trim (std::string&);
 
-} } // End namespace.
+}
+} // End namespace.
 
 #endif
 
-// vim: set ts=4 sw=4 tw=72 expandtab:
+// vim: set ts=2 sw=2 tw=72 expandtab:

@@ -1,4 +1,4 @@
-/* 
+/*
 * Copyright (C) 2010 Toni Gundogdu.
 *
 * This program is free software: you can redistribute it and/or modify
@@ -17,31 +17,35 @@
 
 #include <quvicpp/quvicpp.h>
 
-namespace quvicpp {
+namespace quvicpp
+{
 
 // Constructor.
 
 error::error (quvi_t q, QUVIcode c)
-    : _quvi_code (QUVI_OK), _resp_code (0)
+  : _quvi_code (QUVI_OK), _resp_code (0)
 {
-    // Friend of quvicpp::error class -> clean API.
-    _what = quvi_strerror (q, c);
-    quvi_getinfo (q, QUVIINFO_HTTPCODE, &_resp_code);
+  // Friend of quvicpp::error class -> clean API.
+  _what = quvi_strerror (q, c);
+  quvi_getinfo (q, QUVIINFO_HTTPCODE, &_resp_code);
 }
 
 // Copy constructor.
 
 error::error (const error& e)
-    : _quvi_code (QUVI_OK), _resp_code (0)
-    { _swap(e); }
+  : _quvi_code (QUVI_OK), _resp_code (0)
+{
+  _swap(e);
+}
 
 // Copy assignment operator.
 
 error&
-error::operator=(const error& e) {
-    if (this != &e)
-        _swap(e);
-    return *this;
+error::operator=(const error& e)
+{
+  if (this != &e)
+    _swap(e);
+  return *this;
 }
 
 // Destructor.
@@ -50,23 +54,33 @@ error::~error () { }
 // Swap.
 
 void
-error::_swap (const error& e) {
-    _quvi_code = e._quvi_code;
-    _resp_code = e._resp_code;
-    _what      = e._what;
+error::_swap (const error& e)
+{
+  _quvi_code = e._quvi_code;
+  _resp_code = e._resp_code;
+  _what      = e._what;
 }
 
 // Get.
 
 const std::string&
-error::what () const { return _what; }
+error::what () const
+{
+  return _what;
+}
 
 long
-error::response_code () const { return _resp_code; }
+error::response_code () const
+{
+  return _resp_code;
+}
 
 QUVIcode
-error::quvi_code () const { return _quvi_code; }
+error::quvi_code () const
+{
+  return _quvi_code;
+}
 
 } // End namespace.
 
-// vim: set ts=4 sw=4 tw=72 expandtab:
+// vim: set ts=2 sw=2 tw=72 expandtab:

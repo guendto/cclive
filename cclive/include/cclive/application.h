@@ -1,4 +1,4 @@
-/* 
+/*
 * Copyright (C) 2010 Toni Gundogdu.
 *
 * This program is free software: you can redistribute it and/or modify
@@ -22,23 +22,25 @@
 
 #include "quvicpp/quvicpp.h"
 
-namespace cclive {
+namespace cclive
+{
 
-class application {
+class application
+{
 public:
-    typedef enum { ok=0, invalid_option, system } exit_status;
+  typedef enum { ok=0, invalid_option, system } exit_status;
 public:
-    exit_status exec (int,char **);
+  exit_status exec (int,char **);
 private:
-    void _read_stdin (std::vector<std::string>&);
-    void _tweak_curl_opts (const quvicpp::query&,
-        const boost::program_options::variables_map&);
+  void _read_stdin (std::vector<std::string>&);
+  void _tweak_curl_opts (const quvicpp::query&,
+                         const boost::program_options::variables_map&);
 private:
-    cclive::options   _opts;
+  cclive::options   _opts;
 };
 
 } // End namespace.
 
 #endif
 
-// vim: set ts=4 sw=4 tw=72 expandtab:
+// vim: set ts=2 sw=2 tw=72 expandtab:
