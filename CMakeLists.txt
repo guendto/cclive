@@ -138,6 +138,7 @@ check_function_exists (strerror     HAVE_STRERROR)
 check_function_exists (fork         HAVE_FORK)
 check_function_exists (getcwd       HAVE_GETCWD)
 check_function_exists (getpid       HAVE_GETPID)
+check_function_exists (signal       HAVE_SIGNAL)
 
 # Subdirs.
 
