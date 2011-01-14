@@ -272,6 +272,12 @@ the "Alice" occurences with "Malice", you could use "s{Alice}E<lt>MaliceE<gt>g".
 
 Go to background, redirect output to C<my.log>.
 
+=item B<kill -USR1 $cclive_pid>
+
+Interrupt file transfer (of $cclive_pid) and move to the next URL in the
+queue (if any). libcurl will report this as "Operation was aborted by an
+application callback".
+
 =back
 
 =head1 FILES
