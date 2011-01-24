@@ -168,7 +168,7 @@ static const char format_usage[] =
   "   --format list           list websites and supported formats\n"
   "   --format list arg       match arg to websites, list formats\n"
   "Examples:\n"
-  "   --format webm_480p      get format webm_480p (youtube)\n"
+  "   --format mp4_360p       get format mp4_360p (youtube)\n"
   "   --format list youtube   list youtube formats\n"
   "   --format list dailym    list dailym(otion) formats";
 
