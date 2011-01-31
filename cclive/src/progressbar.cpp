@@ -68,7 +68,6 @@ handle_sigwinch (int s)
 static size_t
 get_term_width ()
 {
-
   const int fd = fileno (stderr);
 
   winsize wsz;
@@ -93,7 +92,6 @@ progressbar::progressbar (
     _last_update (0),
     _term_width (0),
     _dot_count  (0),
-    _old_width (0),
     _count (0),
     _width (0),
     _file (f),
@@ -108,7 +106,6 @@ progressbar::progressbar (
 
   if (!_term_width || recv_sigwinch)
     {
-
       _term_width = get_term_width ();
 
       if (!_term_width)
@@ -118,8 +115,7 @@ progressbar::progressbar (
   _term_width = default_term_width;
 #endif
 
-  _width     = _term_width-1; // Don't use the last column.
-  _old_width = _width;
+  _width = _term_width;
 
   time (&_time_started);
 
@@ -173,7 +169,6 @@ namespace fs = boost::filesystem;
 void
 progressbar::update (double now)
 {
-
   time_t tnow;
 
   time (&tnow);
@@ -185,7 +180,6 @@ progressbar::update (double now)
 #ifdef WITH_RESIZE
   if (recv_sigwinch && _mode == normal)
     {
-
       const size_t old_term_width = _term_width;
 
       _term_width = get_term_width ();
@@ -195,8 +189,7 @@ progressbar::update (double now)
 
       if (_term_width != old_term_width)
         {
-          _old_width  = _width;
-          _width = _term_width - 1; // Do not use the last column.
+          _width = _term_width;
           force_update = true;
         }
 
@@ -242,14 +235,12 @@ progressbar::update (double now)
 
   if (rate > 0)
     {
-
       // ETA.
 
       std::string eta;
 
       if (!_done)
         {
-
           const double left =
             (_expected_bytes - (now + _initial_bytes)) / rate;
 
@@ -285,7 +276,6 @@ progressbar::update (double now)
 
   if (_expected_bytes > 0)
     {
-
       const int percent =
         static_cast<int>(100.0*size/_expected_bytes);
 
@@ -351,36 +341,19 @@ progressbar::_normal (
   const size_t tmp_len = tmp.str ().length ();
   const size_t sub_len = _width - tmp_len;
 
+  if (_width <= tmp_len)
+    return; // Skip frame.
+
+  // Pad to max. terminal width.
+
   std::stringstream b;
 
-  if ((unsigned)sub_len > 0)
-    {
+  b << fname.substr (0, sub_len);
 
-      // Pad to max. terminal width.
+  while (b.str ().length () < sub_len)
+    b << " ";
 
-      b << fname.substr (0, sub_len);
-
-      while (b.str ().length () < sub_len)  b << " ";
-
-      b << tmp.str ();
-    }
-
-  if (_old_width)
-    {
-
-      // Clear line.
-
-      const int m =
-        (_old_width < _width)
-        ? _width
-        : _old_width;
-
-      for (int i=0; i<m; ++i)  cclive::log << " ";
-
-      cclive::log << "\r" << std::flush;
-
-      _old_width = 0;
-    }
+  b << tmp.str ();
 
   // Print.
 

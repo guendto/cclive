@@ -56,7 +56,6 @@ private:
   time_t  _last_update;
   size_t  _term_width;
   int     _dot_count;
-  size_t  _old_width;
   double  _count;
   size_t  _width;
   file    _file;
