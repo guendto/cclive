@@ -62,7 +62,6 @@ static void
 handle_sigwinch (int s)
 {
   recv_sigwinch = 1;
-  signal(SIGWINCH, handle_sigwinch);
 }
 
 static size_t
