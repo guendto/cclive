@@ -51,19 +51,16 @@ get (
 
   while ( (link = video.next_link ()).ok ())
     {
-
       ++n;
 
       int retry = 0;
 
       while (retry <= max_retries)
         {
-
           cclive::file file (video, link, n, opts);
 
           if (retry > 0)
             {
-
               cclive::log
                   << "Retrying "
                   << retry
@@ -77,18 +74,16 @@ get (
 
           ++retry;
 
+          cclive::log << file.to_s (link) << std::endl;
+
           if (!no_download)
             {
-
               if (!file.write (query, link, opts))
                 continue; // Retry.
 
               if (exec)
                 cclive::exec (file, link, opts);
             }
-
-          else
-            cclive::log << file.to_s (link) << std::endl;
 
           break; // Stop retrying.
         }

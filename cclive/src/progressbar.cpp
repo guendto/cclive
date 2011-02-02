@@ -53,19 +53,15 @@
 
 namespace cclive
 {
-
 #ifdef WITH_RESIZE
-
 static volatile sig_atomic_t recv_sigwinch;
 
-static void
-handle_sigwinch (int s)
+static void handle_sigwinch (int s)
 {
   recv_sigwinch = 1;
 }
 
-static size_t
-get_term_width ()
+static size_t get_term_width ()
 {
   const int fd = fileno (stderr);
 
@@ -121,31 +117,25 @@ progressbar::progressbar (
   const po::variables_map map  = opts.map ();
 
   if (map.count ("background"))
-    {
-      cclive::log << _file.to_s (l) << std::endl;
-      _mode = dotline;
-    }
+    _mode = dotline;
 
   _update_interval = map["update-interval"].as<double>();
 }
 
-static double
-to_mb (const double bytes)
+static double to_mb (const double bytes)
 {
   return bytes/(1024*1024);
 }
 
 namespace pt = boost::posix_time;
 
-static std::string
-to_s (const int secs)
+static std::string to_s (const int secs)
 {
   pt::time_duration td = pt::seconds (secs);
   return pt::to_simple_string (td);
 }
 
-static std::string
-to_unit (double& rate)
+static std::string to_unit (double& rate)
 {
   std::string units = "K/s";
   if (rate >= 1024.0*1024.0*1024.0)
@@ -272,11 +262,11 @@ progressbar::update (double now)
   // Percent.
 
   std::stringstream percent_s;
+  int percent = 0;
 
   if (_expected_bytes > 0)
     {
-      const int percent =
-        static_cast<int>(100.0*size/_expected_bytes);
+      percent = static_cast<int>(100.0*size/_expected_bytes);
 
       if (percent < 100)
         percent_s << std::setw(2) << percent << "%";
@@ -294,7 +284,7 @@ progressbar::update (double now)
     {
     default:
     case  normal:
-      _normal  (size_s, rate_s, eta_s, percent_s, fname);
+      _normal  (size_s, rate_s, eta_s, percent, percent_s, fname);
       break;
     case dotline:
       _dotline (size_s, rate_s, eta_s, percent_s, fname);
@@ -310,53 +300,37 @@ progressbar::_normal (
   const std::stringstream& size_s,
   const std::stringstream& rate_s,
   const std::stringstream& eta_s,
+  const int percent,
   const std::stringstream& percent_s,
   const std::string& fname)
 {
-  std::stringstream tmp;
+  std::stringstream info;
 
-  tmp.setf (std::ios::fixed);
+  info.setf (std::ios::fixed);
 
-  // Size.
-
-  tmp << "  "
-      << std::setw (4)
-      << size_s.str ();
-
-  // Rate, ETA.
-
-  tmp << "  "
-      << rate_s.str ()
+  info
       << "  "
-      << eta_s.str ();
+      << percent_s.str()
+      << "  "
+      << std::setw(4)
+      << size_s.str()
+      << "  "
+      << rate_s.str()
+      << "  "
+      << eta_s.str();
 
-  // Percent.
+  const size_t space_left = _width - info.str().length() - 1;
 
-  tmp << "  "
-      << percent_s.str ();
+  if (_width <= space_left)
+    return;
 
-  // Filename. Slice and dice.
+  std::stringstream bar;
 
-  const size_t tmp_len = tmp.str ().length ();
-  const size_t sub_len = _width - tmp_len;
+  _render_meter(bar, percent, space_left);
 
-  if (_width <= tmp_len)
-    return; // Skip frame.
+  bar << info.str();
 
-  // Pad to max. terminal width.
-
-  std::stringstream b;
-
-  b << fname.substr (0, sub_len);
-
-  while (b.str ().length () < sub_len)
-    b << " ";
-
-  b << tmp.str ();
-
-  // Print.
-
-  cclive::log << b.str () << "\r" << std::flush;
+  cclive::log << bar.str() << "\r" << std::flush;
 }
 
 void
@@ -406,9 +380,23 @@ progressbar::_dotline (
 }
 
 void
+progressbar::_render_meter(std::stringstream& bar, const int percent,
+                           const size_t space_left)
+{
+  const int m = static_cast<int>(space_left*percent/100.0);
+  bar << "[";
+  int i = 0;
+  while (bar.str().length() < space_left)
+    {
+      bar << (i<m ? "#":"-");
+      ++i;
+    }
+  bar << "]";
+}
+
+void
 progressbar::finish ()
 {
-
   if (_expected_bytes > 0
       && _count + _initial_bytes > _expected_bytes)
     {
