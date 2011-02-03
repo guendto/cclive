@@ -178,7 +178,6 @@ file::write (
 
   if ( out.fail() )
     {
-
       std::string s = _path + ": ";
 
       if (errno)
@@ -263,13 +262,21 @@ file::write (
 
   if ( !error.empty() )
     {
-
       cclive::log << std::endl;
 
       if (resp_code >= 400 && resp_code <= 500)
         throw std::runtime_error (error);
       else
-        cclive::log << "error: " << error << std::endl;
+        {
+#ifdef WITH_SIGNAL
+          if (rc == 42)
+            {
+              // 42 = Operation aborted by callback.
+              error = "sigusr1 received: interrupt current download";
+            }
+#endif
+          cclive::log << "error: " << error << std::endl;
+        }
 
       return false; // Retry.
     }
@@ -294,8 +301,7 @@ bool file::_should_continue   () const
   return _initial_length > 0;
 }
 
-static double
-to_mb (const double bytes)
+static double to_mb (const double bytes)
 {
   return bytes/(1024*1024);
 }
@@ -303,7 +309,6 @@ to_mb (const double bytes)
 std::string
 file::to_s (const quvicpp::link& link) const
 {
-
   const double length = to_mb (link.length ());
 
   boost::format fmt = boost::format("%s  %.2fM  [%s]")
@@ -319,7 +324,6 @@ namespace fs = boost::filesystem;
 static fs::path
 output_dir (const po::variables_map& map)
 {
-
   fs::path dir;
 
   if (map.count ("output-dir"))
@@ -348,7 +352,6 @@ file::_init (
 
   if (map.count("output-file"))
     {
-
       // Overrides --filename-format.
 
       fs::path p = output_dir (map);
@@ -365,7 +368,6 @@ file::_init (
 
   else
     {
-
       std::string title  = video.title();
 
       // Apply --regexp to title.
@@ -395,7 +397,6 @@ file::_init (
 
       if (map.count("subst"))
         {
-
           std::istringstream iss(map["subst"].as<std::string>());
           std::vector<std::string> v;
 
@@ -433,10 +434,8 @@ file::_init (
 
       if ( !map.count ("overwrite") )
         {
-
           for (int i=0; i<INT_MAX; ++i)
             {
-
               _initial_length = file::exists (_path);
 
               if (!_initial_length)
