@@ -97,20 +97,20 @@ Path to a file to read cclive arguments from. The default is "~/.ccliverc".
 
 =head1 OPTIONS - CONFIGURATION
 
-You can specify these options in the configuration file.
+In addition to the command line, the configurable options may also be read
+from the configuration file. See L</FILES>.
 
 =over 4
 
 =item B<--filename-format> I<arg>
 
 Use I<arg> to specify the video output filename format. The default
-is "%t.%s". The following specifiers are supported: %t video title
-%i video ID %h video host ID %s video file suffix
+is "%t.%s". The following specifiers can be used in the I<arg>:
 
-  %t    video title
-  %i    video id
-  %h    video host id
-  %s    video file suffix
+  %t .. Video title
+  %i .. Video ID
+  %h .. Video host ID (e.g. "vimeo")
+  %s .. Video file suffix (e.g. "flv")
 
 Note that I<all> occurences of the specifier will be replaced. See also
 C<--output-file>.
@@ -138,17 +138,17 @@ You can use the following delimiters:
 
   <> {} () /
 
-Please make a note that, cclive currently considers:
+Please note:
 
-  s/old/new/    Invalid
-  s/old//new/   OK
+  s/old/new/  .. Invalid
+  s/old//new/ .. OK
 
 =item B<--exec> I<arg>
 
-Invoke I<arg> after video download finishes. The following specifiers
-are supported:
+Invoke I<arg> when download has finished. The following specifiers can
+be used in the I<arg>:
 
-  %f    full path to the downloaded video file
+  %f .. Full path to the downloaded video file
 
 Note that I<all> occurences of the specifier will be replaced.
 
@@ -241,13 +241,11 @@ Do not download the video. Print the video details only.
 
 =item B<echo "http://www.youtube.com/watch?v=DUM1284TqFc" | cclive>
 
-Yet another way to feed cclive with an URL.
+A fancy way to feed cclive an URL.
 
-You can also feed cclive several URLs on one go, either by adding each
-on the command line (arg1, arg2, ...) or by redirecting them, for example,
-from a file. Each URL must be separated with a newline (or a whitespace).
-
-Consider the following example:
+cclive can handle multiple URLs in one go. One way to do this, is to
+specify each on the command line as arguments. An alternative source
+could be a file. For example:
 
   cat >> urls.lst
   http://www.youtube.com/watch?v=DUM1284TqFc
@@ -255,18 +253,23 @@ Consider the following example:
   (CTRL+D)
   cclive < urls.lst
 
+Make a note that each URL must be separated with a newline or a
+whitespace character.
+
 =item B<cclive "URL" -s "s{Alice}{Malice}">
 
-Replace "Alice" in the video title with "Malice" before using it in the
-filename.
+Replace "Alice" in the video title with "Malice" before it is used in
+the filename.
 
 =item B<cclive "URL" -s "s{Alice}E<lt>MaliceE<gt> s{wonderland}E<lt>UberlandE<gt>i">
 
-Similar but makes two substitions, the former was explained above, the latter
-replaces "Wonderland" with "Uberland". Note the use of "i" (case-insensitive).
+Similar but makes two substitions instead of just one. The former
+substitution was explained above, the latter replaces "Wonderland"
+with "Uberland". Note also the "i" for case-insensitive.
 
-You can use "g" for global (find all), e.g. if you wanted to replace all of
-the "Alice" occurences with "Malice", you could use "s{Alice}E<lt>MaliceE<gt>g".
+You can use "g" for global (find all), e.g. if you wanted to replace
+all of the "Alice" occurences with "Malice", you would use
+"s{Alice}E<lt>MaliceE<gt>g".
 
 =item B<cclive "URL" -b --log-file my.log>
 
@@ -274,9 +277,8 @@ Go to background, redirect output to C<my.log>.
 
 =item B<kill -USR1 $cclive_pid>
 
-Interrupt file transfer (of $cclive_pid) and move to the next URL in the
-queue (if any). libcurl will report this as "Operation was aborted by an
-application callback".
+Interrupt the current download (of $cclive_pid). Move to the next video
+in the queue (if any).
 
 =back
 
@@ -309,22 +311,21 @@ occurred.
 
 =over 4
 
-=item B<--no-download>
+=item B<Switch --no-download>
 
-Use the C<--no-download> switch if you don't need to download the video.
+Use the C<--no-download> switch when you don't need to download the video.
 
-=item B<--verbose-libcurl>
+=item B<Switch --verbose-libcurl>
 
-You can use this switch to amp up libcurl verbosity.
+Amp up the verbosity of libcurl.
 
 =item B<Debug symbols>
 
-Compile cclive with C<-g> (see C<g++(1)>) for debug symbols.
+Compile cclive (and related projects you see fit) with the debug symbols.
 
 =item B<Other tools>
 
-Make use of such tools as C<strace(1)>, C<gdb(1)> and C<valgrind(1)>.
-They may prove invaluable.
+Use C<strace(1)>, C<gdb(1)> and C<valgrind(1)>.
 
 =back
 
@@ -336,8 +337,7 @@ They may prove invaluable.
 
 Toni Gundogdu <legatvs at sign gmail com>.
 
-Thanks to all those who have contributed to the project
-by sending patches, reporting bugs and writing feedback.
-You know who you are.
+Thanks to all those who have contributed to the project by sending
+patches, reporting bugs and writing feedback. You know who you are.
 
 =cut

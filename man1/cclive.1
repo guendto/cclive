@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2011-01-14" "0.7.2" "cclive manual"
+.TH cclive 1 "2011-02-03" "0.7.2" "cclive manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -201,18 +201,18 @@ You can use double type values, e.g. 0.2 or 1.99.
 Path to a file to read cclive arguments from. The default is \*(L"~/.ccliverc\*(R".
 .SH "OPTIONS \- CONFIGURATION"
 .IX Header "OPTIONS - CONFIGURATION"
-You can specify these options in the configuration file.
+In addition to the command line, the configurable options may also be read
+from the configuration file. See \*(L"\s-1FILES\s0\*(R".
 .IP "\fB\-\-filename\-format\fR \fIarg\fR" 4
 .IX Item "--filename-format arg"
 Use \fIarg\fR to specify the video output filename format. The default
-is \*(L"%t.%s\*(R". The following specifiers are supported: \f(CW%t\fR video title
-\&\f(CW%i\fR video \s-1ID\s0 \f(CW%h\fR video host \s-1ID\s0 \f(CW%s\fR video file suffix
+is \*(L"%t.%s\*(R". The following specifiers can be used in the \fIarg\fR:
 .Sp
 .Vb 4
-\&  %t    video title
-\&  %i    video id
-\&  %h    video host id
-\&  %s    video file suffix
+\&  %t .. Video title
+\&  %i .. Video ID
+\&  %h .. Video host ID (e.g. "vimeo")
+\&  %s .. Video file suffix (e.g. "flv")
 .Ve
 .Sp
 Note that \fIall\fR occurences of the specifier will be replaced. See also
@@ -240,19 +240,19 @@ You can use the following delimiters:
 \&  <> {} () /
 .Ve
 .Sp
-Please make a note that, cclive currently considers:
+Please note:
 .Sp
 .Vb 2
-\&  s/old/new/    Invalid
-\&  s/old//new/   OK
+\&  s/old/new/  .. Invalid
+\&  s/old//new/ .. OK
 .Ve
 .IP "\fB\-\-exec\fR \fIarg\fR" 4
 .IX Item "--exec arg"
-Invoke \fIarg\fR after video download finishes. The following specifiers
-are supported:
+Invoke \fIarg\fR when download has finished. The following specifiers can
+be used in the \fIarg\fR:
 .Sp
 .Vb 1
-\&  %f    full path to the downloaded video file
+\&  %f .. Full path to the downloaded video file
 .Ve
 .Sp
 Note that \fIall\fR occurences of the specifier will be replaced.
@@ -340,13 +340,11 @@ Do not download the video. Print the video details only.
 .ie n .IP "\fBecho ""http://www.youtube.com/watch?v=DUM1284TqFc"" | cclive\fR" 4
 .el .IP "\fBecho ``http://www.youtube.com/watch?v=DUM1284TqFc'' | cclive\fR" 4
 .IX Item "echo http://www.youtube.com/watch?v=DUM1284TqFc | cclive"
-Yet another way to feed cclive with an \s-1URL\s0.
+A fancy way to feed cclive an \s-1URL\s0.
 .Sp
-You can also feed cclive several URLs on one go, either by adding each
-on the command line (arg1, arg2, ...) or by redirecting them, for example,
-from a file. Each \s-1URL\s0 must be separated with a newline (or a whitespace).
-.Sp
-Consider the following example:
+cclive can handle multiple URLs in one go. One way to do this, is to
+specify each on the command line as arguments. An alternative source
+could be a file. For example:
 .Sp
 .Vb 5
 \&  cat >> urls.lst
@@ -355,19 +353,24 @@ Consider the following example:
 \&  (CTRL+D)
 \&  cclive < urls.lst
 .Ve
+.Sp
+Make a note that each \s-1URL\s0 must be separated with a newline or a
+whitespace character.
 .ie n .IP "\fBcclive ""\s-1URL\s0"" \-s ""s{Alice}{Malice}""\fR" 4
 .el .IP "\fBcclive ``\s-1URL\s0'' \-s ``s{Alice}{Malice}''\fR" 4
 .IX Item "cclive URL -s s{Alice}{Malice}"
-Replace \*(L"Alice\*(R" in the video title with \*(L"Malice\*(R" before using it in the
-filename.
+Replace \*(L"Alice\*(R" in the video title with \*(L"Malice\*(R" before it is used in
+the filename.
 .ie n .IP "\fBcclive ""\s-1URL\s0"" \-s ""s{Alice}<Malice> s{wonderland}<Uberland>i""\fR" 4
 .el .IP "\fBcclive ``\s-1URL\s0'' \-s ``s{Alice}<Malice> s{wonderland}<Uberland>i''\fR" 4
 .IX Item "cclive URL -s s{Alice}<Malice> s{wonderland}<Uberland>i"
-Similar but makes two substitions, the former was explained above, the latter
-replaces \*(L"Wonderland\*(R" with \*(L"Uberland\*(R". Note the use of \*(L"i\*(R" (case-insensitive).
+Similar but makes two substitions instead of just one. The former
+substitution was explained above, the latter replaces \*(L"Wonderland\*(R"
+with \*(L"Uberland\*(R". Note also the \*(L"i\*(R" for case-insensitive.
 .Sp
-You can use \*(L"g\*(R" for global (find all), e.g. if you wanted to replace all of
-the \*(L"Alice\*(R" occurences with \*(L"Malice\*(R", you could use \*(L"s{Alice}<Malice>g\*(R".
+You can use \*(L"g\*(R" for global (find all), e.g. if you wanted to replace
+all of the \*(L"Alice\*(R" occurences with \*(L"Malice\*(R", you would use
+\&\*(L"s{Alice}<Malice>g\*(R".
 .ie n .IP "\fBcclive ""\s-1URL\s0"" \-b \-\-log\-file my.log\fR" 4
 .el .IP "\fBcclive ``\s-1URL\s0'' \-b \-\-log\-file my.log\fR" 4
 .IX Item "cclive URL -b --log-file my.log"
@@ -375,9 +378,8 @@ Go to background, redirect output to \f(CW\*(C`my.log\*(C'\fR.
 .ie n .IP "\fBkill \-USR1 \fB$cclive_pid\fB\fR" 4
 .el .IP "\fBkill \-USR1 \f(CB$cclive_pid\fB\fR" 4
 .IX Item "kill -USR1 $cclive_pid"
-Interrupt file transfer (of \f(CW$cclive_pid\fR) and move to the next \s-1URL\s0 in the
-queue (if any). libcurl will report this as \*(L"Operation was aborted by an
-application callback\*(R".
+Interrupt the current download (of \f(CW$cclive_pid\fR). Move to the next video
+in the queue (if any).
 .SH "FILES"
 .IX Header "FILES"
 .ie n .IP "\fB\fB$HOME\fB/.ccliverc\fR" 4
@@ -402,19 +404,18 @@ cclive exits with 0 on success and >0 if an (unrecoverable) error
 occurred.
 .SH "DEBUGGING TIPS"
 .IX Header "DEBUGGING TIPS"
-.IP "\fB\-\-no\-download\fR" 4
-.IX Item "--no-download"
-Use the \f(CW\*(C`\-\-no\-download\*(C'\fR switch if you don't need to download the video.
-.IP "\fB\-\-verbose\-libcurl\fR" 4
-.IX Item "--verbose-libcurl"
-You can use this switch to amp up libcurl verbosity.
+.IP "\fBSwitch \-\-no\-download\fR" 4
+.IX Item "Switch --no-download"
+Use the \f(CW\*(C`\-\-no\-download\*(C'\fR switch when you don't need to download the video.
+.IP "\fBSwitch \-\-verbose\-libcurl\fR" 4
+.IX Item "Switch --verbose-libcurl"
+Amp up the verbosity of libcurl.
 .IP "\fBDebug symbols\fR" 4
 .IX Item "Debug symbols"
-Compile cclive with \f(CW\*(C`\-g\*(C'\fR (see \f(CW\*(C`g++(1)\*(C'\fR) for debug symbols.
+Compile cclive (and related projects you see fit) with the debug symbols.
 .IP "\fBOther tools\fR" 4
 .IX Item "Other tools"
-Make use of such tools as \f(CWstrace(1)\fR, \f(CWgdb(1)\fR and \f(CWvalgrind(1)\fR.
-They may prove invaluable.
+Use \f(CWstrace(1)\fR, \f(CWgdb(1)\fR and \f(CWvalgrind(1)\fR.
 .SH "WWW"
 .IX Header "WWW"
 <http://cclive.sourceforge.net/>
@@ -422,6 +423,5 @@ They may prove invaluable.
 .IX Header "AUTHOR"
 Toni Gundogdu <legatvs at sign gmail com>.
 .PP
-Thanks to all those who have contributed to the project
-by sending patches, reporting bugs and writing feedback.
-You know who you are.
+Thanks to all those who have contributed to the project by sending
+patches, reporting bugs and writing feedback. You know who you are.
