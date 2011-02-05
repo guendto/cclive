@@ -184,7 +184,12 @@ typedef std::map<std::string,std::string> map_ss;
 static void
 print_host (const map_ss::value_type& t)
 {
-  std::cout << t.first << ":\n  " << t.second << "\n";
+  std::cout
+      << t.first
+      << ":\n  "
+      << t.second
+      << "\n"
+      << std::endl;
 }
 
 static application::exit_status
@@ -198,7 +203,6 @@ handle_format_list (
 
   if (map.count ("url"))
     {
-
       const std::string arg0 =
         map["url"].as< std::vector<std::string> >()[0];
 
@@ -207,7 +211,6 @@ handle_format_list (
         if (t.first.find (arg0) != std::string::npos)
           print_host (t);
       }
-
     }
 
   // -f list
@@ -215,7 +218,9 @@ handle_format_list (
   else
     {
       foreach (map_ss::value_type& t, m)
-      print_host (t);
+      {
+        print_host (t);
+      }
     }
 
   return application::ok;
