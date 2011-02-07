@@ -1,4 +1,12 @@
 
+0.7.2   Mon Feb 07 2011 Toni Gundogdu
+Changes:
+        - Add SIGUSR1 handler
+        - Add progress meter
+Bugfixes:
+        - Normal progressbar min-max rendering while resizing window
+
+
 0.7.1   Fri Jan 07 2011 Toni Gundogdu
 Changes:
         - Lower pcre prereq. to 8.02, thanks to Alejandro Garrido Mota
