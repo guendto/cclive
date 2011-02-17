@@ -186,6 +186,8 @@ progressbar::update (double now)
     }
 #endif // WITH_RESIZE
 
+  const bool inactive = now == 0;
+
   if (!_done)
     {
       if ((elapsed - _last_update) < _update_interval
@@ -222,7 +224,7 @@ progressbar::update (double now)
   rate_s.setf (std::ios::fixed);
   eta_s.setf (std::ios::fixed);
 
-  if (rate > 0)
+  if (!inactive)
     {
       // ETA.
 
