@@ -72,6 +72,10 @@ if (NOT WITHOUT_DOC)
     set (WITHOUT_DOC false)
 endif ()
 
+# Include dir.
+
+include_directories (BEFORE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
 # Prerequisites.
 
 include (FindPkgConfig)
@@ -142,7 +146,7 @@ check_function_exists (signal       HAVE_SIGNAL)
 
 # Subdirs.
 
-subdirs (lib cclive man1)
+subdirs (src man1)
 
 # Status.
 
