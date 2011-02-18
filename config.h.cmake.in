@@ -19,6 +19,7 @@
 #cmakedefine HAVE_SIGNAL
 
 #cmakedefine HAVE_QUVIOPT_NOSHORTENED
+#cmakedefine HAVE_QUVIOPT_CATEGORY
 
 #endif
 

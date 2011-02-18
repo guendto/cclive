@@ -107,6 +107,9 @@ query::parse (const url& pageURL, const options& opts) const
 #ifdef HAVE_QUVIOPT_NOSHORTENED
   quvi_setopt(_quvi, QUVIOPT_NOSHORTENED, opts._shortened ? 1L:0L);
 #endif
+#ifdef HAVE_QUVIOPT_CATEGORY
+  quvi_setopt(_quvi, QUVIOPT_CATEGORY, QUVIPROTO_HTTP);
+#endif
 
   quvi_video_t qv;
 
