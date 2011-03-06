@@ -41,7 +41,11 @@ options::exec (int argc, char **argv)
 {
   // Path to ccliverc.
 
-  fs::path config_path (fs::initial_path<fs::path> ());
+#ifdef HAVE_BOOST_FILESYSTEM_VERSION_3
+  fs::path config_path(fs::current_path());
+#else
+  fs::path config_path(fs::current_path<fs::path>());
+#endif
 
   const char *home = getenv ("HOME");
 

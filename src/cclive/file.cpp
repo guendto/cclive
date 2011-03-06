@@ -358,7 +358,11 @@ file::_init (
 
       p /= map["output-file"].as<std::string>();
 
+#ifdef HAVE_BOOST_FILESYSTEM_VERSION_3
+      _name           = p.filename().string();
+#else
       _name           = p.filename();
+#endif
       _path           = p.string();
       _initial_length = file::exists (_path);
 
@@ -429,7 +433,11 @@ file::_init (
 
       fs::path p = fs::system_complete (templ_path);
 
+#ifdef HAVE_BOOST_FILESYSTEM_VERSION_3
+      _name = p.filename().string();
+#else
       _name = p.filename();
+#endif
       _path = p.string();
 
       if ( !map.count ("overwrite") )
@@ -454,7 +462,12 @@ file::_init (
                 boost::format ("%1%.%2%") % templ_path.string () % i;
 
               p     = fs::system_complete (fmt.str ());
+
+#ifdef HAVE_BOOST_FILESYSTEM_VERSION_3
+              _name = p.filename().string();
+#else
               _name = p.filename();
+#endif
               _path = p.string();
             }
         }

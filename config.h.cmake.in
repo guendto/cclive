@@ -5,6 +5,8 @@
 #define VERSION      "${VERSION}"
 #define VERSION_LONG "${VERSION_LONG}"
 
+// System.
+
 #cmakedefine HAVE_UNISTD_H
 #cmakedefine HAVE_SYS_TYPES_H
 #cmakedefine HAVE_SYS_IOCTL_H
@@ -18,9 +20,21 @@
 #cmakedefine HAVE_GETPID
 #cmakedefine HAVE_SIGNAL
 
+// quvi.
+
 #cmakedefine HAVE_QUVIOPT_NOSHORTENED
 #cmakedefine HAVE_QUVIOPT_CATEGORY
 
+// Boost. See also CMakeLists.txt for notes.
+
+#define BOOST_FILESYSTEM_NO_DEPRECATED
+
+#cmakedefine HAVE_BOOST_FILESYSTEM_VERSION_3 // 1.44.0+
+
+#ifdef HAVE_BOOST_FILESYSTEM_VERSION_3
+    #ifndef BOOST_FILESYSTEM_VERSION
+        #define BOOST_FILESYSTEM_VERSION 3 // Default in 1.46.0
+    #endif
 #endif
 
-
+#endif

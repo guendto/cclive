@@ -129,6 +129,18 @@ link_directories (${Boost_LIBRARY_DIRS})
 set (boost_VERSION
     "${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}.${Boost_SUBMINOR_VERSION}")
 
+# Version 3 is a major revision with many new and improved features. It
+# may, however, break some user code written for Version 2.
+#
+# To ease the transition, Boost releases 1.44 through 1.47 will supply
+# both V2 and V3. Version 2 is the default version for Boost release 1.44
+# and 1.45. Version 3 will be the default starting with release 1.46.
+#   <http://www.boost.org/libs/filesystem/index.html>
+
+if (boost_VERSION VERSION_GREATER 1.43.0)
+    set (HAVE_BOOST_FILESYSTEM_VERSION_3 true)
+endif ()
+
 # Check for headers.
 
 include (CheckIncludeFile)

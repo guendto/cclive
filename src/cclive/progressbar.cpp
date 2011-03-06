@@ -280,7 +280,11 @@ progressbar::update (double now)
 
   fs::path p = fs::system_complete (_file.path ());
 
-  std::string fname = p.filename ();
+#ifdef HAVE_BOOST_FILESYSTEM_VERSION_3
+  std::string fname = p.filename().string();
+#else
+  std::string fname = p.filename();
+#endif
 
   switch (_mode)
     {
