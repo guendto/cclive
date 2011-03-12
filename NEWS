@@ -1,4 +1,16 @@
 
+0.7.3  Sat Mar 12 2011  Toni Gundogdu
+Changes:
+        - Add QUVIOPT_CATEGORY check
+            - Set QUVIPROTO_HTTP
+        - Do not build quvicpp as a static library
+            - Build quvicpp in the "cclive" target instead
+            - See also ChangeLog for 3a867d7 commit message
+Bugfixes:
+        - Compilation with boost 1.46.0 (#6)
+            - Boost::Filesystem uses v3 as the new default in 1.46.0
+
+
 0.7.2   Mon Feb 07 2011 Toni Gundogdu
 Changes:
         - Add SIGUSR1 handler
