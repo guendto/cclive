@@ -1,4 +1,9 @@
 
+0.7.3.1  Tue Mar 15 2011  Toni Gundogdu
+Bugfixes:
+        - CMake Error at src/CMakeLists.txt:43 (#7)
+
+
 0.7.3  Sat Mar 12 2011  Toni Gundogdu
 Changes:
         - Add QUVIOPT_CATEGORY check
