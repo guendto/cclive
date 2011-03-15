@@ -1,18 +1,18 @@
 
 set (cclive_SRC
-    cclive/application.cpp
-    cclive/background.cpp
-    cclive/error.cpp
-    cclive/exec.cpp
-    cclive/file.cpp
-    cclive/get.cpp
-    cclive/license.cpp
-    cclive/log.cpp
-    cclive/main.cpp
-    cclive/options.cpp
-    cclive/progressbar.cpp
-    cclive/re.cpp
-    cclive/wait.cpp
+    application.cpp
+    background.cpp
+    error.cpp
+    exec.cpp
+    file.cpp
+    get.cpp
+    license.cpp
+    log.cpp
+    main.cpp
+    options.cpp
+    progressbar.cpp
+    re.cpp
+    wait.cpp
 )
 
 set (quvicpp_SRC
