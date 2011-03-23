@@ -15,6 +15,8 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "config.h"
+
 #include <sstream>
 #include <iomanip>
 
@@ -25,12 +27,16 @@ namespace quvicpp
 
 // Constructors.
 
-video::video ()
-  : _current_link( _links.begin() ), _http_code(-1)
+media::media ()
+  : _current_url( _urls.begin() ), _http_code(-1)
 { }
 
-video::video (quvi_video_t qv)
-  : _current_link( _links.begin() ), _http_code(-1)
+#ifdef HAVE_QUVI_MEDIA_INTERFACE
+media::media (quvi_media_t qv)
+#else
+media::media (quvi_video_t qv)
+#endif
+  : _current_url( _urls.begin() ), _http_code(-1)
 {
 #define _wrap(id,dst,type) \
     do { \
@@ -41,32 +47,40 @@ video::video (quvi_video_t qv)
   _wrap(QUVIPROP_HOSTID,      _host,  char*);
   _wrap(QUVIPROP_PAGEURL,     _url,   char*);
   _wrap(QUVIPROP_PAGETITLE,   _title, char*);
+#ifdef HAVE_QUVI_MEDIA_INTERFACE
+  _wrap(QUVIPROP_MEDIAID,     _id,    char*);
+  _wrap(QUVIPROP_FORMAT,      _format, char*);
+#else
   _wrap(QUVIPROP_VIDEOID,     _id,    char*);
   _wrap(QUVIPROP_VIDEOFORMAT, _format, char*);
-  _wrap(QUVIPROP_HTTPCODE,    _http_code, long);
+#endif
 #undef _wrap
 
   do
     {
-      _links.push_back( link(qv) );
+      _urls.push_back( quvicpp::url(qv) );
     }
+#ifdef HAVE_QUVI_MEDIA_INTERFACE
+  while (quvi_next_media_url(qv) == QUVI_OK);
+#else
   while (quvi_next_videolink(qv) == QUVI_OK);
+#endif
 
-  _current_link = _links.begin();
+  _current_url = _urls.begin();
 }
 
 // Copy constructor.
 
-video::video (const video& v)
-  : _current_link( _links.begin() ), _http_code(-1)
+media::media (const media& v)
+  : _current_url( _urls.begin() ), _http_code(-1)
 {
   _swap(v);
 }
 
 // Copy assignment operator.
 
-video&
-video::operator=(const video& v)
+media&
+media::operator=(const media& v)
 {
   if (this != &v)
     _swap(v);
@@ -75,69 +89,68 @@ video::operator=(const video& v)
 
 // Destructor.
 
-video::~video () { }
+media::~media () { }
 
 // Swap.
 
 void
-video::_swap (const video& v)
+media::_swap (const media& v)
 {
-  _links       = v._links;
-  _title       = v._title;
-  _host        = v._host;
-  _url         = v._url;
-  _id          = v._id;
-  _format      = v._format;
+  _urls        = v._urls;
+  _title        = v._title;
+  _host         = v._host;
+  _url          = v._url;
+  _id           = v._id;
+  _format       = v._format;
   _http_code    = v._http_code;
-  _current_link = _links.begin();
+  _current_url = _urls.begin();
 }
 
 // Get.
 
-const std::string& video::title () const
+const std::string& media::title () const
 {
   return _title;
 }
-const std::string& video::host  () const
+const std::string& media::host  () const
 {
   return _host;
 }
-const std::string& video::url   () const
+const std::string& media::url   () const
 {
   return _url;
 }
-const std::string& video::id    () const
+const std::string& media::id    () const
 {
   return _id;
 }
-const std::string& video::format() const
+const std::string& media::format() const
 {
   return _format;
 }
-long  video::http_code          () const
+long  media::http_code          () const
 {
   return _http_code;
 }
 
-// Next link.
+// Next url.
 
-link
-video::next_link ()
+quvicpp::url
+media::next_url ()
 {
-  if (_current_link == _links.end())
+  if (_current_url == _urls.end())
     {
-      _current_link = _links.begin();
-      return link();
+      _current_url = _urls.begin();
+      return quvicpp::url();
     }
-  return *(_current_link)++;
+  return *(_current_url)++;
 }
 
 // To string. Mimic quvi(1) behaviour.
 
 std::string
-video::to_s ()
+media::to_s ()
 {
-
   std::stringstream b;
 
   b.setf(std::ios::fixed);
@@ -152,34 +165,34 @@ video::to_s ()
   for (int i=0;; ++i)
     {
 
-      const link l = next_link();
+      const quvicpp::url u = next_url();
 
-      if (!l.ok()) break;
+      if (!u.ok()) break;
 
-      b << "link #"
+      b << "url #"
         << i
         << "\t: "
-        << l.url()
+        << u.media_url()
         << "\n:: length\t: "
         << std::setprecision(0)
-        << l.length()
+        << u.content_length()
         << "\n:: content-type\t: "
-        << l.content_type()
+        << u.content_type()
         << "\n:: suffix\t: "
-        << l.suffix()
+        << u.suffix()
         << "\n";
     }
 
   return b.str();
 }
 
-std::ostream& operator<<(std::ostream& os, video& v)
+std::ostream& operator<<(std::ostream& os, media& v)
 {
   return os << v.to_s();
 }
 
 void
-video::print (std::ostream& os)
+media::print (std::ostream& os)
 {
   os << to_s();
 }

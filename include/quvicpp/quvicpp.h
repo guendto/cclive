@@ -18,6 +18,8 @@
 #ifndef quvicpp_h
 #define quvicpp_h
 
+#include "config.h"
+
 #include <string>
 #include <vector>
 #include <map>
@@ -29,11 +31,9 @@ namespace quvicpp
 
 class options;
 class query;
-class video;
-class link;
+class media;
+class url;
 class error;
-
-typedef std::string url;
 
 // Version.
 
@@ -81,7 +81,7 @@ public:
   query& operator=(const query&);
   virtual ~query();
 public:
-  video parse (const url&, const options&) const;
+  media parse (const std::string& url, const options&) const;
   std::map<std::string,std::string> support () const;
   void* curlHandle () const;
 private:
@@ -94,40 +94,48 @@ private:
 
 // Link.
 
-class link
+class url
 {
 public:
-  link();
-  link(quvi_video_t);
-  link(const link&);
-  link& operator=(const link&);
-  virtual ~link();
+  url();
+#ifdef HAVE_QUVI_MEDIA_INTERFACE
+  url(quvi_media_t);
+#else
+  url(quvi_video_t);
+#endif
+  url(const url&);
+  url& operator=(const url&);
+  virtual ~url();
 public:
   const   std::string& content_type   () const;
   const   std::string& suffix         () const;
-  const   std::string& url            () const;
-  double  length                      () const;
+  const   std::string& media_url      () const;
+  double  content_length              () const;
   bool    ok                          () const;
 private:
-  void _swap (const link&);
+  void _swap (const url&);
 private:
   std::string _contentType;
+  double _contentLength;
   std::string _suffix;
   std::string _url;
-  double _length;
 };
 
-// Video.
+// Media.
 
-class video
+class media
 {
-  friend std::ostream& operator<<(std::ostream&, const video&);
+  friend std::ostream& operator<<(std::ostream&, const media&);
 public:
-  video();
-  video(quvi_video_t);
-  video(const video&);
-  video& operator=(const video&);
-  virtual ~video();
+  media();
+#ifdef HAVE_QUVI_MEDIA_INTERFACE
+  media(quvi_media_t);
+#else
+  media(quvi_video_t);
+#endif
+  media(const media&);
+  media& operator=(const media&);
+  virtual ~media();
 public:
   const std::string& title    () const;
   const std::string& host     () const;
@@ -135,14 +143,14 @@ public:
   const std::string& id       () const;
   const std::string& format   () const;
   long  http_code             () const;
-  link               next_link();
+  quvicpp::url       next_url ();
   std::string        to_s     ();
   void print                  (std::ostream&);
 private:
-  void _swap (const video&);
+  void _swap (const media&);
 private:
-  std::vector<link>::const_iterator _current_link;
-  std::vector<link> _links;
+  std::vector<quvicpp::url>::const_iterator _current_url;
+  std::vector<quvicpp::url> _urls;
   std::string _format;
   std::string _title;
   std::string _host;

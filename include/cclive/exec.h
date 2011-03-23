@@ -22,7 +22,7 @@ namespace cclive
 {
 
 void
-exec (const file&, const quvicpp::link&, const options& opts);
+exec (const file&, const quvicpp::url&, const options& opts);
 
 } // End namespace.
 

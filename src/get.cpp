@@ -34,7 +34,7 @@ namespace po = boost::program_options;
 void
 get (
   const quvicpp::query& query,
-  quvicpp::video& video,
+  quvicpp::media& media,
   const options& opts)
 {
   const po::variables_map map = opts.map ();
@@ -47,9 +47,9 @@ get (
 
   int n = 0;
 
-  quvicpp::link link;
+  quvicpp::url url;
 
-  while ( (link = video.next_link ()).ok ())
+  while ( (url = media.next_url ()).ok ())
     {
       ++n;
 
@@ -57,7 +57,7 @@ get (
 
       while (retry <= max_retries)
         {
-          cclive::file file (video, link, n, opts);
+          cclive::file file(media, url, n, opts);
 
           if (retry > 0)
             {
@@ -74,15 +74,15 @@ get (
 
           ++retry;
 
-          cclive::log << file.to_s (link) << std::endl;
+          cclive::log << file.to_s (url) << std::endl;
 
           if (!no_download)
             {
-              if (!file.write (query, link, opts))
+              if (!file.write (query, url, opts))
                 continue; // Retry.
 
               if (exec)
-                cclive::exec (file, link, opts);
+                cclive::exec (file, url, opts);
             }
 
           break; // Stop retrying.

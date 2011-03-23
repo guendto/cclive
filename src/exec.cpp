@@ -30,9 +30,8 @@ namespace cclive
 namespace po = boost::program_options;
 
 void
-exec (const file& file, const quvicpp::link& link, const options& opts)
+exec (const file& file, const quvicpp::url& url, const options& opts)
 {
-
   const po::variables_map map = opts.map();
 
   std::string arg = map["exec"].as<std::string>();

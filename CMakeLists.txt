@@ -92,6 +92,10 @@ if (quvi_VERSION VERSION_GREATER 0.2.11)
     set (HAVE_QUVIOPT_CATEGORY true)
 endif ()
 
+if (quvi_VERSION VERSION_GREATER 0.2.14)
+    set (HAVE_QUVI_MEDIA_INTERFACE true)
+endif ()
+
 pkg_check_modules (curl libcurl>=7.20 REQUIRED QUIET)
 include_directories (AFTER ${curl_INCLUDE_DIRS})
 link_directories (${curl_LIBRARY_DIRS})

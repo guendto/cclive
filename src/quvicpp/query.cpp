@@ -90,10 +90,9 @@ query::_close ()
 
 // Parse.
 
-video
-query::parse (const url& pageURL, const options& opts) const
+media
+query::parse (const std::string& pageURL, const options& opts) const
 {
-
   // Friend of quvicpp::options class -> clean API.
 
   if (!opts._format.empty())
@@ -111,20 +110,24 @@ query::parse (const url& pageURL, const options& opts) const
   quvi_setopt(_quvi, QUVIOPT_CATEGORY, QUVIPROTO_HTTP);
 #endif
 
-  quvi_video_t qv;
+#ifdef HAVE_QUVI_MEDIA_INTERFACE
+  quvi_media_t qm;
+#else
+  quvi_video_t qm;
+#endif
 
   QUVIcode rc =
-    quvi_parse(_quvi, const_cast<char*>(pageURL.c_str()), &qv);
+    quvi_parse(_quvi, const_cast<char*>(pageURL.c_str()), &qm);
 
   if (rc != QUVI_OK)
     throw error(_quvi,rc);
 
-  assert (qv != NULL);
+  assert (qm != NULL);
 
-  video v(qv);
-  quvi_parse_close(&qv);
+  media m(qm);
+  quvi_parse_close(&qm);
 
-  return v;
+  return m;
 }
 
 // Get.

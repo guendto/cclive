@@ -61,13 +61,13 @@ file::file ()
 { }
 
 file::file (
-  const quvicpp::video& video,
-  const quvicpp::link& link,
+  const quvicpp::media& media,
+  const quvicpp::url& url,
   const int n,
   const options& opts)
   : _initial_length(0)
 {
-  _init (video, link, n, opts);
+  _init (media, url, n, opts);
 }
 
 file::file (const file& f)
@@ -155,12 +155,12 @@ namespace po = boost::program_options;
 bool
 file::write (
   const quvicpp::query& q,
-  const quvicpp::link& l,
+  const quvicpp::url& u,
   const options& opts) const
 {
   CURL *curl = q.curlHandle();
 
-  curl_easy_setopt (curl, CURLOPT_URL, l.url().c_str());
+  curl_easy_setopt (curl, CURLOPT_URL, u.media_url().c_str());
   curl_easy_setopt (curl, CURLOPT_WRITEFUNCTION, write_cb);
 
   const po::variables_map map  = opts.map();
@@ -193,7 +193,7 @@ file::write (
   curl_easy_setopt (curl, CURLOPT_ENCODING, "identity");
   curl_easy_setopt (curl, CURLOPT_HEADER, 0L);
 
-  progressbar pb (*this, l, opts);
+  progressbar pb (*this, u, opts);
   curl_easy_setopt (curl, CURLOPT_PROGRESSDATA, &pb);
   curl_easy_setopt (curl, CURLOPT_NOPROGRESS, 0L);
   curl_easy_setopt (curl, CURLOPT_PROGRESSFUNCTION, progress_cb);
@@ -307,17 +307,17 @@ static double to_mb (const double bytes)
 }
 
 std::string
-file::to_s (const quvicpp::link& link) const
+file::to_s (const quvicpp::url& url) const
 {
-  const double length = to_mb (link.length ());
+  const double length = to_mb(url.content_length());
 
   boost::format fmt = boost::format("%s  %.2fM  [%s]")
-                      % _name % length % link.content_type ();
+                      % _name % length % url.content_type ();
 
   return fmt.str();
 }
 
-#define E_NOTHINGTODO "video retrieved completely already"
+#define E_NOTHINGTODO "media retrieved completely already"
 
 namespace fs = boost::filesystem;
 
@@ -343,8 +343,8 @@ output_dir (const po::variables_map& map)
 
 void
 file::_init (
-  const quvicpp::video& video,
-  const quvicpp::link& link,
+  const quvicpp::media& media,
+  const quvicpp::url& url,
   const int n,
   const options& opts)
 {
@@ -366,13 +366,13 @@ file::_init (
       _path           = p.string();
       _initial_length = file::exists (_path);
 
-      if ( _initial_length >= link.length() && !map.count("overwrite") )
+      if ( _initial_length >= url.content_length() && !map.count("overwrite") )
         throw std::runtime_error (E_NOTHINGTODO);
     }
 
   else
     {
-      std::string title  = video.title();
+      std::string title  = media.title();
 
       // Apply --regexp to title.
 
@@ -387,16 +387,16 @@ file::_init (
 
       boost::format fmt;
 
-      fmt = boost::format("s{%%i}{%1%}g") % video.id();
+      fmt = boost::format("s{%%i}{%1%}g") % media.id();
       cclive::re::subst (fmt.str(), fname_format);
 
       fmt = boost::format("s{%%t}{%1%}g") % title;
       cclive::re::subst (fmt.str(), fname_format);
 
-      fmt = boost::format("s{%%s}{%1%}g") % link.suffix();
+      fmt = boost::format("s{%%s}{%1%}g") % url.suffix();
       cclive::re::subst (fmt.str(), fname_format);
 
-      fmt = boost::format("s{%%h}{%1%}g") % video.host();
+      fmt = boost::format("s{%%h}{%1%}g") % media.host();
       cclive::re::subst (fmt.str(), fname_format);
 
       if (map.count("subst"))
@@ -418,7 +418,7 @@ file::_init (
 
       b << fname_format;
 
-      // A multi-segment video.
+      // A multi-segment media.
 
       if (n > 1) b << "_" << n;
 
@@ -449,7 +449,7 @@ file::_init (
               if (!_initial_length)
                 break;
 
-              else if (_initial_length >= link.length())
+              else if (_initial_length >= url.content_length())
                 throw std::runtime_error (E_NOTHINGTODO);
 
               else

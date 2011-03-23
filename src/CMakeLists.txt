@@ -17,11 +17,11 @@ set (cclive_SRC
 
 set (quvicpp_SRC
     quvicpp/error.cpp
-    quvicpp/link.cpp
+    quvicpp/media.cpp
     quvicpp/misc.cpp
     quvicpp/options.cpp
     quvicpp/query.cpp
-    quvicpp/video.cpp
+    quvicpp/url.cpp
 )
 
 add_executable (cclive ${quvicpp_SRC} ${cclive_SRC})

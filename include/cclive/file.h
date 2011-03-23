@@ -25,22 +25,22 @@ class file
 {
 public:
   file ();
-  file (const quvicpp::video&, const quvicpp::link&,
+  file (const quvicpp::media&, const quvicpp::url&,
         const int, const options&);
   file (const file&);
   file& operator=(const file&);
 public:
-  bool write (const quvicpp::query&, const quvicpp::link&,
+  bool write (const quvicpp::query&, const quvicpp::url&,
               const options&) const;
 public:
   double             initial_length   () const;
   const std::string& path             () const;
-  std::string        to_s             (const quvicpp::link&) const;
+  std::string        to_s             (const quvicpp::url&) const;
 public:
   static double exists (const std::string&);
 private:
   void _swap              (const file&);
-  void _init              (const quvicpp::video&, const quvicpp::link&,
+  void _init              (const quvicpp::media&, const quvicpp::url&,
                            const int, const options&);
   bool _should_continue   () const;
 private:

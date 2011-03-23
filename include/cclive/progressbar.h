@@ -29,7 +29,7 @@ class progressbar
 public:
   enum mode { normal = 0, dotline };
 public:
-  progressbar (const file&, const quvicpp::link&, const options&);
+  progressbar (const file&, const quvicpp::url&, const options&);
   void update (double);
   void finish ();
 private:

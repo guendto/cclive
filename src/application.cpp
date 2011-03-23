@@ -383,19 +383,18 @@ application::exec (int argc, char **argv)
 
             print_checking (i, n);
 
-            quvicpp::video v;
+            quvicpp::media m;
 
             try
               {
-                v = query.parse (url, qopts);
+                m = query.parse(url, qopts);
               }
-
             catch (const quvicpp::error& e)
               {
                 check_quvi_error (e);
               }
 
-            cclive::get (query, v, _opts);
+            cclive::get (query, m, _opts);
 
             break; // Stop retrying.
           }

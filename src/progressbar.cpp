@@ -78,11 +78,11 @@ namespace po = boost::program_options;
 
 progressbar::progressbar (
   const file& f,
-  const quvicpp::link& l,
+  const quvicpp::url& u,
   const options& opts)
   : _update_interval (.2),
-    _expected_bytes (l.length ()),
-    _initial_bytes  (f.initial_length ()),
+    _expected_bytes (u.content_length()),
+    _initial_bytes  (f.initial_length()),
     _time_started (0),
     _last_update (0),
     _term_width (0),
