@@ -95,6 +95,10 @@ options::exec (int argc, char **argv)
   ("no-shortened,s",
    "Do not decompress shortened URLs")
 #endif
+#ifdef HAVE_QUVIOPT_NORESOLVE
+  ("no-resolve,r",
+   "Do not resolve URL redirections")
+#endif
   ("no-proxy",
    "Disable use of http proxy")
   ("log-file",

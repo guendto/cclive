@@ -27,8 +27,13 @@ options::options ()
   : _statusfunc(NULL),
     _writefunc(NULL),
     _format("default"),
-    _verify(true),
-    _shortened(true)
+#ifdef HAVE_QUVIOPT_NOSHORTENED
+    _shortened(true),
+#endif
+#ifdef HAVE_QUVIOPT_NORESOLVE
+    _resolve(true),
+#endif
+    _verify(true)
 { }
 
 // Copy constructor.
@@ -37,8 +42,13 @@ options::options (const options& opts)
   : _statusfunc(NULL),
     _writefunc(NULL),
     _format("default"),
-    _verify(true),
-    _shortened(true)
+#ifdef HAVE_QUVIOPT_NOSHORTENED
+    _shortened(true),
+#endif
+#ifdef HAVE_QUVIOPT_NORESOLVE
+    _resolve(true),
+#endif
+    _verify(true)
 {
   _swap(opts);
 }
@@ -68,7 +78,12 @@ options::_swap (const options& qo)
 {
   _format     = qo._format;
   _verify     = qo._verify;
+#ifdef HAVE_QUVIOPT_NOSHORTENED
   _shortened  = qo._shortened;
+#endif
+#ifdef HAVE_QUVIOPT_NORESOLVE
+  _resolve    = qo._resolve;
+#endif
   _statusfunc = qo._statusfunc;
   _writefunc  = qo._writefunc;
 }
@@ -77,16 +92,24 @@ options::_swap (const options& qo)
 
 void options::format (const std::string& fmt)
 {
-  _format     = fmt;
+  _format = fmt;
 }
 void options::verify (const bool b)
 {
-  _verify     = b;
+  _verify = b;
 }
+#ifdef HAVE_QUVIOPT_NOSHORTENED
 void options::shortened (const bool b)
 {
-  _shortened  = b;
+  _shortened = b;
 }
+#endif
+#ifdef HAVE_QUVIOPT_NORESOLVE
+void options::resolve (const bool b)
+{
+  _resolve = b;
+}
+#endif
 void options::statusfunc (quvi_callback_status cb)
 {
   _statusfunc = cb;

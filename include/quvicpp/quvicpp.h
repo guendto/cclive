@@ -58,7 +58,12 @@ public:
 public:
   void format     (const std::string&);
   void verify     (const bool);
+#ifdef HAVE_QUVIOPT_NOSHORTENED
   void shortened  (const bool);
+#endif
+#ifdef HAVE_QUVIOPT_NORESOLVE
+  void resolve    (const bool);
+#endif
   void statusfunc (quvi_callback_status);
   void writefunc  (quvi_callback_write);
 private:
@@ -67,8 +72,13 @@ private:
   quvi_callback_status _statusfunc;
   quvi_callback_write  _writefunc;
   std::string          _format;
-  bool                 _verify;
+#ifdef HAVE_QUVIOPT_NOSHORTENED
   bool                 _shortened;
+#endif
+#ifdef HAVE_QUVIOPT_NORESOLVE
+  bool                 _resolve;
+#endif
+  bool                 _verify;
 };
 
 // Query.

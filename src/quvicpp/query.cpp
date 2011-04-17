@@ -103,9 +103,14 @@ query::parse (const std::string& pageURL, const options& opts) const
 #ifdef _0
   quvi_setopt(_quvi, QUVIOPT_NOVERIFY, opts._verify ? 1L:0L);
 #endif
+
 #ifdef HAVE_QUVIOPT_NOSHORTENED
   quvi_setopt(_quvi, QUVIOPT_NOSHORTENED, opts._shortened ? 1L:0L);
 #endif
+#ifdef HAVE_QUVIOPT_NORESOLVE // Replaced QUVIOPT_NOSHORTENED in 0.2.16
+  quvi_setopt(_quvi, QUVIOPT_NORESOLVE, opts._resolve ? 1L:0L);
+#endif
+
 #ifdef HAVE_QUVIOPT_CATEGORY
   quvi_setopt(_quvi, QUVIOPT_CATEGORY, QUVIPROTO_HTTP);
 #endif

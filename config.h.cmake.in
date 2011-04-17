@@ -23,6 +23,7 @@
 // quvi.
 
 #cmakedefine HAVE_QUVIOPT_NOSHORTENED
+#cmakedefine HAVE_QUVIOPT_NORESOLVE
 #cmakedefine HAVE_QUVIOPT_CATEGORY
 #cmakedefine HAVE_QUVI_MEDIA_INTERFACE
 

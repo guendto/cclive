@@ -318,7 +318,12 @@ application::exec (int argc, char **argv)
 #ifdef _0
   qopts.verify     (map.count ("no-verify"));
 #endif
+#ifdef HAVE_QUVIOPT_NOSHORTENED
   qopts.shortened  (map.count ("no-shortened"));
+#endif
+#ifdef HAVE_QUVIOPT_NORESOLVE
+  qopts.resolve (map.count ("no-resolve"));
+#endif
 
   // Seed random generator.
 
