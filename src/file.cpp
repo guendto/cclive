@@ -329,14 +329,18 @@ output_dir (const po::variables_map& map)
   if (map.count ("output-dir"))
     dir = map["output-dir"].as<std::string>();
 
+#ifdef HAVE_GETCWD
   else
     {
-#ifdef HAVE_GETCWD
-      char tmp[PATH_MAX];
-      getcwd (tmp, sizeof (tmp));
-      dir = tmp;
-#endif
+      char *p = getcwd(NULL, 0);
+      if (p)
+        {
+          dir = p;
+          free(p);
+          p = NULL;
+        }
     }
+#endif
 
   return fs::system_complete (dir);
 }
@@ -482,7 +486,6 @@ file::_init (
 double
 file::exists (const std::string& path)
 {
-
   fs::path p( fs::system_complete(path) );
 
   double size = 0;
