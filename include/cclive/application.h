@@ -32,7 +32,6 @@ public:
 public:
   exit_status exec (int,char **);
 private:
-  void _read_stdin (std::vector<std::string>&);
   void _tweak_curl_opts (const quvicpp::query&,
                          const boost::program_options::variables_map&);
 private:

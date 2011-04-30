@@ -226,6 +226,52 @@ handle_format_list (
   return application::ok;
 }
 
+static char *parse_url_scheme(const std::string& s)
+{
+  char *url = const_cast<char*>(s.c_str());
+
+  char *p = strstr(url, ":/");
+  if (!p)
+    return NULL;
+
+  char *r = NULL;
+  asprintf(&r, "%.*s", (int)(p - url), url);
+
+  return r;
+}
+
+#define _free(p) \
+  do { if (p) free(p); p=NULL; } while (0)
+
+static int is_url(const std::string& s)
+{
+  char *p = parse_url_scheme(s);
+  if (p)
+    {
+      _free(p);
+      return true;
+    }
+  return false;
+}
+
+#undef _free
+
+static void read_from(std::istream& is, std::vector<std::string>& dst)
+{
+  std::string s;
+  char ch = 0;
+
+  while (is.get(ch))
+    s += ch;
+
+  std::istringstream iss(s);
+  std::copy(
+    std::istream_iterator<std::string >(iss),
+    std::istream_iterator<std::string >(),
+    std::back_inserter<std::vector<std::string> >(dst)
+  );
+}
+
 extern char LICENSE[]; // cclive/license.cpp
 
 application::exit_status
@@ -294,10 +340,40 @@ application::exec (int argc, char **argv)
 
   std::vector<std::string> input;
 
-  if (map.count("url"))
-    input = map["url"].as< std::vector<std::string> >();
+  if (map.count("url") == 0)
+    read_from(std::cin, input);
   else
-    _read_stdin (input);
+    {
+      std::vector<std::string> args =
+        map["url"].as< std::vector<std::string> >();
+
+      foreach(std::string arg, args)
+      {
+        if (!is_url(arg))
+          {
+            std::ifstream f(arg.c_str());
+            if (f.is_open())
+              read_from(f, input);
+            else
+              {
+                std::clog
+                    << "error: "
+                    << arg
+                    << ": "
+                    << cclive::perror("unable to open")
+                    << std::endl;
+              }
+          }
+        else
+          input.push_back(arg);
+      }
+    }
+
+  if (input.size() == 0)
+    {
+      std::clog << "error: no input urls" << std::endl;
+      return invalid_option;
+    }
 
   // Remove duplicates.
 
@@ -376,7 +452,6 @@ application::exec (int argc, char **argv)
 
     try
       {
-
         int retry = 0;
 
         while (retry <= max_retries)
@@ -417,23 +492,6 @@ application::exec (int argc, char **argv)
   }
 
   return ok;
-}
-
-void
-application::_read_stdin (std::vector<std::string>& dst)
-{
-  std::string s;
-  char ch = 0;
-
-  while (std::cin.get(ch))
-    s += ch;
-
-  std::istringstream iss(s);
-  std::copy(
-    std::istream_iterator<std::string >(iss),
-    std::istream_iterator<std::string >(),
-    std::back_inserter<std::vector<std::string> >(dst)
-  );
 }
 
 void
