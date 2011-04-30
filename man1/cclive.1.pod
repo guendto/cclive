@@ -6,7 +6,7 @@ cclive - video download tool
 
 =head1 SYNOPSIS
 
-cclive [options] [url...]
+cclive [options] [url | file...]
 
 =head1 DESCRIPTION
 
@@ -247,13 +247,15 @@ cclive can handle multiple URLs in one go. One way to do this, is to
 specify each on the command line as arguments. An alternative source
 could be a file. For example:
 
-  cat >> urls.lst
+  % cat >> URLs
   http://www.youtube.com/watch?v=DUM1284TqFc
   http://www.youtube.com/watch?v=TqgTz8ymZl8
-  (CTRL+D)
-  cclive < urls.lst
+  (^D)
+  % cclive < URLs
+  Or:
+  % cclive URLs
 
-Make a note that each URL must be separated with a newline or a
+Please note that each URL must be separated with a newline or a
 whitespace character.
 
 =item B<cclive "URL" -s "s{Alice}{Malice}">

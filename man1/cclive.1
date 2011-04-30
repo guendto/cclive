@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2011-02-03" "0.7.3" "cclive manual"
+.TH cclive 1 "2011-05-01" "0.7.3.2" "cclive manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -133,7 +133,7 @@
 cclive \- video download tool
 .SH "SYNOPSIS"
 .IX Header "SYNOPSIS"
-cclive [options] [url...]
+cclive [options] [url | file...]
 .SH "DESCRIPTION"
 .IX Header "DESCRIPTION"
 cclive is a command line tool for downloading videos from Youtube and other
@@ -346,15 +346,17 @@ cclive can handle multiple URLs in one go. One way to do this, is to
 specify each on the command line as arguments. An alternative source
 could be a file. For example:
 .Sp
-.Vb 5
-\&  cat >> urls.lst
+.Vb 7
+\&  % cat >> URLs
 \&  http://www.youtube.com/watch?v=DUM1284TqFc
 \&  http://www.youtube.com/watch?v=TqgTz8ymZl8
-\&  (CTRL+D)
-\&  cclive < urls.lst
+\&  (^D)
+\&  % cclive < URLs
+\&  Or:
+\&  % cclive URLs
 .Ve
 .Sp
-Make a note that each \s-1URL\s0 must be separated with a newline or a
+Please note that each \s-1URL\s0 must be separated with a newline or a
 whitespace character.
 .ie n .IP "\fBcclive ""\s-1URL\s0"" \-s ""s{Alice}{Malice}""\fR" 4
 .el .IP "\fBcclive ``\s-1URL\s0'' \-s ``s{Alice}{Malice}''\fR" 4
