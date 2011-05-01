@@ -336,6 +336,16 @@ application::exec (int argc, char **argv)
   else if (format == "list")
     return handle_format_list (map, query);
 
+#if defined(HAVE_QUVIOPT_NORESOLVE) && defined(HAVE_QUVIOPT_NOSHORTENED)
+  if (map.count("no-shortened"))
+    {
+      std::clog
+          << "warning: --no-shortened is deprecated, "
+          << "use --no-resolve instead"
+          << std::endl;
+    }
+#endif
+
   // Parse input.
 
   std::vector<std::string> input;

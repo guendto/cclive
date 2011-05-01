@@ -30,6 +30,10 @@
 #include "cclive/re.h"
 #include "cclive/options.h"
 
+#if defined(HAVE_QUVIOPT_NOSHORTENED) && defined(HAVE_QUVIOPT_NORESOLVE)
+#define HIDE_NOSHORTENED
+#endif
+
 namespace cclive
 {
 
@@ -91,9 +95,11 @@ options::exec (int argc, char **argv)
    "Write downloaded video to file")
   ("no-download,n",
    "Do not download video, print info only")
+#ifndef HIDE_NOSHORTENED
 #ifdef HAVE_QUVIOPT_NOSHORTENED
   ("no-shortened,s",
    "Do not decompress shortened URLs")
+#endif
 #endif
 #ifdef HAVE_QUVIOPT_NORESOLVE
   ("no-resolve,r",
@@ -157,6 +163,12 @@ options::exec (int argc, char **argv)
   hidden.add_options ()
   ("url", opts::value< std::vector<std::string> >(),
    "url")
+#ifdef HIDE_NOSHORTENED
+#ifdef HAVE_QUVIOPT_NOSHORTENED
+  ("no-shortened,s",
+   "Do not decompress shortened URLs")
+#endif
+#endif
   ;
 
   // Visible.

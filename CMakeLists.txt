@@ -85,11 +85,12 @@ include_directories (AFTER ${quvi_INCLUDE_DIRS})
 link_directories (${quvi_LIBRARY_DIRS})
 
 if (quvi_VERSION VERSION_GREATER 0.2.7)
+    set (HAVE_QUVIOPT_NOSHORTENED true) # Keep around for now.
     if (quvi_VERSION VERSION_GREATER 0.2.15)
         # QUVIOPT_NORESOLVE replaced QUVIOPT_NOSHORTENED in 0.2.16.
         set (HAVE_QUVIOPT_NORESOLVE true)
-    else ()
-        set (HAVE_QUVIOPT_NOSHORTENED true)
+#    else ()
+#        set (HAVE_QUVIOPT_NOSHORTENED true)
     endif ()
 endif ()
 
