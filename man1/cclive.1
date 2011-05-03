@@ -179,10 +179,21 @@ Write video to \fIarg\fR. Overrides \f(CW\*(C`\-\-filename\-format\*(C'\fR.
 .IP "\fB\-n, \-\-no\-download\fR" 4
 .IX Item "-n, --no-download"
 Do not download the video, display video details only.
+.IP "\fB\-r, \-\-no\-resolve\fR" 4
+.IX Item "-r, --no-resolve"
+Do not resolve \s-1HTTP\s0 redirections to another location.
+.Sp
+For example, \*(L"\s-1URL\s0 shorteners\*(R" (or \*(L"\s-1URL\s0 shortening services\*(R")
+typically require following an \s-1HTTP\s0 redirection to another location.
+If used, cclive stops working with such services.
+.Sp
+Available only with quvi 0.2.16 and later. This options replaces
+(and deprecates) \f(CW\*(C`\-\-no\-shortened\*(C'\fR.
 .IP "\fB\-s, \-\-no\-shortened\fR" 4
 .IX Item "-s, --no-shortened"
 Do not \*(L"decompress\*(R" shortened URLs before using them. Available only
-with quvi 0.2.8 and later.
+with quvi 0.2.8 and later. See also \f(CW\*(C`\-\-no\-resolve\*(C'\fR which replaces this
+option.
 .IP "\fB\-\-no\-proxy\fR" 4
 .IX Item "--no-proxy"
 Disable use of \s-1HTTP\s0 proxy. Overrides both \f(CW\*(C`\-\-proxy\*(C'\fR and http_proxy environment

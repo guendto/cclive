@@ -68,10 +68,22 @@ Write video to I<arg>. Overrides C<--filename-format>.
 
 Do not download the video, display video details only.
 
+=item B<-r, --no-resolve>
+
+Do not resolve HTTP redirections to another location.
+
+For example, "URL shorteners" (or "URL shortening services")
+typically require following an HTTP redirection to another location.
+If used, cclive stops working with such services.
+
+Available only with quvi 0.2.16 and later. This options replaces
+(and deprecates) C<--no-shortened>.
+
 =item B<-s, --no-shortened>
 
 Do not "decompress" shortened URLs before using them. Available only
-with quvi 0.2.8 and later.
+with quvi 0.2.8 and later. See also C<--no-resolve> which replaces this
+option.
 
 =item B<--no-proxy>
 
