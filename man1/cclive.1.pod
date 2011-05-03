@@ -170,46 +170,47 @@ Limit download transfer rate to I<arg> KB/s. Default is 0 (disabled).
 This option essentially wraps the CURLOPT_CONNECTTIMEOUT of libcurl.
 Default is 30.
 
-  "Pass a long. It should contain the maximum time in seconds that
-  you allow the connection to the server to take.
+"Pass a long. It should contain the maximum time in seconds that
+you allow the connection to the server to take.
 
-  This only limits the connection phase, once it has connected,
-  this option is of no more use. Set to zero to disable connection
-  timeout (it will then only timeout on the system's internal
-  timeouts). See also the CURLOPT_TIMEOUT option."
-        -- C<curl_easy_setopt(3)>
+This only limits the connection phase, once it has connected,
+this option is of no more use. Set to zero to disable connection
+timeout (it will then only timeout on the system's internal
+timeouts). See also the CURLOPT_TIMEOUT option."
+-- C<curl_easy_setopt(3)>
 
 =item B<--transfer-timeout> I<arg>
 
 This option essentially wraps the CURLOPT_TIMEOUT of libcurl.
 Default is 0 (disabled).
 
-  "Pass a long as parameter containing the maximum time in seconds
-  that you allow the libcurl transfer operation to take.
+"Pass a long as parameter containing the maximum time in seconds
+that you allow the libcurl transfer operation to take.
 
-  Normally, name lookups can take a considerable time and limiting
-  operations to less than a few minutes risk aborting perfectly
-  normal operations. This option will cause curl to use the
-  SIGALRM to enable time-outing system calls."
-        -- C<curl_easy_setopt(3)>
+Normally, name lookups can take a considerable time and limiting
+operations to less than a few minutes risk aborting perfectly
+normal operations. This option will cause curl to use the
+SIGALRM to enable time-outing system calls."
+-- C<curl_easy_setopt(3)>
 
 =item B<--dns-cache-timeout> I<arg>
 
 This option essentially wraps the CURLOPT_DNS_CACHE_TIMEOUT of
 libcurl. Default is 60.
 
-  "Pass a long, this sets the timeout in seconds. Name resolves will
-  be kept in memory for this number of seconds. Set to zero to
-  completely disable caching, or set to -1 to make the cached
-  entries remain forever. By default, libcurl caches this info
-  for 60 seconds.
+"Pass a long, this sets the timeout in seconds. Name resolves will
+be kept in memory for this number of seconds. Set to zero to
+completely disable caching, or set to -1 to make the cached
+entries remain forever. By default, libcurl caches this info
+for 60 seconds.
 
-  The name resolve functions of various libc implementations don't
-  re-read name server information unless explicitly told so
-  (for example, by calling C<res_init(3)>). This may cause libcurl
-  to keep using the older server even if DHCP has updated the
-  server info, and this may look like a DNS cache issue to the
-  casual libcurl-app user." -- C<curl_easy_setopt(3)>
+The name resolve functions of various libc implementations don't
+re-read name server information unless explicitly told so
+(for example, by calling C<res_init(3)>). This may cause libcurl
+to keep using the older server even if DHCP has updated the
+server info, and this may look like a DNS cache issue to the
+casual libcurl-app user."
+-- C<curl_easy_setopt(3)>
 
 =item B<--max-retries> I<arg>
 

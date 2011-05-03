@@ -124,7 +124,7 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2011-05-02" "0.7.3.2" "cclive manual"
+.TH cclive 1 "2011-05-04" "0.7.3.2" "cclive manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -271,50 +271,45 @@ Limit download transfer rate to \fIarg\fR KB/s. Default is 0 (disabled).
 This option essentially wraps the \s-1CURLOPT_CONNECTTIMEOUT\s0 of libcurl.
 Default is 30.
 .Sp
-.Vb 2
-\&  "Pass a long. It should contain the maximum time in seconds that
-\&  you allow the connection to the server to take.
-\&
-\&  This only limits the connection phase, once it has connected,
-\&  this option is of no more use. Set to zero to disable connection
-\&  timeout (it will then only timeout on the system\*(Aqs internal
-\&  timeouts). See also the CURLOPT_TIMEOUT option."
-\&        \-\- C<curl_easy_setopt(3)>
-.Ve
+"Pass a long. It should contain the maximum time in seconds that
+you allow the connection to the server to take.
+.Sp
+This only limits the connection phase, once it has connected,
+this option is of no more use. Set to zero to disable connection
+timeout (it will then only timeout on the system's internal
+timeouts). See also the \s-1CURLOPT_TIMEOUT\s0 option."
+\&\*(-- \f(CWcurl_easy_setopt(3)\fR
 .IP "\fB\-\-transfer\-timeout\fR \fIarg\fR" 4
 .IX Item "--transfer-timeout arg"
 This option essentially wraps the \s-1CURLOPT_TIMEOUT\s0 of libcurl.
 Default is 0 (disabled).
 .Sp
-.Vb 2
-\&  "Pass a long as parameter containing the maximum time in seconds
-\&  that you allow the libcurl transfer operation to take.
-\&
-\&  Normally, name lookups can take a considerable time and limiting
-\&  operations to less than a few minutes risk aborting perfectly
-\&  normal operations. This option will cause curl to use the
-\&  SIGALRM to enable time\-outing system calls."
-\&        \-\- C<curl_easy_setopt(3)>
-.Ve
+"Pass a long as parameter containing the maximum time in seconds
+that you allow the libcurl transfer operation to take.
+.Sp
+Normally, name lookups can take a considerable time and limiting
+operations to less than a few minutes risk aborting perfectly
+normal operations. This option will cause curl to use the
+\&\s-1SIGALRM\s0 to enable time-outing system calls."
+\&\*(-- \f(CWcurl_easy_setopt(3)\fR
 .IP "\fB\-\-dns\-cache\-timeout\fR \fIarg\fR" 4
 .IX Item "--dns-cache-timeout arg"
 This option essentially wraps the \s-1CURLOPT_DNS_CACHE_TIMEOUT\s0 of
 libcurl. Default is 60.
 .Sp
-.Vb 5
-\&  "Pass a long, this sets the timeout in seconds. Name resolves will
-\&  be kept in memory for this number of seconds. Set to zero to
-\&  completely disable caching, or set to \-1 to make the cached
-\&  entries remain forever. By default, libcurl caches this info
-\&  for 60 seconds.
-\&
-\&  The name resolve functions of various libc implementations don\*(Aqt
-\&  re\-read name server information unless explicitly told so
-\&  (for example, by calling C<res_init(3)>). This may cause libcurl
-\&  to keep using the older server even if DHCP has updated the
-\&  server info, and this may look like a DNS cache issue to the
-\&  casual libcurl\-app user." \-\- C<curl_easy_setopt(3)>
-.Ve
+"Pass a long, this sets the timeout in seconds. Name resolves will
+be kept in memory for this number of seconds. Set to zero to
+completely disable caching, or set to \-1 to make the cached
+entries remain forever. By default, libcurl caches this info
+for 60 seconds.
+.Sp
+The name resolve functions of various libc implementations don't
+re-read name server information unless explicitly told so
+(for example, by calling \f(CWres_init(3)\fR). This may cause libcurl
+to keep using the older server even if \s-1DHCP\s0 has updated the
+server info, and this may look like a \s-1DNS\s0 cache issue to the
+casual libcurl-app user."
+\&\*(-- \f(CWcurl_easy_setopt(3)\fR
 .IP "\fB\-\-max\-retries\fR \fIarg\fR" 4
 .IX Item "--max-retries arg"
 Retry downloading \fIarg\fR times before giving up. Setting \fIarg\fR to zero will
