@@ -248,8 +248,8 @@ specify each on the command line as arguments. An alternative source
 could be a file. For example:
 
   % cat >> URLs
-  http://www.youtube.com/watch?v=DUM1284TqFc
-  http://www.youtube.com/watch?v=TqgTz8ymZl8
+  URL1
+  URL2
   (^D)
   % cclive < URLs
   Or:
