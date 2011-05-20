@@ -8,4 +8,4 @@ It has low memory footprint compared to other similar tools. It is a rewrite
 of the clive software in C++.
 
 WWW: <http://cclive.sourceforge.net/>
-GIT: <git://repo.or.cz/w/cclive.git>
+GIT: <git://repo.or.cz/cclive.git>
