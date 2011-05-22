@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-cclive - video download tool
+cclive - media download tool
 
 =head1 SYNOPSIS
 
@@ -10,10 +10,13 @@ cclive [options] [url | file...]
 
 =head1 DESCRIPTION
 
-cclive is a command line tool for downloading videos from Youtube and other
-similar video websites that require Adobe Flash to view the video content.
-It has low memory footprint compared to other similar tools. It is a rewrite
-of the clive software in C++.
+cclive is a tool for downloading media from YouTube and similar
+websites. It has a low memory footprint compared to other existing
+tools.
+
+=head1 HISTORY
+
+cclive is a rewrite of C<clive(1)> in C++.
 
 =head1 OPTIONS
 
@@ -48,62 +51,64 @@ Turn off all output to stdout and stderr.
 Go to background after startup. Output will be written to
 the file specified with C<--log-file>.
 
-=item B<-f, --format> I<arg>
+=item B<-f, --format> I<arg> (=default)
 
-Download I<arg> format of the video. I<arg> can also be C<help>.
+Download I<arg> format of the media. The I<arg> may be C<help>.
 
 =item B<-c, --continue>
 
-Resume partially downloaded video.
+Resume partially downloaded media.
 
 =item B<-W, --overwrite>
 
-Overwrite existing video.
+Overwrite existing media.
 
 =item B<-O, --output-file> I<arg>
 
-Write video to I<arg>. Overrides C<--filename-format>.
+Write media to I<arg>. Overrides C<--filename-format>.
 
 =item B<-n, --no-download>
 
-Do not download the video, display video details only.
+Do not download the media, print details only.
 
 =item B<-r, --no-resolve>
 
 Do not resolve HTTP redirections to another location.
 
-For example, "URL shorteners" (or "URL shortening services")
-typically require following an HTTP redirection to another location.
-If used, cclive stops working with such services.
+URL shortening services typically require following an HTTP redirection
+to another location. If this switch is used, cclive will no longer work
+with such services.
 
-Available only with quvi 0.2.16 and later. This options replaces
-(and deprecates) C<--no-shortened>.
+Available only if cclive was compiled with quvi 0.2.16+, this switch
+deprecates the C<--no-shortened> switch found in earlier cclive
+versions.
 
-=item B<-s, --no-shortened>
+=item B<-s, --no-shortened> (deprecated)
 
 Do not "decompress" shortened URLs before using them. Available only
-with quvi 0.2.8 and later. See also C<--no-resolve> which replaces this
-option.
+if cclive was compiled with quvi 0.2.8 - 0.2.15. Use C<--no-resolve>
+instead.
 
 =item B<--no-proxy>
 
 Disable use of HTTP proxy. Overrides both C<--proxy> and http_proxy environment
 settings.
 
-=item B<--log-file> I<arg>
+=item B<--log-file> I<arg> (=cclive_log)
 
-Write log data to I<arg> file. Ignored unless C<--background> is used.
-Overwrites the existing file. Default is "cclive_log". See also
-C<--background> and C<--update-interval>.
+Write log data to I<arg> file. Ignored unless used with C<--background>.
+Overwrites the existing I<arg> file (if any).
 
-=item B<--update-interval> I<arg>
+See also C<--background> and C<--update-interval>.
 
-Specify I<arg> progressbar update interval. Default is 1 second.
-You can use double type values, e.g. 0.2 or 1.99.
+=item B<--update-interval> I<arg> (=1)
 
-=item B<--config-file> I<arg>
+Specify I<arg> progressbar update interval in seconds. The value may be
+of 'double' type, e.g. 0.2 or 1.99.
 
-Path to a file to read cclive arguments from. The default is "~/.ccliverc".
+=item B<--config-file> I<arg> (=$HOME/.ccliverc)
+
+Path to a file to read cclive arguments from.
 
 =back
 
@@ -114,43 +119,42 @@ from the configuration file. See L</FILES>.
 
 =over 4
 
-=item B<--filename-format> I<arg>
+=item B<--filename-format> I<arg> (="%t.%s")
 
-Use I<arg> to specify the video output filename format. The default
-is "%t.%s". The following specifiers can be used in the I<arg>:
+Specify how the downloaded media file should be saved as.
+The following specifiers may be used in the I<arg>:
 
-  %t .. Video title
-  %i .. Video ID
-  %h .. Video host ID (e.g. "vimeo")
-  %s .. Video file suffix (e.g. "flv")
+  %t .. Media title (after applying --regexp and --subst)
+  %i .. Media ID
+  %h .. Media host ID (e.g. "vimeo")
+  %s .. Media file suffix (e.g. "flv")
 
-Note that I<all> occurences of the specifier will be replaced. See also
+I<All> occurences of the specifier will be replaced. See also
 C<--output-file>.
 
 =item B<--output-dir> I<arg>
 
-Write downloaded videos to I<arg> directory.
+Write downloaded media to I<arg> directory.
 
-=item B< --regexp> I<arg>
+=item B< --regexp> I<arg> (="/(\w|\s)/g")
 
-Use regular expression I<arg> to clean up the video title before it
-is used in the output filename. The default is "/(\w|\s)/g".
-
-Note that the syntax supports both "i" (case-insensitive) and "g"
-(global or find all).
+Use regular expression I<arg> to clean up the media title before it
+is used in the filename. The syntax supports both "i"
+(case-insensitive) and "g" (global or "find all").
 
 =item B<-s, --subst> I<arg> ...
 
 Use I<arg> substitution regular expression to replace the matched
-occurences in the title before it is used in the filename. More than
-one expression can be specified in I<arg> if each is separated by a
-whitespace. Supports "i" (case-insensitive) and "g" (global, find all).
+occurences in the title before it is used in the filename. To use
+multiple expressions, separate each in I<arg> with a whitespace.
+The syntax supports "i" (case-insensitive) and "g" (global or
+"find all").
 
-You can use the following delimiters:
+The following delimiters may be used:
 
   <> {} () /
 
-Please note:
+Note:
 
   s/old/new/  .. Invalid
   s/old//new/ .. OK
@@ -160,11 +164,11 @@ Please note:
 Invoke I<arg> when download has finished. The following specifiers can
 be used in the I<arg>:
 
-  %f .. Full path to the downloaded video file
+  %f .. Full path to the downloaded media file
 
-Note that I<all> occurences of the specifier will be replaced.
+I<All> occurences of the specifier will be replaced.
 
-=item B<--agent> I<arg>
+=item B<--agent> I<arg> (="Mozilla/5.0")
 
 Identify as I<arg> to the HTTP servers.
 
@@ -173,14 +177,13 @@ Identify as I<arg> to the HTTP servers.
 Use I<arg> for HTTP proxy, e.g. "http://foo:1234". Overrides the http_proxy
 environment setting.
 
-=item B<--throttle> I<arg>
+=item B<--throttle> I<arg> (=0, disabled)
 
-Limit download transfer rate to I<arg> KB/s. Default is 0 (disabled).
+Do not exceed the transfer rate of I<arg> (KB/s).
 
-=item B<--connect-timeout> I<arg>
+=item B<--connect-timeout> I<arg> (=30)
 
-This option essentially wraps the CURLOPT_CONNECTTIMEOUT of libcurl.
-Default is 30.
+This option wraps the CURLOPT_CONNECTTIMEOUT (libcurl):
 
 "Pass a long. It should contain the maximum time in seconds that
 you allow the connection to the server to take.
@@ -191,10 +194,9 @@ timeout (it will then only timeout on the system's internal
 timeouts). See also the CURLOPT_TIMEOUT option."
 -- C<curl_easy_setopt(3)>
 
-=item B<--transfer-timeout> I<arg>
+=item B<--transfer-timeout> I<arg> (=0, disabled)
 
-This option essentially wraps the CURLOPT_TIMEOUT of libcurl.
-Default is 0 (disabled).
+This option wraps the CURLOPT_TIMEOUT (libcurl):
 
 "Pass a long as parameter containing the maximum time in seconds
 that you allow the libcurl transfer operation to take.
@@ -205,10 +207,9 @@ normal operations. This option will cause curl to use the
 SIGALRM to enable time-outing system calls."
 -- C<curl_easy_setopt(3)>
 
-=item B<--dns-cache-timeout> I<arg>
+=item B<--dns-cache-timeout> I<arg> (=60)
 
-This option essentially wraps the CURLOPT_DNS_CACHE_TIMEOUT of
-libcurl. Default is 60.
+This option wraps the CURLOPT_DNS_CACHE_TIMEOUT (libcurl):
 
 "Pass a long, this sets the timeout in seconds. Name resolves will
 be kept in memory for this number of seconds. Set to zero to
@@ -224,14 +225,13 @@ server info, and this may look like a DNS cache issue to the
 casual libcurl-app user."
 -- C<curl_easy_setopt(3)>
 
-=item B<--max-retries> I<arg>
+=item B<--max-retries> I<arg> (=5, 0=disabled)
 
-Retry downloading I<arg> times before giving up. Setting I<arg> to zero will
-disable retrying. Default is 5.
+Retry downloading I<arg> times before giving up.
 
-=item B<--retry-wait> I<arg>
+=item B<--retry-wait> I<arg> (=5)
 
-Wait I<arg> seconds before retrying after a failed attempt. Default is 5.
+Wait I<arg> seconds before retrying after a failed attempt.
 
 =back
 
@@ -239,26 +239,29 @@ Wait I<arg> seconds before retrying after a failed attempt. Default is 5.
 
 =over 4
 
-=item B<cclive "http://www.youtube.com/watch?v=DUM1284TqFc">
+=item B<cclive "URL">
 
 Typical use.
 
-=item B<cclive "http://www.youtube.com/watch?v=DUM1284TqFc" -f mp4_360p>
+=item B<cclive "YOUTUBE_URL" -f mp4_360p>
 
-Same but get the mp4_360p (Youtube specific) format instead. See
-C<--support> for a complete list of websites and formats.
+Same but get the mp4_360p format of the media, instead.
 
-=item B<cclive "http://www.youtube.com/watch?v=DUM1284TqFc" -n>
+=item B<cclive -f list youtube>
 
-Do not download the video. Print the video details only.
+Print the supported formats for "youtube".
 
-=item B<echo "http://www.youtube.com/watch?v=DUM1284TqFc" | cclive>
+=item B<cclive -f list yout>
 
-A fancy way to feed cclive an URL.
+Yields the same results.
 
-cclive can handle multiple URLs in one go. One way to do this, is to
-specify each on the command line as arguments. An alternative source
-could be a file. For example:
+=item B<cclive "URL" -n>
+
+Do not download the media, print the details only.
+
+=item B<echo "URL" | cclive>
+
+Read input from the pipeline. Similarly:
 
   % cat >> URLs
   URL1
@@ -268,12 +271,11 @@ could be a file. For example:
   Or:
   % cclive URLs
 
-Please note that each URL must be separated with a newline or a
-whitespace character.
+Separate each URL with a newline.
 
 =item B<cclive "URL" -s "s{Alice}{Malice}">
 
-Replace "Alice" in the video title with "Malice" before it is used in
+Replace "Alice" in the media title with "Malice" before it is used in
 the filename.
 
 =item B<cclive "URL" -s "s{Alice}E<lt>MaliceE<gt> s{wonderland}E<lt>UberlandE<gt>i">
@@ -282,18 +284,18 @@ Similar but makes two substitions instead of just one. The former
 substitution was explained above, the latter replaces "Wonderland"
 with "Uberland". Note also the "i" for case-insensitive.
 
-You can use "g" for global (find all), e.g. if you wanted to replace
-all of the "Alice" occurences with "Malice", you would use
-"s{Alice}E<lt>MaliceE<gt>g".
+You can use "g" for global (or "find all"), e.g.:
 
-=item B<cclive "URL" -b --log-file my.log>
+  s{Alice}<Malice>g
 
-Go to background, redirect output to C<my.log>.
+=item B<cclive "URL" -b --log-file foo.log>
+
+Go to background, redirect output to C<foo.log>.
 
 =item B<kill -USR1 $cclive_pid>
 
-Interrupt the current download (of $cclive_pid). Move to the next video
-in the queue (if any).
+Interrupt the current download (of $cclive_pid). This makes cclive move
+to the next URL in the queue (if any).
 
 =back
 
@@ -303,8 +305,8 @@ in the queue (if any).
 
 =item B<$HOME/.ccliverc>
 
-You can specify the configurable options (see L</OPTIONS - CONFIGURATION>)
-in this file, e.g.:
+You can specify the I<configurable> options
+(see L</OPTIONS - CONFIGURATION>) in the configuration file, e.g.:
 
  filename-format = %h_%i_(%t).%s
  regexp = /(\w|\pL)/g
@@ -313,7 +315,7 @@ in this file, e.g.:
  throttle = 10
  connect-timeout = 120
 
-Note that you can use C<--config-file> to specify the file.
+You can also use C<--config-file> to specify the file.
 
 =back
 
@@ -326,21 +328,22 @@ occurred.
 
 =over 4
 
-=item B<Switch --no-download>
+=item B<--no-download>
 
-Use the C<--no-download> switch when you don't need to download the video.
+Use the C<--no-download> switch when you don't need to download the
+media.
 
-=item B<Switch --verbose-libcurl>
+=item B<--verbose-libcurl>
 
-Amp up the verbosity of libcurl.
+Make libcurl verbose.
 
 =item B<Debug symbols>
 
-Compile cclive (and related projects you see fit) with the debug symbols.
+Compile cclive with C<-g>, see also C<gcc(1)>.
 
 =item B<Other tools>
 
-Use C<strace(1)>, C<gdb(1)> and C<valgrind(1)>.
+See also C<gdb(1)>, C<strace(1)> and C<valgrind(1)>.
 
 =back
 

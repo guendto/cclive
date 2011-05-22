@@ -124,22 +124,24 @@
 .\" ========================================================================
 .\"
 .IX Title "cclive 1"
-.TH cclive 1 "2011-05-04" "0.7.4" "cclive manual"
+.TH cclive 1 "2011-05-22" "0.7.4" "cclive manual"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
 .nh
 .SH "NAME"
-cclive \- video download tool
+cclive \- media download tool
 .SH "SYNOPSIS"
 .IX Header "SYNOPSIS"
 cclive [options] [url | file...]
 .SH "DESCRIPTION"
 .IX Header "DESCRIPTION"
-cclive is a command line tool for downloading videos from Youtube and other
-similar video websites that require Adobe Flash to view the video content.
-It has low memory footprint compared to other similar tools. It is a rewrite
-of the clive software in \*(C+.
+cclive is a tool for downloading media from YouTube and similar
+websites. It has a low memory footprint compared to other existing
+tools.
+.SH "HISTORY"
+.IX Header "HISTORY"
+cclive is a rewrite of \f(CWclive(1)\fR in \*(C+.
 .SH "OPTIONS"
 .IX Header "OPTIONS"
 .IP "\fB\-\-version\fR" 4
@@ -164,94 +166,97 @@ Turn off all output to stdout and stderr.
 .IX Item "-b, --background"
 Go to background after startup. Output will be written to
 the file specified with \f(CW\*(C`\-\-log\-file\*(C'\fR.
-.IP "\fB\-f, \-\-format\fR \fIarg\fR" 4
-.IX Item "-f, --format arg"
-Download \fIarg\fR format of the video. \fIarg\fR can also be \f(CW\*(C`help\*(C'\fR.
+.IP "\fB\-f, \-\-format\fR \fIarg\fR (=default)" 4
+.IX Item "-f, --format arg (=default)"
+Download \fIarg\fR format of the media. The \fIarg\fR may be \f(CW\*(C`help\*(C'\fR.
 .IP "\fB\-c, \-\-continue\fR" 4
 .IX Item "-c, --continue"
-Resume partially downloaded video.
+Resume partially downloaded media.
 .IP "\fB\-W, \-\-overwrite\fR" 4
 .IX Item "-W, --overwrite"
-Overwrite existing video.
+Overwrite existing media.
 .IP "\fB\-O, \-\-output\-file\fR \fIarg\fR" 4
 .IX Item "-O, --output-file arg"
-Write video to \fIarg\fR. Overrides \f(CW\*(C`\-\-filename\-format\*(C'\fR.
+Write media to \fIarg\fR. Overrides \f(CW\*(C`\-\-filename\-format\*(C'\fR.
 .IP "\fB\-n, \-\-no\-download\fR" 4
 .IX Item "-n, --no-download"
-Do not download the video, display video details only.
+Do not download the media, print details only.
 .IP "\fB\-r, \-\-no\-resolve\fR" 4
 .IX Item "-r, --no-resolve"
 Do not resolve \s-1HTTP\s0 redirections to another location.
 .Sp
-For example, \*(L"\s-1URL\s0 shorteners\*(R" (or \*(L"\s-1URL\s0 shortening services\*(R")
-typically require following an \s-1HTTP\s0 redirection to another location.
-If used, cclive stops working with such services.
+\&\s-1URL\s0 shortening services typically require following an \s-1HTTP\s0 redirection
+to another location. If this switch is used, cclive will no longer work
+with such services.
 .Sp
-Available only with quvi 0.2.16 and later. This options replaces
-(and deprecates) \f(CW\*(C`\-\-no\-shortened\*(C'\fR.
-.IP "\fB\-s, \-\-no\-shortened\fR" 4
-.IX Item "-s, --no-shortened"
+Available only if cclive was compiled with quvi 0.2.16+, this switch
+deprecates the \f(CW\*(C`\-\-no\-shortened\*(C'\fR switch found in earlier cclive
+versions.
+.IP "\fB\-s, \-\-no\-shortened\fR (deprecated)" 4
+.IX Item "-s, --no-shortened (deprecated)"
 Do not \*(L"decompress\*(R" shortened URLs before using them. Available only
-with quvi 0.2.8 and later. See also \f(CW\*(C`\-\-no\-resolve\*(C'\fR which replaces this
-option.
+if cclive was compiled with quvi 0.2.8 \- 0.2.15. Use \f(CW\*(C`\-\-no\-resolve\*(C'\fR
+instead.
 .IP "\fB\-\-no\-proxy\fR" 4
 .IX Item "--no-proxy"
 Disable use of \s-1HTTP\s0 proxy. Overrides both \f(CW\*(C`\-\-proxy\*(C'\fR and http_proxy environment
 settings.
-.IP "\fB\-\-log\-file\fR \fIarg\fR" 4
-.IX Item "--log-file arg"
-Write log data to \fIarg\fR file. Ignored unless \f(CW\*(C`\-\-background\*(C'\fR is used.
-Overwrites the existing file. Default is \*(L"cclive_log\*(R". See also
-\&\f(CW\*(C`\-\-background\*(C'\fR and \f(CW\*(C`\-\-update\-interval\*(C'\fR.
-.IP "\fB\-\-update\-interval\fR \fIarg\fR" 4
-.IX Item "--update-interval arg"
-Specify \fIarg\fR progressbar update interval. Default is 1 second.
-You can use double type values, e.g. 0.2 or 1.99.
-.IP "\fB\-\-config\-file\fR \fIarg\fR" 4
-.IX Item "--config-file arg"
-Path to a file to read cclive arguments from. The default is \*(L"~/.ccliverc\*(R".
+.IP "\fB\-\-log\-file\fR \fIarg\fR (=cclive_log)" 4
+.IX Item "--log-file arg (=cclive_log)"
+Write log data to \fIarg\fR file. Ignored unless used with \f(CW\*(C`\-\-background\*(C'\fR.
+Overwrites the existing \fIarg\fR file (if any).
+.Sp
+See also \f(CW\*(C`\-\-background\*(C'\fR and \f(CW\*(C`\-\-update\-interval\*(C'\fR.
+.IP "\fB\-\-update\-interval\fR \fIarg\fR (=1)" 4
+.IX Item "--update-interval arg (=1)"
+Specify \fIarg\fR progressbar update interval in seconds. The value may be
+of 'double' type, e.g. 0.2 or 1.99.
+.IP "\fB\-\-config\-file\fR \fIarg\fR (=$HOME/.ccliverc)" 4
+.IX Item "--config-file arg (=$HOME/.ccliverc)"
+Path to a file to read cclive arguments from.
 .SH "OPTIONS \- CONFIGURATION"
 .IX Header "OPTIONS - CONFIGURATION"
 In addition to the command line, the configurable options may also be read
 from the configuration file. See \*(L"\s-1FILES\s0\*(R".
-.IP "\fB\-\-filename\-format\fR \fIarg\fR" 4
-.IX Item "--filename-format arg"
-Use \fIarg\fR to specify the video output filename format. The default
-is \*(L"%t.%s\*(R". The following specifiers can be used in the \fIarg\fR:
+.ie n .IP "\fB\-\-filename\-format\fR \fIarg\fR (=""%t.%s"")" 4
+.el .IP "\fB\-\-filename\-format\fR \fIarg\fR (=``%t.%s'')" 4
+.IX Item "--filename-format arg (=%t.%s)"
+Specify how the downloaded media file should be saved as.
+The following specifiers may be used in the \fIarg\fR:
 .Sp
 .Vb 4
-\&  %t .. Video title
-\&  %i .. Video ID
-\&  %h .. Video host ID (e.g. "vimeo")
-\&  %s .. Video file suffix (e.g. "flv")
+\&  %t .. Media title (after applying \-\-regexp and \-\-subst)
+\&  %i .. Media ID
+\&  %h .. Media host ID (e.g. "vimeo")
+\&  %s .. Media file suffix (e.g. "flv")
 .Ve
 .Sp
-Note that \fIall\fR occurences of the specifier will be replaced. See also
+\&\fIAll\fR occurences of the specifier will be replaced. See also
 \&\f(CW\*(C`\-\-output\-file\*(C'\fR.
 .IP "\fB\-\-output\-dir\fR \fIarg\fR" 4
 .IX Item "--output-dir arg"
-Write downloaded videos to \fIarg\fR directory.
-.IP "\fB \-\-regexp\fR \fIarg\fR" 4
-.IX Item " --regexp arg"
-Use regular expression \fIarg\fR to clean up the video title before it
-is used in the output filename. The default is \*(L"/(\ew|\es)/g\*(R".
-.Sp
-Note that the syntax supports both \*(L"i\*(R" (case-insensitive) and \*(L"g\*(R"
-(global or find all).
+Write downloaded media to \fIarg\fR directory.
+.ie n .IP "\fB \-\-regexp\fR \fIarg\fR (=""/(\ew|\es)/g"")" 4
+.el .IP "\fB \-\-regexp\fR \fIarg\fR (=``/(\ew|\es)/g'')" 4
+.IX Item " --regexp arg (=/(w|s)/g)"
+Use regular expression \fIarg\fR to clean up the media title before it
+is used in the filename. The syntax supports both \*(L"i\*(R"
+(case-insensitive) and \*(L"g\*(R" (global or \*(L"find all\*(R").
 .IP "\fB\-s, \-\-subst\fR \fIarg\fR ..." 4
 .IX Item "-s, --subst arg ..."
 Use \fIarg\fR substitution regular expression to replace the matched
-occurences in the title before it is used in the filename. More than
-one expression can be specified in \fIarg\fR if each is separated by a
-whitespace. Supports \*(L"i\*(R" (case-insensitive) and \*(L"g\*(R" (global, find all).
+occurences in the title before it is used in the filename. To use
+multiple expressions, separate each in \fIarg\fR with a whitespace.
+The syntax supports \*(L"i\*(R" (case-insensitive) and \*(L"g\*(R" (global or
+\&\*(L"find all\*(R").
 .Sp
-You can use the following delimiters:
+The following delimiters may be used:
 .Sp
 .Vb 1
 \&  <> {} () /
 .Ve
 .Sp
-Please note:
+Note:
 .Sp
 .Vb 2
 \&  s/old/new/  .. Invalid
@@ -263,24 +268,24 @@ Invoke \fIarg\fR when download has finished. The following specifiers can
 be used in the \fIarg\fR:
 .Sp
 .Vb 1
-\&  %f .. Full path to the downloaded video file
+\&  %f .. Full path to the downloaded media file
 .Ve
 .Sp
-Note that \fIall\fR occurences of the specifier will be replaced.
-.IP "\fB\-\-agent\fR \fIarg\fR" 4
-.IX Item "--agent arg"
+\&\fIAll\fR occurences of the specifier will be replaced.
+.ie n .IP "\fB\-\-agent\fR \fIarg\fR (=""Mozilla/5.0"")" 4
+.el .IP "\fB\-\-agent\fR \fIarg\fR (=``Mozilla/5.0'')" 4
+.IX Item "--agent arg (=Mozilla/5.0)"
 Identify as \fIarg\fR to the \s-1HTTP\s0 servers.
 .IP "\fB\-\-proxy\fR \fIarg\fR" 4
 .IX Item "--proxy arg"
 Use \fIarg\fR for \s-1HTTP\s0 proxy, e.g. \*(L"http://foo:1234\*(R". Overrides the http_proxy
 environment setting.
-.IP "\fB\-\-throttle\fR \fIarg\fR" 4
-.IX Item "--throttle arg"
-Limit download transfer rate to \fIarg\fR KB/s. Default is 0 (disabled).
-.IP "\fB\-\-connect\-timeout\fR \fIarg\fR" 4
-.IX Item "--connect-timeout arg"
-This option essentially wraps the \s-1CURLOPT_CONNECTTIMEOUT\s0 of libcurl.
-Default is 30.
+.IP "\fB\-\-throttle\fR \fIarg\fR (=0, disabled)" 4
+.IX Item "--throttle arg (=0, disabled)"
+Do not exceed the transfer rate of \fIarg\fR (KB/s).
+.IP "\fB\-\-connect\-timeout\fR \fIarg\fR (=30)" 4
+.IX Item "--connect-timeout arg (=30)"
+This option wraps the \s-1CURLOPT_CONNECTTIMEOUT\s0 (libcurl):
 .Sp
 "Pass a long. It should contain the maximum time in seconds that
 you allow the connection to the server to take.
@@ -290,10 +295,9 @@ this option is of no more use. Set to zero to disable connection
 timeout (it will then only timeout on the system's internal
 timeouts). See also the \s-1CURLOPT_TIMEOUT\s0 option."
 \&\*(-- \f(CWcurl_easy_setopt(3)\fR
-.IP "\fB\-\-transfer\-timeout\fR \fIarg\fR" 4
-.IX Item "--transfer-timeout arg"
-This option essentially wraps the \s-1CURLOPT_TIMEOUT\s0 of libcurl.
-Default is 0 (disabled).
+.IP "\fB\-\-transfer\-timeout\fR \fIarg\fR (=0, disabled)" 4
+.IX Item "--transfer-timeout arg (=0, disabled)"
+This option wraps the \s-1CURLOPT_TIMEOUT\s0 (libcurl):
 .Sp
 "Pass a long as parameter containing the maximum time in seconds
 that you allow the libcurl transfer operation to take.
@@ -303,10 +307,9 @@ operations to less than a few minutes risk aborting perfectly
 normal operations. This option will cause curl to use the
 \&\s-1SIGALRM\s0 to enable time-outing system calls."
 \&\*(-- \f(CWcurl_easy_setopt(3)\fR
-.IP "\fB\-\-dns\-cache\-timeout\fR \fIarg\fR" 4
-.IX Item "--dns-cache-timeout arg"
-This option essentially wraps the \s-1CURLOPT_DNS_CACHE_TIMEOUT\s0 of
-libcurl. Default is 60.
+.IP "\fB\-\-dns\-cache\-timeout\fR \fIarg\fR (=60)" 4
+.IX Item "--dns-cache-timeout arg (=60)"
+This option wraps the \s-1CURLOPT_DNS_CACHE_TIMEOUT\s0 (libcurl):
 .Sp
 "Pass a long, this sets the timeout in seconds. Name resolves will
 be kept in memory for this number of seconds. Set to zero to
@@ -321,36 +324,36 @@ to keep using the older server even if \s-1DHCP\s0 has updated the
 server info, and this may look like a \s-1DNS\s0 cache issue to the
 casual libcurl-app user."
 \&\*(-- \f(CWcurl_easy_setopt(3)\fR
-.IP "\fB\-\-max\-retries\fR \fIarg\fR" 4
-.IX Item "--max-retries arg"
-Retry downloading \fIarg\fR times before giving up. Setting \fIarg\fR to zero will
-disable retrying. Default is 5.
-.IP "\fB\-\-retry\-wait\fR \fIarg\fR" 4
-.IX Item "--retry-wait arg"
-Wait \fIarg\fR seconds before retrying after a failed attempt. Default is 5.
+.IP "\fB\-\-max\-retries\fR \fIarg\fR (=5, 0=disabled)" 4
+.IX Item "--max-retries arg (=5, 0=disabled)"
+Retry downloading \fIarg\fR times before giving up.
+.IP "\fB\-\-retry\-wait\fR \fIarg\fR (=5)" 4
+.IX Item "--retry-wait arg (=5)"
+Wait \fIarg\fR seconds before retrying after a failed attempt.
 .SH "EXAMPLES"
 .IX Header "EXAMPLES"
-.ie n .IP "\fBcclive ""http://www.youtube.com/watch?v=DUM1284TqFc""\fR" 4
-.el .IP "\fBcclive ``http://www.youtube.com/watch?v=DUM1284TqFc''\fR" 4
-.IX Item "cclive http://www.youtube.com/watch?v=DUM1284TqFc"
+.ie n .IP "\fBcclive ""\s-1URL\s0""\fR" 4
+.el .IP "\fBcclive ``\s-1URL\s0''\fR" 4
+.IX Item "cclive URL"
 Typical use.
-.ie n .IP "\fBcclive ""http://www.youtube.com/watch?v=DUM1284TqFc"" \-f mp4_360p\fR" 4
-.el .IP "\fBcclive ``http://www.youtube.com/watch?v=DUM1284TqFc'' \-f mp4_360p\fR" 4
-.IX Item "cclive http://www.youtube.com/watch?v=DUM1284TqFc -f mp4_360p"
-Same but get the mp4_360p (Youtube specific) format instead. See
-\&\f(CW\*(C`\-\-support\*(C'\fR for a complete list of websites and formats.
-.ie n .IP "\fBcclive ""http://www.youtube.com/watch?v=DUM1284TqFc"" \-n\fR" 4
-.el .IP "\fBcclive ``http://www.youtube.com/watch?v=DUM1284TqFc'' \-n\fR" 4
-.IX Item "cclive http://www.youtube.com/watch?v=DUM1284TqFc -n"
-Do not download the video. Print the video details only.
-.ie n .IP "\fBecho ""http://www.youtube.com/watch?v=DUM1284TqFc"" | cclive\fR" 4
-.el .IP "\fBecho ``http://www.youtube.com/watch?v=DUM1284TqFc'' | cclive\fR" 4
-.IX Item "echo http://www.youtube.com/watch?v=DUM1284TqFc | cclive"
-A fancy way to feed cclive an \s-1URL\s0.
-.Sp
-cclive can handle multiple URLs in one go. One way to do this, is to
-specify each on the command line as arguments. An alternative source
-could be a file. For example:
+.ie n .IP "\fBcclive ""\s-1YOUTUBE_URL\s0"" \-f mp4_360p\fR" 4
+.el .IP "\fBcclive ``\s-1YOUTUBE_URL\s0'' \-f mp4_360p\fR" 4
+.IX Item "cclive YOUTUBE_URL -f mp4_360p"
+Same but get the mp4_360p format of the media, instead.
+.IP "\fBcclive \-f list youtube\fR" 4
+.IX Item "cclive -f list youtube"
+Print the supported formats for \*(L"youtube\*(R".
+.IP "\fBcclive \-f list yout\fR" 4
+.IX Item "cclive -f list yout"
+Yields the same results.
+.ie n .IP "\fBcclive ""\s-1URL\s0"" \-n\fR" 4
+.el .IP "\fBcclive ``\s-1URL\s0'' \-n\fR" 4
+.IX Item "cclive URL -n"
+Do not download the media, print the details only.
+.ie n .IP "\fBecho ""\s-1URL\s0"" | cclive\fR" 4
+.el .IP "\fBecho ``\s-1URL\s0'' | cclive\fR" 4
+.IX Item "echo URL | cclive"
+Read input from the pipeline. Similarly:
 .Sp
 .Vb 7
 \&  % cat >> URLs
@@ -362,12 +365,11 @@ could be a file. For example:
 \&  % cclive URLs
 .Ve
 .Sp
-Please note that each \s-1URL\s0 must be separated with a newline or a
-whitespace character.
+Separate each \s-1URL\s0 with a newline.
 .ie n .IP "\fBcclive ""\s-1URL\s0"" \-s ""s{Alice}{Malice}""\fR" 4
 .el .IP "\fBcclive ``\s-1URL\s0'' \-s ``s{Alice}{Malice}''\fR" 4
 .IX Item "cclive URL -s s{Alice}{Malice}"
-Replace \*(L"Alice\*(R" in the video title with \*(L"Malice\*(R" before it is used in
+Replace \*(L"Alice\*(R" in the media title with \*(L"Malice\*(R" before it is used in
 the filename.
 .ie n .IP "\fBcclive ""\s-1URL\s0"" \-s ""s{Alice}<Malice> s{wonderland}<Uberland>i""\fR" 4
 .el .IP "\fBcclive ``\s-1URL\s0'' \-s ``s{Alice}<Malice> s{wonderland}<Uberland>i''\fR" 4
@@ -376,25 +378,27 @@ Similar but makes two substitions instead of just one. The former
 substitution was explained above, the latter replaces \*(L"Wonderland\*(R"
 with \*(L"Uberland\*(R". Note also the \*(L"i\*(R" for case-insensitive.
 .Sp
-You can use \*(L"g\*(R" for global (find all), e.g. if you wanted to replace
-all of the \*(L"Alice\*(R" occurences with \*(L"Malice\*(R", you would use
-\&\*(L"s{Alice}<Malice>g\*(R".
-.ie n .IP "\fBcclive ""\s-1URL\s0"" \-b \-\-log\-file my.log\fR" 4
-.el .IP "\fBcclive ``\s-1URL\s0'' \-b \-\-log\-file my.log\fR" 4
-.IX Item "cclive URL -b --log-file my.log"
-Go to background, redirect output to \f(CW\*(C`my.log\*(C'\fR.
+You can use \*(L"g\*(R" for global (or \*(L"find all\*(R"), e.g.:
+.Sp
+.Vb 1
+\&  s{Alice}<Malice>g
+.Ve
+.ie n .IP "\fBcclive ""\s-1URL\s0"" \-b \-\-log\-file foo.log\fR" 4
+.el .IP "\fBcclive ``\s-1URL\s0'' \-b \-\-log\-file foo.log\fR" 4
+.IX Item "cclive URL -b --log-file foo.log"
+Go to background, redirect output to \f(CW\*(C`foo.log\*(C'\fR.
 .ie n .IP "\fBkill \-USR1 \fB$cclive_pid\fB\fR" 4
 .el .IP "\fBkill \-USR1 \f(CB$cclive_pid\fB\fR" 4
 .IX Item "kill -USR1 $cclive_pid"
-Interrupt the current download (of \f(CW$cclive_pid\fR). Move to the next video
-in the queue (if any).
+Interrupt the current download (of \f(CW$cclive_pid\fR). This makes cclive move
+to the next \s-1URL\s0 in the queue (if any).
 .SH "FILES"
 .IX Header "FILES"
 .ie n .IP "\fB\fB$HOME\fB/.ccliverc\fR" 4
 .el .IP "\fB\f(CB$HOME\fB/.ccliverc\fR" 4
 .IX Item "$HOME/.ccliverc"
-You can specify the configurable options (see \*(L"\s-1OPTIONS\s0 \- \s-1CONFIGURATION\s0\*(R")
-in this file, e.g.:
+You can specify the \fIconfigurable\fR options
+(see \*(L"\s-1OPTIONS\s0 \- \s-1CONFIGURATION\s0\*(R") in the configuration file, e.g.:
 .Sp
 .Vb 6
 \& filename\-format = %h_%i_(%t).%s
@@ -405,25 +409,26 @@ in this file, e.g.:
 \& connect\-timeout = 120
 .Ve
 .Sp
-Note that you can use \f(CW\*(C`\-\-config\-file\*(C'\fR to specify the file.
+You can also use \f(CW\*(C`\-\-config\-file\*(C'\fR to specify the file.
 .SH "EXIT STATUS"
 .IX Header "EXIT STATUS"
 cclive exits with 0 on success and >0 if an (unrecoverable) error
 occurred.
 .SH "DEBUGGING TIPS"
 .IX Header "DEBUGGING TIPS"
-.IP "\fBSwitch \-\-no\-download\fR" 4
-.IX Item "Switch --no-download"
-Use the \f(CW\*(C`\-\-no\-download\*(C'\fR switch when you don't need to download the video.
-.IP "\fBSwitch \-\-verbose\-libcurl\fR" 4
-.IX Item "Switch --verbose-libcurl"
-Amp up the verbosity of libcurl.
+.IP "\fB\-\-no\-download\fR" 4
+.IX Item "--no-download"
+Use the \f(CW\*(C`\-\-no\-download\*(C'\fR switch when you don't need to download the
+media.
+.IP "\fB\-\-verbose\-libcurl\fR" 4
+.IX Item "--verbose-libcurl"
+Make libcurl verbose.
 .IP "\fBDebug symbols\fR" 4
 .IX Item "Debug symbols"
-Compile cclive (and related projects you see fit) with the debug symbols.
+Compile cclive with \f(CW\*(C`\-g\*(C'\fR, see also \f(CWgcc(1)\fR.
 .IP "\fBOther tools\fR" 4
 .IX Item "Other tools"
-Use \f(CWstrace(1)\fR, \f(CWgdb(1)\fR and \f(CWvalgrind(1)\fR.
+See also \f(CWgdb(1)\fR, \f(CWstrace(1)\fR and \f(CWvalgrind(1)\fR.
 .SH "WWW"
 .IX Header "WWW"
 <http://cclive.sourceforge.net/>
