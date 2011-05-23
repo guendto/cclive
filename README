@@ -1,11 +1,7 @@
 
-cclive
-============
-
-cclive is a command line tool for downloading videos from Youtube and other
-similar video websites that require Adobe Flash to view the video content.
-It has low memory footprint compared to other similar tools. It is a rewrite
-of the clive software in C++.
+cclive is a tool for downloading media from YouTube and similar
+websites. It has a low memory footprint compared to other existing
+tools.
 
 WWW: <http://cclive.sourceforge.net/>
 GIT: <git://repo.or.cz/cclive.git>
