@@ -29,9 +29,13 @@ LT_PREREQ([2.2])
 
 # Checks for programs.
 AC_PROG_CXX
+AC_PROG_AWK
 AC_PROG_CC
 AC_PROG_CPP
 AC_PROG_INSTALL
+AC_PROG_LN_S
+AC_PROG_MAKE_SET
+AC_PROG_RANLIB
 AC_PROG_MKDIR_P
 
 AC_PATH_PROG(DATE, date, no)
@@ -82,7 +86,7 @@ AC_TYPE_SIZE_T
 AC_FUNC_ERROR_AT_LINE
 AC_FUNC_FORK
 AC_FUNC_STRERROR_R
-AC_CHECK_FUNCS([getcwd strerror strstr fork getpid signal])
+AC_CHECK_FUNCS([getcwd strerror strstr getpid signal])
 
 # --with-man
 AC_ARG_WITH([man],
