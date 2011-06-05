@@ -15,7 +15,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "config.h"
+#include "internal.h"
 
 #include <ctime>
 
@@ -302,9 +302,16 @@ application::exec (int argc, char **argv)
     {
       std::cout
           << "cclive version "
-          << VERSION_LONG
-          << "\n"
-          << "libquvi version "
+#ifdef GIT_DESCRIBE
+          << GIT_DESCRIBE
+#else
+          << PACKAGE_VERSION
+#endif
+#ifdef BUILD_DATE
+          << " built on " << BUILD_DATE
+#endif
+          << " for " << CANONICAL_TARGET
+          << "\nlibquvi version "
           << quvi_version (QUVI_VERSION_LONG)
           << std::endl;
       return ok;
@@ -335,16 +342,6 @@ application::exec (int argc, char **argv)
 
   else if (format == "list")
     return handle_format_list (map, query);
-
-#if defined(HAVE_QUVIOPT_NORESOLVE) && defined(HAVE_QUVIOPT_NOSHORTENED)
-  if (map.count("no-shortened"))
-    {
-      std::clog
-          << "warning: --no-shortened is deprecated, "
-          << "use --no-resolve instead"
-          << std::endl;
-    }
-#endif
 
   // Parse input.
 
@@ -404,12 +401,7 @@ application::exec (int argc, char **argv)
 #ifdef _0
   qopts.verify     (map.count ("no-verify"));
 #endif
-#ifdef HAVE_QUVIOPT_NOSHORTENED
-  qopts.shortened  (map.count ("no-shortened"));
-#endif
-#ifdef HAVE_QUVIOPT_NORESOLVE
   qopts.resolve (map.count ("no-resolve"));
-#endif
 
   // Seed random generator.
 

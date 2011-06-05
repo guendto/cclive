@@ -15,7 +15,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "config.h"
+#include "internal.h"
 
 #include <iomanip>
 #include <cstdio>
@@ -280,7 +280,7 @@ progressbar::update (double now)
 
   fs::path p = fs::system_complete (_file.path ());
 
-#ifdef HAVE_BOOST_FILESYSTEM_VERSION_3
+#if BOOST_FILESYSTEM_VERSION > 2
   std::string fname = p.filename().string();
 #else
   std::string fname = p.filename();

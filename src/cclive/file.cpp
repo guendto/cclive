@@ -15,7 +15,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "config.h"
+#include "internal.h"
 
 #include <fstream>
 #include <stdexcept>
@@ -362,7 +362,7 @@ file::_init (
 
       p /= map["output-file"].as<std::string>();
 
-#ifdef HAVE_BOOST_FILESYSTEM_VERSION_3
+#if BOOST_FILESYSTEM_VERSION > 2
       _name           = p.filename().string();
 #else
       _name           = p.filename();
@@ -437,7 +437,7 @@ file::_init (
 
       fs::path p = fs::system_complete (templ_path);
 
-#ifdef HAVE_BOOST_FILESYSTEM_VERSION_3
+#if BOOST_FILESYSTEM_VERSION > 2
       _name = p.filename().string();
 #else
       _name = p.filename();
@@ -467,7 +467,7 @@ file::_init (
 
               p     = fs::system_complete (fmt.str ());
 
-#ifdef HAVE_BOOST_FILESYSTEM_VERSION_3
+#if BOOST_FILESYSTEM_VERSION > 2
               _name = p.filename().string();
 #else
               _name = p.filename();

@@ -15,7 +15,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "config.h"
+#include "internal.h"
 
 #include <fstream>
 #include <cstring>
@@ -30,10 +30,6 @@
 #include "cclive/re.h"
 #include "cclive/options.h"
 
-#if defined(HAVE_QUVIOPT_NOSHORTENED) && defined(HAVE_QUVIOPT_NORESOLVE)
-#define HIDE_NOSHORTENED
-#endif
-
 namespace cclive
 {
 
@@ -45,7 +41,7 @@ options::exec (int argc, char **argv)
 {
   // Path to ccliverc.
 
-#ifdef HAVE_BOOST_FILESYSTEM_VERSION_3
+#if BOOST_FILESYSTEM_VERSION > 2
   fs::path config_path(fs::current_path());
 #else
   fs::path config_path(fs::current_path<fs::path>());
@@ -95,16 +91,8 @@ options::exec (int argc, char **argv)
    "Write downloaded video to file")
   ("no-download,n",
    "Do not download video, print info only")
-#ifndef HIDE_NOSHORTENED
-#ifdef HAVE_QUVIOPT_NOSHORTENED
-  ("no-shortened,s",
-   "Do not decompress shortened URLs")
-#endif
-#endif
-#ifdef HAVE_QUVIOPT_NORESOLVE
   ("no-resolve,r",
    "Do not resolve URL redirections")
-#endif
   ("no-proxy",
    "Disable use of http proxy")
   ("log-file",
@@ -156,6 +144,7 @@ options::exec (int argc, char **argv)
    "Time to wait before retrying")
   ;
 
+#ifdef _0
   // Hidden.
 
   opts::options_description hidden;
@@ -163,13 +152,10 @@ options::exec (int argc, char **argv)
   hidden.add_options ()
   ("url", opts::value< std::vector<std::string> >(),
    "url")
-#ifdef HIDE_NOSHORTENED
-#ifdef HAVE_QUVIOPT_NOSHORTENED
   ("no-shortened,s",
    "Do not decompress shortened URLs")
-#endif
-#endif
   ;
+#endif
 
   // Visible.
 
@@ -179,7 +165,10 @@ options::exec (int argc, char **argv)
 
   opts::options_description cmdline_options;
 
-  cmdline_options.add (generic).add (config).add (hidden);
+  cmdline_options.add (generic).add (config);
+#ifdef _0
+  .add (hidden);
+#endif
 
   // Config file options.
 
