@@ -1,0 +1,1 @@
+subdirs(man1)

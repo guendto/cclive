@@ -161,7 +161,7 @@ check_function_exists (signal       HAVE_SIGNAL)
 
 # Subdirs.
 
-subdirs (src man1)
+subdirs (src doc)
 
 # Status.
 
