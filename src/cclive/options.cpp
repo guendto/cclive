@@ -144,18 +144,12 @@ options::exec (int argc, char **argv)
    "Time to wait before retrying")
   ;
 
-#ifdef _0
   // Hidden.
 
   opts::options_description hidden;
 
   hidden.add_options ()
-  ("url", opts::value< std::vector<std::string> >(),
-   "url")
-  ("no-shortened,s",
-   "Do not decompress shortened URLs")
-  ;
-#endif
+  ("url", opts::value< std::vector<std::string> >(), "url");
 
   // Visible.
 
@@ -165,10 +159,7 @@ options::exec (int argc, char **argv)
 
   opts::options_description cmdline_options;
 
-  cmdline_options.add (generic).add (config);
-#ifdef _0
-  .add (hidden);
-#endif
+  cmdline_options.add (generic).add (config).add (hidden);
 
   // Config file options.
 
