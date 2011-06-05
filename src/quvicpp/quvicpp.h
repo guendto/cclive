@@ -58,24 +58,14 @@ public:
 public:
   void format     (const std::string&);
   void verify     (const bool);
-#ifdef HAVE_QUVIOPT_NOSHORTENED
-  void shortened  (const bool);
-#endif
-#ifdef HAVE_QUVIOPT_NORESOLVE
   void resolve    (const bool);
-#endif
   void statusfunc (quvi_callback_status);
 private:
   void _swap (const options&);
 private:
   quvi_callback_status _statusfunc;
   std::string          _format;
-#ifdef HAVE_QUVIOPT_NOSHORTENED
-  bool                 _shortened;
-#endif
-#ifdef HAVE_QUVIOPT_NORESOLVE
   bool                 _resolve;
-#endif
   bool                 _verify;
 };
 
@@ -106,11 +96,7 @@ class url
 {
 public:
   url();
-#ifdef HAVE_QUVI_MEDIA_INTERFACE
   url(quvi_media_t);
-#else
-  url(quvi_video_t);
-#endif
   url(const url&);
   url& operator=(const url&);
   virtual ~url();
@@ -136,11 +122,7 @@ class media
   friend std::ostream& operator<<(std::ostream&, const media&);
 public:
   media();
-#ifdef HAVE_QUVI_MEDIA_INTERFACE
   media(quvi_media_t);
-#else
-  media(quvi_video_t);
-#endif
   media(const media&);
   media& operator=(const media&);
   virtual ~media();
