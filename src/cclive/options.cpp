@@ -79,6 +79,8 @@ options::exec (int argc, char **argv)
   ("background,b",
    "Go to background")
 #endif
+  ("query-formats,F",
+   "Query formats to an URL")
   ("format,f",
    opts::value<std::string>()->default_value("default"),
    "Download video format")

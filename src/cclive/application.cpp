@@ -17,6 +17,7 @@
 
 #include "internal.h"
 
+#include <iomanip>
 #include <ctime>
 
 #include <boost/foreach.hpp>
@@ -56,11 +57,23 @@ static void handle_fetch(const quvi_word type, void*)
     cclive::log << " ";
 }
 
+static void print_done()
+{
+  cclive::log << "done.\n";
+}
+
 static void handle_verify(const quvi_word type)
 {
   rand_decor();
   if (type == QUVISTATUSTYPE_DONE)
-    cclive::log << "done.\n";
+    print_done();
+}
+
+static void handle_resolve(const quvi_word type)
+{
+  rand_decor();
+  if (type == QUVISTATUSTYPE_DONE)
+    cclive::log << " ";
 }
 
 static int status_callback(long param, void *ptr)
@@ -75,6 +88,9 @@ static int status_callback(long param, void *ptr)
       break;
     case QUVISTATUS_VERIFY:
       handle_verify(type);
+      break;
+    case QUVISTATUS_RESOLVE:
+      handle_resolve(type);
       break;
     }
 
@@ -203,6 +219,41 @@ static application::exit_status handle_format_list(
       }
     }
 
+  return application::ok;
+}
+
+static application::exit_status query_formats(
+  const quvicpp::query& query,
+  const quvicpp::options &opts,
+  const std::vector<std::string>& input)
+{
+  const size_t n = input.size();
+  size_t i = 0;
+
+  foreach (std::string url, input)
+  {
+    ++i;
+
+    try
+      {
+        print_checking(i,n);
+
+        const std::string formats = query.formats(url, opts);
+
+        print_done();
+
+        cclive::log
+            << std::setw(10)
+            << formats
+            << " : "
+            << url
+            << std::endl;
+      }
+    catch(const quvicpp::error& e)
+      {
+        print_quvi_error(e);
+      }
+  }
   return application::ok;
 }
 
@@ -408,6 +459,11 @@ application::exit_status application::exec(int argc, char **argv)
   // Omit std output. Note that --background flips this above.
 
   cclive::log.push(cclive::omit_sink(omit));
+
+  // Query formats.
+
+  if (map.count("query-formats"))
+    return query_formats(query, qopts, input);
 
 #if defined (HAVE_FORK) && defined (HAVE_GETPID)
   if (background_given)
