@@ -1,19 +1,19 @@
-/*
-* Copyright (C) 2010  Toni Gundogdu <legatvs@gmail.com>
-*
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+/* cclive
+ * Copyright (C) 2010,2011  Toni Gundogdu <legatvs@gmail.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #ifndef quvicpp_h
 #define quvicpp_h
@@ -37,12 +37,12 @@ class error;
 
 // Version.
 
-std::string version      ();
-std::string version_long ();
+std::string version     ();
+std::string version_long();
 
 // To string.
 
-std::string support_to_s (const std::map<std::string,std::string>&);
+std::string support_to_s(const std::map<std::string,std::string>&);
 
 // Options.
 
@@ -56,12 +56,12 @@ public:
   options& operator=(const options&);
   virtual ~options();
 public:
-  void format     (const std::string&);
-  void verify     (const bool);
-  void resolve    (const bool);
-  void statusfunc (quvi_callback_status);
+  void format    (const std::string&);
+  void verify    (const bool);
+  void resolve   (const bool);
+  void statusfunc(quvi_callback_status);
 private:
-  void _swap (const options&);
+  void _swap(const options&);
 private:
   quvi_callback_status _statusfunc;
   std::string          _format;
@@ -79,12 +79,14 @@ public:
   query& operator=(const query&);
   virtual ~query();
 public:
-  media parse (const std::string& url, const options&) const;
-  std::map<std::string,std::string> support () const;
-  void* curlHandle () const;
+  std::string formats(const std::string& url, const options&) const;
+  media parse(const std::string& url, const options&) const;
+  std::map<std::string,std::string> support() const;
+  void* curlHandle() const;
 private:
-  void _init ();
+  void _init();
   void _close();
+  void _set_opts(const options&) const;
 private:
   quvi_t _quvi;
   void*  _curl;
@@ -101,13 +103,13 @@ public:
   url& operator=(const url&);
   virtual ~url();
 public:
-  const   std::string& content_type   () const;
-  const   std::string& suffix         () const;
-  const   std::string& media_url      () const;
-  double  content_length              () const;
-  bool    ok                          () const;
+  const   std::string& content_type() const;
+  const   std::string& suffix      () const;
+  const   std::string& media_url   () const;
+  double  content_length           () const;
+  bool    ok                       () const;
 private:
-  void _swap (const url&);
+  void _swap(const url&);
 private:
   std::string _contentType;
   double _contentLength;
@@ -127,17 +129,17 @@ public:
   media& operator=(const media&);
   virtual ~media();
 public:
-  const std::string& title    () const;
-  const std::string& host     () const;
-  const std::string& url      () const;
-  const std::string& id       () const;
-  const std::string& format   () const;
-  long  http_code             () const;
-  quvicpp::url       next_url ();
-  std::string        to_s     ();
-  void print                  (std::ostream&);
+  const std::string& title   () const;
+  const std::string& host    () const;
+  const std::string& url     () const;
+  const std::string& id      () const;
+  const std::string& format  () const;
+  long  http_code            () const;
+  quvicpp::url       next_url();
+  std::string        to_s    ();
+  void print                 (std::ostream&);
 private:
-  void _swap (const media&);
+  void _swap(const media&);
 private:
   std::vector<quvicpp::url>::const_iterator _current_url;
   std::vector<quvicpp::url> _urls;
@@ -154,16 +156,16 @@ private:
 class error
 {
 public:
-  error (quvi_t, QUVIcode);
-  error (const error&);
+  error(quvi_t, QUVIcode);
+  error(const error&);
   error& operator=(const error&);
   virtual ~error();
 public:
   const std::string& what() const;
-  long response_code () const;
-  QUVIcode quvi_code () const;
+  long response_code() const;
+  QUVIcode quvi_code() const;
 private:
-  void _swap (const error&);
+  void _swap(const error&);
 private:
   QUVIcode _quvi_code;
   std::string _what;

@@ -1,19 +1,19 @@
-/*
-* Copyright (C) 2010  Toni Gundogdu <legatvs@gmail.com>
-*
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+/* cclive
+ * Copyright (C) 2010,2011  Toni Gundogdu <legatvs@gmail.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #include "config.h"
 
@@ -26,7 +26,7 @@ namespace quvicpp
 
 // Constructor.
 
-query::query ()
+query::query()
   : _quvi(NULL), _curl(NULL)
 {
   _init();
@@ -34,7 +34,7 @@ query::query ()
 
 // Copy constructor.
 
-query::query (const query& q)
+query::query(const query& q)
   : _quvi(NULL), _curl(NULL)
 {
   _init();
@@ -42,8 +42,7 @@ query::query (const query& q)
 
 // Copy assignment operator.
 
-query&
-query::operator=(const query& q)
+query& query::operator=(const query& q)
 {
   if (this != &q)
     {
@@ -55,15 +54,14 @@ query::operator=(const query& q)
 
 // Destructor.
 
-query::~query ()
+query::~query()
 {
   _close();
 }
 
 // Init.
 
-void
-query::_init ()
+void query::_init()
 {
 
   const QUVIcode rc = quvi_init(&_quvi);
@@ -71,27 +69,25 @@ query::_init ()
   if (rc != QUVI_OK)
     throw error(_quvi,rc);
 
-  assert (_quvi != NULL);
+  assert(_quvi != NULL);
 
   quvi_getinfo(_quvi, QUVIINFO_CURL, &_curl);
-  assert (_curl != NULL);
+  assert(_curl != NULL);
 }
 
 // Close.
 
-void
-query::_close ()
+void query::_close()
 {
   if (_quvi)
-    quvi_close (&_quvi); // Resets to NULL.
-  assert (_quvi == NULL);
+    quvi_close(&_quvi); // Resets to NULL.
+  assert(_quvi == NULL);
   _curl = NULL;
 }
 
-// Parse.
+// Set common libquvi options.
 
-media
-query::parse (const std::string& pageURL, const options& opts) const
+void query::_set_opts(const options& opts) const
 {
   // Friend of quvicpp::options class -> clean API.
 
@@ -105,6 +101,36 @@ query::parse (const std::string& pageURL, const options& opts) const
 
   quvi_setopt(_quvi, QUVIOPT_NORESOLVE, opts._resolve ? 1L:0L);
   quvi_setopt(_quvi, QUVIOPT_CATEGORY, QUVIPROTO_HTTP);
+}
+
+// Query formats.
+
+std::string query::formats(const std::string& url,
+                           const options& opts) const
+{
+  _set_opts(opts);
+
+  char *formats = NULL;
+
+  QUVIcode rc   = quvi_query_formats(_quvi,
+                                     const_cast<char*>(url.c_str()),
+                                     &formats);
+  if (rc != QUVI_OK)
+    throw error(_quvi,rc);
+
+  std::string r = formats;
+  quvi_free(formats);
+
+  return r;
+}
+
+
+// Parse.
+
+media query::parse(const std::string& pageURL, const options& opts) const
+{
+  _set_opts(opts);
+
   quvi_media_t qm;
 
   QUVIcode rc =
@@ -113,7 +139,7 @@ query::parse (const std::string& pageURL, const options& opts) const
   if (rc != QUVI_OK)
     throw error(_quvi,rc);
 
-  assert (qm != NULL);
+  assert(qm != NULL);
 
   media m(qm);
   quvi_parse_close(&qm);
@@ -123,16 +149,14 @@ query::parse (const std::string& pageURL, const options& opts) const
 
 // Get.
 
-void*
-query::curlHandle () const
+void* query::curlHandle() const
 {
   return _curl;
 }
 
 // Support.
 
-std::map<std::string,std::string>
-query::support () const
+std::map<std::string,std::string> query::support() const
 {
 
   std::map<std::string,std::string> map;
