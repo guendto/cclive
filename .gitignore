@@ -20,12 +20,11 @@ config.aux/missing
 config.h.in
 configure
 doc/Makefile.in
+doc/man1/Makefile.in
+doc/man1/cclive.1
 m4/libtool.m4
 m4/ltoptions.m4
 m4/ltsugar.m4
 m4/ltversion.m4
 m4/lt~obsolete.m4
-man1/Makefile.in
 src/Makefile.in
-src/Makefile.in
-doc/man1/cclive.1
