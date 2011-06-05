@@ -46,8 +46,6 @@ do
   shift
 done
 
-gen_manual
-exit 0
 echo "Generate configuration files..."
 autoreconf -if \
     && gen_manual \
