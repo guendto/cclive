@@ -65,12 +65,10 @@ public:
   void resolve    (const bool);
 #endif
   void statusfunc (quvi_callback_status);
-  void writefunc  (quvi_callback_write);
 private:
   void _swap (const options&);
 private:
   quvi_callback_status _statusfunc;
-  quvi_callback_write  _writefunc;
   std::string          _format;
 #ifdef HAVE_QUVIOPT_NOSHORTENED
   bool                 _shortened;

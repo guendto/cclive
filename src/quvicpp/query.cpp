@@ -99,7 +99,6 @@ query::parse (const std::string& pageURL, const options& opts) const
     quvi_setopt(_quvi, QUVIOPT_FORMAT, opts._format.c_str());
 
   quvi_setopt(_quvi, QUVIOPT_STATUSFUNCTION, opts._statusfunc);
-  quvi_setopt(_quvi, QUVIOPT_WRITEFUNCTION,  opts._writefunc);
 #ifdef _0
   quvi_setopt(_quvi, QUVIOPT_NOVERIFY, opts._verify ? 1L:0L);
 #endif

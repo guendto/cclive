@@ -25,7 +25,6 @@ namespace quvicpp
 
 options::options ()
   : _statusfunc(NULL),
-    _writefunc(NULL),
     _format("default"),
 #ifdef HAVE_QUVIOPT_NOSHORTENED
     _shortened(true),
@@ -40,7 +39,6 @@ options::options ()
 
 options::options (const options& opts)
   : _statusfunc(NULL),
-    _writefunc(NULL),
     _format("default"),
 #ifdef HAVE_QUVIOPT_NOSHORTENED
     _shortened(true),
@@ -68,7 +66,6 @@ options::operator=(const options& qo)
 options::~options ()
 {
   _statusfunc = NULL;
-  _writefunc  = NULL;
 }
 
 // Swap.
@@ -85,7 +82,6 @@ options::_swap (const options& qo)
   _resolve    = qo._resolve;
 #endif
   _statusfunc = qo._statusfunc;
-  _writefunc  = qo._writefunc;
 }
 
 // Set.
@@ -113,10 +109,6 @@ void options::resolve (const bool b)
 void options::statusfunc (quvi_callback_status cb)
 {
   _statusfunc = cb;
-}
-void options::writefunc (quvi_callback_write cb)
-{
-  _writefunc  = cb;
 }
 
 } // End namespace.
