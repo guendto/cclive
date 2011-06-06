@@ -415,7 +415,9 @@ file::_init (
           );
 
           foreach (std::string s, v)
-          cclive::re::subst (s, fname_format);
+          {
+            cclive::re::subst (s, fname_format);
+          }
         }
 
       std::stringstream b;
