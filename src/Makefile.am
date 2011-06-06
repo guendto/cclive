@@ -38,31 +38,25 @@ quvicpp/quvicpp.h
 bin_PROGRAMS=   cclive
 cclive_SOURCES= $(src) $(hdr)
 
-cclive_CPPLAGS= \
-    -I$(top_srcdir)/src \
-    $(libquvi_CFLAGS) \
-    $(libcurl_CFLAGS) \
-    $(libpcre_CFLAGS) \
-    $(libpcrecpp_CFLAGS) \
-    $(BOOST_CPPFLAGS) \
-    $(AM_CPPFLAGS)
+AM_CPPFLAGS= -I$(top_srcdir)/src
+AM_CPPFLAGS+= $(libquvi_CFLAGS)
+AM_CPPFLAGS+= $(libcurl_CFLAGS)
+AM_CPPFLAGS+= $(libpcre_CFLAGS)
+AM_CPPFLAGS+= $(libpcrepp_CFLAGS)
+AM_CPPFLAGS+= $(BOOST_CPPFLAGS)
 
-cclive_LDFLAGS= \
-    $(BOOST_DATE_TIME_LDFLAGS) \
-    $(BOOST_PROGRAM_OPTIONS_LDFLAGS) \
-    $(BOOST_IOSTREAMS_LDFLAGS) \
-    $(BOOST_FILESYSTEM_LDFLAGS) \
-    $(BOOST_SYSTEM_LDFLAGS) \
-    $(AM_LDFLAGS)
+cclive_LDFLAGS= $(BOOST_DATE_TIME_LDFLAGS)
+cclive_LDFLAGS+= $(BOOST_PROGRAM_OPTIONS_LDFLAGS)
+cclive_LDFLAGS+= $(BOOST_IOSTREAMS_LDFLAGS)
+cclive_LDFLAGS+= $(BOOST_FILESYSTEM_LDFLAGS)
+cclive_LDFLAGS+= $(BOOST_SYSTEM_LDFLAGS)
 
-cclive_LDADD = \
-    $(libquvi_LIBS) \
-    $(libcurl_LIBS) \
-    $(libpcre_LIBS) \
-    $(libpcrecpp_LIBS) \
-    $(BOOST_DATE_TIME_LIBS) \
-    $(BOOST_PROGRAM_OPTIONS_LIBS) \
-    $(BOOST_IOSTREAMS_LIBS) \
-    $(BOOST_FILESYSTEM_LIBS) \
-    $(BOOST_SYSTEM_LIBS)
-
+cclive_LDADD= $(libquvi_LIBS)
+cclive_LDADD+= $(libcurl_LIBS)
+cclive_LDADD+= $(libpcre_LIBS)
+cclive_LDADD+= $(libpcrecpp_LIBS)
+cclive_LDADD+= $(BOOST_DATE_TIME_LIBS)
+cclive_LDADD+= $(BOOST_PROGRAM_OPTIONS_LIBS)
+cclive_LDADD+= $(BOOST_IOSTREAMS_LIBS)
+cclive_LDADD+= $(BOOST_FILESYSTEM_LIBS)
+cclive_LDADD+= $(BOOST_SYSTEM_LIBS)
