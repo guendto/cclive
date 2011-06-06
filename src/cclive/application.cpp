@@ -1,19 +1,19 @@
-/*
-* Copyright (C) 2010,2011  Toni Gundogdu <legatvs@gmail.com>
-*
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+/* cclive
+ * Copyright (C) 2010,2011  Toni Gundogdu <legatvs@gmail.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #include "internal.h"
 
@@ -161,19 +161,23 @@ static void check_quvi_error(const quvicpp::error& e)
     }
 }
 
+static const char depr_msg[] =
+  "Warning:\n"
+  "   '--format list' is deprecated and will be removed in the later\n"
+  "   versions. Use --query-formats instead.";
+
 static const char format_usage[] =
   "Usage:\n"
-  "   --format arg            get format arg\n"
-  "   --format list           list websites and supported formats\n"
-  "   --format list arg       match arg to websites, list formats\n"
+  "   --format arg                get format arg of media\n"
+  "   --format list               print domains with formats\n"
+  "   --format list arg           match arg to supported domain names\n"
   "Examples:\n"
-  "   --format mp4_360p       get format mp4_360p (youtube)\n"
-  "   --format list youtube   list youtube formats\n"
-  "   --format list dailym    list dailym(otion) formats";
+  "   --format list youtube       print youtube formats\n"
+  "   --format fmt34_360p         get format fmt34_360p of media";
 
 static application::exit_status print_format_help()
 {
-  std::cout << format_usage << std::endl;
+  std::cout << format_usage << "\n" << depr_msg << std::endl;
   return application::ok;
 }
 
@@ -218,6 +222,8 @@ static application::exit_status handle_format_list(
         print_host(t);
       }
     }
+
+  std::cout << depr_msg << std::endl;
 
   return application::ok;
 }
