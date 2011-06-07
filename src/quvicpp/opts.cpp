@@ -26,12 +26,7 @@ namespace quvicpp
 options::options ()
   : _statusfunc(NULL),
     _format("default"),
-#ifdef HAVE_QUVIOPT_NOSHORTENED
-    _shortened(true),
-#endif
-#ifdef HAVE_QUVIOPT_NORESOLVE
     _resolve(true),
-#endif
     _verify(true)
 { }
 
@@ -40,12 +35,7 @@ options::options ()
 options::options (const options& opts)
   : _statusfunc(NULL),
     _format("default"),
-#ifdef HAVE_QUVIOPT_NOSHORTENED
-    _shortened(true),
-#endif
-#ifdef HAVE_QUVIOPT_NORESOLVE
     _resolve(true),
-#endif
     _verify(true)
 {
   _swap(opts);
@@ -75,12 +65,7 @@ options::_swap (const options& qo)
 {
   _format     = qo._format;
   _verify     = qo._verify;
-#ifdef HAVE_QUVIOPT_NOSHORTENED
-  _shortened  = qo._shortened;
-#endif
-#ifdef HAVE_QUVIOPT_NORESOLVE
   _resolve    = qo._resolve;
-#endif
   _statusfunc = qo._statusfunc;
 }
 
@@ -94,18 +79,10 @@ void options::verify (const bool b)
 {
   _verify = b;
 }
-#ifdef HAVE_QUVIOPT_NOSHORTENED
-void options::shortened (const bool b)
-{
-  _shortened = b;
-}
-#endif
-#ifdef HAVE_QUVIOPT_NORESOLVE
 void options::resolve (const bool b)
 {
   _resolve = b;
 }
-#endif
 void options::statusfunc (quvi_callback_status cb)
 {
   _statusfunc = cb;

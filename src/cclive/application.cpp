@@ -1,22 +1,23 @@
-/*
-* Copyright (C) 2010,2011  Toni Gundogdu <legatvs@gmail.com>
-*
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+/* cclive
+ * Copyright (C) 2010,2011  Toni Gundogdu <legatvs@gmail.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-#include "config.h"
+#include "internal.h"
 
+#include <iomanip>
 #include <ctime>
 
 #include <boost/foreach.hpp>
@@ -40,36 +41,42 @@ namespace cclive
 
 static boost::mt19937 _rng;
 
-static void
-rand_decor ()
+static void rand_decor()
 {
   boost::uniform_int<> r(2,5);
-
   boost::variate_generator<boost::mt19937&, boost::uniform_int<> > v(_rng,r);
 
   const int n = v();
-
   for (int i=0; i<n; ++i) cclive::log << ".";
 }
 
-static void
-handle_fetch (const quvi_word type, void*)
+static void handle_fetch(const quvi_word type, void*)
 {
   rand_decor();
   if (type == QUVISTATUSTYPE_DONE)
     cclive::log << " ";
 }
 
-static void
-handle_verify (const quvi_word type)
+static void print_done()
+{
+  cclive::log << "done.\n";
+}
+
+static void handle_verify(const quvi_word type)
 {
   rand_decor();
   if (type == QUVISTATUSTYPE_DONE)
-    cclive::log << "done.\n";
+    print_done();
 }
 
-static int
-status_callback (long param, void *ptr)
+static void handle_resolve(const quvi_word type)
+{
+  rand_decor();
+  if (type == QUVISTATUSTYPE_DONE)
+    cclive::log << " ";
+}
+
+static int status_callback(long param, void *ptr)
 {
   const quvi_word status = quvi_loword(param);
   const quvi_word type   = quvi_hiword(param);
@@ -77,10 +84,13 @@ status_callback (long param, void *ptr)
   switch (status)
     {
     case QUVISTATUS_FETCH :
-      handle_fetch (type,ptr);
+      handle_fetch(type,ptr);
       break;
     case QUVISTATUS_VERIFY:
       handle_verify(type);
+      break;
+    case QUVISTATUS_RESOLVE:
+      handle_resolve(type);
       break;
     }
 
@@ -90,27 +100,23 @@ status_callback (long param, void *ptr)
 }
 
 template<class Iterator>
-static Iterator
-make_unique (Iterator first, Iterator last)
+static Iterator make_unique(Iterator first, Iterator last)
 {
   while (first != last)
     {
-      Iterator next (first);
-      last  = std::remove (++next, last, *first);
+      Iterator next(first);
+      last  = std::remove(++next, last, *first);
       first = next;
     }
   return last;
 }
 
-static void
-print_retrying (
-  const int retry,
-  const int max_retries,
-  const int retry_wait)
+static void print_retrying(const int retry,
+                           const int max_retries,
+                           const int retry_wait)
 {
   if (retry > 0)
     {
-
       cclive::log
           << "Retrying "
           << retry
@@ -119,70 +125,65 @@ print_retrying (
           << " ... "
           << std::flush;
 
-      cclive::wait (retry_wait);
+      cclive::wait(retry_wait);
     }
 }
 
-static void
-print_checking (const int i, const int n)
+static void print_checking(const int i, const int n)
 {
   if (n > 1)  cclive::log << "(" << i << " of " << n << ") ";
   cclive::log << "Checking ... " << std::flush;
 }
 
-static void
-print_quvi_error (const quvicpp::error& e)
+static void print_quvi_error(const quvicpp::error& e)
 {
   cclive::log << "libquvi: error: " << e.what() << std::endl;
 }
 
-static void
-check_quvi_error (const quvicpp::error& e)
+static void check_quvi_error(const quvicpp::error& e)
 {
-  const long resp_code = e.response_code ();
+  const long resp_code = e.response_code();
 
   if (resp_code >= 400 && resp_code <= 500)
     throw e;
 
   else
     {
-
-      switch (e.quvi_code ())
+      switch (e.quvi_code())
         {
-
         case QUVI_CURL:
-          print_quvi_error (e);
+          print_quvi_error(e);
           break; // Retry.
 
         default:
           throw e;
         }
-
     }
-
 }
+
+static const char depr_msg[] =
+  "Warning:\n"
+  "   '--format list' is deprecated and will be removed in the later\n"
+  "   versions. Use --query-formats instead.";
 
 static const char format_usage[] =
   "Usage:\n"
-  "   --format arg            get format arg\n"
-  "   --format list           list websites and supported formats\n"
-  "   --format list arg       match arg to websites, list formats\n"
+  "   --format arg                get format arg of media\n"
+  "   --format list               print domains with formats\n"
+  "   --format list arg           match arg to supported domain names\n"
   "Examples:\n"
-  "   --format mp4_360p       get format mp4_360p (youtube)\n"
-  "   --format list youtube   list youtube formats\n"
-  "   --format list dailym    list dailym(otion) formats";
+  "   --format list youtube       print youtube formats\n"
+  "   --format fmt34_360p         get format fmt34_360p of media";
 
-static application::exit_status
-print_format_help ()
+static application::exit_status print_format_help()
 {
-  std::cout << format_usage << std::endl;
+  std::cout << format_usage << "\n" << depr_msg << std::endl;
   return application::ok;
 }
 
 typedef std::map<std::string,std::string> map_ss;
 
-static void
-print_host (const map_ss::value_type& t)
+static void print_host(const map_ss::value_type& t)
 {
   std::cout
       << t.first
@@ -192,24 +193,23 @@ print_host (const map_ss::value_type& t)
       << std::endl;
 }
 
-static application::exit_status
-handle_format_list (
+static application::exit_status handle_format_list(
   const boost::program_options::variables_map& map,
   const quvicpp::query& query)
 {
-  map_ss m = query.support ();
+  map_ss m = query.support();
 
   // -f list <pattern>
 
-  if (map.count ("url"))
+  if (map.count("url"))
     {
       const std::string arg0 =
         map["url"].as< std::vector<std::string> >()[0];
 
       foreach (map_ss::value_type& t, m)
       {
-        if (t.first.find (arg0) != std::string::npos)
-          print_host (t);
+        if (t.first.find(arg0) != std::string::npos)
+          print_host(t);
       }
     }
 
@@ -219,10 +219,47 @@ handle_format_list (
     {
       foreach (map_ss::value_type& t, m)
       {
-        print_host (t);
+        print_host(t);
       }
     }
 
+  std::cout << depr_msg << std::endl;
+
+  return application::ok;
+}
+
+static application::exit_status query_formats(
+  const quvicpp::query& query,
+  const quvicpp::options &opts,
+  const std::vector<std::string>& input)
+{
+  const size_t n = input.size();
+  size_t i = 0;
+
+  foreach (std::string url, input)
+  {
+    ++i;
+
+    try
+      {
+        print_checking(i,n);
+
+        const std::string formats = query.formats(url, opts);
+
+        print_done();
+
+        cclive::log
+            << std::setw(10)
+            << formats
+            << " : "
+            << url
+            << std::endl;
+      }
+    catch(const quvicpp::error& e)
+      {
+        print_quvi_error(e);
+      }
+  }
   return application::ok;
 }
 
@@ -274,15 +311,14 @@ static void read_from(std::istream& is, std::vector<std::string>& dst)
 
 extern char LICENSE[]; // cclive/license.cpp
 
-application::exit_status
-application::exec (int argc, char **argv)
+application::exit_status application::exec(int argc, char **argv)
 {
   try
     {
       _opts.exec(argc,argv);
     }
 
-  catch (const std::exception& e)
+  catch(const std::exception& e)
     {
       std::clog << "error: " << e.what() << std::endl;
       return invalid_option;
@@ -302,10 +338,17 @@ application::exec (int argc, char **argv)
     {
       std::cout
           << "cclive version "
-          << VERSION_LONG
-          << "\n"
-          << "libquvi version "
-          << quvi_version (QUVI_VERSION_LONG)
+#ifdef GIT_DESCRIBE
+          << GIT_DESCRIBE
+#else
+          << PACKAGE_VERSION
+#endif
+#ifdef BUILD_DATE
+          << " built on " << BUILD_DATE
+#endif
+          << " for " << CANONICAL_TARGET
+          << "\nlibquvi version "
+          << quvi_version(QUVI_VERSION_LONG)
           << std::endl;
       return ok;
     }
@@ -322,7 +365,7 @@ application::exec (int argc, char **argv)
 
   if (map.count("support"))
     {
-      std::cout << quvicpp::support_to_s (query.support ()) << std::flush;
+      std::cout << quvicpp::support_to_s(query.support()) << std::flush;
       return ok;
     }
 
@@ -331,20 +374,10 @@ application::exec (int argc, char **argv)
   const std::string format = map["format"].as<std::string>();
 
   if (format == "help")
-    return print_format_help ();
+    return print_format_help();
 
   else if (format == "list")
-    return handle_format_list (map, query);
-
-#if defined(HAVE_QUVIOPT_NORESOLVE) && defined(HAVE_QUVIOPT_NOSHORTENED)
-  if (map.count("no-shortened"))
-    {
-      std::clog
-          << "warning: --no-shortened is deprecated, "
-          << "use --no-resolve instead"
-          << std::endl;
-    }
-#endif
+    return handle_format_list(map, query);
 
   // Parse input.
 
@@ -387,62 +420,63 @@ application::exec (int argc, char **argv)
 
   // Remove duplicates.
 
-  input.erase (make_unique (input.begin(), input.end()), input.end());
+  input.erase(make_unique(input.begin(), input.end()), input.end());
 
   // Turn on libcurl verbose output.
 
   if (map.count("verbose-libcurl"))
-    curl_easy_setopt (query.curlHandle(), CURLOPT_VERBOSE, 1L);
+    curl_easy_setopt(query.curlHandle(), CURLOPT_VERBOSE, 1L);
 
   // Set up quvicpp.
 
   _tweak_curl_opts(query,map);
 
   quvicpp::options qopts;
-  qopts.statusfunc (status_callback);
-  qopts.format     (format);
+
+  qopts.statusfunc(status_callback);
+  qopts.format(format);
 #ifdef _0
-  qopts.verify     (map.count ("no-verify"));
+  qopts.verify(map.count("no-verify"));
 #endif
-#ifdef HAVE_QUVIOPT_NOSHORTENED
-  qopts.shortened  (map.count ("no-shortened"));
-#endif
-#ifdef HAVE_QUVIOPT_NORESOLVE
-  qopts.resolve (map.count ("no-resolve"));
-#endif
+  qopts.resolve(map.count("no-resolve"));
 
   // Seed random generator.
 
-  _rng.seed ( static_cast<unsigned int>(std::time(0)) );
+  _rng.seed(static_cast<unsigned int>(std::time(0)));
 
   // Omit flag.
 
-  bool omit = map.count ("quiet");
+  bool omit = map.count("quiet");
 
   // Go to background.
 
 #ifdef HAVE_FORK
-  const bool background_given = map.count ("background");
+  const bool background_given = map.count("background");
 
   if (background_given)
     {
 
       // (Boost) Throws std::runtime_error if fails.
 
-      cclive::go_background (map["log-file"].as<std::string>(), omit);
+      cclive::go_background(map["log-file"].as<std::string>(), omit);
     }
 #endif
 
   // Omit std output. Note that --background flips this above.
 
-  cclive::log.push (cclive::omit_sink (omit));
+  cclive::log.push(cclive::omit_sink(omit));
+
+  // Query formats.
+
+  if (map.count("query-formats"))
+    return query_formats(query, qopts, input);
 
 #if defined (HAVE_FORK) && defined (HAVE_GETPID)
   if (background_given)
     {
       cclive::log
           << "Running in background (pid: "
-          << static_cast<long>(getpid ())
+          << static_cast<long>(getpid())
           << ")."
           << std::endl;
     }
@@ -466,12 +500,11 @@ application::exec (int argc, char **argv)
 
         while (retry <= max_retries)
           {
-
-            print_retrying (retry, max_retries, retry_wait);
+            print_retrying(retry, max_retries, retry_wait);
 
             ++retry;
 
-            print_checking (i, n);
+            print_checking(i, n);
 
             quvicpp::media m;
 
@@ -479,23 +512,23 @@ application::exec (int argc, char **argv)
               {
                 m = query.parse(url, qopts);
               }
-            catch (const quvicpp::error& e)
+            catch(const quvicpp::error& e)
               {
-                check_quvi_error (e);
+                check_quvi_error(e);
               }
 
-            cclive::get (query, m, _opts);
+            cclive::get(query, m, _opts);
 
             break; // Stop retrying.
           }
       }
 
-    catch (const quvicpp::error& e)
+    catch(const quvicpp::error& e)
       {
-        print_quvi_error (e);
+        print_quvi_error(e);
       }
 
-    catch (const std::runtime_error& e)
+    catch(const std::runtime_error& e)
       {
         cclive::log << "error: " << e.what() << std::endl;
       }
@@ -504,8 +537,7 @@ application::exec (int argc, char **argv)
   return ok;
 }
 
-void
-application::_tweak_curl_opts (
+void application::_tweak_curl_opts(
   const quvicpp::query& query,
   const boost::program_options::variables_map& map)
 {

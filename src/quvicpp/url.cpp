@@ -28,11 +28,7 @@ url::url ()
   : _contentLength(-1)
 { }
 
-#ifdef HAVE_QUVI_MEDIA_INTERFACE
 url::url (quvi_media_t qv)
-#else
-url::url (quvi_video_t qv)
-#endif
   : _contentLength(-1)
 {
 #define _wrap(id,dst,type) \
@@ -41,17 +37,10 @@ url::url (quvi_video_t qv)
         quvi_getprop(qv,id,&tmp); \
         dst = tmp; \
     } while (0)
-#ifdef HAVE_QUVI_MEDIA_INTERFACE
   _wrap(QUVIPROP_MEDIAURL,           _url,           char*);
   _wrap(QUVIPROP_MEDIACONTENTTYPE,   _contentType,   char*);
   _wrap(QUVIPROP_MEDIACONTENTLENGTH, _contentLength, double);
   _wrap(QUVIPROP_FILESUFFIX,         _suffix,        char*);
-#else
-  _wrap(QUVIPROP_VIDEOURL,              _url,           char*);
-  _wrap(QUVIPROP_VIDEOFILECONTENTTYPE,  _contentType,   char*);
-  _wrap(QUVIPROP_VIDEOFILESUFFIX,       _suffix,        char*);
-  _wrap(QUVIPROP_VIDEOFILELENGTH,       _contentLength, double);
-#endif
 #undef _wrap
 }
 

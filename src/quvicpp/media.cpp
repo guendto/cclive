@@ -31,11 +31,7 @@ media::media ()
   : _current_url( _urls.begin() ), _http_code(-1)
 { }
 
-#ifdef HAVE_QUVI_MEDIA_INTERFACE
 media::media (quvi_media_t qv)
-#else
-media::media (quvi_video_t qv)
-#endif
   : _current_url( _urls.begin() ), _http_code(-1)
 {
 #define _wrap(id,dst,type) \
@@ -47,24 +43,15 @@ media::media (quvi_video_t qv)
   _wrap(QUVIPROP_HOSTID,      _host,  char*);
   _wrap(QUVIPROP_PAGEURL,     _url,   char*);
   _wrap(QUVIPROP_PAGETITLE,   _title, char*);
-#ifdef HAVE_QUVI_MEDIA_INTERFACE
   _wrap(QUVIPROP_MEDIAID,     _id,    char*);
   _wrap(QUVIPROP_FORMAT,      _format, char*);
-#else
-  _wrap(QUVIPROP_VIDEOID,     _id,    char*);
-  _wrap(QUVIPROP_VIDEOFORMAT, _format, char*);
-#endif
 #undef _wrap
 
   do
     {
       _urls.push_back( quvicpp::url(qv) );
     }
-#ifdef HAVE_QUVI_MEDIA_INTERFACE
   while (quvi_next_media_url(qv) == QUVI_OK);
-#else
-  while (quvi_next_videolink(qv) == QUVI_OK);
-#endif
 
   _current_url = _urls.begin();
 }

@@ -1,67 +1,36 @@
 
 
-            Prerequisites
+Prerequisites
+-------------
 
-* libquvi    (0.2.0+)
-* libboost   (1.42.0+)
-* libpcrecpp (8.02+)
-* libcurl    (7.20.0+)
-
--- Additionally for building
-
-* gcc/++ (4.5.0+, 4.2 should be OK)
-* cmake  (2.8.2+, looks for 2.8, see top-level CMakeLists.txt)
+* libquvi       (0.2.17+)
+* libboost      (1.42.0+)
+* libpcre(cpp)  (8.02+)
+* libcurl       (7.20.0+)
 
 Note that cclive may or may not compile with earlier versions.
 The above versions are the ones that I've tested.
 
 
-    Installation
+Installation from (release) source tarball
+------------------------------------------
 
-% mkdir  tmp; cd tmp
-% cmake -DCMAKE_BUILD_TYPE=debug -DCMAKE_INSTALL_PREFIX=/usr ..
-% make install
-...
-% make uninstall
+"./configure && make install", typically. See also "./configure --help".
+See also "Installation from development code" further below.
 
-
-    Installation: Variables
-
-These are some of the frequently used ones.
-
-    * CMAKE_INSTALL_PREFIX=(...PATH...)
-        Install destination for cclive, default may vary.
-
-    * CMAKE_BUILD_TYPE=(none|debug|release|relwithdebinfo|minsizerel)
-        Type of build, default is debug.
-
-    * CMAKE_VERBOSE_MAKEFILE=(true,false)
-        Build with verbose makefiles, default is false.
-
-    * WITHOUT_DOC=(true|false)
-        Install without documentation (e.g. man/cclive.1), default is false.
-
-Example:
-    % mkdir tmp; cd tmp
-    % cmake -DWITHOUT_DOC=true -DCMAKE_INSTALL_PREFIX=/usr/local ..
-    % make install
-
-Take a look at the CMakeLists.txt files found in the source tree,
-if you need to dig deeper. The cmake (2.8) documentation can be
-found at:
-    <http://www.cmake.org/cmake/help/cmake-2-8-docs.html>
-
-Note that you could also run cmake with -i (wizard mode).
+    --without-man           Do not install manual page(s)
 
 
-    Notes for porters and packagers
+Installation from development code
+----------------------------------
 
-Please ask the platform specific questions from those familiar with your
-platform. I develop cclive on Linux for Linux, and test it occasionally on
-FreeBSD.
+If you are compiling cclive from the development code, run "autogen.sh".
+This generates the configuration files that are not in the git repository.
+You will need:
 
-If you need an additional check for, e.g. a symbol or a function, see
-the top-level CMakeLists.txt and config.h.in files. We can add those
-at the upstream if that makes the porting easier.
+  * Perl (with pod2man)
+  * GNU autoconf
+  * GNU automake
 
-
+Once the files have been generated, you can follow the instructions in
+"Installation from source tarball" above.

@@ -14,11 +14,12 @@ cclive is a tool for downloading media from YouTube and similar
 websites. It has a low memory footprint compared to other existing
 tools.
 
-=head1 HISTORY
-
-cclive is a rewrite of C<clive(1)> in C++.
-
 =head1 OPTIONS
+
+Unless an arg is specified in the command line, cclive reads from the
+stdin. The command line args may be either URLs or files to read.
+If cclive reads from either stdin or files, it expects each URL to be
+separated by a newline or whitespace character.
 
 =over 4
 
@@ -36,7 +37,7 @@ Print license and exit.
 
 =item B<--support>
 
-Print supported websites, formats and exit.
+Print supported hosts and exit.
 
 =item B<--verbose-libcurl>
 
@@ -44,16 +45,27 @@ Turn on libcurl verbose output.
 
 =item B<-q, --quiet>
 
-Turn off all output to stdout and stderr.
+Turn off all output to stdout and stderr with the exception of
+C<--verbose-libcurl>, if enabled, libcurl will continue to print
+messages to stderr.
 
 =item B<-b, --background>
 
 Go to background after startup. Output will be written to
 the file specified with C<--log-file>.
 
+=item B<-F, --query-formats>
+
+Query available formats.
+
 =item B<-f, --format> I<arg> (=default)
 
-Download I<arg> format of the media. The I<arg> may be C<help>.
+Download format I<arg> of the media. I<arg> can also be C<help> or C<list>.
+The resulting format may be different from the I<arg> if the requested
+format was not available. This is determined by libquvi, not cclive.
+
+I<arg> C<list> is deprecated and will be removed in the later versions.
+Use C<--query-formats> instead.
 
 =item B<-c, --continue>
 
@@ -73,21 +85,8 @@ Do not download the media, print details only.
 
 =item B<-r, --no-resolve>
 
-Do not resolve HTTP redirections to another location.
-
-URL shortening services typically require following an HTTP redirection
-to another location. If this switch is used, cclive will no longer work
-with such services.
-
-Available only if cclive was compiled with quvi 0.2.16+, this switch
-deprecates the C<--no-shortened> switch found in earlier cclive
-versions.
-
-=item B<-s, --no-shortened> (deprecated)
-
-Do not "decompress" shortened URLs before using them. Available only
-if cclive was compiled with quvi 0.2.8 - 0.2.15. Use C<--no-resolve>
-instead.
+Do not resolve URL redirections. If enabled, breaks the compatibility
+with most "shortened" URLs.
 
 =item B<--no-proxy>
 
@@ -96,15 +95,14 @@ settings.
 
 =item B<--log-file> I<arg> (=cclive_log)
 
-Write log data to I<arg> file. Ignored unless used with C<--background>.
-Overwrites the existing I<arg> file (if any).
-
-See also C<--background> and C<--update-interval>.
+Write log output to I<arg>. Ignored unless used with C<--background>.
+Overwrites the existing I<arg> file (if any). See also C<--background>
+and C<--update-interval>.
 
 =item B<--update-interval> I<arg> (=1)
 
 Specify I<arg> progressbar update interval in seconds. The value may be
-of 'double' type, e.g. 0.2 or 1.99.
+a 'double', e.g. 0.2 or 1.99.
 
 =item B<--config-file> I<arg> (=$HOME/.ccliverc)
 
@@ -121,65 +119,60 @@ from the configuration file. See L</FILES>.
 
 =item B<--filename-format> I<arg> (="%t.%s")
 
-Specify how the downloaded media file should be saved as.
-The following specifiers may be used in the I<arg>:
+How the downloaded media file should be named.  Each occurence of the
+following specifiers will be replaced in the I<arg>:
 
-  %t .. Media title (after applying --regexp and --subst)
-  %i .. Media ID
-  %h .. Media host ID (e.g. "vimeo")
-  %s .. Media file suffix (e.g. "flv")
-
-I<All> occurences of the specifier will be replaced. See also
-C<--output-file>.
+ %t .. Media title (after applying --regexp)
+ %i .. Media ID
+ %h .. Media host ID (e.g. "vimeo")
+ %s .. Media file suffix (e.g. "flv")
 
 =item B<--output-dir> I<arg>
 
 Write downloaded media to I<arg> directory.
 
-=item B< --regexp> I<arg> (="/(\w|\s)/g")
+=item B<--regexp> I<arg> (="/(\w|\s)/g")
 
-Use regular expression I<arg> to clean up the media title before it
-is used in the filename. The syntax supports both "i"
+Regular expression I<arg> to cleanup the media title before it
+is used in the filename. Supports "i" (case-insensitive) and "g"
+(global or "find all").
+
+=item B<--subst> I<arg> ...
+
+Replace matched occurences in the media filename after applying
+C<--filename-format> and C<--regexp>. To use multiple substitutions,
+separate each expression in I<arg> with a whitespace. Supports "i"
 (case-insensitive) and "g" (global or "find all").
 
-=item B<-s, --subst> I<arg> ...
+Delimiters supported:
 
-Use I<arg> substitution regular expression to replace the matched
-occurences in the title before it is used in the filename. To use
-multiple expressions, separate each in I<arg> with a whitespace.
-The syntax supports "i" (case-insensitive) and "g" (global or
-"find all").
-
-The following delimiters may be used:
-
-  <> {} () /
+ <> {} () /
 
 Note:
 
-  s/old/new/  .. Invalid
-  s/old//new/ .. OK
+ s/old/new/  .. Invalid
+ s/old//new/ .. OK
 
 =item B<--exec> I<arg>
 
-Invoke I<arg> when download has finished. The following specifiers can
-be used in the I<arg>:
+Invoke I<arg> after each successfully finished download. Each occurence
+of the following specifiers will be replaced (and double-quoted) in the
+I<arg>:
 
-  %f .. Full path to the downloaded media file
-
-I<All> occurences of the specifier will be replaced.
+ %f .. Full path to the downloaded media file
 
 =item B<--agent> I<arg> (="Mozilla/5.0")
 
-Identify as I<arg> to the HTTP servers.
+Identify cclive as I<arg> to the HTTP servers.
 
 =item B<--proxy> I<arg>
 
-Use I<arg> for HTTP proxy, e.g. "http://foo:1234". Overrides the http_proxy
-environment setting.
+Use I<arg> for HTTP proxy, e.g. "http://foo:1234". Overrides
+http_proxy environment setting.
 
 =item B<--throttle> I<arg> (=0, disabled)
 
-Do not exceed the transfer rate of I<arg> (KB/s).
+Do not exceed the transfer rate I<arg> KB/s.
 
 =item B<--connect-timeout> I<arg> (=30)
 
@@ -237,65 +230,42 @@ Wait I<arg> seconds before retrying after a failed attempt.
 
 =head1 EXAMPLES
 
+Put the URLs inside quotes when they are specified as the command line
+arguments to the program. This is the recommended practice.
+
 =over 4
 
-=item B<cclive "URL">
+=item cclive "URL"
 
 Typical use.
 
-=item B<cclive "YOUTUBE_URL" -f mp4_360p>
+=item cclive -f best "URL"
 
-Same but get the mp4_360p format of the media, instead.
+Download the best available format of the media. This assumes E<gt>1
+formats are supported, otherwise will fallback to default format.
 
-=item B<cclive -f list youtube>
+=item cclive -F "URL"
 
-Print the supported formats for "youtube".
+Query available formats to the URL. Use one of the returned format
+strings from this list with C<--format>.
 
-=item B<cclive -f list yout>
-
-Yields the same results.
-
-=item B<cclive "URL" -n>
+=item cclive -n "URL"
 
 Do not download the media, print the details only.
 
-=item B<echo "URL" | cclive>
-
-Read input from the pipeline. Similarly:
-
-  % cat >> URLs
-  URL1
-  URL2
-  (^D)
-  % cclive < URLs
-  Or:
-  % cclive URLs
-
-Separate each URL with a newline.
-
-=item B<cclive "URL" -s "s{Alice}{Malice}">
+=item cclive "URL" --subst "s{Alice}{Malice}g"
 
 Replace "Alice" in the media title with "Malice" before it is used in
 the filename.
 
-=item B<cclive "URL" -s "s{Alice}E<lt>MaliceE<gt> s{wonderland}E<lt>UberlandE<gt>i">
-
-Similar but makes two substitions instead of just one. The former
-substitution was explained above, the latter replaces "Wonderland"
-with "Uberland". Note also the "i" for case-insensitive.
-
-You can use "g" for global (or "find all"), e.g.:
-
-  s{Alice}<Malice>g
-
-=item B<cclive "URL" -b --log-file foo.log>
+=item cclive "URL" -b --log-file foo.log
 
 Go to background, redirect output to C<foo.log>.
 
-=item B<kill -USR1 $cclive_pid>
+=item pkill -USR1 cclive
 
-Interrupt the current download (of $cclive_pid). This makes cclive move
-to the next URL in the queue (if any).
+Interrupt the current download of all matching cclive processes. Causes
+cclive to move onto the next URL in the queue, if any.
 
 =back
 
@@ -305,17 +275,15 @@ to the next URL in the queue (if any).
 
 =item B<$HOME/.ccliverc>
 
-You can specify the I<configurable> options
-(see L</OPTIONS - CONFIGURATION>) in the configuration file, e.g.:
+Or use C<--config-file>. See C<--help> or L</OPTIONS - CONFIGURATION>
+for the configurable options.
+
+Example:
 
  filename-format = %h_%i_(%t).%s
  regexp = /(\w|\pL)/g
  exec = /usr/bin/vlc %f
  proxy = http://foo:1234
- throttle = 10
- connect-timeout = 120
-
-You can also use C<--config-file> to specify the file.
 
 =back
 
@@ -330,8 +298,7 @@ occurred.
 
 =item B<--no-download>
 
-Use the C<--no-download> switch when you don't need to download the
-media.
+Use the C<--no-download> switch when you don't need to download the media.
 
 =item B<--verbose-libcurl>
 
@@ -349,7 +316,18 @@ See also C<gdb(1)>, C<strace(1)> and C<valgrind(1)>.
 
 =head1 WWW
 
-<http://cclive.sourceforge.net/>
+ Home  : http://cclive.sourceforge.net/
+ gitweb: http://repo.or.cz/w/cclive.git
+
+=head1 BACKGROUND
+
+The name "clive" originates from the words "command line video extration",
+the prepending "c" refers to C or C++. cclive is a rewrite of C<clive(1)>
+in C++.
+
+=head1 LICENSE
+
+cclive is free software, licensed under the GPLv3+.
 
 =head1 AUTHOR
 

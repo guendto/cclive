@@ -15,7 +15,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "config.h"
+#include "internal.h"
 
 #include <fstream>
 #include <cstring>
@@ -30,10 +30,6 @@
 #include "cclive/re.h"
 #include "cclive/options.h"
 
-#if defined(HAVE_QUVIOPT_NOSHORTENED) && defined(HAVE_QUVIOPT_NORESOLVE)
-#define HIDE_NOSHORTENED
-#endif
-
 namespace cclive
 {
 
@@ -45,7 +41,7 @@ options::exec (int argc, char **argv)
 {
   // Path to ccliverc.
 
-#ifdef HAVE_BOOST_FILESYSTEM_VERSION_3
+#if BOOST_FILESYSTEM_VERSION > 2
   fs::path config_path(fs::current_path());
 #else
   fs::path config_path(fs::current_path<fs::path>());
@@ -83,30 +79,24 @@ options::exec (int argc, char **argv)
   ("background,b",
    "Go to background")
 #endif
+  ("query-formats,F",
+   "Query available formats to URL")
   ("format,f",
    opts::value<std::string>()->default_value("default"),
-   "Download video format")
+   "Download media format")
   ("continue,c",
-   "Resume partially downloaded video")
+   "Resume partially downloaded media")
   ("overwrite,W",
-   "Overwrite existing video")
+   "Overwrite existing media")
   ("output-file,O",
    opts::value<std::string>(),
-   "Write downloaded video to file")
+   "Write media to arg")
   ("no-download,n",
-   "Do not download video, print info only")
-#ifndef HIDE_NOSHORTENED
-#ifdef HAVE_QUVIOPT_NOSHORTENED
-  ("no-shortened,s",
-   "Do not decompress shortened URLs")
-#endif
-#endif
-#ifdef HAVE_QUVIOPT_NORESOLVE
+   "Do not download media, print details")
   ("no-resolve,r",
    "Do not resolve URL redirections")
-#endif
   ("no-proxy",
-   "Disable use of http proxy")
+   "Do not use HTTP proxy")
   ("log-file",
    opts::value<std::string>()->default_value("cclive_log"),
    "Write log output to arg")
@@ -116,7 +106,7 @@ options::exec (int argc, char **argv)
   ("config-file",
    opts::value<std::string>(&_config_file)
    ->default_value(config_path.string()),
-   "File to read cclive arguments from")
+   "Read args from arg")
   ;
 
   // Config.
@@ -126,30 +116,30 @@ options::exec (int argc, char **argv)
   config.add_options ()
   ("filename-format",
    opts::value<std::string>()->default_value("%t.%s"),
-   "Output video filename format")
+   "Downloaded media filename format")
   ("output-dir",
    opts::value<std::string>(),
-   "Output directory for downloaded videos")
+   "Write downloaded media to arg directory")
   ("regexp",
    opts::value<std::string>()->default_value("/(\\w|\\pL|\\s)/g"),
-   "Regexp to clean up video title")
+   "Regexp to cleanup media title")
   ("subst", opts::value<std::string>(),
    "Replace matched occurences in filename")
   ("exec", opts::value<std::string>(),
-   "Invoke arg after download finishes")
+   "Invoke arg after each finished download")
   ("agent",
    opts::value<std::string>()->default_value("Mozilla/5.0"),
-   "Identify as arg to http servers")
+   "Identify as arg to HTTP servers")
   ("proxy", opts::value<std::string>(),
-   "Use proxy for http connections")
+   "Use proxy for HTTP connections")
   ("throttle", opts::value<int>()->default_value(0),
-   "Limit download transfer rate to KB/s")
+   "Do not exceed transfer rate arg KB/s")
   ("connect-timeout", opts::value<int>()->default_value(30),
    "Seconds connecting allowed to take")
   ("transfer-timeout", opts::value<int>()->default_value(0),
    "Seconds transfer allowed to take")
   ("dns-cache-timeout", opts::value<int>()->default_value(60),
-   "Seconds dns resolves kept in memory")
+   "Seconds DNS resolves kept in memory")
   ("max-retries", opts::value<int>()->default_value(5),
    "Max download attempts before giving up")
   ("retry-wait", opts::value<int>()->default_value(5),
@@ -161,15 +151,7 @@ options::exec (int argc, char **argv)
   opts::options_description hidden;
 
   hidden.add_options ()
-  ("url", opts::value< std::vector<std::string> >(),
-   "url")
-#ifdef HIDE_NOSHORTENED
-#ifdef HAVE_QUVIOPT_NOSHORTENED
-  ("no-shortened,s",
-   "Do not decompress shortened URLs")
-#endif
-#endif
-  ;
+  ("url", opts::value< std::vector<std::string> >(), "url");
 
   // Visible.
 
@@ -235,13 +217,11 @@ options::_verify ()
         {
           std::stringstream b;
 
-          b << "invalid syntax (`" << s << "'), "
-            << "expected perl syntax with --regexp,\n"
-            << "\te.g.: \"/(\\w|\\s)/g\"";
+          b << "--regexp: expects "
+            << "`/pattern/flags', for example: \"/(\\w|\\s)/g\"";
 
           throw std::runtime_error (b.str ());
         }
-
     }
 
   if (_map.count ("subst"))
@@ -261,12 +241,7 @@ options::_verify ()
           {
             std::stringstream b;
 
-            b << "invalid syntax (`" << s << "'), "
-              << "expected perl like syntax with --subst, e.g.:\n"
-              << "\ts/old/{new}/g\n"
-              << "\ts{old}/new/\n"
-              << "\ts(old)<new>/i\n"
-              << "\ts<old>{new}/";
+            b << "--subst: expects " << "`s{old}{new}flags'";
 
             throw std::runtime_error (b.str ());
           }

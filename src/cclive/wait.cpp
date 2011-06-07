@@ -15,35 +15,43 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "config.h"
+#include "internal.h"
 
-#include <cerrno>
-#include <climits>
-#include <cstring>
 #include <iostream>
 
-#include "cclive/error.h"
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
+
+#ifdef _WIN32
+#include <windows.h>
+#define sleep(n) Sleep(n*1000)
+#endif
+
+#include "cclive/log.h"
+#include "cclive/wait.h"
 
 namespace cclive
 {
 
-std::string
-perror (const std::string& p/*=""*/)
+void
+wait (const int retry_wait)
 {
 
-#if defined (HAVE_STRERROR) || defined (HAVE_STRERROR_R)
-  std::string s;
-#ifdef HAVE_STRERROR_R
-  char buf[256];
-  s = strerror_r (errno, buf, sizeof(buf));
-#else
-  s = strerror (errno);
-#endif
-  return s;
-#else // No strerror or strerror_r.
-  perror (p.c_str ());
-#endif
+  for (int i=1; i<=retry_wait; ++i)
+    {
 
+      if (i % 5 == 0)
+        cclive::log << i;
+      else
+        cclive::log << ".";
+
+      cclive::log << std::flush;
+
+      sleep(1);
+    }
+
+  cclive::log << std::endl;
 }
 
 } // End namespace.
