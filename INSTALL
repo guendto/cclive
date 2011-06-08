@@ -12,25 +12,26 @@ Note that cclive may or may not compile with earlier versions.
 The above versions are the ones that I've tested.
 
 
-Installation from (release) source tarball
-------------------------------------------
+Installation from source
+------------------------
 
 "./configure && make install", typically. See also "./configure --help".
-See also "Installation from development code" further below.
+If you are compiling cclive from the development code from the git
+repository, see "Installation from development code", instead.
 
-    --without-man           Do not install manual page(s)
+    --without-manual    Do not install manual page(s)
 
 
 Installation from development code
 ----------------------------------
 
-If you are compiling cclive from the development code, run "autogen.sh".
-This generates the configuration files that are not in the git repository.
-You will need:
+If you are compiling cclive from the development code, run "autogen.sh",
+first. This generates the configuration files that are not in the git
+repository. You will need:
 
   * Perl (with pod2man)
   * GNU autoconf
   * GNU automake
 
-Once the files have been generated, you can follow the instructions in
-"Installation from source tarball" above.
+Once the files have been generated, follow the instructions in "Installation
+from source" above.
