@@ -1,6 +1,6 @@
 
 EXTRA_DIST = cclive.1.pod
 
-if WITH_MAN
+if WITH_MANUAL
 dist_man_MANS = cclive.1
-endif # WITH_MAN
+endif # WITH_MANUAL

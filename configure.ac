@@ -87,13 +87,13 @@ AC_FUNC_FORK
 AC_FUNC_STRERROR_R
 AC_CHECK_FUNCS([getcwd strerror strstr getpid signal])
 
-# --with-man
-AC_ARG_WITH([man],
-    [AS_HELP_STRING([--with-man],
+# --with-manual
+AC_ARG_WITH([manual],
+    [AS_HELP_STRING([--with-manual],
         [install manual page(s) @<:@default=yes@:>@])],
     [],
-    [with_man=yes])
-AM_CONDITIONAL([WITH_MAN], [test x"$with_man" != "xno"])
+    [with_manual=yes])
+AM_CONDITIONAL([WITH_MANUAL], [test x"$with_manual" != "xno"])
 
 AC_CONFIG_FILES([
 Makefile
@@ -109,6 +109,8 @@ AC_MSG_NOTICE([
  cclive version: ${VERSION}  g:${git_describe}  b:${build_date}
  host setup:     ${host}
  prefix:         ${prefix}
+--
+ install manual: ${with_manual}
 ])
 
 
