@@ -24,11 +24,12 @@ namespace quvicpp
 
 // Constructors.
 
-url::url ()
+url::url()
   : _contentLength(-1)
-{ }
+{
+}
 
-url::url (quvi_media_t qv)
+url::url(quvi_media_t qv)
   : _contentLength(-1)
 {
 #define _wrap(id,dst,type) \
@@ -46,7 +47,7 @@ url::url (quvi_media_t qv)
 
 // Copy constructor.
 
-url::url (const url& u)
+url::url(const url& u)
   : _contentLength(-1)
 {
   _swap(u);
@@ -54,8 +55,7 @@ url::url (const url& u)
 
 // Copy assignment operator.
 
-url&
-url::operator=(const url& u)
+url& url::operator=(const url& u)
 {
   if (this != &u)
     _swap(u);
@@ -64,12 +64,11 @@ url::operator=(const url& u)
 
 // Destructor.
 
-url::~url () { }
+url::~url() { }
 
 // Swap.
 
-void
-url::_swap (const url& u)
+void url::_swap(const url& u)
 {
   _contentLength = u._contentLength;
   _contentType   = u._contentType;
@@ -79,27 +78,31 @@ url::_swap (const url& u)
 
 // Get.
 
-const  std::string& url::content_type () const
+const std::string& url::content_type() const
 {
   return _contentType;
 }
-const  std::string& url::suffix () const
+
+const std::string& url::suffix() const
 {
   return _suffix;
 }
-const  std::string& url::media_url () const
+
+const std::string& url::media_url() const
 {
   return _url;
 }
-double              url::content_length () const
+
+double url::content_length() const
 {
   return _contentLength;
 }
-bool                url::ok () const
+
+bool url::ok() const
 {
   return _contentLength > -1;
 }
 
-} // End namespace
+} // namespace quvicpp
 
 // vim: set ts=2 sw=2 tw=72 expandtab:

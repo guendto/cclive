@@ -23,10 +23,9 @@
 namespace cclive
 {
 
-void
-get (const quvicpp::query&, quvicpp::media&, const options&);
+void get(const quvicpp::query&, quvicpp::media&, const options&);
 
-} // End namespace.
+} // namespace cclive
 
 #endif
 

@@ -22,26 +22,25 @@ namespace quvicpp
 
 // Constructor.
 
-error::error (quvi_t q, QUVIcode c)
-  : _quvi_code (QUVI_OK), _resp_code (0)
+error::error(quvi_t q, QUVIcode c)
+  : _quvi_code(QUVI_OK), _resp_code(0)
 {
   // Friend of quvicpp::error class -> clean API.
-  _what = quvi_strerror (q, c);
-  quvi_getinfo (q, QUVIINFO_HTTPCODE, &_resp_code);
+  _what = quvi_strerror(q, c);
+  quvi_getinfo(q, QUVIINFO_HTTPCODE, &_resp_code);
 }
 
 // Copy constructor.
 
-error::error (const error& e)
-  : _quvi_code (QUVI_OK), _resp_code (0)
+error::error(const error& e)
+  : _quvi_code(QUVI_OK), _resp_code(0)
 {
   _swap(e);
 }
 
 // Copy assignment operator.
 
-error&
-error::operator=(const error& e)
+error& error::operator=(const error& e)
 {
   if (this != &e)
     _swap(e);
@@ -49,12 +48,11 @@ error::operator=(const error& e)
 }
 
 // Destructor.
-error::~error () { }
+error::~error() { }
 
 // Swap.
 
-void
-error::_swap (const error& e)
+void error::_swap(const error& e)
 {
   _quvi_code = e._quvi_code;
   _resp_code = e._resp_code;
@@ -63,24 +61,21 @@ error::_swap (const error& e)
 
 // Get.
 
-const std::string&
-error::what () const
+const std::string& error::what() const
 {
   return _what;
 }
 
-long
-error::response_code () const
+long error::response_code() const
 {
   return _resp_code;
 }
 
-QUVIcode
-error::quvi_code () const
+QUVIcode error::quvi_code() const
 {
   return _quvi_code;
 }
 
-} // End namespace.
+} // namespace quvicpp
 
 // vim: set ts=2 sw=2 tw=72 expandtab:

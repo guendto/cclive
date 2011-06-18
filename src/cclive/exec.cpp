@@ -29,19 +29,17 @@ namespace cclive
 
 namespace po = boost::program_options;
 
-void
-exec (const file& file, const quvicpp::url& url, const options& opts)
+void exec(const file& file, const quvicpp::url& url, const options& opts)
 {
   const po::variables_map map = opts.map();
 
   std::string arg = map["exec"].as<std::string>();
 
   boost::format fmt;
-
   fmt = boost::format("s{%%f}{\"%1%\"}g") % file.path();
-  cclive::re::subst (fmt.str(), arg);
+  cclive::re::subst(fmt.str(), arg);
 
-  const int rc = system ( arg.c_str() );
+  const int rc = system(arg.c_str());
 
   std::stringstream b;
 
@@ -59,10 +57,10 @@ exec (const file& file, const quvicpp::url& url, const options& opts)
 
   const std::string s = b.str();
 
-  if ( !s.empty() )
-    throw std::runtime_error (s);
+  if (!s.empty())
+    throw std::runtime_error(s);
 }
 
-} // End namespace.
+} // namespace cclive
 
 // vim: set ts=2 sw=2 tw=72 expandtab:

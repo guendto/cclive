@@ -23,7 +23,7 @@
 namespace quvicpp
 {
 
-options::options ()
+options::options()
   : _statusfunc(NULL),
     _format("default"),
     _resolve(true),
@@ -32,7 +32,7 @@ options::options ()
 
 // Copy constructor.
 
-options::options (const options& opts)
+options::options(const options& opts)
   : _statusfunc(NULL),
     _format("default"),
     _resolve(true),
@@ -43,8 +43,7 @@ options::options (const options& opts)
 
 // Copy assignment operator.
 
-options&
-options::operator=(const options& qo)
+options& options::operator=(const options& qo)
 {
   if (this != &qo)
     _swap(qo);
@@ -53,15 +52,14 @@ options::operator=(const options& qo)
 
 // Destructor.
 
-options::~options ()
+options::~options()
 {
   _statusfunc = NULL;
 }
 
 // Swap.
 
-void
-options::_swap (const options& qo)
+void options::_swap(const options& qo)
 {
   _format     = qo._format;
   _verify     = qo._verify;
@@ -71,23 +69,26 @@ options::_swap (const options& qo)
 
 // Set.
 
-void options::format (const std::string& fmt)
+void options::format(const std::string& fmt)
 {
   _format = fmt;
 }
-void options::verify (const bool b)
+
+void options::verify(const bool b)
 {
   _verify = b;
 }
-void options::resolve (const bool b)
+
+void options::resolve(const bool b)
 {
   _resolve = b;
 }
-void options::statusfunc (quvi_callback_status cb)
+
+void options::statusfunc(quvi_callback_status cb)
 {
   _statusfunc = cb;
 }
 
-} // End namespace.
+} // namespace quvicpp
 
 // vim: set ts=2 sw=2 tw=72 expandtab:

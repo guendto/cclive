@@ -26,87 +26,78 @@ namespace cclive
 namespace re
 {
 
-static pcrecpp::RE_Options
-_init_re_opts (const std::string& flags)
+static pcrecpp::RE_Options _init_re_opts(const std::string& flags)
 {
-
   pcrecpp::RE_Options opts;
 
-  opts.set_caseless (strstr (flags.c_str (), "i") != 0);
-  opts.set_utf8 (true);
+  opts.set_caseless(strstr(flags.c_str(), "i") != 0);
+  opts.set_utf8(true);
 
   return opts;
 }
 
-bool
-subst (const std::string& re, std::string& src)
+bool subst(const std::string& re, std::string& src)
 {
-
   std::string pat, sub, flags;
 
   static const char delims_b[] = "\\{\\<\\[\\(\\/";
   static const char delims_c[] = "\\}\\>\\]\\)\\/";
 
   boost::format fmt =
-    boost::format ("^s[%1%](.*)[%2%][%3%](.*)[%4%](.*)$")
+    boost::format("^s[%1%](.*)[%2%][%3%](.*)[%4%](.*)$")
     % delims_b % delims_c % delims_b % delims_c;
 
-  pcrecpp::RE rx (fmt.str (), pcrecpp::UTF8 ());
+  pcrecpp::RE rx(fmt.str(), pcrecpp::UTF8());
 
-  if ( rx.PartialMatch (re, &pat, &sub, &flags) )
+  if (rx.PartialMatch(re, &pat, &sub, &flags))
     {
-
       if (src.empty()) // Verify regexp only.
         return true;
 
-      pcrecpp::RE_Options opts = _init_re_opts (flags);
+      pcrecpp::RE_Options opts = _init_re_opts(flags);
+      pcrecpp::RE subs(pat, opts);
 
-      pcrecpp::RE subs (pat, opts);
-
-      (strstr (flags.c_str (), "g"))
-      ? subs.GlobalReplace (sub, &src)
-      : subs.Replace (sub, &src);
+      (strstr(flags.c_str(), "g"))
+      ? subs.GlobalReplace(sub, &src)
+      : subs.Replace(sub, &src);
 
       return true;
     }
   return false;
 }
 
-bool
-match (const std::string& re, std::string& src)
+bool match(const std::string& re, std::string& src)
 {
-
   std::string pat, flags;
 
-  pcrecpp::RE rx ("^\\/(.*)\\/(.*)$", pcrecpp::UTF8 ());
+  pcrecpp::RE rx("^\\/(.*)\\/(.*)$", pcrecpp::UTF8());
 
-  if (rx.PartialMatch (re, &pat, &flags))
+  if (rx.PartialMatch(re, &pat, &flags))
     {
 
-      if (src.empty ()) // Verify regexp only.
+      if (src.empty()) // Verify regexp only.
         return true;
 
-      pcrecpp::RE_Options opts = _init_re_opts (flags);
+      pcrecpp::RE_Options opts = _init_re_opts(flags);
 
-      if (strstr (flags.c_str (), "g") != 0)
+      if (strstr(flags.c_str(), "g") != 0)
         {
+          pcrecpp::StringPiece sp(src);
+          pcrecpp::RE re(pat, opts);
 
-          pcrecpp::StringPiece sp (src);
-          pcrecpp::RE re (pat, opts);
-
-          src.clear ();
+          src.clear();
 
           std::string s;
 
-          while (re.FindAndConsume (&sp, &s))
+          while (re.FindAndConsume(&sp, &s))
             src += s;
         }
 
       else
         {
           std::string tmp = src;
-          src.clear ();
-          pcrecpp::RE (pat, opts).PartialMatch (tmp, &src);
+          src.clear();
+          pcrecpp::RE(pat, opts).PartialMatch(tmp, &src);
         }
 
       return true;
@@ -114,15 +105,15 @@ match (const std::string& re, std::string& src)
   return false;
 }
 
-void
-trim (std::string& src)
+void trim(std::string& src)
 {
-  subst ("s{^[\\s]+}//",   src);
-  subst ("s{\\s+$}//",     src);
-  subst ("s{\\s\\s+}/ /g", src);
+  subst("s{^[\\s]+}//",   src);
+  subst("s{\\s+$}//",     src);
+  subst("s{\\s\\s+}/ /g", src);
 }
 
-}
-} // End namespace.
+} // namespace re
+
+} // namespace cclive
 
 // vim: set ts=2 sw=2 tw=72 expandtab:

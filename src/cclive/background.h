@@ -21,10 +21,9 @@
 namespace cclive
 {
 
-void
-go_background (const std::string&, bool&);
+void go_background(const std::string&, bool&);
 
-} // End namespace.
+} // namespace cclive
 
 #endif
 

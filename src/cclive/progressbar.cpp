@@ -56,18 +56,18 @@ namespace cclive
 #ifdef WITH_RESIZE
 static volatile sig_atomic_t recv_sigwinch;
 
-static void handle_sigwinch (int s)
+static void handle_sigwinch(int s)
 {
   recv_sigwinch = 1;
 }
 
-static size_t get_term_width ()
+static size_t get_term_width()
 {
-  const int fd = fileno (stderr);
+  const int fd = fileno(stderr);
 
   winsize wsz;
 
-  if (ioctl (fd, TIOCGWINSZ, &wsz) < 0)
+  if (ioctl(fd, TIOCGWINSZ, &wsz) < 0)
     return 0;
 
   return wsz.ws_col;
@@ -76,32 +76,32 @@ static size_t get_term_width ()
 
 namespace po = boost::program_options;
 
-progressbar::progressbar (
+progressbar::progressbar(
   const file& f,
   const quvicpp::url& u,
   const options& opts)
-  : _update_interval (.2),
-    _expected_bytes (u.content_length()),
-    _initial_bytes  (f.initial_length()),
-    _time_started (0),
-    _last_update (0),
-    _term_width (0),
-    _dot_count  (0),
-    _count (0),
-    _width (0),
-    _file (f),
-    _done (false),
-    _mode (normal)
+  : _update_interval(.2),
+    _expected_bytes(u.content_length()),
+    _initial_bytes(f.initial_length()),
+    _time_started(0),
+    _last_update(0),
+    _term_width(0),
+    _dot_count(0),
+    _count(0),
+    _width(0),
+    _file(f),
+    _done(false),
+    _mode(normal)
 {
   if (_initial_bytes > _expected_bytes)
     _expected_bytes = _initial_bytes;
 
 #ifdef WITH_RESIZE
-  signal (SIGWINCH, handle_sigwinch);
+  signal(SIGWINCH, handle_sigwinch);
 
   if (!_term_width || recv_sigwinch)
     {
-      _term_width = get_term_width ();
+      _term_width = get_term_width();
 
       if (!_term_width)
         _term_width = default_term_width;
@@ -112,30 +112,30 @@ progressbar::progressbar (
 
   _width = _term_width;
 
-  time (&_time_started);
+  time(&_time_started);
 
-  const po::variables_map map  = opts.map ();
+  const po::variables_map map  = opts.map();
 
-  if (map.count ("background"))
+  if (map.count("background"))
     _mode = dotline;
 
   _update_interval = map["update-interval"].as<double>();
 }
 
-static double to_mb (const double bytes)
+static double to_mb(const double bytes)
 {
   return bytes/(1024*1024);
 }
 
 namespace pt = boost::posix_time;
 
-static std::string to_s (const int secs)
+static std::string to_s(const int secs)
 {
-  pt::time_duration td = pt::seconds (secs);
-  return pt::to_simple_string (td);
+  pt::time_duration td = pt::seconds(secs);
+  return pt::to_simple_string(td);
 }
 
-static std::string to_unit (double& rate)
+static std::string to_unit(double& rate)
 {
   std::string units = "K/s";
   if (rate >= 1024.0*1024.0*1024.0)
@@ -155,12 +155,11 @@ static std::string to_unit (double& rate)
 
 namespace fs = boost::filesystem;
 
-void
-progressbar::update (double now)
+void progressbar::update(double now)
 {
   time_t tnow;
 
-  time (&tnow);
+  time(&tnow);
 
   const time_t elapsed = tnow - _time_started;
 
@@ -171,7 +170,7 @@ progressbar::update (double now)
     {
       const size_t old_term_width = _term_width;
 
-      _term_width = get_term_width ();
+      _term_width = get_term_width();
 
       if (!_term_width)
         _term_width = default_term_width;
@@ -208,11 +207,11 @@ progressbar::update (double now)
 
   std::stringstream size_s;
 
-  size_s.setf (std::ios::fixed);
+  size_s.setf(std::ios::fixed);
 
   size_s
-      << std::setprecision (1)
-      << to_mb (size)
+      << std::setprecision(1)
+      << to_mb(size)
       << "M";
 
   // Rate.
@@ -221,8 +220,8 @@ progressbar::update (double now)
 
   std::stringstream rate_s, eta_s;
 
-  rate_s.setf (std::ios::fixed);
-  eta_s.setf (std::ios::fixed);
+  rate_s.setf(std::ios::fixed);
+  eta_s.setf(std::ios::fixed);
 
   if (!inactive)
     {
@@ -235,24 +234,24 @@ progressbar::update (double now)
           const double left =
             (_expected_bytes - (now + _initial_bytes)) / rate;
 
-          eta = to_s (static_cast<int>(left+0.5));
+          eta = to_s(static_cast<int>(left+0.5));
         }
       else
         {
           rate = (_expected_bytes - _initial_bytes) / elapsed;
-          eta  = to_s (elapsed);
+          eta  = to_s(elapsed);
         }
 
-      std::string unit = to_unit (rate);
+      std::string unit = to_unit(rate);
 
       rate_s
-          << std::setw (4)
-          << std::setprecision (1)
+          << std::setw(4)
+          << std::setprecision(1)
           << rate
           << unit;
 
       eta_s
-          << std::setw (6)
+          << std::setw(6)
           << eta;
     }
   else   // ETA: inactive (default).
@@ -278,7 +277,7 @@ progressbar::update (double now)
 
   // Filename.
 
-  fs::path p = fs::system_complete (_file.path ());
+  fs::path p = fs::system_complete(_file.path());
 
 #if BOOST_FILESYSTEM_VERSION > 2
   std::string fname = p.filename().string();
@@ -290,10 +289,10 @@ progressbar::update (double now)
     {
     default:
     case  normal:
-      _normal  (size_s, rate_s, eta_s, percent, percent_s, fname);
+      _normal(size_s, rate_s, eta_s, percent, percent_s, fname);
       break;
     case dotline:
-      _dotline (size_s, rate_s, eta_s, percent_s, fname);
+      _dotline(size_s, rate_s, eta_s, percent_s, fname);
       break;
     }
 
@@ -301,8 +300,7 @@ progressbar::update (double now)
   _count       = now;
 }
 
-void
-progressbar::_normal (
+void progressbar::_normal(
   const std::stringstream& size_s,
   const std::stringstream& rate_s,
   const std::stringstream& eta_s,
@@ -312,7 +310,7 @@ progressbar::_normal (
 {
   std::stringstream info;
 
-  info.setf (std::ios::fixed);
+  info.setf(std::ios::fixed);
 
   info
       << "  "
@@ -339,8 +337,7 @@ progressbar::_normal (
   cclive::log << bar.str() << "\r" << std::flush;
 }
 
-void
-progressbar::_dotline (
+void progressbar::_dotline(
   const std::stringstream& size_s,
   const std::stringstream& rate_s,
   const std::stringstream& eta_s,
@@ -349,14 +346,14 @@ progressbar::_dotline (
 {
 #define details \
     "  " \
-    << std::setw (6) \
-    << size_s.str () \
+    << std::setw(6) \
+    << size_s.str() \
     << "  " \
-    << rate_s.str () \
+    << rate_s.str() \
     << "  " \
-    << eta_s.str () \
+    << eta_s.str() \
     << "  " \
-    << percent_s.str ()
+    << percent_s.str()
 
 #define dot \
     do { \
@@ -400,8 +397,7 @@ progressbar::_render_meter(std::stringstream& bar, const int percent,
   bar << "]";
 }
 
-void
-progressbar::finish ()
+void progressbar::finish()
 {
   if (_expected_bytes > 0
       && _count + _initial_bytes > _expected_bytes)
@@ -410,9 +406,9 @@ progressbar::finish ()
     }
 
   _done = true;
-  update (-1);
+  update(-1);
 }
 
-} // End namespace.
+} // namespace cclive
 
 // vim: set ts=2 sw=2 tw=72 expandtab:

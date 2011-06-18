@@ -37,7 +37,7 @@ class error;
 
 // Version.
 
-std::string version     ();
+std::string version();
 std::string version_long();
 
 // To string.
@@ -56,17 +56,17 @@ public:
   options& operator=(const options&);
   virtual ~options();
 public:
-  void format    (const std::string&);
-  void verify    (const bool);
-  void resolve   (const bool);
   void statusfunc(quvi_callback_status);
+  void format(const std::string&);
+  void resolve(const bool);
+  void verify(const bool);
 private:
   void _swap(const options&);
 private:
   quvi_callback_status _statusfunc;
-  std::string          _format;
-  bool                 _resolve;
-  bool                 _verify;
+  std::string _format;
+  bool _resolve;
+  bool _verify;
 };
 
 // Query.
@@ -84,12 +84,12 @@ public:
   std::map<std::string,std::string> support() const;
   void* curlHandle() const;
 private:
+  void _set_opts(const options&) const;
   void _init();
   void _close();
-  void _set_opts(const options&) const;
 private:
   quvi_t _quvi;
-  void*  _curl;
+  void*_curl;
 };
 
 // Link.
@@ -103,11 +103,11 @@ public:
   url& operator=(const url&);
   virtual ~url();
 public:
-  const   std::string& content_type() const;
-  const   std::string& suffix      () const;
-  const   std::string& media_url   () const;
-  double  content_length           () const;
-  bool    ok                       () const;
+  const std::string& content_type() const;
+  const std::string& media_url() const;
+  const std::string& suffix() const;
+  double content_length() const;
+  bool ok() const;
 private:
   void _swap(const url&);
 private:
@@ -129,15 +129,15 @@ public:
   media& operator=(const media&);
   virtual ~media();
 public:
-  const std::string& title   () const;
-  const std::string& host    () const;
-  const std::string& url     () const;
-  const std::string& id      () const;
-  const std::string& format  () const;
-  long  http_code            () const;
-  quvicpp::url       next_url();
-  std::string        to_s    ();
-  void print                 (std::ostream&);
+  const std::string& title() const;
+  const std::string& host() const;
+  const std::string& url() const;
+  const std::string& id() const;
+  const std::string& format() const;
+  void print(std::ostream&);
+  long http_code() const;
+  quvicpp::url next_url();
+  std::string to_s();
 private:
   void _swap(const media&);
 private:
@@ -172,7 +172,7 @@ private:
   long _resp_code;
 };
 
-} // End namespace.
+} // namespace quvicpp
 
 #endif
 

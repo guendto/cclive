@@ -20,10 +20,9 @@
 namespace cclive
 {
 
-std::string
-perror (const std::string& p="");
+std::string perror(const std::string& p="");
 
-} // End namespace.
+} // namespace cclive
 
 #endif
 

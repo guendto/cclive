@@ -21,10 +21,9 @@
 namespace cclive
 {
 
-void
-exec (const file&, const quvicpp::url&, const options& opts);
+void exec(const file&, const quvicpp::url&, const options& opts);
 
-} // End namespace.
+} // namespace cclive
 
 #endif
 

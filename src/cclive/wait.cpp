@@ -34,26 +34,22 @@
 namespace cclive
 {
 
-void
-wait (const int retry_wait)
+void wait(const int retry_wait)
 {
-
   for (int i=1; i<=retry_wait; ++i)
     {
-
       if (i % 5 == 0)
         cclive::log << i;
       else
         cclive::log << ".";
 
       cclive::log << std::flush;
-
       sleep(1);
     }
 
   cclive::log << std::endl;
 }
 
-} // End namespace.
+} // namespace cclive
 
 // vim: set ts=2 sw=2 tw=72 expandtab:

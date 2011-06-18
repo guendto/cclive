@@ -37,58 +37,46 @@ namespace cclive
 
 namespace io = boost::iostreams;
 
-void
-go_background (const std::string& log_file, bool& omit)
+void go_background(const std::string& log_file, bool& omit)
 {
-
 #ifdef HAVE_FORK
   const pid_t pid = fork();
 
   if (pid < 0)
     {
-
-      cclive::perror ("fork");
-
-      exit (application::system);
+      cclive::perror("fork");
+      exit(application::system);
     }
   else if (pid != 0)
     {
-
-      // Parent: exit.
-
-      std::clog
+      std::clog // Parent exits
           << "Run in background (pid: "
           << static_cast<long>(pid)
           << "). Redirect output to \""
           << log_file
           << "\"."
           << std::endl;
-
-      exit (0);
+      exit(0);
     }
 
-  // Child: continue, become the session leader.
-
-  setsid ();
+  // Child continues and becomes the session leader.
+  setsid();
 
   // Clear file mode creation mask.
-
-  umask (0);
+  umask(0);
 
   // Close unneeded file descriptors/streams.
-
-  freopen ("/dev/null", "w", stdout);
-  freopen ("/dev/null", "w", stderr);
-  freopen ("/dev/null", "r", stdin);
+  freopen("/dev/null", "w", stdout);
+  freopen("/dev/null", "w", stderr);
+  freopen("/dev/null", "r", stdin);
 
   // Redirect output to log file.
-
-  cclive::log.push (io::tee (cclive::flushable_file_sink (log_file)));
+  cclive::log.push(io::tee(cclive::flushable_file_sink(log_file)));
 
   omit = true;
 #endif // HAVE_FORK
 }
 
-} // End namespace.
+} // namespace cclive
 
 // vim: set ts=2 sw=2 tw=72 expandtab:

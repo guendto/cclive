@@ -17,8 +17,8 @@
 
 #include "internal.h"
 
-#include <fstream>
 #include <stdexcept>
+#include <fstream>
 #include <sstream>
 #include <iomanip>
 
@@ -56,35 +56,34 @@
 namespace cclive
 {
 
-file::file ()
+file::file()
   : _initial_length(0)
-{ }
+{
+}
 
-file::file (
+file::file(
   const quvicpp::media& media,
   const quvicpp::url& url,
   const int n,
   const options& opts)
   : _initial_length(0)
 {
-  _init (media, url, n, opts);
+  _init(media, url, n, opts);
 }
 
-file::file (const file& f)
+file::file(const file& f)
   : _initial_length(0)
 {
   _swap(f);
 }
 
-file&
-file::operator=(const file& f)
+file& file::operator=(const file& f)
 {
   if (this != &f) _swap(f);
   return *this;
 }
 
-void
-file::_swap (const file& f)
+void file::_swap(const file& f)
 {
   _name           = f._name;
   _path           = f._path;
@@ -93,51 +92,48 @@ file::_swap (const file& f)
 
 #define E "server response code %ld, expected 200 or 206 (conn_code=%ld)"
 
-static std::string
-format_unexpected_http_error (const long resp_code, const long conn_code)
+static std::string format_unexpected_http_error(
+  const long resp_code,
+  const long conn_code)
 {
-  return (boost::format (E) % resp_code % conn_code).str ();
+  return (boost::format(E) % resp_code % conn_code).str();
 }
 
 #undef E
 
 #define E "%s (curl_code=%ld, resp_code=%ld, conn_code=%ld)"
 
-static std::string
-format_error (
+static std::string format_error(
   const CURLcode curl_code,
   const long resp_code,
   const long conn_code)
 {
-  const std::string e = curl_easy_strerror (curl_code);
-  return (boost::format (E) % e % curl_code % resp_code % conn_code).str ();
+  const std::string e = curl_easy_strerror(curl_code);
+  return (boost::format(E) % e % curl_code % resp_code % conn_code).str();
 }
 
 #undef E
 
-static size_t
-write_cb (void *data, size_t size, size_t nmemb, void *ptr)
+static size_t write_cb(void *data, size_t size, size_t nmemb, void *ptr)
 {
   std::ofstream *o   = reinterpret_cast<std::ofstream*>(ptr);
   const size_t rsize = size*nmemb;
-  o->write (static_cast<char*>(data), rsize);
-  o->flush ();
+  o->write(static_cast<char*>(data), rsize);
+  o->flush();
   return rsize;
 }
 
 #ifdef WITH_SIGNAL
 static volatile sig_atomic_t recv_usr1;
 
-static void
-handle_usr1 (int s)
+static void handle_usr1(int s)
 {
   if (s == SIGUSR1)
     recv_usr1 = 1;
 }
 #endif
 
-static int
-progress_cb (void *ptr, double, double now, double, double)
+static int progress_cb(void *ptr, double, double now, double, double)
 {
 #ifdef WITH_SIGNAL
   if (recv_usr1)
@@ -146,72 +142,71 @@ progress_cb (void *ptr, double, double now, double, double)
       return 1; // Return a non-zero value to abort this transfer.
     }
 #endif
-  reinterpret_cast<progressbar*>(ptr)->update (now);
+  reinterpret_cast<progressbar*>(ptr)->update(now);
   return 0;
 }
 
 namespace po = boost::program_options;
 
-bool
-file::write (
+bool file::write(
   const quvicpp::query& q,
   const quvicpp::url& u,
   const options& opts) const
 {
   CURL *curl = q.curlHandle();
 
-  curl_easy_setopt (curl, CURLOPT_URL, u.media_url().c_str());
-  curl_easy_setopt (curl, CURLOPT_WRITEFUNCTION, write_cb);
+  curl_easy_setopt(curl, CURLOPT_URL, u.media_url().c_str());
+  curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_cb);
 
   const po::variables_map map  = opts.map();
   std::ios_base::openmode mode = std::ofstream::binary;
 
-  if ( map.count ("overwrite") )
+  if (map.count("overwrite"))
     mode |= std::ofstream::trunc;
   else
     {
-      if ( _should_continue() )
+      if (_should_continue())
         mode |= std::ofstream::app;
     }
 
-  std::ofstream out( _path.c_str(), mode );
+  std::ofstream out(_path.c_str(), mode);
 
-  if ( out.fail() )
+  if (out.fail())
     {
       std::string s = _path + ": ";
 
       if (errno)
-        s += cclive::perror ();
+        s += cclive::perror();
       else
         s += "unknown file open error";
 
-      throw std::runtime_error (s);
+      throw std::runtime_error(s);
     }
 
-  curl_easy_setopt (curl, CURLOPT_WRITEDATA, &out);
+  curl_easy_setopt(curl, CURLOPT_WRITEDATA, &out);
 
-  curl_easy_setopt (curl, CURLOPT_ENCODING, "identity");
-  curl_easy_setopt (curl, CURLOPT_HEADER, 0L);
+  curl_easy_setopt(curl, CURLOPT_ENCODING, "identity");
+  curl_easy_setopt(curl, CURLOPT_HEADER, 0L);
 
-  progressbar pb (*this, u, opts);
-  curl_easy_setopt (curl, CURLOPT_PROGRESSDATA, &pb);
-  curl_easy_setopt (curl, CURLOPT_NOPROGRESS, 0L);
-  curl_easy_setopt (curl, CURLOPT_PROGRESSFUNCTION, progress_cb);
+  progressbar pb(*this, u, opts);
+  curl_easy_setopt(curl, CURLOPT_PROGRESSDATA, &pb);
+  curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0L);
+  curl_easy_setopt(curl, CURLOPT_PROGRESSFUNCTION, progress_cb);
 
   curl_off_t resume_from = static_cast<curl_off_t>(_initial_length);
-  curl_easy_setopt (curl, CURLOPT_RESUME_FROM_LARGE, resume_from);
+  curl_easy_setopt(curl, CURLOPT_RESUME_FROM_LARGE, resume_from);
 
-  curl_easy_setopt (curl, CURLOPT_CONNECTTIMEOUT,
-                    map["connect-timeout"].as<int>());
+  curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT,
+                   map["connect-timeout"].as<int>());
 
-  curl_easy_setopt (curl, CURLOPT_TIMEOUT,
-                    map["transfer-timeout"].as<int>());
+  curl_easy_setopt(curl, CURLOPT_TIMEOUT,
+                   map["transfer-timeout"].as<int>());
 
-  curl_easy_setopt (curl, CURLOPT_DNS_CACHE_TIMEOUT,
-                    map["dns-cache-timeout"].as<int>());
+  curl_easy_setopt(curl, CURLOPT_DNS_CACHE_TIMEOUT,
+                   map["dns-cache-timeout"].as<int>());
 
   curl_off_t throttle = map["throttle"].as<int>()*1024;
-  curl_easy_setopt (curl, CURLOPT_MAX_RECV_SPEED_LARGE, throttle);
+  curl_easy_setopt(curl, CURLOPT_MAX_RECV_SPEED_LARGE, throttle);
 
 #ifdef WITH_SIGNAL
   recv_usr1 = 0;
@@ -219,22 +214,23 @@ file::write (
     {
       cclive::log << "warning: ";
       if (errno)
-        cclive::log << cclive::perror ();
+        cclive::log << cclive::perror();
       else
         cclive::log << "unable to catch SIGUSR1";
       cclive::log << std::endl;
     }
 #endif
 
-  const CURLcode rc = curl_easy_perform (curl);
+  const CURLcode rc = curl_easy_perform(curl);
 
   // Restore curl settings.
 
-  curl_easy_setopt (curl, CURLOPT_HEADER, 1L);
-  curl_easy_setopt (curl, CURLOPT_NOPROGRESS, 1L);
-  curl_easy_setopt (curl, CURLOPT_RESUME_FROM_LARGE, 0L);
-  curl_easy_setopt (curl, CURLOPT_MAX_RECV_SPEED_LARGE,
-                    static_cast<curl_off_t>(0L));
+  curl_easy_setopt(curl, CURLOPT_HEADER, 1L);
+  curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1L);
+  curl_easy_setopt(curl, CURLOPT_RESUME_FROM_LARGE, 0L);
+  curl_easy_setopt(curl,
+                   CURLOPT_MAX_RECV_SPEED_LARGE,
+                   static_cast<curl_off_t>(0L));
 
   out.flush();
   out.close();
@@ -242,30 +238,25 @@ file::write (
   long resp_code = 0;
   long conn_code = 0;
 
-  curl_easy_getinfo (curl,
-                     CURLINFO_RESPONSE_CODE, &resp_code);
-
-  curl_easy_getinfo (curl,
-                     CURLINFO_HTTP_CONNECTCODE, &conn_code);
+  curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &resp_code);
+  curl_easy_getinfo(curl, CURLINFO_HTTP_CONNECTCODE, &conn_code);
 
   std::string error;
 
   if (CURLE_OK == rc)
     {
       if (resp_code != 200 && resp_code != 206)
-        error = format_unexpected_http_error (resp_code, conn_code);
+        error = format_unexpected_http_error(resp_code, conn_code);
     }
   else
-    {
-      error = format_error (rc, resp_code, conn_code);
-    }
+    error = format_error(rc, resp_code, conn_code);
 
-  if ( !error.empty() )
+  if (!error.empty())
     {
       cclive::log << std::endl;
 
       if (resp_code >= 400 && resp_code <= 500)
-        throw std::runtime_error (error);
+        throw std::runtime_error(error);
       else
         {
 #ifdef WITH_SIGNAL
@@ -288,31 +279,32 @@ file::write (
   return true;
 }
 
-double file::initial_length   () const
+double file::initial_length() const
 {
   return _initial_length;
 }
-const std::string& file::path () const
+
+const std::string& file::path() const
 {
   return _path;
 }
-bool file::_should_continue   () const
+
+bool file::_should_continue() const
 {
   return _initial_length > 0;
 }
 
-static double to_mb (const double bytes)
+static double to_mb(const double bytes)
 {
   return bytes/(1024*1024);
 }
 
-std::string
-file::to_s (const quvicpp::url& url) const
+std::string file::to_s(const quvicpp::url& url) const
 {
   const double length = to_mb(url.content_length());
 
   boost::format fmt = boost::format("%s  %.2fM  [%s]")
-                      % _name % length % url.content_type ();
+                      % _name % length % url.content_type();
 
   return fmt.str();
 }
@@ -321,12 +313,11 @@ file::to_s (const quvicpp::url& url) const
 
 namespace fs = boost::filesystem;
 
-static fs::path
-output_dir (const po::variables_map& map)
+static fs::path output_dir(const po::variables_map& map)
 {
   fs::path dir;
 
-  if (map.count ("output-dir"))
+  if (map.count("output-dir"))
     dir = map["output-dir"].as<std::string>();
 
 #ifdef HAVE_GETCWD
@@ -342,11 +333,10 @@ output_dir (const po::variables_map& map)
     }
 #endif
 
-  return fs::system_complete (dir);
+  return fs::system_complete(dir);
 }
 
-void
-file::_init (
+void file::_init(
   const quvicpp::media& media,
   const quvicpp::url& url,
   const int n,
@@ -368,10 +358,10 @@ file::_init (
       _name           = p.filename();
 #endif
       _path           = p.string();
-      _initial_length = file::exists (_path);
+      _initial_length = file::exists(_path);
 
       if ( _initial_length >= url.content_length() && !map.count("overwrite") )
-        throw std::runtime_error (E_NOTHINGTODO);
+        throw std::runtime_error(E_NOTHINGTODO);
     }
 
   else
@@ -380,9 +370,8 @@ file::_init (
 
       // Apply --regexp to title.
 
-      cclive::re::match (map["regexp"].as<std::string>(), title);
-
-      cclive::re::trim (title);
+      cclive::re::match(map["regexp"].as<std::string>(), title);
+      cclive::re::trim(title);
 
       // --filename-format
 
@@ -392,16 +381,16 @@ file::_init (
       boost::format fmt;
 
       fmt = boost::format("s{%%i}{%1%}g") % media.id();
-      cclive::re::subst (fmt.str(), fname_format);
+      cclive::re::subst(fmt.str(), fname_format);
 
       fmt = boost::format("s{%%t}{%1%}g") % title;
-      cclive::re::subst (fmt.str(), fname_format);
+      cclive::re::subst(fmt.str(), fname_format);
 
       fmt = boost::format("s{%%s}{%1%}g") % url.suffix();
-      cclive::re::subst (fmt.str(), fname_format);
+      cclive::re::subst(fmt.str(), fname_format);
 
       fmt = boost::format("s{%%h}{%1%}g") % media.host();
-      cclive::re::subst (fmt.str(), fname_format);
+      cclive::re::subst(fmt.str(), fname_format);
 
       if (map.count("subst"))
         {
@@ -416,7 +405,7 @@ file::_init (
 
           foreach (std::string s, v)
           {
-            cclive::re::subst (s, fname_format);
+            cclive::re::subst(s, fname_format);
           }
         }
 
@@ -430,14 +419,14 @@ file::_init (
 
       // Output dir.
 
-      const fs::path out_dir = output_dir (map);
+      const fs::path out_dir = output_dir(map);
       fs::path templ_path    = out_dir;
 
-      templ_path /= b.str ();
+      templ_path /= b.str();
 
       // Path, name.
 
-      fs::path p = fs::system_complete (templ_path);
+      fs::path p = fs::system_complete(templ_path);
 
 #if BOOST_FILESYSTEM_VERSION > 2
       _name = p.filename().string();
@@ -446,17 +435,17 @@ file::_init (
 #endif
       _path = p.string();
 
-      if ( !map.count ("overwrite") )
+      if (!map.count("overwrite"))
         {
           for (int i=0; i<INT_MAX; ++i)
             {
-              _initial_length = file::exists (_path);
+              _initial_length = file::exists(_path);
 
               if (!_initial_length)
                 break;
 
               else if (_initial_length >= url.content_length())
-                throw std::runtime_error (E_NOTHINGTODO);
+                throw std::runtime_error(E_NOTHINGTODO);
 
               else
                 {
@@ -465,9 +454,9 @@ file::_init (
                 }
 
               boost::format fmt =
-                boost::format ("%1%.%2%") % templ_path.string () % i;
+                boost::format("%1%.%2%") % templ_path.string() % i;
 
-              p     = fs::system_complete (fmt.str ());
+              p = fs::system_complete(fmt.str());
 
 #if BOOST_FILESYSTEM_VERSION > 2
               _name = p.filename().string();
@@ -485,8 +474,7 @@ file::_init (
 
 #undef E_NOTHINGTODO
 
-double
-file::exists (const std::string& path)
+double file::exists(const std::string& path)
 {
   fs::path p( fs::system_complete(path) );
 
@@ -498,6 +486,6 @@ file::exists (const std::string& path)
   return size;
 }
 
-} // End namespace.
+} // namespace cclive
 
 // vim: set ts=2 sw=2 tw=72 expandtab:

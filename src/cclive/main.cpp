@@ -19,10 +19,8 @@
 
 #include "cclive/application.h"
 
-int
-main (int argc, char *argv[])
+int main(int argc, char *argv[])
 {
-
   cclive::application app;
   int rc = 0; // OK.
 

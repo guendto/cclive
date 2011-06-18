@@ -20,20 +20,17 @@
 
 namespace cclive
 {
+
 namespace re
 {
 
-bool
-subst (const std::string& re, std::string& src);
+bool subst(const std::string& re, std::string& src);
+bool match(const std::string& re, std::string& src);
+void trim(std::string&);
 
-bool
-match (const std::string& re, std::string& src);
+} // namespace re
 
-void
-trim (std::string&);
-
-}
-} // End namespace.
+} // namespace cclive
 
 #endif
 

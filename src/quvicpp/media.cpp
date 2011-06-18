@@ -27,11 +27,11 @@ namespace quvicpp
 
 // Constructors.
 
-media::media ()
+media::media()
   : _current_url( _urls.begin() ), _http_code(-1)
 { }
 
-media::media (quvi_media_t qv)
+media::media(quvi_media_t qv)
   : _current_url( _urls.begin() ), _http_code(-1)
 {
 #define _wrap(id,dst,type) \
@@ -58,7 +58,7 @@ media::media (quvi_media_t qv)
 
 // Copy constructor.
 
-media::media (const media& v)
+media::media(const media& v)
   : _current_url( _urls.begin() ), _http_code(-1)
 {
   _swap(v);
@@ -66,8 +66,7 @@ media::media (const media& v)
 
 // Copy assignment operator.
 
-media&
-media::operator=(const media& v)
+media& media::operator=(const media& v)
 {
   if (this != &v)
     _swap(v);
@@ -76,12 +75,11 @@ media::operator=(const media& v)
 
 // Destructor.
 
-media::~media () { }
+media::~media() { }
 
 // Swap.
 
-void
-media::_swap (const media& v)
+void media::_swap(const media& v)
 {
   _urls        = v._urls;
   _title        = v._title;
@@ -95,35 +93,39 @@ media::_swap (const media& v)
 
 // Get.
 
-const std::string& media::title () const
+const std::string& media::title() const
 {
   return _title;
 }
-const std::string& media::host  () const
+
+const std::string& media::host() const
 {
   return _host;
 }
-const std::string& media::url   () const
+
+const std::string& media::url() const
 {
   return _url;
 }
-const std::string& media::id    () const
+
+const std::string& media::id() const
 {
   return _id;
 }
+
 const std::string& media::format() const
 {
   return _format;
 }
-long  media::http_code          () const
+
+long  media::http_code() const
 {
   return _http_code;
 }
 
-// Next url.
+// Next URL.
 
-quvicpp::url
-media::next_url ()
+quvicpp::url media::next_url()
 {
   if (_current_url == _urls.end())
     {
@@ -135,8 +137,7 @@ media::next_url ()
 
 // To string. Mimic quvi(1) behaviour.
 
-std::string
-media::to_s ()
+std::string media::to_s()
 {
   std::stringstream b;
 
@@ -151,7 +152,6 @@ media::to_s ()
 
   for (int i=0;; ++i)
     {
-
       const quvicpp::url u = next_url();
 
       if (!u.ok()) break;
@@ -178,12 +178,11 @@ std::ostream& operator<<(std::ostream& os, media& v)
   return os << v.to_s();
 }
 
-void
-media::print (std::ostream& os)
+void media::print(std::ostream& os)
 {
   os << to_s();
 }
 
-} // End namespace.
+} // namespace quvicpp
 
 // vim: set ts=2 sw=2 tw=72 expandtab:

@@ -24,32 +24,36 @@ namespace cclive
 class file
 {
 public:
-  file ();
-  file (const quvicpp::media&, const quvicpp::url&,
-        const int, const options&);
-  file (const file&);
+  file();
+  file(const quvicpp::media&,
+       const quvicpp::url&,
+       const int, const options&);
+  file(const file&);
   file& operator=(const file&);
 public:
-  bool write (const quvicpp::query&, const quvicpp::url&,
-              const options&) const;
+  bool write(const quvicpp::query&,
+             const quvicpp::url&,
+             const options&) const;
 public:
-  double             initial_length   () const;
-  const std::string& path             () const;
-  std::string        to_s             (const quvicpp::url&) const;
+  std::string to_s(const quvicpp::url&) const;
+  const std::string& path() const;
+  double initial_length() const;
 public:
-  static double exists (const std::string&);
+  static double exists(const std::string&);
 private:
-  void _swap              (const file&);
-  void _init              (const quvicpp::media&, const quvicpp::url&,
-                           const int, const options&);
-  bool _should_continue   () const;
+  void _init(const quvicpp::media&,
+             const quvicpp::url&,
+             const int,
+             const options&);
+  bool _should_continue() const;
+  void _swap(const file&);
 private:
   double _initial_length;
   std::string _name;
   std::string _path;
 };
 
-} // End namespace.
+} // namespace cclive
 
 #endif
 

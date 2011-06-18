@@ -29,11 +29,11 @@ class progressbar
 public:
   enum mode { normal = 0, dotline };
 public:
-  progressbar (const file&, const quvicpp::url&, const options&);
-  void update (double);
-  void finish ();
+  progressbar(const file&, const quvicpp::url&, const options&);
+  void update(double);
+  void finish();
 private:
-  void _normal (
+  void _normal(
     const std::stringstream& size_s,
     const std::stringstream& rate_s,
     const std::stringstream& eta_s,
@@ -41,7 +41,7 @@ private:
     const std::stringstream& percent_s,
     const std::string& fname);
 
-  void _dotline (
+  void _dotline(
     const std::stringstream& size_s,
     const std::stringstream& rate_s,
     const std::stringstream& eta_s,
@@ -67,7 +67,7 @@ private:
   mode    _mode;
 };
 
-} // End namespace.
+} // cclive namespace
 
 #endif
 

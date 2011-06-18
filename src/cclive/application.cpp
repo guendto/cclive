@@ -568,6 +568,6 @@ void application::_tweak_curl_opts(
                    map["connect-timeout"].as<int>());
 }
 
-} // End namespace.
+} // namespace cclive
 
 // vim: set ts=2 sw=2 tw=72 expandtab:

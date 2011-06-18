@@ -31,16 +31,15 @@ namespace cclive
 
 namespace po = boost::program_options;
 
-void
-get (
+void get(
   const quvicpp::query& query,
   quvicpp::media& media,
   const options& opts)
 {
-  const po::variables_map map = opts.map ();
+  const po::variables_map map = opts.map();
 
-  const bool no_download = map.count ("no-download");
-  const bool exec        = map.count ("exec");
+  const bool no_download = map.count("no-download");
+  const bool exec        = map.count("exec");
 
   const int max_retries  = map["max-retries"].as<int>();
   const int retry_wait   = map["retry-wait"].as<int>();
@@ -49,7 +48,7 @@ get (
 
   quvicpp::url url;
 
-  while ( (url = media.next_url ()).ok ())
+  while ((url = media.next_url()).ok())
     {
       ++n;
 
@@ -69,20 +68,20 @@ get (
                   << " ... "
                   << std::flush;
 
-              cclive::wait (retry_wait);
+              cclive::wait(retry_wait);
             }
 
           ++retry;
 
-          cclive::log << file.to_s (url) << std::endl;
+          cclive::log << file.to_s(url) << std::endl;
 
           if (!no_download)
             {
-              if (!file.write (query, url, opts))
+              if (!file.write(query, url, opts))
                 continue; // Retry.
 
               if (exec)
-                cclive::exec (file, url, opts);
+                cclive::exec(file, url, opts);
             }
 
           break; // Stop retrying.
@@ -90,6 +89,6 @@ get (
     }
 }
 
-} // End namespace.
+} // namespace cclive
 
 // vim: set ts=2 sw=2 tw=72 expandtab:

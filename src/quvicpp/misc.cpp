@@ -24,21 +24,20 @@ namespace quvicpp
 
 // Version.
 
-std::string version      ()
+std::string version()
 {
   return quvi_version(QUVI_VERSION);
 }
-std::string version_long ()
+
+std::string version_long()
 {
   return quvi_version(QUVI_VERSION_LONG);
 }
 
 // To string. Mimic quvi(1) behaviour.
 
-std::string
-support_to_s (const std::map<std::string,std::string>& map)
+std::string support_to_s(const std::map<std::string,std::string>& map)
 {
-
   std::map<std::string,std::string>::const_iterator iter;
   std::stringstream b;
 
@@ -48,6 +47,6 @@ support_to_s (const std::map<std::string,std::string>& map)
   return b.str();
 }
 
-} // End namespace
+} // namespace quvicpp
 
 // vim: set ts=2 sw=2 tw=72 expandtab:

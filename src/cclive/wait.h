@@ -21,10 +21,9 @@
 namespace cclive
 {
 
-void
-wait (const int);
+void wait(const int);
 
-} // End namespace.
+} // namespace cclive
 
 #endif
 

@@ -19,7 +19,6 @@
 #define cclive_application_h
 
 #include "cclive/options.h"
-
 #include "quvicpp/quvicpp.h"
 
 namespace cclive
@@ -30,15 +29,15 @@ class application
 public:
   typedef enum { ok=0, invalid_option, system } exit_status;
 public:
-  exit_status exec (int,char **);
+  exit_status exec(int,char **);
 private:
-  void _tweak_curl_opts (const quvicpp::query&,
-                         const boost::program_options::variables_map&);
+  void _tweak_curl_opts(const quvicpp::query&,
+                        const boost::program_options::variables_map&);
 private:
   cclive::options   _opts;
 };
 
-} // End namespace.
+} // namespace cclive
 
 #endif
 

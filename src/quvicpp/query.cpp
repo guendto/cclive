@@ -158,7 +158,6 @@ void* query::curlHandle() const
 
 std::map<std::string,std::string> query::support() const
 {
-
   std::map<std::string,std::string> map;
   char *d=NULL, *f=NULL;
 
@@ -174,6 +173,6 @@ std::map<std::string,std::string> query::support() const
   return map;
 }
 
-} // End namespace
+} // namespace quvicpp
 
 // vim: set ts=2 sw=2 tw=72 expandtab:
