@@ -1,4 +1,20 @@
 
+0.7.4  Sat Jun 18 2011  Toni Gundogdu
+
+Changes:
+    - Add --no-resolve (replaces --no-shortened)
+    - Rewrite to use quvi "media interface"
+    - Add support for reading from files
+    - Deprecate "--format list"
+    - Remove --no-shortened
+    - Add --query-format
+
+Changes: dist
+    - configure: Rename --with-man -> --with-manual
+    - Bump quvi prerequisite to 0.2.17
+    - Revert back to GNU Autotools
+
+
 0.7.3.1  Tue Mar 15 2011  Toni Gundogdu
 Bugfixes:
         - CMake Error at src/CMakeLists.txt:43 (#7)
