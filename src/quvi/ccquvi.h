@@ -1,5 +1,5 @@
 /* cclive
- * Copyright (C) 2010,2011  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2010-2011  Toni Gundogdu <legatvs@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,8 +17,6 @@
 
 #ifndef cclive_ccquvi_h
 #define cclive_ccquvi_h
-
-#include "config.h"
 
 #include <string>
 #include <vector>
