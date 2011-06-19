@@ -10,7 +10,7 @@ AC_INIT([cclive], [_CCLIVE_VERSION],
     [],
     [http://cclive.sourceforge.net/])
 
-AC_CONFIG_SRCDIR([src/cclive/application.cpp])
+AC_CONFIG_SRCDIR([src/cc/application.cpp])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_AUX_DIR([config.aux])
 AC_CONFIG_MACRO_DIR([m4])

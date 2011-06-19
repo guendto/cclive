@@ -1,39 +1,44 @@
 
 src= \
-cclive/error.cpp \
-cclive/main.cpp \
-cclive/log.cpp \
-cclive/background.cpp \
-cclive/exec.cpp \
-cclive/file.cpp \
-cclive/license.cpp \
-cclive/wait.cpp \
-cclive/progressbar.cpp \
-cclive/options.cpp \
-cclive/re.cpp \
-cclive/get.cpp \
-cclive/application.cpp \
-quvicpp/err.cpp \
-quvicpp/query.cpp \
-quvicpp/misc.cpp \
-quvicpp/url.cpp \
-quvicpp/opts.cpp \
-quvicpp/media.cpp
+cc/error.cpp \
+cc/main.cpp \
+cc/log.cpp \
+cc/background.cpp \
+cc/exec.cpp \
+cc/file.cpp \
+cc/license.cpp \
+cc/wait.cpp \
+cc/progressbar.cpp \
+cc/options.cpp \
+cc/re.cpp \
+cc/get.cpp \
+cc/application.cpp \
+quvi/err.cpp \
+quvi/query.cpp \
+quvi/misc.cpp \
+quvi/url.cpp \
+quvi/opts.cpp \
+quvi/media.cpp
 
 hdr= \
-cclive/internal.h \
-cclive/progressbar.h \
-cclive/wait.h \
-cclive/options.h \
-cclive/application.h \
-cclive/file.h \
-cclive/error.h \
-cclive/log.h \
-cclive/re.h \
-cclive/get.h \
-cclive/background.h \
-cclive/exec.h \
-quvicpp/quvicpp.h
+ccoptions \
+ccinternal \
+ccapplication \
+ccquvi \
+ccprogressbar \
+cclog \
+ccutil \
+ccfile \
+ccre \
+cc/progressbar.h \
+cc/options.h \
+cc/application.h \
+cc/file.h \
+cc/util.h \
+cc/internal.h \
+cc/log.h \
+cc/re.h \
+quvi/ccquvi.h
 
 bin_PROGRAMS=   cclive
 cclive_SOURCES= $(src) $(hdr)
