@@ -1,4 +1,10 @@
 
+0.7.4.1  Thu Jun 23 2011  Toni Gundogdu
+
+Fixes: dist
+    - make: rm: cannot remove `cclive': Is a directory (#9)
+
+
 0.7.4  Sat Jun 18 2011  Toni Gundogdu
 
 Changes:
