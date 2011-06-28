@@ -36,8 +36,7 @@ namespace cc
 namespace opts = boost::program_options;
 namespace fs   = boost::filesystem;
 
-void
-options::exec (int argc, char **argv)
+void options::exec(int argc, char **argv)
 {
   // Path to ccliverc.
 
@@ -47,16 +46,16 @@ options::exec (int argc, char **argv)
   fs::path config_path(fs::current_path<fs::path>());
 #endif
 
-  const char *home = getenv ("HOME");
+  const char *home = getenv("HOME");
 
-  if (home && strlen (home) > 0)
-    config_path = fs::system_complete (fs::path (home));
+  if (home && strlen(home) > 0)
+    config_path = fs::system_complete(fs::path(home));
 
   config_path /=
 #ifndef _WIN32
-    std::string (".") +
+    std::string(".") +
 #endif
-    std::string ("ccliverc");
+    std::string("ccliverc");
 
   // Construct options.
 
@@ -111,9 +110,9 @@ options::exec (int argc, char **argv)
 
   // Config.
 
-  opts::options_description config ("Configuration");
+  opts::options_description config("Configuration");
 
-  config.add_options ()
+  config.add_options()
   ("filename-format",
    opts::value<std::string>()->default_value("%t.%s"),
    "Downloaded media filename format")
@@ -150,51 +149,51 @@ options::exec (int argc, char **argv)
 
   opts::options_description hidden;
 
-  hidden.add_options ()
+  hidden.add_options()
   ("url", opts::value< std::vector<std::string> >(), "url");
 
   // Visible.
 
-  _visible.add (generic).add (config);
+  _visible.add(generic).add(config);
 
   // Command line options.
 
   opts::options_description cmdline_options;
 
-  cmdline_options.add (generic).add (config).add (hidden);
+  cmdline_options.add(generic).add(config).add(hidden);
 
   // Config file options.
 
   opts::options_description config_file_options;
 
-  config_file_options.add (config);
+  config_file_options.add(config);
 
   // Positional.
 
   opts::positional_options_description p;
-  p.add ("url", -1);
+  p.add("url", -1);
 
   // Parse.
 
-  store(opts::command_line_parser (argc,argv)
-        .options (cmdline_options).positional (p).run (), _map);
+  store(opts::command_line_parser(argc,argv)
+        .options(cmdline_options).positional(p).run(), _map);
 
-  notify (_map);
+  notify(_map);
 
   // Read config.
 
-  std::ifstream ifs (_config_file.c_str ());
+  std::ifstream ifs(_config_file.c_str());
 
   if (ifs)
     {
-      store (parse_config_file (ifs, config_file_options), _map);
-      notify (_map);
+      store(parse_config_file(ifs, config_file_options), _map);
+      notify(_map);
     }
 
-  _verify ();
+  _verify();
 }
 
-const opts::variables_map& options::map () const
+const opts::variables_map& options::map() const
 {
   return _map;
 }
@@ -204,27 +203,26 @@ std::ostream& operator<<(std::ostream& os, const options& o)
   return os << o._visible;
 }
 
-void
-options::_verify ()
+void options::_verify()
 {
   std::string empty;
 
-  if (_map.count ("regexp"))
+  if (_map.count("regexp"))
     {
       std::string s = _map["regexp"].as<std::string>();
 
-      if (!cc::re::match (s, empty))
+      if (!cc::re::match(s, empty))
         {
           std::stringstream b;
 
           b << "--regexp: expects "
             << "`/pattern/flags', for example: \"/(\\w|\\s)/g\"";
 
-          throw std::runtime_error (b.str ());
+          throw std::runtime_error(b.str());
         }
     }
 
-  if (_map.count ("subst"))
+  if (_map.count("subst"))
     {
       std::istringstream iss( _map["subst"].as<std::string>());
       std::vector<std::string> v;
@@ -237,13 +235,13 @@ options::_verify ()
 
       foreach (std::string s, v)
       {
-        if (!cc::re::subst (s,empty))
+        if (!cc::re::subst(s,empty))
           {
             std::stringstream b;
 
             b << "--subst: expects " << "`s{old}{new}flags'";
 
-            throw std::runtime_error (b.str ());
+            throw std::runtime_error(b.str());
           }
       }
     }
