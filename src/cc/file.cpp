@@ -359,8 +359,11 @@ void file::_init(
       _path           = p.string();
       _initial_length = file::exists(_path);
 
-      if ( _initial_length >= url.content_length() && !map.count("overwrite") )
-        throw std::runtime_error(E_NOTHINGTODO);
+      if ( _initial_length >= url.content_length()
+           && !map.count("overwrite") )
+        {
+          throw std::runtime_error(E_NOTHINGTODO);
+        }
     }
 
   else
@@ -440,7 +443,7 @@ void file::_init(
             {
               _initial_length = file::exists(_path);
 
-              if (!_initial_length)
+              if (_initial_length == 0)
                 break;
 
               else if (_initial_length >= url.content_length())
