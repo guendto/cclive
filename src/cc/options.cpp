@@ -41,17 +41,17 @@ void options::exec(int argc, char **argv)
   // Path to ccliverc.
 
 #if BOOST_FILESYSTEM_VERSION > 2
-  fs::path config_path(fs::current_path());
+  fs::path conf_path(fs::current_path());
 #else
-  fs::path config_path(fs::current_path<fs::path>());
+  fs::path conf_path(fs::current_path<fs::path>());
 #endif
 
   const char *home = getenv("HOME");
 
   if (home && strlen(home) > 0)
-    config_path = fs::system_complete(fs::path(home));
+    conf_path = fs::system_complete(fs::path(home));
 
-  config_path /=
+  conf_path /=
 #ifndef _WIN32
     std::string(".") +
 #endif
@@ -60,6 +60,7 @@ void options::exec(int argc, char **argv)
   // Construct options.
 
   opts::options_description generic;
+  std::string conf_file;
 
   generic.add_options()
   ("version",
@@ -100,8 +101,7 @@ void options::exec(int argc, char **argv)
    opts::value<std::string>()->default_value("cclive_log"),
    "Write log output to arg")
   ("config-file",
-   opts::value<std::string>(&_config_file)
-   ->default_value(config_path.string()),
+   opts::value<std::string>(&conf_file)->default_value(conf_path.string()),
    "Read args from arg")
   ;
 
@@ -162,13 +162,11 @@ void options::exec(int argc, char **argv)
   // Command line options.
 
   opts::options_description cmdline_options;
-
   cmdline_options.add(generic).add(config).add(hidden);
 
   // Config file options.
 
   opts::options_description config_file_options;
-
   config_file_options.add(config);
 
   // Positional.
@@ -180,12 +178,11 @@ void options::exec(int argc, char **argv)
 
   store(opts::command_line_parser(argc,argv)
         .options(cmdline_options).positional(p).run(), _map);
-
   notify(_map);
 
   // Read config.
 
-  std::ifstream ifs(_config_file.c_str());
+  std::ifstream ifs(conf_file.c_str());
 
   if (ifs)
     {
@@ -193,7 +190,7 @@ void options::exec(int argc, char **argv)
       notify(_map);
     }
 
-  _verify();
+  _validate();
 }
 
 const opts::variables_map& options::map() const
@@ -206,7 +203,7 @@ std::ostream& operator<<(std::ostream& os, const options& o)
   return os << o._visible;
 }
 
-void options::_verify()
+void options::_validate()
 {
   std::string empty;
 

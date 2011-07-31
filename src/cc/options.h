@@ -30,11 +30,10 @@ public:
   const boost::program_options::variables_map& map() const;
   void exec(int argc, char **argv);
 private:
-  void _verify();
+  void _validate();
 private:
   boost::program_options::options_description _visible;
   boost::program_options::variables_map _map;
-  std::string _config_file;
 };
 
 } // namespace cc
