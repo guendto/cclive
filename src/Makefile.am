@@ -65,3 +65,15 @@ cclive_LDADD+= $(BOOST_PROGRAM_OPTIONS_LIBS)
 cclive_LDADD+= $(BOOST_IOSTREAMS_LIBS)
 cclive_LDADD+= $(BOOST_FILESYSTEM_LIBS)
 cclive_LDADD+= $(BOOST_SYSTEM_LIBS)
+
+install-exec-hook:
+if ENABLE_CCL
+	cd $(DESTDIR)$(bindir) && \
+		$(LN_S) cclive$(EXEEXT) ccl$(EXEEXT)
+endif
+
+uninstall-hook:
+if ENABLE_CCL
+	cd $(DESTDIR)$(bindir) && \
+		rm -f ccl$(EXEEXT)
+endif

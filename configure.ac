@@ -6,9 +6,9 @@ AC_PREREQ([2.68])
 m4_include([m4/version.m4])
 
 AC_INIT([cclive], [_CCLIVE_VERSION],
-    [http://sourceforge.net/apps/trac/cclive],
-    [],
-    [http://cclive.sourceforge.net/])
+  [http://sourceforge.net/apps/trac/cclive],
+  [],
+  [http://cclive.sourceforge.net/])
 
 AC_CONFIG_SRCDIR([src/cc/application.cpp])
 AC_CONFIG_HEADERS([config.h])
@@ -39,20 +39,20 @@ AC_PROG_MKDIR_P
 
 AC_PATH_PROG(DATE, date, no)
 if [ test x"$DATE" != "xno" ]; then
-    build_date=`"$DATE" +%Y-%m-%d 2>/dev/null`
-    if [ test x"$build_date" != "x" ]; then
-        AC_DEFINE_UNQUOTED([BUILD_DATE], "$build_date", [We have 'date'])
-    fi
+  build_date=`"$DATE" +%Y-%m-%d 2>/dev/null`
+  if [ test x"$build_date" != "x" ]; then
+    AC_DEFINE_UNQUOTED([BUILD_DATE], "$build_date", [We have 'date'])
+  fi
 fi
 
 AC_PATH_PROG(GIT, git, no)
 if [ test x"$GIT" != "xno" ]; then
-    CCLIVE_BRANCH=_CCLIVE_BRANCH
-    git_describe=`"$GIT" describe "$CCLIVE_BRANCH" 2>/dev/null`
-    if [ test x"$git_describe" != "x" ]; then
-        AC_DEFINE_UNQUOTED([GIT_DESCRIBE],
-            "$git_describe", [We have 'git describe'])
-    fi
+  CCLIVE_BRANCH=_CCLIVE_BRANCH
+  git_describe=`"$GIT" describe "$CCLIVE_BRANCH" 2>/dev/null`
+  if [ test x"$git_describe" != "x" ]; then
+    AC_DEFINE_UNQUOTED([GIT_DESCRIBE],
+      "$git_describe", [We have 'git describe'])
+  fi
 fi
 
 # Checks for libraries.
@@ -89,17 +89,25 @@ AC_CHECK_FUNCS([getcwd strerror strstr getpid signal])
 
 # --with-manual
 AC_ARG_WITH([manual],
-    [AS_HELP_STRING([--with-manual],
-        [install manual page(s) @<:@default=yes@:>@])],
-    [],
-    [with_manual=yes])
+  [AS_HELP_STRING([--with-manual],
+    [Install manual page(s) @<:@default=yes@:>@])],
+  [],
+  [with_manual=yes])
 AM_CONDITIONAL([WITH_MANUAL], [test x"$with_manual" != "xno"])
 
+# --enable-ccl
+AC_ARG_ENABLE([ccl],
+  [AS_HELP_STRING([--enable-ccl],
+    [Make a symbolic link from 'cclive' to 'ccl' @<:@default=no@:>@])],
+  [],
+  [enable_ccl=no])
+AM_CONDITIONAL([ENABLE_CCL], [test x"$enable_ccl" != "xno"])
+
 AC_CONFIG_FILES([
-Makefile
-src/Makefile
-doc/Makefile
-doc/man1/Makefile
+  Makefile
+  src/Makefile
+  doc/Makefile
+  doc/man1/Makefile
 ])
 
 AC_OUTPUT
@@ -113,4 +121,4 @@ AC_MSG_NOTICE([
  install manual: ${with_manual}
 ])
 
-
+# vim: set ts=2 sw=2 tw=72 expandtab:
