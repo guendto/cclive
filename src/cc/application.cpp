@@ -314,7 +314,6 @@ application::exit_status application::exec(int argc, char **argv)
     {
       _opts.exec(argc,argv);
     }
-
   catch(const std::exception& e)
     {
       std::clog << "error: " << e.what() << std::endl;
@@ -462,6 +461,7 @@ application::exit_status application::exec(int argc, char **argv)
   // Omit std output. Note that --background flips this above.
 
   cc::log.push(cc::omit_sink(omit));
+  cc::log.setf(std::ios::fixed);
 
   // Query formats.
 
