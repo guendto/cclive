@@ -75,11 +75,10 @@ static size_t get_term_width()
 
 namespace po = boost::program_options;
 
-progressbar::progressbar(
-  const file& f,
-  const quvi::url& u,
-  const options& opts)
-  : _update_interval(.2),
+progressbar::progressbar(const file& f,
+                         const quvi::url& u,
+                         const options& opts)
+  : _update_interval(1),
     _expected_bytes(u.content_length()),
     _initial_bytes(f.initial_length()),
     _time_started(0),
@@ -126,7 +125,7 @@ progressbar::progressbar(
         _mode = dotline;
     }
 
-  _update_interval = map["update-interval"].as<double>();
+  _update_interval = fabs(map["update-interval"].as<double>());
 }
 
 static double to_mb(const double bytes)
