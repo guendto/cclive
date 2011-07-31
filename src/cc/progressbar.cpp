@@ -295,10 +295,10 @@ void progressbar::update(double now)
     {
     default:
     case  normal:
-      _normal(size_s, rate_s, eta_s, percent, percent_s, fname);
+      _normal(size_s, rate_s, eta_s, percent, percent_s);
       break;
     case dotline:
-      _dotline(size_s, rate_s, eta_s, percent_s, fname);
+      _dotline(size_s, rate_s, eta_s, percent_s);
       break;
     case simple:
       _simple(size_s, percent_s);
@@ -313,8 +313,7 @@ void progressbar::_normal(const std::stringstream& size_s,
                           const std::stringstream& rate_s,
                           const std::stringstream& eta_s,
                           const int percent,
-                          const std::stringstream& percent_s,
-                          const std::string& fname)
+                          const std::stringstream& percent_s)
 {
   std::stringstream info;
 
@@ -348,8 +347,7 @@ void progressbar::_normal(const std::stringstream& size_s,
 void progressbar::_dotline(const std::stringstream& size_s,
                            const std::stringstream& rate_s,
                            const std::stringstream& eta_s,
-                           const std::stringstream& percent_s,
-                           const std::string& fname)
+                           const std::stringstream& percent_s)
 {
 #define details \
     "  " \

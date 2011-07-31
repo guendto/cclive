@@ -37,14 +37,12 @@ private:
                const std::stringstream& rate_s,
                const std::stringstream& eta_s,
                const int percent,
-               const std::stringstream& percent_s,
-               const std::string& fname);
+               const std::stringstream& percent_s);
 
   void _dotline(const std::stringstream& size_s,
                 const std::stringstream& rate_s,
                 const std::stringstream& eta_s,
-                const std::stringstream& percent_s,
-                const std::string& fname);
+                const std::stringstream& percent_s);
 
   void _simple(const std::stringstream& size_s,
                const std::stringstream& percent_s) const;
