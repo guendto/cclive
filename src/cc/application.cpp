@@ -190,8 +190,10 @@ static void print_host(const map_ss::value_type& t)
       << std::endl;
 }
 
+namespace po = boost::program_options;
+
 static application::exit_status handle_format_list(
-  const boost::program_options::variables_map& map,
+  const po::variables_map& map,
   const quvi::query& query)
 {
   map_ss m = query.support();
@@ -320,7 +322,7 @@ application::exit_status application::exec(int argc, char **argv)
       return invalid_option;
     }
 
-  const boost::program_options::variables_map map = _opts.map();
+  const po::variables_map map = _opts.map();
 
   // Dump and terminate options.
 
@@ -534,9 +536,8 @@ application::exit_status application::exec(int argc, char **argv)
   return ok;
 }
 
-void application::_tweak_curl_opts(
-  const quvi::query& query,
-  const boost::program_options::variables_map& map)
+void application::_tweak_curl_opts(const quvi::query& query,
+                                   const po::variables_map& map)
 {
   CURL *curl = query.curlHandle();
 
