@@ -99,11 +99,6 @@ Write log output to I<arg>. Ignored unless used with C<--background>.
 Overwrites the existing I<arg> file (if any). See also C<--background>
 and C<--update-interval>.
 
-=item B<--update-interval> I<arg> (=1)
-
-Specify I<arg> progressbar update interval in seconds. The value may be
-a 'double', e.g. 0.2 or 1.99.
-
 =item B<--config-file> I<arg> (=$HOME/.ccliverc)
 
 Path to a file to read cclive arguments from.
@@ -116,6 +111,20 @@ In addition to the command line, the configurable options may also be read
 from the configuration file. See L</FILES>.
 
 =over 4
+
+=item B<--progressbar> I<arg> (=normal)
+
+Use progressbar I<arg>. Ignored with C<--background> which will
+always use 'dotline' type. I<arg> can be one of the following strings:
+
+ normal   .. Default
+ dotline  .. Used by --background as default
+ simple   .. Less verbose
+
+=item B<--update-interval> I<arg> (=1)
+
+Specify I<arg> progressbar update interval in seconds. The value may be
+a 'double', e.g. 0.2 or 1.99.
 
 =item B<--filename-format> I<arg> (="%t.%s")
 
@@ -284,6 +293,7 @@ Example:
  regexp = /(\w|\pL)/g
  exec = /usr/bin/vlc %f
  proxy = http://foo:1234
+ progressbar = simple
 
 =back
 
