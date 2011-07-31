@@ -30,6 +30,7 @@
 #endif
 
 #include <ccapplication>
+#include <ccquvi>
 #include <ccutil>
 #include <cclog>
 
@@ -427,7 +428,7 @@ application::exit_status application::exec(int argc, char **argv)
 
   // Set up quvi.
 
-  _tweak_curl_opts(query,map);
+  _tweak_curl_opts(query, map);
 
   quvi::options qopts;
 
@@ -516,7 +517,7 @@ application::exit_status application::exec(int argc, char **argv)
                 check_quvi_error(e);
               }
 
-            cc::get(query, m, _opts);
+            cc::get(query, m, map);
 
             break; // Stop retrying.
           }

@@ -34,9 +34,10 @@
 #define WITH_SIGNAL
 #endif
 
-#include <boost/format.hpp>
-#include <boost/foreach.hpp>
+#include <boost/program_options/variables_map.hpp>
 #include <boost/filesystem.hpp>
+#include <boost/foreach.hpp>
+#include <boost/format.hpp>
 
 #ifndef foreach
 #define foreach BOOST_FOREACH
@@ -45,7 +46,6 @@
 #include <curl/curl.h>
 
 #include <ccquvi>
-#include <ccoptions>
 #include <ccprogressbar>
 #include <ccre>
 #include <ccutil>
@@ -60,13 +60,15 @@ file::file()
 {
 }
 
+namespace po = boost::program_options;
+
 file::file(const quvi::media& media,
            const quvi::url& url,
            const int n,
-           const options& opts)
+           const po::variables_map& map)
   : _initial_length(0)
 {
-  _init(media, url, n, opts);
+  _init(media, url, n, map);
 }
 
 file::file(const file& f)
@@ -143,18 +145,15 @@ static int progress_cb(void *ptr, double, double now, double, double)
   return 0;
 }
 
-namespace po = boost::program_options;
-
 bool file::write(const quvi::query& q,
                  const quvi::url& u,
-                 const options& opts) const
+                 const po::variables_map& map) const
 {
   CURL *curl = q.curlHandle();
 
   curl_easy_setopt(curl, CURLOPT_URL, u.media_url().c_str());
   curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_cb);
 
-  const po::variables_map map  = opts.map();
   std::ios_base::openmode mode = std::ofstream::binary;
 
   if (map.count("overwrite"))
@@ -184,7 +183,7 @@ bool file::write(const quvi::query& q,
   curl_easy_setopt(curl, CURLOPT_ENCODING, "identity");
   curl_easy_setopt(curl, CURLOPT_HEADER, 0L);
 
-  progressbar pb(*this, u, opts);
+  progressbar pb(*this, u, map);
   curl_easy_setopt(curl, CURLOPT_PROGRESSDATA, &pb);
   curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0L);
   curl_easy_setopt(curl, CURLOPT_PROGRESSFUNCTION, progress_cb);
@@ -335,22 +334,20 @@ static fs::path output_dir(const po::variables_map& map)
 void file::_init(const quvi::media& media,
                  const quvi::url& url,
                  const int n,
-                 const options& opts)
+                 const po::variables_map& map)
 {
-  const po::variables_map map = opts.map();
-
   if (map.count("output-file"))
     {
       // Overrides --filename-format.
 
-      fs::path p = output_dir (map);
+      fs::path p = output_dir(map);
 
       p /= map["output-file"].as<std::string>();
 
 #if BOOST_FILESYSTEM_VERSION > 2
-      _name           = p.filename().string();
+      _name = p.filename().string();
 #else
-      _name           = p.filename();
+      _name = p.filename();
 #endif
       _path           = p.string();
       _initial_length = file::exists(_path);

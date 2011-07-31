@@ -15,10 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <sstream>
+
+#include <boost/program_options/variables_map.hpp>
 #include <boost/format.hpp>
 
 #include <ccquvi>
-#include <ccoptions>
 #include <ccfile>
 #include <ccre>
 #include <ccutil>
@@ -28,10 +30,10 @@ namespace cc
 
 namespace po = boost::program_options;
 
-void exec(const file& file, const quvi::url& url, const options& opts)
+void exec(const file& file,
+          const quvi::url& url,
+          const po::variables_map& map)
 {
-  const po::variables_map map = opts.map();
-
   std::string arg = map["exec"].as<std::string>();
 
   boost::format fmt;

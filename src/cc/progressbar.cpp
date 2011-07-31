@@ -37,11 +37,11 @@
 #include <sys/ioctl.h>
 #endif
 
-#include <boost/filesystem.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/program_options/variables_map.hpp>
+#include <boost/filesystem.hpp>
 
 #include <ccquvi>
-#include <ccoptions>
 #include <ccfile>
 #include <cclog>
 #include <ccprogressbar>
@@ -77,7 +77,7 @@ namespace po = boost::program_options;
 
 progressbar::progressbar(const file& f,
                          const quvi::url& u,
-                         const options& opts)
+                         const po::variables_map& map)
   : _update_interval(1),
     _expected_bytes(u.content_length()),
     _initial_bytes(f.initial_length()),
@@ -111,8 +111,6 @@ progressbar::progressbar(const file& f,
   _width = _term_width;
 
   time(&_time_started);
-
-  const po::variables_map map  = opts.map();
 
   if (map.count("background"))
     _mode = dotline;

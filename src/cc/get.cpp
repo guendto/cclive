@@ -17,9 +17,10 @@
 
 #include <iostream>
 
+#include <boost/program_options/variables_map.hpp>
+
 #include <ccquvi>
 #include <cclog>
-#include <ccoptions>
 #include <ccfile>
 #include <ccutil>
 
@@ -30,10 +31,8 @@ namespace po = boost::program_options;
 
 void get(const quvi::query& query,
          quvi::media& media,
-         const options& opts)
+         const po::variables_map& map)
 {
-  const po::variables_map map = opts.map();
-
   const bool no_download = map.count("no-download");
   const bool exec        = map.count("exec");
 
@@ -52,7 +51,7 @@ void get(const quvi::query& query,
 
       while (retry <= max_retries)
         {
-          cc::file file(media, url, n, opts);
+          cc::file file(media, url, n, map);
 
           if (retry > 0)
             {
@@ -73,11 +72,11 @@ void get(const quvi::query& query,
 
           if (!no_download)
             {
-              if (!file.write(query, url, opts))
+              if (!file.write(query, url, map))
                 continue; // Retry.
 
               if (exec)
-                cc::exec(file, url, opts);
+                cc::exec(file, url, map);
             }
 
           break; // Stop retrying.

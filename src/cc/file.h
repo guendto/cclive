@@ -18,6 +18,14 @@
 #ifndef cclive_file_h
 #define cclive_file_h
 
+namespace boost
+{
+namespace program_options
+{
+class variables_map;
+}
+}
+
 namespace cc
 {
 
@@ -27,13 +35,14 @@ public:
   file();
   file(const quvi::media&,
        const quvi::url&,
-       const int, const options&);
+       const int,
+       const boost::program_options::variables_map&);
   file(const file&);
   file& operator=(const file&);
 public:
   bool write(const quvi::query&,
              const quvi::url&,
-             const options&) const;
+             const boost::program_options::variables_map&) const;
 public:
   std::string to_s(const quvi::url&) const;
   const std::string& path() const;
@@ -44,7 +53,7 @@ private:
   void _init(const quvi::media&,
              const quvi::url&,
              const int,
-             const options&);
+             const boost::program_options::variables_map&);
   bool _should_continue() const;
   void _swap(const file&);
 private:

@@ -18,6 +18,15 @@
 #ifndef cclive_util_h
 #define cclive_util_h
 
+namespace boost
+{
+namespace program_options
+{
+class variables_map;
+}
+}
+
+
 namespace quvi
 {
 class query;
@@ -28,11 +37,14 @@ class url;
 namespace cc
 {
 
-class options;
 class file;
 
-void exec(const file&, const quvi::url&, const options& opts);
-void get(const quvi::query&, quvi::media&, const options&);
+void exec(const file&,
+          const quvi::url&,
+          const boost::program_options::variables_map& map);
+void get(const quvi::query&,
+         quvi::media&,
+         const boost::program_options::variables_map& map);
 void go_background(const std::string&, bool&);
 std::string perror(const std::string& p="");
 void wait(const int);

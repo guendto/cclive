@@ -29,7 +29,9 @@ class progressbar
 public:
   enum mode { normal = 0, dotline, simple };
 public:
-  progressbar(const file&, const quvi::url&, const options&);
+  progressbar(const file&,
+              const quvi::url&,
+              const boost::program_options::variables_map&);
   void update(double);
   void finish();
 private:
