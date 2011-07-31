@@ -99,12 +99,6 @@ void options::exec(int argc, char **argv)
   ("log-file",
    opts::value<std::string>()->default_value("cclive_log"),
    "Write log output to arg")
-  ("progressbar",
-   opts::value<std::string>()->default_value("normal"),
-   "Use progressbar type arg")
-  ("update-interval",
-   opts::value<double>()->default_value(1.0),
-   "Update interval of progressbar")
   ("config-file",
    opts::value<std::string>(&_config_file)
    ->default_value(config_path.string()),
@@ -116,6 +110,12 @@ void options::exec(int argc, char **argv)
   opts::options_description config("Configuration");
 
   config.add_options()
+  ("progressbar",
+   opts::value<std::string>()->default_value("normal"),
+   "Use progressbar arg")
+  ("update-interval",
+   opts::value<double>()->default_value(1.0),
+   "Update interval of progressbar")
   ("filename-format",
    opts::value<std::string>()->default_value("%t.%s"),
    "Downloaded media filename format")
