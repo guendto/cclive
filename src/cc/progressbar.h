@@ -27,31 +27,31 @@ class progressbar
 {
   enum { default_term_width=80 };
 public:
-  enum mode { normal = 0, dotline };
+  enum mode { normal = 0, dotline, simple };
 public:
   progressbar(const file&, const quvi::url&, const options&);
   void update(double);
   void finish();
 private:
-  void _normal(
-    const std::stringstream& size_s,
-    const std::stringstream& rate_s,
-    const std::stringstream& eta_s,
-    const int percent,
-    const std::stringstream& percent_s,
-    const std::string& fname);
+  void _normal(const std::stringstream& size_s,
+               const std::stringstream& rate_s,
+               const std::stringstream& eta_s,
+               const int percent,
+               const std::stringstream& percent_s,
+               const std::string& fname);
 
-  void _dotline(
-    const std::stringstream& size_s,
-    const std::stringstream& rate_s,
-    const std::stringstream& eta_s,
-    const std::stringstream& percent_s,
-    const std::string& fname);
+  void _dotline(const std::stringstream& size_s,
+                const std::stringstream& rate_s,
+                const std::stringstream& eta_s,
+                const std::stringstream& percent_s,
+                const std::string& fname);
 
-  void _render_meter(
-    std::stringstream& bar,
-    const int percent,
-    const size_t space_left);
+  void _simple(const std::stringstream& size_s,
+               const std::stringstream& percent_s) const;
+
+  void _render_meter(std::stringstream& bar,
+                     const int percent,
+                     const size_t space_left);
 private:
   int     _update_interval;
   double  _expected_bytes;

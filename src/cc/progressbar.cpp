@@ -117,6 +117,14 @@ progressbar::progressbar(
 
   if (map.count("background"))
     _mode = dotline;
+  else
+    {
+      const std::string s = map["progressbar"].as<std::string>();
+      if (s == "simple")
+        _mode = simple;
+      else if (s == "dotline")
+        _mode = dotline;
+    }
 
   _update_interval = map["update-interval"].as<double>();
 }
@@ -293,19 +301,21 @@ void progressbar::update(double now)
     case dotline:
       _dotline(size_s, rate_s, eta_s, percent_s, fname);
       break;
+    case simple:
+      _simple(size_s, percent_s);
+      break;
     }
 
   _last_update = elapsed;
   _count       = now;
 }
 
-void progressbar::_normal(
-  const std::stringstream& size_s,
-  const std::stringstream& rate_s,
-  const std::stringstream& eta_s,
-  const int percent,
-  const std::stringstream& percent_s,
-  const std::string& fname)
+void progressbar::_normal(const std::stringstream& size_s,
+                          const std::stringstream& rate_s,
+                          const std::stringstream& eta_s,
+                          const int percent,
+                          const std::stringstream& percent_s,
+                          const std::string& fname)
 {
   std::stringstream info;
 
@@ -336,12 +346,11 @@ void progressbar::_normal(
   cc::log << bar.str() << "\r" << std::flush;
 }
 
-void progressbar::_dotline(
-  const std::stringstream& size_s,
-  const std::stringstream& rate_s,
-  const std::stringstream& eta_s,
-  const std::stringstream& percent_s,
-  const std::string& fname)
+void progressbar::_dotline(const std::stringstream& size_s,
+                           const std::stringstream& rate_s,
+                           const std::stringstream& eta_s,
+                           const std::stringstream& percent_s,
+                           const std::string& fname)
 {
 #define details \
     "  " \
@@ -381,9 +390,19 @@ void progressbar::_dotline(
 #undef dot
 }
 
-void
-progressbar::_render_meter(std::stringstream& bar, const int percent,
-                           const size_t space_left)
+void progressbar::_simple(const std::stringstream& size_s,
+                          const std::stringstream& percent_s) const
+{
+  cc::log << percent_s.str()
+          << "  "
+          << size_s.str()
+          << " received\r"
+          << std::flush;
+}
+
+void progressbar::_render_meter(std::stringstream& bar,
+                                const int percent,
+                                const size_t space_left)
 {
   const int m = static_cast<int>(space_left*percent/100.0);
   bar << "[";

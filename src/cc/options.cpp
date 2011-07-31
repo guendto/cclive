@@ -99,6 +99,9 @@ void options::exec(int argc, char **argv)
   ("log-file",
    opts::value<std::string>()->default_value("cclive_log"),
    "Write log output to arg")
+  ("progressbar",
+   opts::value<std::string>()->default_value("normal"),
+   "Use progressbar type arg")
   ("update-interval",
    opts::value<double>()->default_value(1.0),
    "Update interval of progressbar")
