@@ -53,7 +53,7 @@ private:
                      const int percent,
                      const size_t space_left);
 private:
-  int     _update_interval;
+  double  _update_interval;
   double  _expected_bytes;
   double  _initial_bytes;
   time_t  _time_started;
