@@ -28,10 +28,9 @@ namespace cc
 
 namespace po = boost::program_options;
 
-void get(
-  const quvi::query& query,
-  quvi::media& media,
-  const options& opts)
+void get(const quvi::query& query,
+         quvi::media& media,
+         const options& opts)
 {
   const po::variables_map map = opts.map();
 

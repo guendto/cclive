@@ -60,11 +60,10 @@ file::file()
 {
 }
 
-file::file(
-  const quvi::media& media,
-  const quvi::url& url,
-  const int n,
-  const options& opts)
+file::file(const quvi::media& media,
+           const quvi::url& url,
+           const int n,
+           const options& opts)
   : _initial_length(0)
 {
   _init(media, url, n, opts);
@@ -102,10 +101,9 @@ static std::string format_unexpected_http_error(
 
 #define E "%s (curl_code=%ld, resp_code=%ld, conn_code=%ld)"
 
-static std::string format_error(
-  const CURLcode curl_code,
-  const long resp_code,
-  const long conn_code)
+static std::string format_error(const CURLcode curl_code,
+                                const long resp_code,
+                                const long conn_code)
 {
   const std::string e = curl_easy_strerror(curl_code);
   return (boost::format(E) % e % curl_code % resp_code % conn_code).str();
@@ -147,10 +145,9 @@ static int progress_cb(void *ptr, double, double now, double, double)
 
 namespace po = boost::program_options;
 
-bool file::write(
-  const quvi::query& q,
-  const quvi::url& u,
-  const options& opts) const
+bool file::write(const quvi::query& q,
+                 const quvi::url& u,
+                 const options& opts) const
 {
   CURL *curl = q.curlHandle();
 
@@ -335,11 +332,10 @@ static fs::path output_dir(const po::variables_map& map)
   return fs::system_complete(dir);
 }
 
-void file::_init(
-  const quvi::media& media,
-  const quvi::url& url,
-  const int n,
-  const options& opts)
+void file::_init(const quvi::media& media,
+                 const quvi::url& url,
+                 const int n,
+                 const options& opts)
 {
   const po::variables_map map = opts.map();
 
