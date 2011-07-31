@@ -19,7 +19,11 @@
 #define cclive_application_h
 
 #include <ccoptions>
-#include <ccquvi>
+
+namespace quvi
+{
+class query;
+}
 
 namespace cc
 {

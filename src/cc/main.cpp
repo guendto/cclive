@@ -18,6 +18,7 @@
 #include <iostream>
 
 #include <ccapplication>
+#include <ccquvi>
 
 using namespace cc;
 
