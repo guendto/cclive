@@ -389,7 +389,7 @@ void progressbar::_simple(const std::stringstream& size_s,
                           const std::stringstream& percent_s) const
 {
   cc::log << percent_s.str()
-          << "  "
+          << " - "
           << size_s.str()
           << " received\r"
           << std::flush;
