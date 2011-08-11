@@ -149,7 +149,7 @@ static void check_quvi_error(const quvi::error& e)
     {
       switch (e.quvi_code())
         {
-        case QUVI_CURL:
+        case QUVI_CALLBACK:
           print_quvi_error(e);
           break; // Retry.
 
