@@ -27,7 +27,7 @@ error::error(quvi_t q, QUVIcode c)
 {
   // Friend of quvi::error class -> clean API.
   _what = quvi_strerror(q, c);
-  quvi_getinfo(q, QUVIINFO_HTTPCODE, &_resp_code);
+  quvi_getinfo(q, QUVIINFO_RESPONSECODE, &_resp_code);
 }
 
 // Copy constructor.
