@@ -19,7 +19,7 @@ Installation from source
 If you are compiling cclive from the development code from the git
 repository, see "Installation from development code", instead.
 
-  --enable-ccl        Make a symbolic link from 'cclive' to 'ccl'
+  --enable-ccl        Make a symbolic link from 'cclive' (binary) to 'ccl'
   --without-manual    Do not install manual page(s)
 
 
