@@ -57,7 +57,7 @@ fi
 
 # Checks for libraries.
 
-PKG_CHECK_MODULES([libquvi], [libquvi >= 0.2.17])
+PKG_CHECK_MODULES([libquvi], [libquvi >= 0.2.16.1])
 PKG_CHECK_MODULES([libcurl], [libcurl >= 7.18.0])
 PKG_CHECK_MODULES([libpcre], [libpcre >= 8.02])
 PKG_CHECK_MODULES([libpcrecpp], [libpcrecpp >= 8.02])

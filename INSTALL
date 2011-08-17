@@ -3,7 +3,7 @@
 Prerequisites
 -------------
 
-* libquvi       (0.2.17+)
+* libquvi       (0.2.16.1+)
 * libboost      (1.42.0+)
 * libpcre(cpp)  (8.02+)
 * libcurl       (7.20.0+)
