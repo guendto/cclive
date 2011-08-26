@@ -18,8 +18,11 @@
 #include <ccinternal>
 
 #include <iomanip>
+#include <vector>
 #include <ctime>
 
+#include <boost/algorithm/string/classification.hpp> // is_any_of
+#include <boost/algorithm/string/split.hpp>
 #include <boost/foreach.hpp>
 #include <boost/random.hpp>
 
@@ -33,6 +36,7 @@
 #include <ccquvi>
 #include <ccutil>
 #include <cclog>
+#include <ccre>
 
 namespace cc
 {
@@ -366,13 +370,16 @@ application::exit_status application::exec(int argc, char **argv)
 
   // --format [<id> | [<help> | <list> [<pattern]]]
 
-  const std::string format = map["format"].as<std::string>();
+  if (map.count("format"))
+    {
+      const std::string format = map["format"].as<std::string>();
 
-  if (format == "help")
-    return print_format_help();
+      if (format == "help")
+        return print_format_help();
 
-  else if (format == "list")
-    return handle_format_list(map, query);
+      else if (format == "list")
+        return handle_format_list(map, query);
+    }
 
   // Parse input.
 
@@ -425,9 +432,7 @@ application::exit_status application::exec(int argc, char **argv)
   _tweak_curl_opts(query, map);
 
   quvi::options qopts;
-
   qopts.statusfunc(status_callback);
-  qopts.format(format);
 #ifdef _0
   qopts.verify(map.count("no-verify"));
 #endif
@@ -495,15 +500,14 @@ application::exit_status application::exec(int argc, char **argv)
         while (retry <= max_retries)
           {
             print_retrying(retry, max_retries, retry_wait);
-
             ++retry;
 
             print_checking(i, n);
-
             quvi::media m;
 
             try
               {
+                _set_format_string(url, qopts, map);
                 m = query.parse(url, qopts);
               }
             catch(const quvi::error& e)
@@ -559,6 +563,43 @@ void application::_tweak_curl_opts(const quvi::query& query,
 
   curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT,
                    map["connect-timeout"].as<int>());
+}
+
+static void parse_prefer_format(const po::variables_map& map,
+                                const std::string& url,
+                                std::string& fmt)
+{
+  vst vb, va = map["prefer-format"].as<vst>();
+  foreach (const std::string s, va)
+  {
+    boost::split(vb, s, boost::is_any_of(":"));
+    if (vb.size() == 2)
+      {
+        // vb[0] = pattern
+        // vb[1] = format
+        if (cc::re::grep(vb[0], url))
+          {
+            fmt = vb[1];
+            return;
+          }
+      }
+    vb.clear();
+  }
+}
+
+void application::_set_format_string(const std::string& url,
+                                     quvi::options& qopts,
+                                     const po::variables_map& map)
+{
+  std::string fmt = "default";
+  if (map.count("format")) // --format takes precedence
+    fmt = map["format"].as<std::string>();
+  else
+    {
+      if (map.count("prefer-format"))
+        parse_prefer_format(map, url, fmt);
+    }
+  qopts.format(fmt);
 }
 
 } // namespace cc

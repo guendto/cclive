@@ -85,7 +85,7 @@ void options::exec(int argc, char **argv)
   ("query-formats,F",
    "Query available formats to URL")
   ("format,f",
-   opts::value<std::string>()->default_value("default"),
+   opts::value<std::string>(),
    "Download media format")
   ("continue,c",
    "Resume partially downloaded media")
@@ -113,6 +113,9 @@ void options::exec(int argc, char **argv)
   opts::options_description config("Configuration");
 
   config.add_options()
+  ("prefer-format,p",
+   opts::value<std::vector<std::string> >()->composing(),
+   "Preferred format [domain:format[,...]]")
   ("progressbar",
    opts::value<std::string>()->default_value("normal"),
    "Use progressbar arg")

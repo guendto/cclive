@@ -22,6 +22,7 @@
 
 namespace quvi
 {
+class options;
 class query;
 }
 
@@ -37,6 +38,9 @@ public:
 private:
   void _tweak_curl_opts(const quvi::query&,
                         const boost::program_options::variables_map&);
+  void _set_format_string(const std::string&,
+                          quvi::options&,
+                          const boost::program_options::variables_map&);
 private:
   cc::options _opts;
 };
