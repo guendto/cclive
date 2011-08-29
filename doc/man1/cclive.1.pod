@@ -56,7 +56,17 @@ the file specified with C<--log-file>.
 
 =item B<-F, --query-formats>
 
-Query available formats.
+Query available formats to an URL. Each format string is separated with
+a pipe character. To use a format string from the list, choose one and
+use it with C<--format>.
+
+libquvi creates dynamically the list from the data returned by the server.
+The format strings were previously, until libquvi 0.2.16.1+, hardcoded
+values that were I<assumed> to be available to an URL.
+
+It should be noted that the returned list does not include the static format
+strings C<default> and C<best>. They are presumed to be supported by libquvi.
+See also C<--format> and L</EXAMPLES>.
 
 =item B<-f, --format> I<arg> (=default)
 
@@ -64,8 +74,17 @@ Download format I<arg> of the media. I<arg> can also be C<help> or C<list>.
 The resulting format may be different from the I<arg> if the requested
 format was not available. This is determined by libquvi, not cclive.
 
-I<arg> C<list> is deprecated and will be removed in the later versions.
-Use C<--query-formats> instead.
+The only static format strings that libquvi supports are C<default> and
+C<best>. They can be used with C<--format>. If I<arg> is C<best> libquvi
+0.2.16.1+ will try to determine the C<best> available format to an URL.
+
+If the requested I<arg> format is not available or is unrecognized by
+libquvi, it will fall back to C<default>, whatever that may be, and only
+if that cannot be found either the library returns an error to cclive.
+See also L</EXAMPLES>.
+
+I<arg> C<list> is deprecated and will be removed in the later versions
+of cclive. Use C<--query-formats> instead.
 
 =item B<-c, --continue>
 
