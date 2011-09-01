@@ -6,8 +6,7 @@ AC_PREREQ([2.68])
 m4_include([m4/version.m4])
 
 AC_INIT([cclive], [_CCLIVE_VERSION],
-  [http://sourceforge.net/apps/trac/cclive],
-  [],
+  [http://sourceforge.net/apps/trac/cclive], [],
   [http://cclive.sourceforge.net/])
 
 AC_CONFIG_SRCDIR([src/cc/application.cpp])
@@ -29,31 +28,8 @@ LT_PREREQ([2.2])
 
 # Checks for programs.
 AC_PROG_CXX
-AC_PROG_AWK
 AC_PROG_CC
 AC_PROG_CPP
-AC_PROG_INSTALL
-AC_PROG_LN_S
-AC_PROG_MAKE_SET
-AC_PROG_MKDIR_P
-
-AC_PATH_PROG(DATE, date, no)
-if [ test x"$DATE" != "xno" ]; then
-  build_date=`"$DATE" +%Y-%m-%d 2>/dev/null`
-  if [ test x"$build_date" != "x" ]; then
-    AC_DEFINE_UNQUOTED([BUILD_DATE], "$build_date", [We have 'date'])
-  fi
-fi
-
-AC_PATH_PROG(GIT, git, no)
-if [ test x"$GIT" != "xno" ]; then
-  CCLIVE_BRANCH=_CCLIVE_BRANCH
-  git_describe=`"$GIT" describe "$CCLIVE_BRANCH" 2>/dev/null`
-  if [ test x"$git_describe" != "x" ]; then
-    AC_DEFINE_UNQUOTED([GIT_DESCRIBE],
-      "$git_describe", [We have 'git describe'])
-  fi
-fi
 
 # Checks for libraries.
 
@@ -78,14 +54,14 @@ AC_CHECK_HEADERS([sys/ioctl.h unistd.h sys/types.h sys/stat.h signal.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_HEADER_STDBOOL
-AC_TYPE_PID_T
 AC_TYPE_SIZE_T
+AC_TYPE_PID_T
 
 # Checks for library functions.
-AC_FUNC_ERROR_AT_LINE
-AC_FUNC_FORK
-AC_FUNC_STRERROR_R
 AC_CHECK_FUNCS([getcwd strerror strstr getpid signal])
+AC_FUNC_ERROR_AT_LINE
+AC_FUNC_STRERROR_R
+AC_FUNC_FORK
 
 # --with-manual
 AC_ARG_WITH([manual],
@@ -105,20 +81,17 @@ AM_CONDITIONAL([ENABLE_CCL], [test x"$enable_ccl" != "xno"])
 
 AC_CONFIG_FILES([
   Makefile
-  src/Makefile
   doc/Makefile
   doc/man1/Makefile
+  src/Makefile
 ])
 
 AC_OUTPUT
 
 AC_MSG_NOTICE([
-
- cclive version: ${VERSION}  g:${git_describe}  b:${build_date}
+ cclive version: ${VERSION}
  host setup:     ${host}
  prefix:         ${prefix}
---
- install manual: ${with_manual}
-])
+ install manual: ${with_manual}])
 
 # vim: set ts=2 sw=2 tw=72 expandtab:
