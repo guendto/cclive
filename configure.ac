@@ -63,6 +63,10 @@ AC_FUNC_ERROR_AT_LINE
 AC_FUNC_STRERROR_R
 AC_FUNC_FORK
 
+# Version.
+VN=`$srcdir/gen-ver.sh $srcdir`
+AC_DEFINE_UNQUOTED([VN],["$VN"], [We have version number from gen-ver.sh])
+
 # --with-manual
 AC_ARG_WITH([manual],
   [AS_HELP_STRING([--with-manual],
@@ -89,7 +93,7 @@ AC_CONFIG_FILES([
 AC_OUTPUT
 
 AC_MSG_NOTICE([
- cclive version: ${VERSION}
+ cclive version: ${VERSION} (${VN})
  host setup:     ${host}
  prefix:         ${prefix}
  install manual: ${with_manual}])

@@ -336,17 +336,14 @@ application::exit_status application::exec(int argc, char **argv)
   if (map.count("version"))
     {
       std::cout
-          << "cclive version "
-#ifdef GIT_DESCRIBE
-          << GIT_DESCRIBE
+          << "cclive "
+#ifdef VN
+          << VN
 #else
           << PACKAGE_VERSION
 #endif
-#ifdef BUILD_DATE
-          << " built on " << BUILD_DATE
-#endif
           << " for " << CANONICAL_TARGET
-          << "\nlibquvi version "
+          << "\nlibquvi "
           << quvi_version(QUVI_VERSION_LONG)
           << std::endl;
       return ok;
