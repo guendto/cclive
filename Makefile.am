@@ -1,6 +1,6 @@
 
 ACLOCAL_AMFLAGS=-I m4
-EXTRA_DIST=	gen-ver.sh VERSION scripts/astyle_cpp.sh
+EXTRA_DIST=	gen-ver.sh VERSION
 SUBDIRS=	src doc
 
 .PHONY: ChangeLog VERSION
