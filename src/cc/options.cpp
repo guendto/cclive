@@ -211,7 +211,7 @@ void options::_validate()
     {
       std::string s = _map["regexp"].as<std::string>();
 
-      if (!cc::re::match(s, empty))
+      if (!cc::re::capture(s, empty))
         {
           std::stringstream b;
 

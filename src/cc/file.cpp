@@ -365,7 +365,7 @@ void file::_init(const quvi::media& media,
 
       // Apply --regexp to title.
 
-      cc::re::match(map["regexp"].as<std::string>(), title);
+      cc::re::capture(map["regexp"].as<std::string>(), title);
       cc::re::trim(title);
 
       // --filename-format

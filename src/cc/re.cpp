@@ -63,7 +63,7 @@ bool subst(const std::string& re, std::string& src)
   return false;
 }
 
-bool match(const std::string& re, std::string& src)
+bool capture(const std::string& re, std::string& src)
 {
   std::string pat, flags;
   pcrecpp::RE rx("^\\/(.*)\\/(.*)$", pcrecpp::UTF8());
