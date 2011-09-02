@@ -28,10 +28,8 @@ namespace re
 static pcrecpp::RE_Options _init_re_opts(const std::string& flags)
 {
   pcrecpp::RE_Options opts;
-
   opts.set_caseless(strstr(flags.c_str(), "i") != 0);
   opts.set_utf8(true);
-
   return opts;
 }
 
@@ -68,40 +66,38 @@ bool subst(const std::string& re, std::string& src)
 bool match(const std::string& re, std::string& src)
 {
   std::string pat, flags;
-
   pcrecpp::RE rx("^\\/(.*)\\/(.*)$", pcrecpp::UTF8());
 
   if (rx.PartialMatch(re, &pat, &flags))
     {
-
-      if (src.empty()) // Verify regexp only.
+      if (src.empty()) // Check regexp
         return true;
 
       pcrecpp::RE_Options opts = _init_re_opts(flags);
-
       if (strstr(flags.c_str(), "g") != 0)
         {
           pcrecpp::StringPiece sp(src);
           pcrecpp::RE re(pat, opts);
-
           src.clear();
 
           std::string s;
-
           while (re.FindAndConsume(&sp, &s))
             src += s;
         }
-
       else
         {
           std::string tmp = src;
           src.clear();
           pcrecpp::RE(pat, opts).PartialMatch(tmp, &src);
         }
-
       return true;
     }
   return false;
+}
+
+bool grep(const std::string& r, const std::string& s)
+{
+  return pcrecpp::RE(r, pcrecpp::UTF8()).PartialMatch(s);
 }
 
 void trim(std::string& src)

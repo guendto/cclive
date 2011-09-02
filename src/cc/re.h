@@ -24,9 +24,10 @@ namespace cc
 namespace re
 {
 
-bool subst(const std::string& re, std::string& src);
-bool match(const std::string& re, std::string& src);
+bool subst(const std::string&, std::string&);
+bool match(const std::string&, std::string&);
 void trim(std::string&);
+bool grep(const std::string&, const std::string&);
 
 } // namespace re
 
