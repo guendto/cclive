@@ -193,6 +193,8 @@ static void print_host(const map_ss::value_type& t)
 
 namespace po = boost::program_options;
 
+typedef std::vector<std::string> vst;
+
 static application::exit_status handle_format_list(
   const po::variables_map& map,
   const quvi::query& query)
@@ -203,9 +205,7 @@ static application::exit_status handle_format_list(
 
   if (map.count("url"))
     {
-      const std::string arg0 =
-        map["url"].as< std::vector<std::string> >()[0];
-
+      const std::string arg0 = map["url"].as<vst>()[0];
       foreach (map_ss::value_type& t, m)
       {
         if (t.first.find(arg0) != std::string::npos)
@@ -231,7 +231,7 @@ static application::exit_status handle_format_list(
 static application::exit_status query_formats(
   const quvi::query& query,
   const quvi::options &opts,
-  const std::vector<std::string>& input)
+  const vst& input)
 {
   const size_t n = input.size();
   size_t i = 0;
@@ -293,7 +293,7 @@ static int is_url(const std::string& s)
 
 #undef _free
 
-static void read_from(std::istream& is, std::vector<std::string>& dst)
+static void read_from(std::istream& is, vst& dst)
 {
   std::string s;
   char ch = 0;
@@ -305,7 +305,7 @@ static void read_from(std::istream& is, std::vector<std::string>& dst)
   std::copy(
     std::istream_iterator<std::string >(iss),
     std::istream_iterator<std::string >(),
-    std::back_inserter<std::vector<std::string> >(dst)
+    std::back_inserter<vst>(dst)
   );
 }
 
@@ -377,15 +377,13 @@ application::exit_status application::exec(int argc, char **argv)
 
   // Parse input.
 
-  std::vector<std::string> input;
+  vst input;
 
   if (map.count("url") == 0)
     read_from(std::cin, input);
   else
     {
-      std::vector<std::string> args =
-        map["url"].as< std::vector<std::string> >();
-
+      vst args = map["url"].as< vst >();
       foreach(std::string arg, args)
       {
         if (!is_url(arg))

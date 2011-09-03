@@ -36,6 +36,8 @@ namespace cc
 namespace opts = boost::program_options;
 namespace fs   = boost::filesystem;
 
+typedef std::vector<std::string> vst;
+
 void options::exec(int argc, char **argv)
 {
   // Path to ccliverc.
@@ -153,7 +155,7 @@ void options::exec(int argc, char **argv)
   opts::options_description hidden;
 
   hidden.add_options()
-  ("url", opts::value< std::vector<std::string> >(), "url");
+  ("url", opts::value<vst>(), "url");
 
   // Visible.
 
@@ -225,12 +227,12 @@ void options::_validate()
   if (_map.count("subst"))
     {
       std::istringstream iss( _map["subst"].as<std::string>());
-      std::vector<std::string> v;
+      vst v;
 
       std::copy(
         std::istream_iterator<std::string >(iss),
         std::istream_iterator<std::string >(),
-        std::back_inserter<std::vector<std::string> >(v)
+        std::back_inserter<vst>(v)
       );
 
       foreach (std::string s, v)
