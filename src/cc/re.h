@@ -26,8 +26,9 @@ namespace re
 
 bool subst(const std::string&, std::string&);
 bool capture(const std::string&, std::string&);
-void trim(std::string&);
 bool grep(const std::string&, const std::string&);
+void tr(const std::string&, std::string&);
+void trim(std::string&);
 
 } // namespace re
 

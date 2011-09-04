@@ -160,9 +160,8 @@ static void check_quvi_error(const quvi::error& e)
 }
 
 static const char depr_msg[] =
-  "Warning:\n"
-  "   '--format list' is deprecated and will be removed in the later\n"
-  "   versions. Use --query-formats instead.";
+  "WARNING '--format list' is deprecated and will be removed in the later\n"
+  "WARNING versions. Use --query-formats instead.";
 
 static const char format_usage[] =
   "Usage:\n"

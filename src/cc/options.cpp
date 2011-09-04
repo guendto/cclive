@@ -124,11 +124,14 @@ void options::exec(int argc, char **argv)
   ("output-dir",
    opts::value<std::string>(),
    "Write downloaded media to arg directory")
+  ("tr,t",
+   opts::value<vst>()->composing(),
+   "Translate characters in media title")
   ("regexp",
-   opts::value<std::string>()->default_value("/(\\w|\\pL|\\s)/g"),
-   "Regexp to cleanup media title")
+   opts::value<std::string>(),
+   "Regexp to cleanup media title (depr.)")
   ("subst", opts::value<std::string>(),
-   "Replace matched occurences in filename")
+   "Replace matched occurences in filename (depr.)")
   ("exec", opts::value<std::string>(),
    "Invoke arg after each finished download")
   ("agent",
@@ -209,23 +212,39 @@ void options::_validate()
 {
   std::string empty;
 
-  if (_map.count("regexp"))
+  if (_map.count("tr"))
     {
-      std::string s = _map["regexp"].as<std::string>();
+      vst v = _map["tr"].as<vst>();
+      foreach (const std::string s, v)
+      {
+        re::tr(s, empty);
+      }
+    }
 
+  if (_map.count("regexp")) // Deprecated.
+    {
+      std::clog
+          << "WARNING --regexp is deprecated and will be removed "
+          << "in later versions.\nWARNING Use --tr instead."
+          << std::endl;
+
+      std::string s = _map["regexp"].as<std::string>();
       if (!cc::re::capture(s, empty))
         {
           std::stringstream b;
-
           b << "--regexp: expects "
             << "`/pattern/flags', for example: \"/(\\w|\\s)/g\"";
-
           throw std::runtime_error(b.str());
         }
     }
 
-  if (_map.count("subst"))
+  if (_map.count("subst")) // Deprecated.
     {
+      std::clog
+          << "WARNING --subst is deprecated and will be removed "
+          << "in later versions.\nWARNING Use --tr instead."
+          << std::endl;
+
       std::istringstream iss( _map["subst"].as<std::string>());
       vst v;
 
@@ -235,14 +254,12 @@ void options::_validate()
         std::back_inserter<vst>(v)
       );
 
-      foreach (std::string s, v)
+      foreach (const std::string s, v)
       {
         if (!cc::re::subst(s,empty))
           {
             std::stringstream b;
-
             b << "--subst: expects " << "`s{old}{new}flags'";
-
             throw std::runtime_error(b.str());
           }
       }

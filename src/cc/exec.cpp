@@ -15,10 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <stdexcept>
 #include <sstream>
 
 #include <boost/program_options/variables_map.hpp>
-#include <boost/format.hpp>
+#include <pcrecpp.h>
 
 #include <ccquvi>
 #include <ccfile>
@@ -35,13 +36,9 @@ void exec(const file& file,
           const po::variables_map& map)
 {
   std::string arg = map["exec"].as<std::string>();
-
-  boost::format fmt;
-  fmt = boost::format("s{%%f}{\"%1%\"}g") % file.path();
-  cc::re::subst(fmt.str(), arg);
+  pcrecpp::RE("%f").GlobalReplace(file.path(), &arg);
 
   const int rc = system(arg.c_str());
-
   std::stringstream b;
 
   switch (rc)

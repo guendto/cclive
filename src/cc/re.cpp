@@ -15,8 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <pcrecpp.h>
+#include <sstream>
+
 #include <boost/format.hpp>
+#include <pcrecpp.h>
 
 #include <ccre>
 
@@ -100,11 +102,78 @@ bool grep(const std::string& r, const std::string& s)
   return pcrecpp::RE(r, pcrecpp::UTF8()).PartialMatch(s);
 }
 
-void trim(std::string& src)
+static void tr_subst(const std::string& r, std::string& s)
 {
-  subst("s{^[\\s]+}//",   src);
-  subst("s{\\s+$}//",     src);
-  subst("s{\\s\\s+}/ /g", src);
+  pcrecpp::RE rx("^s\\/(.*)\\/(.*)\\/(.*)$", pcrecpp::UTF8());
+  std::string pat, sub, flags;
+
+  if (!rx.PartialMatch(r, &pat, &sub, &flags))
+    {
+      std::stringstream b;
+      b << "--tr: " << "no idea what to do with `" << r << "'";
+      throw std::runtime_error(b.str());
+    }
+
+  if (s.empty()) // Validate regexp only.
+    return;
+
+  pcrecpp::RE_Options o = _init_re_opts(flags);
+  pcrecpp::RE subs(pat, o);
+
+  (strstr(flags.c_str(), "g"))
+  ? subs.GlobalReplace(sub, &s)
+  : subs.Replace(sub, &s);
+}
+
+static void tr_filter(const std::string& r, std::string& s)
+{
+  pcrecpp::RE rx("^\\/(.*)\\/(.*)$", pcrecpp::UTF8());
+  std::string pat, flags;
+
+  if (!rx.PartialMatch(r, &pat, &flags))
+    {
+      std::stringstream b;
+      b << "--tr: " << "no idea what to do with `" << r << "'";
+      throw std::runtime_error(b.str());
+    }
+
+  if (s.empty())  // Validate regexp only.
+    return;
+
+  pcrecpp::RE_Options o = _init_re_opts(flags);
+
+  if (strstr(flags.c_str(), "g") != 0)
+    {
+      pcrecpp::StringPiece sp(s);
+      s.clear();
+
+      rx = pcrecpp::RE(pat, o);
+      std::string tmp;
+
+      while (rx.FindAndConsume(&sp, &tmp))
+        s += tmp;
+    }
+  else
+    {
+      std::string tmp = s;
+      s.clear();
+      pcrecpp::RE(pat, o).PartialMatch(tmp, &s);
+    }
+}
+
+void tr(const std::string& r, std::string& s)
+{
+  if (pcrecpp::RE("^s\\/", pcrecpp::UTF8()).PartialMatch(r))
+    tr_subst(r, s);
+  else
+    tr_filter(r, s);
+}
+
+void trim(std::string& s)
+{
+  tr_subst("s/^[\\s]+//",   s);
+  tr_subst("s/\\s+$//",     s);
+  tr_subst("s/\\s\\s+/ /g", s);
 }
 
 } // namespace re

@@ -44,6 +44,7 @@
 #endif
 
 #include <curl/curl.h>
+#include <pcrecpp.h>
 
 #include <ccquvi>
 #include <ccprogressbar>
@@ -331,6 +332,8 @@ static fs::path output_dir(const po::variables_map& map)
   return fs::system_complete(dir);
 }
 
+typedef std::vector<std::string> vst;
+
 void file::_init(const quvi::media& media,
                  const quvi::url& url,
                  const int n,
@@ -361,11 +364,25 @@ void file::_init(const quvi::media& media,
 
   else
     {
-      std::string title  = media.title();
+      // Cleanup media title.
 
-      // Apply --regexp to title.
+      std::string title = media.title();
+      vst tr;
 
-      cc::re::capture(map["regexp"].as<std::string>(), title);
+      if (map.count("tr"))
+        tr = map["tr"].as<vst>();
+      else // Use built-in default value.
+        {
+          if (map.count("regexp")) // Deprecated.
+            cc::re::capture(map["regexp"].as<std::string>(), title);
+          else
+            tr.push_back("/(\\w|\\pL|\\s)/g");
+        }
+
+      foreach (const std::string r, tr)
+      {
+        cc::re::tr(r, title);
+      }
       cc::re::trim(title);
 
       // --filename-format
@@ -373,32 +390,23 @@ void file::_init(const quvi::media& media,
       std::string fname_format =
         map["filename-format"].as<std::string>();
 
-      boost::format fmt;
+      pcrecpp::RE("%i").GlobalReplace(media.id(), &fname_format);
+      pcrecpp::RE("%t").GlobalReplace(title, &fname_format);
+      pcrecpp::RE("%s").GlobalReplace(url.suffix(), &fname_format);
+      pcrecpp::RE("%h").GlobalReplace(media.host(), &fname_format);
 
-      fmt = boost::format("s{%%i}{%1%}g") % media.id();
-      cc::re::subst(fmt.str(), fname_format);
-
-      fmt = boost::format("s{%%t}{%1%}g") % title;
-      cc::re::subst(fmt.str(), fname_format);
-
-      fmt = boost::format("s{%%s}{%1%}g") % url.suffix();
-      cc::re::subst(fmt.str(), fname_format);
-
-      fmt = boost::format("s{%%h}{%1%}g") % media.host();
-      cc::re::subst(fmt.str(), fname_format);
-
-      if (map.count("subst"))
+      if (map.count("subst")) // Deprecated.
         {
           std::istringstream iss(map["subst"].as<std::string>());
-          std::vector<std::string> v;
+          vst v;
 
           std::copy(
             std::istream_iterator<std::string >(iss),
             std::istream_iterator<std::string >(),
-            std::back_inserter<std::vector<std::string> >(v)
+            std::back_inserter<vst>(v)
           );
 
-          foreach (std::string s, v)
+          foreach (const std::string s, v)
           {
             cc::re::subst(s, fname_format);
           }
