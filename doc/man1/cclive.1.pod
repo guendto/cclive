@@ -131,6 +131,22 @@ from the configuration file. See L</FILES>.
 
 =over 4
 
+=item B<-p, --prefer-format> I<arg>
+
+Where I<arg> is a B<string pair> of I<pattern> (regular expression)
+and I<format>. The character ':' is expected to separate these two
+strings, e.g. C<-p foo:bar>. If the I<pattern> matches an URL,
+cclive downloads the I<format> of the media from the URL.
+
+C<--prefer-format> works similarly to C<--format> with the difference
+that -p binds the I<format> value to a matching URL. In contrast, the
+C<--format> value is used with all of the URLs fed to cclive at runtime.
+
+C<--format> negates C<--prefer-format>. cclive accepts multiple
+occurrences of C<--prefer-format>.
+
+See also L</EXAMPLES>, C<--query-formats> and C<--format>.
+
 =item B<--progressbar> I<arg> (=normal)
 
 Use progressbar I<arg>. Ignored with C<--background> which will
@@ -293,6 +309,19 @@ formats are supported, otherwise will fallback to default format.
 Query available formats to the URL. Use one of the returned format
 strings from this list with C<--format>.
 
+=item cclive -p "^.*youtube.*\.com:fmt43_360p" YOUTUBE_URL
+
+Whenever possible, get fmt43_360p format of YouTube videos.
+
+=item cclive -p "dailym:best" DAILYMOTION_URL
+
+Similar but get the 'best' format of DailyMotion videos, whenever
+possible. The pattern used above is oversimplified. Normally, you
+would want to use better crafted patterns, instead, as cclive
+does not match the pattern to the domain name but to the I<URL>.
+
+You could also specify multiple occurrences of -p.
+
 =item cclive -n "URL"
 
 Do not download the media, print the details only.
@@ -325,10 +354,12 @@ for the configurable options.
 Example:
 
  filename-format = %h_%i_(%t).%s
- regexp = /(\w|\pL)/g
- exec = /usr/bin/vlc %f
  proxy = http://foo:1234
+ exec = /usr/bin/vlc %f
+ regexp = /(\w|\pL)/g
  progressbar = simple
+ prefer-format = ^.*youtube.*\.com:fmt43_360p
+ prefer-format = dailym:best
 
 =back
 
