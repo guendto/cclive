@@ -150,20 +150,33 @@ a 'double', e.g. 0.2 or 1.99.
 How the downloaded media file should be named.  Each occurence of the
 following specifiers will be replaced in the I<arg>:
 
- %t .. Media title (after applying --regexp)
+ %t .. Media title
  %i .. Media ID
  %h .. Media host ID (e.g. "vimeo")
  %s .. Media file suffix (e.g. "flv")
 
+See also C<--tr>.
+
 =item B<--output-dir> I<arg>
 
 Write downloaded media to I<arg> directory.
+
+=item B<-t, --tr> I<arg>
+
+Where I<arg> is a pattern (regular expression). C<--tr> can be used to
+translate the characters in the media titles before they are used in
+the filenames of the downloaded media. Default is C</(\w|\s)/g>.
+
+cclive accepts multiple occurrences of C<--tr>. See also L</EXAMPLES>.
 
 =item B<--regexp> I<arg> (="/(\w|\s)/g")
 
 Regular expression I<arg> to cleanup the media title before it
 is used in the filename. Supports "i" (case-insensitive) and "g"
 (global or "find all").
+
+This option is deprecated and will be removed in the later versions of
+cclive. Use C<--tr> instead.
 
 =item B<--subst> I<arg> ...
 
@@ -180,6 +193,9 @@ Note:
 
  s/old/new/  .. Invalid
  s/old//new/ .. OK
+
+This option is deprecated and will be removed in the later versions of
+cclive. Use C<--tr> instead.
 
 =item B<--exec> I<arg>
 
@@ -281,10 +297,10 @@ strings from this list with C<--format>.
 
 Do not download the media, print the details only.
 
-=item cclive "URL" --subst "s{Alice}{Malice}g"
+=item cclive "URL" -t 's/foo/bar/g'
 
-Replace "Alice" in the media title with "Malice" before it is used in
-the filename.
+Replace any "foo" substrings with "bar" in the media title before
+using it in the output filename.
 
 =item cclive "URL" -b --log-file foo.log
 
