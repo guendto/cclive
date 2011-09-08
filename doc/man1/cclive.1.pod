@@ -56,16 +56,10 @@ the file specified with C<--log-file>.
 
 =item B<-F, --query-formats>
 
-Query available formats to an URL. Each format string is separated with
-a pipe character. To use a format string from the list, choose one and
-use it with C<--format>.
-
-libquvi creates dynamically the list from the data returned by the server.
-The format strings were previously, until libquvi 0.2.16.1+, hardcoded
-values that were I<assumed> to be available to an URL.
-
-It should be noted that the returned list does not include the static format
-strings C<default> and C<best>. They are presumed to be supported by libquvi.
+Query available formats to an URL. The returned string will contain
+an array of I<format strings>, each separated by the '|' character.
+The array is created, by libquvi, from the data returned by the server.
+You can use these I<format strings> with C<--format>.
 
 See also L</EXAMPLES>, C<--format> and C<--prefer-format>.
 
@@ -303,28 +297,18 @@ arguments to the program. This is the recommended practice.
 
 Typical use.
 
-=item cclive -f best "URL"
-
-Download the best available format of the media. This assumes E<gt>1
-formats are supported, otherwise will fallback to default format.
-
 =item cclive -F "URL"
 
-Query available formats to the URL. Use one of the returned format
-strings from this list with C<--format>.
+Query available formats to the URL. You can then use one of the
+format strings from the returned array with C<--format>.
 
-=item cclive -p "^.*youtube.*\.com:fmt43_360p" YOUTUBE_URL
+=item cclive -f best "URL"
 
-Whenever possible, get fmt43_360p format of YouTube videos.
+Download the best available format of the media.
 
-=item cclive -p "dailym:best" DAILYMOTION_URL
+=item cclive -p "^.*youtube.*\.com:fmt43_360p" "YOUTUBE_URL"
 
-Similar but get the 'best' format of DailyMotion videos, whenever
-possible. The pattern used above is oversimplified. Normally, you
-would want to use better crafted patterns, instead, as cclive
-does not match the pattern to the domain name but to the I<URL>.
-
-You could also specify multiple occurrences of -p.
+Get the fmt43_360p format of YouTube videos whenever possible.
 
 =item cclive -n "URL"
 
