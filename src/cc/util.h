@@ -39,9 +39,9 @@ namespace cc
 
 class file;
 
-void exec(const file&,
-          const quvi::url&,
-          const boost::program_options::variables_map& map);
+int exec(const file&,
+         const quvi::url&,
+         const boost::program_options::variables_map& map);
 void get(const quvi::query&,
          quvi::media&,
          const boost::program_options::variables_map& map);

@@ -17,46 +17,119 @@
 
 #include <stdexcept>
 #include <sstream>
+#include <cstdio>
+#include <cerrno>
+
+#include <sys/wait.h>
 
 #include <boost/program_options/variables_map.hpp>
+#include <boost/foreach.hpp>
 #include <pcrecpp.h>
+
+#ifndef foreach
+#define foreach BOOST_FOREACH
+#endif
 
 #include <ccquvi>
 #include <ccfile>
 #include <ccre>
 #include <ccutil>
+#include <cclog>
 
 namespace cc
 {
 
+typedef std::vector<std::string> vst;
+
+static void tokenize(const std::string& r,
+                     const std::string& s,
+                     vst& dst)
+{
+  pcrecpp::StringPiece sp(s);
+  pcrecpp::RE rx(r);
+
+  std::string t;
+  while (rx.FindAndConsume(&sp, &t))
+    dst.push_back(t);
+}
+
 namespace po = boost::program_options;
 
-void exec(const file& file,
-          const quvi::url& url,
-          const po::variables_map& map)
+int exec(const file& file,
+         const quvi::url& url,
+         const po::variables_map& map)
 {
-  std::string arg = map["exec"].as<std::string>();
-  pcrecpp::RE("%f").GlobalReplace(file.path(), &arg);
-
-  const int rc = system(arg.c_str());
   std::stringstream b;
+  b << "\"" << file.path() << "\"";
 
-  switch (rc)
+  std::string e = map["exec"].as<std::string>();
+  pcrecpp::RE("%f").GlobalReplace(b.str(), &e);
+
+  vst tokens;
+  tokenize("(\"(.*?)\"|\\S+)", e, tokens);
+
+  std::string t;
+  vst args;
+
+  foreach (const std::string s, tokens)
+  {
+    t = s;
+    pcrecpp::RE("\"").GlobalReplace("", &t);
+    args.push_back(t);
+  }
+
+  const size_t sz = args.size();
+  const char **argv = new const char* [sz+2];
+  if (!argv)
+    throw std::runtime_error("memory allocation error");
+
+  argv[0] = args[0].c_str();
+
+  for (size_t i=1; i<sz; ++i)
+    argv[i] = args[i].c_str();
+
+  argv[sz] = NULL;
+
+  fflush(stdout);
+  fflush(stderr);
+
+  pid_t child_pid = fork();
+  if (child_pid == -1)
     {
-    case  0:
-      break;
-    case -1:
-      b << "failed to execute: `" << arg << "'";
-      break;
-    default:
-      b << "child exited with: " << (rc >> 8);
-      break;
+      delete [] argv;
+      throw std::runtime_error(cc::perror("fork"));
     }
 
-  const std::string s = b.str();
+  if (child_pid == 0)
+    {
+      execvp(argv[0], (char **)argv);
+      exit(1);
+    }
 
-  if (!s.empty())
-    throw std::runtime_error(s);
+  delete [] argv;
+
+  int wait_status = 0;
+  while (waitpid(child_pid, &wait_status, 0) == (pid_t)-1)
+    {
+      if (errno != EINTR)
+        {
+          cc::log << "error waiting for " << args[0] << std::endl;
+          break;
+        }
+    }
+
+  if (WIFSIGNALED(wait_status))
+    {
+      cc::log << args[0]
+              << " terminated by signal "
+              << WTERMSIG(wait_status)
+              << std::endl;
+    }
+
+  if (WEXITSTATUS(wait_status) == 0)
+    return 0; // OK.
+
+  return 1;
 }
 
 } // namespace cc
