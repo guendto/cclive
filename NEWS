@@ -1,4 +1,11 @@
 
+0.7.6  Mon Sep 12 2011  Toni Gundogdu
+Changes:
+    - Add --tr (depr. --regexp, --subst)
+    - Add --prefer-format
+    - Revise manual
+
+
 0.7.5.1  Thu Aug 18 2011  Toni Gundogdu
 Changes:
     - Lower quvi prerequisite to 0.2.16.1
