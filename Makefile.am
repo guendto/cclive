@@ -1,7 +1,10 @@
-
 ACLOCAL_AMFLAGS=-I m4
 EXTRA_DIST=	gen-ver.sh VERSION
-SUBDIRS=	src doc
+
+SUBDIRS=	src
+if WITH_MANUAL
+SUBDIRS+=	doc
+endif
 
 .PHONY: ChangeLog VERSION
 
