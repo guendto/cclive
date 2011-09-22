@@ -23,6 +23,7 @@ Last chance to bail out (^C) before we continue."
     [ -e "$file" ] && [ -f "$file" ] && rm -f "$file"
   done
   [ -e "$cachedir" ] && rm -rf "$cachedir"
+  rmdir -p config.aux 2>/dev/null
   exit 0
 }
 
