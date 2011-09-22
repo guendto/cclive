@@ -346,8 +346,12 @@ application::exit_status application::exec(int argc, char **argv)
           << PACKAGE_VERSION
 #endif
           << " for " << CANONICAL_TARGET
-          << "\nlibquvi "
+          << "\n  libquvi "
           << quvi_version(QUVI_VERSION_LONG)
+#ifdef HAVE_LIBQUVI_0_4_0
+          << "\n  libquvi-scripts "
+          << quvi_version(QUVI_VERSION_SCRIPTS)
+#endif
           << std::endl;
       return ok;
     }
