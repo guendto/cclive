@@ -82,6 +82,9 @@ I<arg> format was unavailable.
 For the above reasons, the downloaded format may be different from the
 requested I<arg> format.
 
+For details about the YouTube's "fmt" IDs, refer to:
+ http://en.wikipedia.org/wiki/YouTube#Quality_and_codecs
+
 See also L</EXAMPLES>, C<--query-formats> and C<--prefer-format>.
 
 =item B<-c, --continue>
