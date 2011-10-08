@@ -312,23 +312,8 @@ namespace fs = boost::filesystem;
 static fs::path output_dir(const po::variables_map& map)
 {
   fs::path dir;
-
   if (map.count("output-dir"))
     dir = map["output-dir"].as<std::string>();
-
-#ifdef HAVE_GETCWD
-  else
-    {
-      char *p = getcwd(NULL, 0);
-      if (p)
-        {
-          dir = p;
-          free(p);
-          p = NULL;
-        }
-    }
-#endif
-
   return fs::system_complete(dir);
 }
 
