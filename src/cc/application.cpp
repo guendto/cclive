@@ -266,36 +266,6 @@ static application::exit_status query_formats(
   return application::ok;
 }
 
-static char *parse_url_scheme(const std::string& s)
-{
-  char *url = const_cast<char*>(s.c_str());
-
-  char *p = strstr(url, ":/");
-  if (!p)
-    return NULL;
-
-  char *r = NULL;
-  asprintf(&r, "%.*s", (int)(p - url), url);
-
-  return r;
-}
-
-#define _free(p) \
-  do { if (p) free(p); p=NULL; } while (0)
-
-static int is_url(const std::string& s)
-{
-  char *p = parse_url_scheme(s);
-  if (p)
-    {
-      _free(p);
-      return true;
-    }
-  return false;
-}
-
-#undef _free
-
 static void read_from(std::istream& is, vst& dst)
 {
   std::string s;
@@ -310,6 +280,11 @@ static void read_from(std::istream& is, vst& dst)
     std::istream_iterator<std::string >(),
     std::back_inserter<vst>(dst)
   );
+}
+
+static bool is_url(const std::string& s)
+{
+  return strstr(const_cast<char*>(s.c_str()), "://") != NULL;
 }
 
 extern char LICENSE[]; // cclive/license.cpp
