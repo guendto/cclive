@@ -68,14 +68,11 @@ int exec(const file& file,
   vst tokens;
   tokenize("(\"(.*?)\"|\\S+)", e, tokens);
 
-  std::string t;
   vst args;
-
-  foreach (const std::string s, tokens)
+  foreach (std::string s, tokens)
   {
-    t = s;
-    pcrecpp::RE("\"").GlobalReplace("", &t);
-    args.push_back(t);
+    pcrecpp::RE("\"").GlobalReplace("", &s);
+    args.push_back(s);
   }
 
   const size_t sz = args.size();
