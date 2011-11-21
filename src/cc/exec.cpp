@@ -115,7 +115,6 @@ static void tokenize(const std::string& r,
 namespace po = boost::program_options;
 
 int exec(const file& file,
-         const quvi::url& url,
          const po::variables_map& map)
 {
   std::string e = map["exec"].as<std::string>();

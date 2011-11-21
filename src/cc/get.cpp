@@ -53,6 +53,18 @@ void get(const quvi::query& query,
         {
           cc::file file(media, url, n, map);
 
+          if (file.nothing_todo())
+            {
+              if (exec)
+                cc::exec(file, map);
+
+#define E_NOTHING_TODO "media retrieved completely already"
+              throw std::runtime_error(E_NOTHING_TODO);
+#undef E_NOTHING_TODO
+            }
+
+          // Download media.
+
           if (retry > 0)
             {
               cc::log
@@ -76,7 +88,7 @@ void get(const quvi::query& query,
                 continue; // Retry.
 
               if (exec)
-                cc::exec(file, url, map);
+                cc::exec(file, map);
             }
 
           break; // Stop retrying.

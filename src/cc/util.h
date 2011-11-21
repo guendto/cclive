@@ -26,7 +26,6 @@ class variables_map;
 }
 }
 
-
 namespace quvi
 {
 class query;
@@ -37,11 +36,14 @@ class url;
 namespace cc
 {
 
+class nothing_todo_error {
+public:
+  nothing_todo_error() { }
+};
+
 class file;
 
-int exec(const file&,
-         const quvi::url&,
-         const boost::program_options::variables_map& map);
+int exec(const file&, const boost::program_options::variables_map& map);
 void get(const quvi::query&,
          quvi::media&,
          const boost::program_options::variables_map& map);

@@ -57,7 +57,7 @@ namespace cc
 {
 
 file::file()
-  : _initial_length(0)
+  : _initial_length(0), _nothing_todo(false)
 {
 }
 
@@ -67,13 +67,20 @@ file::file(const quvi::media& media,
            const quvi::url& url,
            const int n,
            const po::variables_map& map)
-  : _initial_length(0)
+  : _initial_length(0), _nothing_todo(false)
 {
-  _init(media, url, n, map);
+  try
+    {
+      _init(media, url, n, map);
+    }
+  catch (const cc::nothing_todo_error&)
+    {
+      _nothing_todo = true;
+    }
 }
 
 file::file(const file& f)
-  : _initial_length(0)
+  : _initial_length(0), _nothing_todo(false)
 {
   _swap(f);
 }
@@ -89,6 +96,7 @@ void file::_swap(const file& f)
   _name           = f._name;
   _path           = f._path;
   _initial_length = f._initial_length;
+  _nothing_todo   = f._nothing_todo;
 }
 
 #define E "server response code %ld, expected 200 or 206 (conn_code=%ld)"
@@ -290,6 +298,11 @@ const std::string& file::name() const
   return _name;
 }
 
+const bool file::nothing_todo() const
+{
+  return _nothing_todo;
+}
+
 bool file::_should_continue() const
 {
   return _initial_length > 0;
@@ -309,8 +322,6 @@ std::string file::to_s(const quvi::url& url) const
 
   return fmt.str();
 }
-
-#define E_NOTHINGTODO "media retrieved completely already"
 
 namespace fs = boost::filesystem;
 
@@ -348,7 +359,7 @@ void file::_init(const quvi::media& media,
       if ( _initial_length >= url.content_length()
            && !map.count("overwrite") )
         {
-          throw std::runtime_error(E_NOTHINGTODO);
+          throw cc::nothing_todo_error();
         }
     }
 
@@ -438,7 +449,7 @@ void file::_init(const quvi::media& media,
                 break;
 
               else if (_initial_length >= url.content_length())
-                throw std::runtime_error(E_NOTHINGTODO);
+                throw cc::nothing_todo_error();
 
               else
                 {
@@ -464,8 +475,6 @@ void file::_init(const quvi::media& media,
   if ( map.count("overwrite") )
     _initial_length = 0;
 }
-
-#undef E_NOTHINGTODO
 
 double file::exists(const std::string& path)
 {
