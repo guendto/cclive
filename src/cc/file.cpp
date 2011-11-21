@@ -285,6 +285,11 @@ const std::string& file::path() const
   return _path;
 }
 
+const std::string& file::name() const
+{
+  return _name;
+}
+
 bool file::_should_continue() const
 {
   return _initial_length > 0;

@@ -120,6 +120,7 @@ int exec(const file& file,
 {
   std::string e = map["exec"].as<std::string>();
   pcrecpp::RE("%f").GlobalReplace(file.path(), &e);
+  pcrecpp::RE("%n").GlobalReplace(file.name(), &e);
 
   vst args;
   tokenize("([\"'](.*?)[\"']|\\S+)", e, args);

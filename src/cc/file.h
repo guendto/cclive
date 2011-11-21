@@ -46,6 +46,7 @@ public:
 public:
   std::string to_s(const quvi::url&) const;
   const std::string& path() const;
+  const std::string& name() const;
   double initial_length() const;
 public:
   static double exists(const std::string&);
