@@ -70,13 +70,13 @@ C<best>, C<help> or C<list>. Note, however, that of these, the C<list> and
 the C<help> are deprecated and will be removed in the later versions of
 cclive.
 
-The I<arg> value is used with all of the URLs fed to cclive at runtime.
-If the I<arg> is C<best>, libquvi will determine the C<best> format available
+The I<arg> value is used with all of the URLs fed to cclive at runtime. If
+the I<arg> is C<best>, libquvi will determine the C<best> format available
 to an URL.
 
 If the I<arg> is C<default> libquvi attempts to return an URL to whatever
 was deemed to be the C<default> format to the URL. libquvi will switch
-to C<default> format if the I<arg> was unregonized or the requested
+to C<default> format if the I<arg> was unrecognized or the requested
 I<arg> format was unavailable.
 
 For the above reasons, the downloaded format may be different from the
@@ -217,10 +217,13 @@ cclive. Use C<--tr> instead.
 =item B<--exec> I<arg>
 
 Invoke I<arg> after each successfully finished download. Each occurence
-of the following specifiers will be replaced (and double-quoted) in the
-I<arg>:
+of the following specifiers will be replaced in the I<arg>:
 
  %f .. Full path to the downloaded media file
+ %n .. Name of the downloaded media file
+
+The I<arg> is also invoked if the media is fully retrieved already. See
+also L</EXAMPLES>.
 
 =item B<--agent> I<arg> (="Mozilla/5.0")
 
@@ -331,7 +334,15 @@ Go to background, redirect output to C<foo.log>.
 Interrupt the current download of all matching cclive processes. Causes
 cclive to move onto the next URL in the queue, if any.
 
+=item cclive "URL" --exec 'echo "%f"'
+
+Invoke C<echo(1)> after downloading the media. In this case, print the
+path to the downloaded media file.
+
 =back
+
+You can find more examples in the project wiki, see L</WWW> for the
+URLs.
 
 =head1 FILES
 
@@ -388,7 +399,7 @@ See also C<gdb(1)>, C<strace(1)> and C<valgrind(1)>.
 
 =head1 BACKGROUND
 
-The name "clive" originates from the words "command line video extration",
+The name "clive" originates from the words "command line video extraction",
 the prepending "c" refers to C or C++. cclive is a rewrite of C<clive(1)>
 in C++.
 
