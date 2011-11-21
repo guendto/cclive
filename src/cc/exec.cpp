@@ -41,40 +41,8 @@ namespace cc
 
 typedef std::vector<std::string> vst;
 
-static void tokenize(const std::string& r,
-                     const std::string& s,
-                     vst& dst)
+static int invoke_exec(const vst& args)
 {
-  pcrecpp::StringPiece sp(s);
-  pcrecpp::RE rx(r);
-
-  std::string t;
-  while (rx.FindAndConsume(&sp, &t))
-    dst.push_back(t);
-}
-
-namespace po = boost::program_options;
-
-int exec(const file& file,
-         const quvi::url& url,
-         const po::variables_map& map)
-{
-  std::stringstream b;
-  b << "\"" << file.path() << "\"";
-
-  std::string e = map["exec"].as<std::string>();
-  pcrecpp::RE("%f").GlobalReplace(b.str(), &e);
-
-  vst tokens;
-  tokenize("(\"(.*?)\"|\\S+)", e, tokens);
-
-  vst args;
-  foreach (std::string s, tokens)
-  {
-    pcrecpp::RE("\"").GlobalReplace("", &s);
-    args.push_back(s);
-  }
-
   const size_t sz = args.size();
   const char **argv = new const char* [sz+2];
   if (!argv)
@@ -127,6 +95,36 @@ int exec(const file& file,
     return 0; // OK.
 
   return 1;
+}
+
+static void tokenize(const std::string& r,
+                     const std::string& s,
+                     vst& dst)
+{
+  pcrecpp::StringPiece sp(s);
+  pcrecpp::RE rx(r);
+
+  std::string t;
+  while (rx.FindAndConsume(&sp, &t))
+    {
+      pcrecpp::RE("[\"']").GlobalReplace("", &t);
+      dst.push_back(t);
+    }
+}
+
+namespace po = boost::program_options;
+
+int exec(const file& file,
+         const quvi::url& url,
+         const po::variables_map& map)
+{
+  std::string e = map["exec"].as<std::string>();
+  pcrecpp::RE("%f").GlobalReplace(file.path(), &e);
+
+  vst args;
+  tokenize("([\"'](.*?)[\"']|\\S+)", e, args);
+
+  return invoke_exec(args);
 }
 
 } // namespace cc
