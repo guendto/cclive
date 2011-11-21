@@ -159,8 +159,8 @@ always use 'dotline' type. I<arg> can be one of the following strings:
 
 =item B<--update-interval> I<arg> (=1)
 
-Specify I<arg> progressbar update interval in seconds. The value may be
-a 'double', e.g. 0.2 or 1.99.
+Specify I<arg> progressbar update interval in seconds. Use of decimal
+fractions, e.g. "0.2" or "1.99", is acceptable.
 
 =item B<--filename-format> I<arg> (="%t.%s")
 
