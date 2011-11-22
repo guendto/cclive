@@ -221,9 +221,10 @@ of the following specifiers will be replaced in the I<arg>:
 
  %f .. Full path to the downloaded media file
  %n .. Name of the downloaded media file
+ %t .. Media title (unfiltered)
 
-The I<arg> is also invoked if the media is fully retrieved already. See
-also L</EXAMPLES>.
+The I<arg> is also invoked if the media is fully retrieved already.
+cclive accepts multiple occurrences of C<--exec>. See also L</EXAMPLES>.
 
 =item B<--agent> I<arg> (="Mozilla/5.0")
 
