@@ -45,6 +45,7 @@ public:
              const boost::program_options::variables_map&) const;
 public:
   std::string to_s(const quvi::url&) const;
+  const std::string& title() const;
   const std::string& path() const;
   const std::string& name() const;
   const bool nothing_todo() const;
@@ -61,6 +62,7 @@ private:
 private:
   double _initial_length;
   bool _nothing_todo;
+  std::string _title;
   std::string _name;
   std::string _path;
 };

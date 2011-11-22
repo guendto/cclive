@@ -93,6 +93,7 @@ file& file::operator=(const file& f)
 
 void file::_swap(const file& f)
 {
+  _title          = f._title;
   _name           = f._name;
   _path           = f._path;
   _initial_length = f._initial_length;
@@ -288,6 +289,11 @@ double file::initial_length() const
   return _initial_length;
 }
 
+const std::string& file::title() const
+{
+  return _title;
+}
+
 const std::string& file::path() const
 {
   return _path;
@@ -340,6 +346,8 @@ void file::_init(const quvi::media& media,
                  const int n,
                  const po::variables_map& map)
 {
+  _title = media.title();
+
   if (map.count("output-file"))
     {
       // Overrides --filename-format.

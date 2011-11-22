@@ -121,6 +121,7 @@ void exec(const file& file, const po::variables_map& map)
   {
     pcrecpp::RE("%f").GlobalReplace(file.path(), &e);
     pcrecpp::RE("%n").GlobalReplace(file.name(), &e);
+    pcrecpp::RE("%t").GlobalReplace(file.title(), &e);
 
     vst args;
     tokenize("([\"'](.*?)[\"']|\\S+)", e, args);
