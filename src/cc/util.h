@@ -43,7 +43,7 @@ public:
 
 class file;
 
-int exec(const file&, const boost::program_options::variables_map& map);
+void exec(const file&, const boost::program_options::variables_map& map);
 void get(const quvi::query&,
          quvi::media&,
          const boost::program_options::variables_map& map);

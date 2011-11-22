@@ -114,17 +114,18 @@ static void tokenize(const std::string& r,
 
 namespace po = boost::program_options;
 
-int exec(const file& file,
-         const po::variables_map& map)
+void exec(const file& file, const po::variables_map& map)
 {
-  std::string e = map["exec"].as<std::string>();
-  pcrecpp::RE("%f").GlobalReplace(file.path(), &e);
-  pcrecpp::RE("%n").GlobalReplace(file.name(), &e);
+  const vst m = map["exec"].as<vst>();
+  foreach (std::string e, m)
+  {
+    pcrecpp::RE("%f").GlobalReplace(file.path(), &e);
+    pcrecpp::RE("%n").GlobalReplace(file.name(), &e);
 
-  vst args;
-  tokenize("([\"'](.*?)[\"']|\\S+)", e, args);
-
-  return invoke_exec(args);
+    vst args;
+    tokenize("([\"'](.*?)[\"']|\\S+)", e, args);
+    invoke_exec(args);
+  }
 }
 
 } // namespace cc

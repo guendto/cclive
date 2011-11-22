@@ -136,7 +136,7 @@ void options::exec(int argc, char **argv)
    "Regexp to cleanup media title (depr.)")
   ("subst", opts::value<std::string>(),
    "Replace matched occurences in filename (depr.)")
-  ("exec", opts::value<std::string>(),
+  ("exec", opts::value<vst>()->composing(),
    "Invoke arg after each finished download")
   ("agent",
    opts::value<std::string>()->default_value("Mozilla/5.0"),
