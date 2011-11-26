@@ -56,34 +56,33 @@ the file specified with C<--log-file>.
 
 =item B<-F, --query-formats>
 
-Query available formats to an URL. The returned string will contain
-an array of I<format strings>, each separated by the '|' character.
-The array is created, by libquvi, from the data returned by the server.
-You can use these I<format strings> with C<--format>.
+Query available formats to the URL. The returned array is created
+from the data returned by the server. You can use the
+I<format strings> in this array with C<--format>.
+
+The available formats are determined by the I<libquvi script>
+responsible for parsing the media details.
 
 See also L</EXAMPLES>, C<--format> and C<--prefer-format>.
 
 =item B<-f, --format> I<arg> (=default)
 
-Download format I<arg> of the media. The I<arg> can also be C<default>,
-C<best>, C<help> or C<list>. Note, however, that of these, the C<list> and
-the C<help> are deprecated and will be removed in the later versions of
-cclive.
+Download the format I<arg> of the media. The I<arg> may also be C<default>,
+C<best>, C<help> or C<list>. Note, however, that the C<list> and the C<help>
+are I<deprecated> and will be removed in the later versions of cclive.
+The I<arg> value is used with B<all> of the URLs fed to cclive.
 
-The I<arg> value is used with all of the URLs fed to cclive at runtime. If
-the I<arg> is C<best>, libquvi will determine the C<best> format available
-to an URL.
+If the I<arg> is C<best>, the I<libquvi script> responsible for parsing
+the media details will determine the C<best> format available to an URL.
 
-If the I<arg> is C<default> libquvi attempts to return an URL to whatever
-was deemed to be the C<default> format to the URL. libquvi will switch
-to C<default> format if the I<arg> was unrecognized or the requested
-I<arg> format was unavailable.
+If the I<arg> is C<default> the I<libquvi script> attempts to return an
+URL to whatever it deemed to be the C<default> format for the URL.
 
-For the above reasons, the downloaded format may be different from the
-requested I<arg> format.
+The I<libquvi script> will return the C<default> format if the I<arg>
+was unrecognized or the requested format was not available.
 
-For details about the YouTube's "fmt" IDs, refer to:
- http://en.wikipedia.org/wiki/YouTube#Quality_and_codecs
+You can find more information about the YouTube specific "fmt" IDs at:
+ <http://en.wikipedia.org/wiki/YouTube#Quality_and_codecs>
 
 See also L</EXAMPLES>, C<--query-formats> and C<--prefer-format>.
 
