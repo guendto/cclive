@@ -21,40 +21,38 @@ stdin. The command line args may be either URLs or files to read.
 If cclive reads from either stdin or files, it expects each URL to be
 separated by a newline or whitespace character.
 
-=over 4
-
-=item B<--version>
+=head2 --version
 
 Print version and exit.
 
-=item B<--help>
+=head2 --help
 
 Print help and exit.
 
-=item B<--license>
+=head2 --license
 
 Print license and exit.
 
-=item B<--support>
+=head2 --support
 
 Print supported hosts and exit.
 
-=item B<--verbose-libcurl>
+=head2 --verbose-libcurl
 
 Turn on libcurl verbose output.
 
-=item B<-q, --quiet>
+=head2 -q, --quiet
 
 Turn off all output to stdout and stderr with the exception of
 C<--verbose-libcurl>, if enabled, libcurl will continue to print
 messages to stderr.
 
-=item B<-b, --background>
+=head2 -b, --background
 
 Go to background after startup. Output will be written to
 the file specified with C<--log-file>.
 
-=item B<-F, --query-formats>
+=head2 -F, --query-formats
 
 Query available formats to the URL. The returned array is created
 from the data returned by the server. You can use the
@@ -65,7 +63,7 @@ responsible for parsing the media details.
 
 See also L</EXAMPLES>, C<--format> and C<--prefer-format>.
 
-=item B<-f, --format> I<arg> (=default)
+=head2 -f, --format I<arg> (=default)
 
 Download the format I<arg> of the media. The I<arg> may also be C<default>,
 C<best>, C<help> or C<list>. Note, however, that the C<list> and the C<help>
@@ -86,82 +84,76 @@ You can find more information about the YouTube specific "fmt" IDs at:
 
 See also L</EXAMPLES>, C<--query-formats> and C<--prefer-format>.
 
-=item B<-c, --continue>
+=head2 -c, --continue
 
 Resume partially downloaded media.
 
-=item B<-W, --overwrite>
+=head2 -W, --overwrite
 
 Overwrite existing media.
 
-=item B<-O, --output-file> I<arg>
+=head2 -O, --output-file I<arg>
 
 Write media to I<arg>. Overrides C<--filename-format>.
 
-=item B<-n, --no-download>
+=head2 -n, --no-download
 
 Do not download the media, print details only.
 
-=item B<-r, --no-resolve>
+=head2 -r, --no-resolve
 
 Do not resolve URL redirections. If enabled, breaks the compatibility
 with most "shortened" URLs.
 
-=item B<--no-proxy>
+=head2 --no-proxy
 
 Disable use of HTTP proxy. Overrides both C<--proxy> and http_proxy environment
 settings.
 
-=item B<--log-file> I<arg> (=cclive_log)
+=head2 --log-file I<arg> (=cclive_log)
 
 Write log output to I<arg>. Ignored unless used with C<--background>.
 Overwrites the existing I<arg> file (if any). See also C<--background>
 and C<--update-interval>.
 
-=item B<--config-file> I<arg> (=$HOME/.ccliverc)
+=head2 --config-file I<arg> (=~/.ccliverc)
 
 Path to a file to read cclive arguments from.
-
-=back
 
 =head1 OPTIONS - CONFIGURATION
 
 In addition to the command line, the configurable options may also be read
 from the configuration file. See L</FILES>.
 
-=over 4
+=head2 -p, --prefer-format I<arg>
 
-=item B<-p, --prefer-format> I<arg>
+Download the I<specified> format of the media when the pattern matches
+to the media page URL.
 
-Where I<arg> is a B<string pair> of I<pattern> (regular expression)
-and I<format>. The character ':' is expected to separate these two
-strings, e.g. C<-p foo:bar>. If the I<pattern> matches an URL,
-cclive downloads the I<format> of the media from the URL.
+I<arg> is a B<string pair> of I<pattern> (regular expression) and
+I<format>. The character ':' is expected to separate these two
+strings, e.g. C<pattern:format>.
 
-C<--prefer-format> works similarly to C<--format> with the difference
-that -p binds the I<format> value to a matching URL. In contrast, the
-C<--format> value is used with all of the URLs fed to cclive at runtime.
-
-C<--format> negates C<--prefer-format>. cclive accepts multiple
+C<--format> overrides C<--prefer-format>. cclive accepts multiple
 occurrences of C<--prefer-format>.
 
 See also L</EXAMPLES>, C<--query-formats> and C<--format>.
 
-=item B<--progressbar> I<arg> (=normal)
+=head2 --progressbar I<arg> (=normal)
 
-Use progressbar I<arg>. Ignored with C<--background> which will
-always use 'dotline' type. I<arg> can be one of the following strings:
+Use the progressbar of type I<arg>. Ignored with C<--background> which
+will always use the C<dotline> type. Possible values:
 
- normal   .. Default
- dotline  .. Used by --background as default
- simple   .. Less verbose
+ normal  (default)
+ dotline (implied by --background)
+ simple  (basic)
 
-=item B<--update-interval> I<arg> (=1)
+=head2 --update-interval I<arg> (=1)
 
 Specify I<arg> progressbar update interval in seconds. Use of decimal
 fractions, e.g. "0.2" or "1.99", is acceptable.
 
-=item B<--filename-format> I<arg> (="%t.%s")
+=head2 --filename-format I<arg> (="%t.%s")
 
 How the downloaded media file should be named.  Each occurence of the
 following specifiers will be replaced in the I<arg>:
@@ -173,11 +165,11 @@ following specifiers will be replaced in the I<arg>:
 
 See also C<--tr>.
 
-=item B<--output-dir> I<arg>
+=head2 --output-dir I<arg>
 
 Write downloaded media to I<arg> directory.
 
-=item B<-t, --tr> I<arg>
+=head2 -t, --tr I<arg>
 
 Where I<arg> is a pattern (regular expression). C<--tr> can be used to
 translate the characters in the media titles before they are used in
@@ -185,35 +177,7 @@ the filenames of the downloaded media. Default is C</(\w|\s)/g>.
 
 cclive accepts multiple occurrences of C<--tr>. See also L</EXAMPLES>.
 
-=item B<--regexp> I<arg> (="/(\w|\s)/g")
-
-Regular expression I<arg> to cleanup the media title before it
-is used in the filename. Supports "i" (case-insensitive) and "g"
-(global or "find all").
-
-This option is deprecated and will be removed in the later versions of
-cclive. Use C<--tr> instead.
-
-=item B<--subst> I<arg> ...
-
-Replace matched occurences in the media filename after applying
-C<--filename-format> and C<--regexp>. To use multiple substitutions,
-separate each expression in I<arg> with a whitespace. Supports "i"
-(case-insensitive) and "g" (global or "find all").
-
-Delimiters supported:
-
- <> {} () /
-
-Note:
-
- s/old/new/  .. Invalid
- s/old//new/ .. OK
-
-This option is deprecated and will be removed in the later versions of
-cclive. Use C<--tr> instead.
-
-=item B<--exec> I<arg>
+=head2 --exec I<arg>
 
 Invoke I<arg> after each successfully finished download. Each occurence
 of the following specifiers will be replaced in the I<arg>:
@@ -225,20 +189,20 @@ of the following specifiers will be replaced in the I<arg>:
 The I<arg> is also invoked if the media is fully retrieved already.
 cclive accepts multiple occurrences of C<--exec>. See also L</EXAMPLES>.
 
-=item B<--agent> I<arg> (="Mozilla/5.0")
+=head2 --agent I<arg> (="Mozilla/5.0")
 
 Identify cclive as I<arg> to the HTTP servers.
 
-=item B<--proxy> I<arg>
+=head2 --proxy I<arg>
 
 Use I<arg> for HTTP proxy, e.g. "http://foo:1234". Overrides
 http_proxy environment setting.
 
-=item B<--throttle> I<arg> (=0, disabled)
+=head2 --throttle I<arg> (=0, disabled)
 
 Do not exceed the transfer rate I<arg> KB/s.
 
-=item B<--connect-timeout> I<arg> (=30)
+=head2 --connect-timeout I<arg> (=30)
 
 This option wraps the CURLOPT_CONNECTTIMEOUT (libcurl):
 
@@ -249,9 +213,9 @@ This only limits the connection phase, once it has connected,
 this option is of no more use. Set to zero to disable connection
 timeout (it will then only timeout on the system's internal
 timeouts). See also the CURLOPT_TIMEOUT option."
--- C<curl_easy_setopt(3)>
+-- curl_easy_setopt(3)
 
-=item B<--transfer-timeout> I<arg> (=0, disabled)
+=head2 --transfer-timeout I<arg> (=0, disabled)
 
 This option wraps the CURLOPT_TIMEOUT (libcurl):
 
@@ -262,9 +226,9 @@ Normally, name lookups can take a considerable time and limiting
 operations to less than a few minutes risk aborting perfectly
 normal operations. This option will cause curl to use the
 SIGALRM to enable time-outing system calls."
--- C<curl_easy_setopt(3)>
+-- curl_easy_setopt(3)
 
-=item B<--dns-cache-timeout> I<arg> (=60)
+=head2 --dns-cache-timeout I<arg> (=60)
 
 This option wraps the CURLOPT_DNS_CACHE_TIMEOUT (libcurl):
 
@@ -276,84 +240,109 @@ for 60 seconds.
 
 The name resolve functions of various libc implementations don't
 re-read name server information unless explicitly told so
-(for example, by calling C<res_init(3)>). This may cause libcurl
+(for example, by calling res_init(3)). This may cause libcurl
 to keep using the older server even if DHCP has updated the
 server info, and this may look like a DNS cache issue to the
-casual libcurl-app user."
--- C<curl_easy_setopt(3)>
+casual libcurl-app user." -- curl_easy_setopt(3)
 
-=item B<--max-retries> I<arg> (=5, 0=disabled)
+=head2 --max-retries I<arg> (=5, 0=disabled)
 
 Retry downloading I<arg> times before giving up.
 
-=item B<--retry-wait> I<arg> (=5)
+=head2 --retry-wait I<arg> (=5)
 
 Wait I<arg> seconds before retrying after a failed attempt.
 
-=back
+=head1 DEPRECATED
+
+These options are deprecated and will be removed in the later versions
+of cclive.
+
+=head2 --regexp I<arg> (="/(\w|\s)/g")
+
+Regular expression I<arg> to cleanup the media title before it
+is used in the filename. Supports "i" (case-insensitive) and "g"
+(global or "find all").
+
+Use C<--tr> instead.
+
+=head2 --subst I<arg> ...
+
+Replace matched occurences in the media filename after applying
+C<--filename-format> and C<--regexp>. To use multiple substitutions,
+separate each expression in I<arg> with a whitespace. Supports "i"
+(case-insensitive) and "g" (global or "find all").
+
+=head3 Supported delimiters
+
+ <> {} () /
+
+=head3 Note
+
+ s/old/new/  .. Invalid
+ s/old//new/ .. OK
+
+Use C<--tr> instead.
 
 =head1 EXAMPLES
 
-Put the URLs inside quotes when they are specified as the command line
-arguments to the program. This is the recommended practice.
+Always quote the URLs in the command line as seen below. Many URLs
+contain parameters that may otherwise cause the shell to behave
+with unexpected results.
 
-=over 4
-
-=item cclive "URL"
+=head2 cclive "URL"
 
 Typical use.
 
-=item cclive -F "URL"
+=head2 cclive -F "URL"
 
 Query available formats to the URL. You can then use one of the
 format strings from the returned array with C<--format>.
 
-=item cclive -f best "URL"
+=head2 cclive -f best "URL"
 
 Download the best available format of the media.
 
-=item cclive -p "^.*youtube.*\.com:fmt43_360p" "YOUTUBE_URL"
+=head2 cclive -p "^.*youtube.*\.com:fmt43_360p" "YOUTUBE_URL"
 
 Get the fmt43_360p format of YouTube videos whenever possible.
 
-=item cclive -n "URL"
+=head2 cclive -n "URL"
 
 Do not download the media, print the details only.
 
-=item cclive "URL" -t 's/foo/bar/g'
+=head2 cclive "URL" -t 's/foo/bar/g'
 
 Replace any "foo" substrings with "bar" in the media title before
 using it in the output filename.
 
-=item cclive "URL" -b --log-file foo.log
+=head2 cclive "URL" -b --log-file foo.log
 
 Go to background, redirect output to C<foo.log>.
 
-=item pkill -USR1 cclive
+=head2 pkill -USR1 cclive
 
 Interrupt the current download of all matching cclive processes. Causes
 cclive to move onto the next URL in the queue, if any.
 
-=item cclive "URL" --exec 'echo "%f"'
+=head2 cclive "URL" --exec 'echo "%f"' --exec 'vlc "%f"'
 
-Invoke C<echo(1)> after downloading the media. In this case, print the
-path to the downloaded media file.
+Print path to the downloaded media file using echo(1), open the media
+file in vlc(1).
 
-=back
+=head2 More examples
 
 You can find more examples in the project wiki, see L</WWW> for the
 URLs.
 
 =head1 FILES
 
-=over 4
-
-=item B<$HOME/.ccliverc>
+=head2 ~/.ccliverc
 
 Or use C<--config-file>. See C<--help> or L</OPTIONS - CONFIGURATION>
 for the configurable options.
 
-Example:
+=head3 Example
 
  filename-format = %h_%i_(%t).%s
  proxy = http://foo:1234
@@ -363,8 +352,6 @@ Example:
  prefer-format = ^.*youtube.*\.com:fmt43_360p
  prefer-format = dailym:best
 
-=back
-
 =head1 EXIT STATUS
 
 cclive exits with 0 on success and >0 if an (unrecoverable) error
@@ -372,25 +359,9 @@ occurred.
 
 =head1 DEBUGGING TIPS
 
-=over 4
-
-=item B<--no-download>
-
-Use the C<--no-download> switch when you don't need to download the media.
-
-=item B<--verbose-libcurl>
+=head2 --verbose-libcurl
 
 Make libcurl verbose.
-
-=item B<Debug symbols>
-
-Compile cclive with C<-g>, see also C<gcc(1)>.
-
-=item B<Other tools>
-
-See also C<gdb(1)>, C<strace(1)> and C<valgrind(1)>.
-
-=back
 
 =head1 WWW
 
@@ -400,7 +371,7 @@ See also C<gdb(1)>, C<strace(1)> and C<valgrind(1)>.
 =head1 BACKGROUND
 
 The name "clive" originates from the words "command line video extraction",
-the prepending "c" refers to C or C++. cclive is a rewrite of C<clive(1)>
+the prepending "c" refers to C or C++. cclive is a rewrite of clive(1)
 in C++.
 
 =head1 LICENSE
