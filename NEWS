@@ -1,4 +1,13 @@
 
+0.7.8  Sat Nov 26 2011  Toni Gundogdu
+Changes:
+    - Improvements to --exec
+      - Invoke --exec with "nothing todo"
+      - Additional specifiers %n and %t
+      - Allow multiple occurences
+      - Argument handling
+
+
 0.7.7  Sun Oct 16 2011  Toni Gundogdu
 Bugfixes:
     - Do not create doc dir unnecessarily with "make install"
