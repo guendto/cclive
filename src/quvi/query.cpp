@@ -159,6 +159,10 @@ std::map<std::string,std::string> query::support() const
   std::map<std::string,std::string> map;
   char *d=NULL, *f=NULL;
 
+  // cclive handles HTTP stream URLs only. Ignore all other
+  // categories but HTTP.
+  quvi_setopt(_quvi, QUVIOPT_CATEGORY, QUVIPROTO_HTTP);
+
   while (quvi_next_supported_website(_quvi, &d, &f) == QUVI_OK)
     {
       map[d] = f;
