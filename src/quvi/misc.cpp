@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <pcrecpp.h>
 #include <sstream>
 
 #include <ccquvi>
@@ -34,15 +35,22 @@ std::string version_long()
   return quvi_version(QUVI_VERSION_LONG);
 }
 
-// To string. Mimic quvi(1) behaviour.
+typedef std::map<std::string,std::string>::const_iterator smci;
+
+static const std::string _domain_patt_to_s(smci i)
+{
+  std::string d = (*i).first;
+  pcrecpp::RE("%w\\+").GlobalReplace("com", &d);
+  pcrecpp::RE("%").GlobalReplace("", &d);
+  return d;
+}
 
 std::string support_to_s(const std::map<std::string,std::string>& map)
 {
-  std::map<std::string,std::string>::const_iterator iter;
   std::stringstream b;
 
-  for (iter = map.begin(); iter != map.end(); ++iter)
-    b << (*iter).first << "\t" << (*iter).second << "\n";
+  for (smci iter = map.begin(); iter != map.end(); ++iter)
+    b << _domain_patt_to_s(iter) << "\n";
 
   return b.str();
 }
