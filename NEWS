@@ -1,3 +1,10 @@
+v0.7.9  (2012-03-03) / Toni Gundogdu
+
+Toni Gundogdu:
+  - FIX: Print only HTTP category domains with --support (#17) [8172356]
+  - FIX: --support: Strip lua escapes from domain patterns (#16) [b089d63]
+  - Update boost.m4 to the latest version [edc7b12]
+
 
 0.7.8  Sat Nov 26 2011  Toni Gundogdu
 Changes:
