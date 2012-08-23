@@ -15,9 +15,10 @@ gen_manual()
 
 cleanup()
 {
-  echo "WARNING!
-Removes _files_ listed in $source and $cachedir directory.
-Last chance to bail out (^C) before we continue."
+  echo "WARNING
+This will remove the files specified in the $source file. This will also
+remove the $cachedir/ directory with all of its contents.
+  Bail out now (^C) or hit enter to continue."
   read n1
   for file in `cat $source`; do # Remove files only.
     [ -e "$file" ] && [ -f "$file" ] && rm -f "$file"
