@@ -8,6 +8,7 @@ gen_manual()
 {
   echo "Generate manual..."
   MAN=doc/man1/cclive.1 ; POD=$MAN.pod ; VN=`./gen-ver.sh`
+  podchecker "$POD" || exit $?
   pod2man -c "cclive manual" -n cclive -s 1 -r "$VN" "$POD" "$MAN"
   return $?
 }
