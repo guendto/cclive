@@ -19,7 +19,6 @@
 dir=`dirname $0`
 o=
 # flags:
-m= # dump major and minor only
 c= # strip off the 'v' prefix
 
 # VERSION file is part of the dist tarball.
@@ -35,16 +34,8 @@ from_git_describe()
   }
 }
 
-make_vn_mm()
-{
-  j=`expr "$o" : 'v\([0-9]\)'`
-  n=`expr "$o" : 'v[0-9]\.\([0-9]*[0-9]\)'`
-  o="v$j.$n"
-}
-
 dump_vn()
 {
-  [ -n "$m" ] && make_vn_mm
   [ -n "$c" ] && o=${o#v} # strip off the 'v' prefix.
   echo $o
   exit 0
@@ -54,15 +45,13 @@ help()
 {
   echo "$0 [OPTIONS]
 -h  Show this help and exit
--c  Strip off the 'v' prefix from the output
--m  Output the major.minor -pair only"
+-c  Strip off the 'v' prefix from the output"
   exit 0
 }
 
 while [ $# -gt 0 ]
 do
   case "$1" in
-    -m) m=1;;
     -c) c=1;;
     -h) help;;
      *) break;;
