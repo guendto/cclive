@@ -32,7 +32,7 @@ namespace cc
 class application
 {
 public:
-  typedef enum { ok=0, invalid_option, system } exit_status;
+  typedef enum {ok=EXIT_SUCCESS, error=EXIT_FAILURE} exit_status;
 public:
   exit_status exec(int,char **);
 private:

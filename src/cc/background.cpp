@@ -44,7 +44,7 @@ void go_background(const std::string& log_file, bool& omit)
   if (pid < 0)
     {
       cc::perror("fork");
-      exit(application::system);
+      exit(application::error);
     }
   else if (pid != 0)
     {
