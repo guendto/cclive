@@ -231,10 +231,10 @@ static application::exit_status handle_format_list(
   return application::ok;
 }
 
-static application::exit_status query_formats(
-  const quvi::query& query,
-  const quvi::options &opts,
-  const vst& input)
+static application::exit_status
+query_formats(const quvi::query& query,
+              const quvi::options &opts,
+              const vst& input)
 {
   const size_t n = input.size();
   size_t i = 0;
@@ -261,6 +261,7 @@ static application::exit_status query_formats(
     catch(const quvi::error& e)
       {
         print_quvi_error(e);
+        return application::error;
       }
   }
   return application::ok;
@@ -468,6 +469,8 @@ application::exit_status application::exec(int argc, char **argv)
   const int max_retries  = map["max-retries"].as<int>();
   const int retry_wait   = map["retry-wait"].as<int>();
 
+  exit_status es = ok;
+
   foreach(std::string url, input)
   {
     ++i;
@@ -498,20 +501,22 @@ application::exit_status application::exec(int argc, char **argv)
 
             break; // Stop retrying.
           }
+        es = ok;
       }
 
     catch(const quvi::error& e)
       {
         print_quvi_error(e);
+        es = application::error;
       }
 
     catch(const std::runtime_error& e)
       {
         cc::log << "error: " << e.what() << std::endl;
+        es = application::error;
       }
   }
-
-  return ok;
+  return es;
 }
 
 void application::_tweak_curl_opts(const quvi::query& query,
