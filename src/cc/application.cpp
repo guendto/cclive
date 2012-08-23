@@ -299,7 +299,7 @@ application::exit_status application::exec(int argc, char **argv)
   catch(const std::exception& e)
     {
       std::clog << "error: " << e.what() << std::endl;
-      return invalid_option;
+      return error;
     }
 
   const po::variables_map map = _opts.map();
@@ -309,7 +309,7 @@ application::exit_status application::exec(int argc, char **argv)
   if (map.count("help"))
     {
       std::cout << _opts << std::flush;
-      return ok;
+      return error;
     }
 
   if (map.count("version"))
@@ -395,7 +395,7 @@ application::exit_status application::exec(int argc, char **argv)
   if (input.size() == 0)
     {
       std::clog << "error: no input urls" << std::endl;
-      return invalid_option;
+      return error;
     }
 
   // Remove duplicates.
