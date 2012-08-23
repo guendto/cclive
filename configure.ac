@@ -3,11 +3,8 @@
 
 AC_PREREQ([2.67])
 
-m4_include([m4/version.m4])
-
-AC_INIT([cclive], [_CCLIVE_VERSION],
-  [http://sourceforge.net/apps/trac/cclive], [],
-  [http://cclive.sourceforge.net/])
+AC_INIT([cclive], m4_esyscmd([./gen-ver.sh -c | tr -d '\n']),
+        [http://cclive.sf.net/bugs/],[],[http://cclive.sf.net/])
 
 AC_CONFIG_SRCDIR([src/cc/application.cpp])
 AC_CONFIG_HEADERS([config.h])
@@ -66,7 +63,7 @@ AC_FUNC_STRERROR_R
 AC_FUNC_FORK
 
 # Version.
-VN=`$srcdir/gen-ver.sh $srcdir`
+VN=`$srcdir/gen-ver.sh`
 AC_DEFINE_UNQUOTED([VN],["$VN"], [We have version number from gen-ver.sh])
 
 # --with-manual
@@ -95,7 +92,7 @@ AC_CONFIG_FILES([
 AC_OUTPUT
 
 AC_MSG_NOTICE([
- cclive version: ${VERSION} (${VN})
+ cclive version: ${VERSION}
  host setup:     ${host}
  prefix:         ${prefix}
  install manual: ${with_manual}])
