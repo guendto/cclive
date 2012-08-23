@@ -7,9 +7,8 @@ cachedir=autom4te.cache
 gen_manual()
 {
   echo "Generate manual..."
-  M4=m4/version.m4 ; MAN=doc/man1/cclive.1 ; POD=$MAN.pod
-  VER=`perl -n -e'/(\d+)\.(\d+)\.(\d+)/ && print "$1.$2.$3"' < $M4` \
-    && pod2man -c "cclive manual" -n cclive -s 1 -r $VER $POD $MAN
+  MAN=doc/man1/cclive.1 ; POD=$MAN.pod ; VN=`./gen-ver.sh`
+  pod2man -c "cclive manual" -n cclive -s 1 -r "$VN" "$POD" "$MAN"
   return $?
 }
 
