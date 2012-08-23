@@ -354,8 +354,8 @@ for the configurable options.
 
 =head1 EXIT STATUS
 
-cclive exits with 0 on success and >0 if an (unrecoverable) error
-occurred.
+cclive exits with EXIT_SUCCESS (on POSIX systems this is 0) on success
+and EXIT_FAILURE (on POSIX systems this is 1) if an error occurred.
 
 =head1 DEBUGGING TIPS
 
