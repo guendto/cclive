@@ -1,53 +1,78 @@
 #!/bin/sh
+#
 # gen-ver.sh for cclive.
+# Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+dir=`dirname $0`
+o=
+# flags:
+m= # dump major and minor only
+c= # strip off the 'v' prefix
 
-from_file()
+# VERSION file is part of the dist tarball.
+from_VERSION_file()
 {
-  VN=`cat $1 2>/dev/null`
-  if test -n "$VN"; then
-    echo $VN
-    exit 0
-  fi
+  o=`cat "$dir/VERSION" 2>/dev/null`
 }
 
-gen_version() # $1=path to top source dir
+from_git_describe()
 {
-  path=$1 ; [ -z $path ] && path=.
+  [ -d "$dir/.git" -o -f "$dir/.git" ] && {
+    o=`git describe --match "v[0-9]*" --abbrev=4 HEAD 2>/dev/null`
+  }
+}
 
-  # First check if the version file exists and use its value
-  versionfn="$path/VERSION"
-  [ -f "$versionfn" ]  && from_file "$versionfn"
+make_vn_mm()
+{
+  j=`expr "$o" : 'v\([0-9]\)'`
+  n=`expr "$o" : 'v[0-9]\.\([0-9]*[0-9]\)'`
+  o="v$j.$n"
+}
 
-  # If that file is not found, or fails (e.g. empty), parse from m4/version.m4
-  m4="$path/m4/version.m4"
-  VN=`perl -ne'/(\d+)\.(\d+)\.(\d+)/ && print "$1.$2.$3"' < "$m4"`
-  [ -z $VN ] && exit $?
-
-  # Use the "git describe" instead, if .git is present
-  if test -d "$path/.git" -o -f "$path/.git" ; then
-    _VN=`git describe --match "v[0-9]*" --abbrev=4 HEAD 2>/dev/null`
-    [ -n "$_VN" ] && VN=$_VN
-  fi
-
-  echo $VN
+dump_vn()
+{
+  [ -n "$m" ] && make_vn_mm
+  [ -n "$c" ] && o=${o#v} # strip off the 'v' prefix.
+  echo $o
+  exit 0
 }
 
 help()
 {
-  echo "Usage: $0 [-h] [top_srcdir]
+  echo "$0 [OPTIONS]
 -h  Show this help and exit
-Run without options to print version. Define top_srcdir if run outside
-the top source directory."
+-c  Strip off the 'v' prefix from the output
+-m  Output the major.minor -pair only"
   exit 0
 }
 
 while [ $# -gt 0 ]
 do
   case "$1" in
+    -m) m=1;;
+    -c) c=1;;
     -h) help;;
-    *) break;;
+     *) break;;
   esac
   shift
 done
 
-gen_version $1
+from_VERSION_file
+[ -z "$o" ] && from_git_describe
+[ -n "$o" ] && dump_vn
+exit 1
+
+# vim: set ts=2 sw=2 tw=72 expandtab:
