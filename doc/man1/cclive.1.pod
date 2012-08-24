@@ -14,12 +14,18 @@ cclive is a tool for downloading media from YouTube and similar
 websites. It has a low memory footprint compared to other existing
 tools.
 
-=head1 OPTIONS
+=head1 INPUT
 
-Unless an arg is specified in the command line, cclive reads from the
-stdin. The command line args may be either URLs or files to read.
+Unless an argument is specified on the command line, cclive reads from
+the stdin. The command line arguments may be either URLs or files to read.
+
 If cclive reads from either stdin or files, it expects each URL to be
-separated by a newline or whitespace character.
+separated by a newline or a whitespace character.
+
+=head1 OPTIONS - COMMAND LINE
+
+These options may be specified on the command line only.
+See also L</OPTIONS - CONFIGURATION>.
 
 =head2 --version
 
@@ -122,8 +128,10 @@ Path to a file to read cclive arguments from.
 
 =head1 OPTIONS - CONFIGURATION
 
-In addition to the command line, the configurable options may also be read
-from the configuration file. See L</FILES>.
+The following options may be specified on the command line and read
+from a configuration file. Any such option specified on the command
+line will override the value read from the configuration file.
+See also L</FILES> and C<--config-file>.
 
 =head2 -p, --prefer-format I<arg>
 
@@ -339,8 +347,8 @@ URLs.
 
 =head2 ~/.ccliverc
 
-Or use C<--config-file>. See C<--help> or L</OPTIONS - CONFIGURATION>
-for the configurable options.
+This location is read by default. C<--config-file> may be used to specify
+a different location. See also L</OPTIONS - CONFIGURATION>.
 
 =head3 Example
 
