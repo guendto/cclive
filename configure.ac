@@ -11,17 +11,18 @@ AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_AUX_DIR([config.aux])
 AC_CONFIG_MACRO_DIR([m4])
 
-AC_CANONICAL_SYSTEM
-AC_GNU_SOURCE
+AC_CANONICAL_TARGET
+AC_USE_SYSTEM_EXTENSIONS
 
 AC_DEFINE_UNQUOTED([CANONICAL_TARGET], "$target", [...])
 AC_DEFINE_UNQUOTED([CANONICAL_HOST], "$host", [...])
 
-AM_INIT_AUTOMAKE([-Wall -Werror foreign dist-bzip2 dist-xz])
+AM_INIT_AUTOMAKE([1.11.1 -Wall -Werror dist-xz no-dist-gzip tar-ustar])
 AM_SILENT_RULES([yes])
+#AM_PROG_AR
 
-LT_INIT()
-LT_PREREQ([2.2])
+LT_INIT([disable-static])
+LT_PREREQ([2.2.6])
 
 # Checks for programs.
 AC_PROG_CXX
