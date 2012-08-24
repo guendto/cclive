@@ -78,10 +78,10 @@ AM_CONDITIONAL([WITH_MANUAL], [test x"$with_manual" != "xno"])
 # --enable-ccl
 AC_ARG_ENABLE([ccl],
   [AS_HELP_STRING([--enable-ccl],
-    [Make a symbolic link from 'cclive' to 'ccl' @<:@default=no@:>@])],
+    [Symlink from 'cclive' executable to 'ccl' @<:@default=yes@:>@])],
   [],
-  [enable_ccl=no])
-AM_CONDITIONAL([ENABLE_CCL], [test x"$enable_ccl" != "xno"])
+  [enable_ccl=yes])
+AM_CONDITIONAL([ENABLE_CCL], [test x"$enable_ccl" = "xyes"])
 
 AC_CONFIG_FILES([
   Makefile
