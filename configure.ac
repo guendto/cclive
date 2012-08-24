@@ -93,9 +93,16 @@ AC_CONFIG_FILES([
 AC_OUTPUT
 
 AC_MSG_NOTICE([
- cclive version: ${VERSION}
- host setup:     ${host}
- prefix:         ${prefix}
- install manual: ${with_manual}])
+  version:    ${VERSION}
+  prefix:     ${prefix}
+  compiler:   ${CXX}
+  flags:      ${CXXFLAGS}
+System types:
+  target      ${target}
+  build       ${build}
+  host        ${host}
+Options:
+  add ccl symlink: ${enable_ccl}
+  install manual : ${with_manual}])
 
 # vim: set ts=2 sw=2 tw=72 expandtab:
