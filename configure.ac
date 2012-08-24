@@ -17,8 +17,9 @@ AC_USE_SYSTEM_EXTENSIONS
 AC_DEFINE_UNQUOTED([CANONICAL_TARGET], "$target", [...])
 AC_DEFINE_UNQUOTED([CANONICAL_HOST], "$host", [...])
 
-AM_INIT_AUTOMAKE([-Wall -Werror foreign dist-bzip2 dist-xz])
+AM_INIT_AUTOMAKE([1.11.1 -Wall -Werror dist-xz no-dist-gzip tar-ustar])
 AM_SILENT_RULES([yes])
+#AM_PROG_AR
 
 LT_INIT()
 LT_PREREQ([2.2])
