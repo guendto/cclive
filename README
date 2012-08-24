@@ -5,3 +5,41 @@ tools.
 
 Home  : http://cclive.sourceforge.net/
 gitweb: http://repo.or.cz/w/cclive.git
+
+
+Prerequisites
+-------------
+
+* libquvi       (0.2.16.1+)
+* libboost      (1.42.0+)
+* libpcre(cpp)  (8.02+)
+* libcurl       (7.20.0+)
+
+Note that cclive may or may not compile with earlier versions.
+The above versions are the ones that I've tested.
+
+
+Installation from source
+------------------------
+
+"./configure && make install", typically. See also "./configure --help".
+If you are compiling cclive from the development code from the git
+repository, see "Installation from development code", instead.
+
+  --enable-ccl        Make a symbolic link from 'cclive' (binary) to 'ccl'
+  --without-manual    Do not install manual page(s)
+
+
+Installation from development code
+----------------------------------
+
+If you are compiling cclive from the development code, run "autogen.sh",
+first. This generates the configuration files that are not in the git
+repository. You will need:
+
+  * Perl (with pod2man)
+  * GNU autoconf
+  * GNU automake
+
+Once the files have been generated, follow the instructions in "Installation
+from source" above.
