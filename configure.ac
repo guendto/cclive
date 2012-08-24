@@ -21,8 +21,8 @@ AM_INIT_AUTOMAKE([1.11.1 -Wall -Werror dist-xz no-dist-gzip tar-ustar])
 AM_SILENT_RULES([yes])
 #AM_PROG_AR
 
-LT_INIT()
-LT_PREREQ([2.2])
+LT_INIT([disable-static])
+LT_PREREQ([2.2.6])
 
 # Checks for programs.
 AC_PROG_CXX
