@@ -68,7 +68,7 @@ cclive_LDADD+=	$(BOOST_SYSTEM_LIBS)
 
 install-exec-hook:
 if ENABLE_CCL
-	cd $(DESTDIR)$(bindir) && \
+	cd $(DESTDIR)$(bindir) && rm -f ccl$(EXEEXT) && \
 		$(LN_S) cclive$(EXEEXT) ccl$(EXEEXT)
 endif
 
