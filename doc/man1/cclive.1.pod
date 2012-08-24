@@ -6,7 +6,7 @@ cclive - media download tool
 
 =head1 SYNOPSIS
 
-cclive [options] [url | file...]
+cclive [OPTIONS] [URL | FILE ...]
 
 =head1 DESCRIPTION
 
@@ -294,7 +294,7 @@ Use C<--tr> instead.
 
 =head1 EXAMPLES
 
-Always quote the URLs in the command line as seen below. Many URLs
+Always quote the URLs on the command line as seen below. Many URLs
 contain parameters that may otherwise cause the shell to behave
 with unexpected results.
 
@@ -384,7 +384,7 @@ in C++.
 
 =head1 LICENSE
 
-cclive is free software, licensed under the GPLv3+.
+cclive is Free Software, licensed under the GPLv3+.
 
 =head1 AUTHOR
 
