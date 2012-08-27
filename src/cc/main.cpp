@@ -24,27 +24,25 @@ using namespace cc;
 
 int main(int argc, char *argv[])
 {
+  application::exit_status es = application::ok;
   application app;
-  int rc = 0; // OK.
-
   try
     {
-      rc = app.exec(argc,argv);
+      es = app.exec(argc, argv);
     }
-
   // Thrown by quvi::query constructor (e.g. quvi_init failure).
   catch (const quvi::error& e)
     {
       std::clog << "libquvi: error: " << e.what() << std::endl;
+      es = application::error;
     }
-
   // Thrown by boost (e.g. cc::go_background failure).
   catch (const std::runtime_error& e)
     {
       std::clog << "error: " << e.what() << std::endl;
+      es = application::error;
     }
-
-  return rc;
+  return es;
 }
 
 // vim: set ts=2 sw=2 tw=72 expandtab:
