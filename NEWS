@@ -1,3 +1,32 @@
+v0.7.10 (2012-08-28) / Toni Gundogdu
+
+Toni Gundogdu:
+  - Append contents of INSTALL file to README file [a90c854]
+    - README file will contain the cclive specific information
+    - INSTALL file will now be provided by GNU Autotools
+  - configure.ac: Add AC_PROG_LN_S [da6c39a]
+  - configure.ac: Install ccl symlink by default [9ecaaf8]
+  - configure.ac: Lower AC_PREREQ to 2.67 [e317832]
+  - configure.ac: Modernize AM_INIT options [76fd2d0]
+  - configure.ac: Modernize libtool options [0f39e93]
+  - configure.ac: Replace deprecated macros [59fce53]
+  - configure.ac: Run gen-ver.sh to get version value [4f0d4a8]
+  - DOC: Manual: Revise descriptions for option sections [fe31766]
+  - DOC: Rewrite EXIT STATUS section [6690303]
+  - FIX: Return non-zero exit status if failure (#18) [4d3c506]
+    - exit_status: Redefine as ok (EXIT_SUCCESS) and error (EXIT_FAILURE) [20cbf6d]
+      - Replace "invalid_option" with "error" [980792e]
+    - main: Use exit_status, have caught exceptions set exit status [99bd1b2]
+  - gen-ver.sh: Rewrite completely [df0a4ce]
+  - go_background: Return application::error instead [36158a1]
+  - Install ccl symlink now by default, see --disable-ccl in README
+  - install-exec-hook: Remove the 'ccl' symlink [e394f71]
+  - m4/boost.m4: Update to the most recent [1044d88]
+  - m4/version.m4: Remove the file [d1e6bae]
+
+ 17 files changed, 206 insertions(+), 139 deletions(-)
+
+
 v0.7.9  (2012-03-03) / Toni Gundogdu
 
 Toni Gundogdu:
