@@ -78,7 +78,8 @@ bool capture(const std::string& re, std::string& src)
       pcrecpp::RE_Options opts = _init_re_opts(flags);
       if (strstr(flags.c_str(), "g") != 0)
         {
-          pcrecpp::StringPiece sp(src);
+          std::string orig(src);
+          pcrecpp::StringPiece sp(orig);
           pcrecpp::RE re(pat, opts);
           src.clear();
 
@@ -144,7 +145,8 @@ static void tr_filter(const std::string& r, std::string& s)
 
   if (strstr(flags.c_str(), "g") != 0)
     {
-      pcrecpp::StringPiece sp(s);
+      std::string orig(s);
+      pcrecpp::StringPiece sp(orig);
       s.clear();
 
       rx = pcrecpp::RE(pat, o);
