@@ -23,8 +23,14 @@
 
 #include <boost/iostreams/filtering_stream.hpp>
 
+#define cc_debug(...)\
+  do { cc::_debug(__BASE_FILE__, __func__, __LINE__, __VA_ARGS__); } while (0)
+
 namespace cc
 {
+
+void _debug(const std::string&, const std::string&,
+            const int, const char*, ...);
 
 extern boost::iostreams::filtering_ostream log;
 

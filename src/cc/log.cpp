@@ -16,6 +16,7 @@
  */
 
 #include <stdexcept>
+#include <cstdarg>
 #include <cerrno>
 
 #include <boost/filesystem.hpp>
@@ -128,6 +129,17 @@ void flushable_file_sink::_open()
 
       throw std::runtime_error(s);
     }
+}
+
+void _debug(const std::string& fn, const std::string& func,
+            const int ln, const char *fmt, ...)
+{
+  va_list args;
+  va_start(args, fmt);
+  fprintf(stderr, "[%s:%d] ", fn.c_str(), ln);
+  vfprintf(stderr, fmt, args);
+  fprintf(stderr, "\n");
+  va_end(args);
 }
 
 } // namspace cclive
