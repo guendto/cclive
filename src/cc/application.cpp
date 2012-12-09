@@ -321,7 +321,7 @@ static void set_format_string(const std::string& url, quvi::options& qopts,
   qopts.format(fmt);
 }
 
-extern char LICENSE[]; // cclive/license.cpp
+extern char LICENSE[]; // cc/license.cpp
 
 application::exit_status application::exec(int argc, char **argv)
 {
