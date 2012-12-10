@@ -27,6 +27,16 @@ namespace cc
 namespace re
 {
 
+static void _check_re_error(const pcrecpp::RE& re)
+{
+  if (re.error().length() >0)
+    {
+      std::stringstream b;
+      b << "bad regexp `" << re.pattern() << "': " << re.error();
+      throw std::runtime_error(b.str());
+    }
+}
+
 static pcrecpp::RE_Options _init_re_opts(const std::string& flags)
 {
   pcrecpp::RE_Options opts;
@@ -55,6 +65,7 @@ bool subst(const std::string& re, std::string& src)
 
       pcrecpp::RE_Options opts = _init_re_opts(flags);
       pcrecpp::RE subs(pat, opts);
+      _check_re_error(subs);
 
       (strstr(flags.c_str(), "g"))
       ? subs.GlobalReplace(sub, &src)
@@ -78,8 +89,10 @@ bool capture(const std::string& re, std::string& src)
       pcrecpp::RE_Options opts = _init_re_opts(flags);
       if (strstr(flags.c_str(), "g") != 0)
         {
-          pcrecpp::StringPiece sp(src);
+          std::string orig(src);
+          pcrecpp::StringPiece sp(orig);
           pcrecpp::RE re(pat, opts);
+          _check_re_error(re);
           src.clear();
 
           std::string s;
@@ -90,7 +103,9 @@ bool capture(const std::string& re, std::string& src)
         {
           std::string tmp = src;
           src.clear();
-          pcrecpp::RE(pat, opts).PartialMatch(tmp, &src);
+          pcrecpp::RE re(pat, opts);
+          _check_re_error(re);
+          re.PartialMatch(tmp, &src);
         }
       return true;
     }
@@ -99,7 +114,9 @@ bool capture(const std::string& re, std::string& src)
 
 bool grep(const std::string& r, const std::string& s)
 {
-  return pcrecpp::RE(r, pcrecpp::UTF8()).PartialMatch(s);
+  pcrecpp::RE re(r, pcrecpp::UTF8());
+  _check_re_error(re);
+  return re.PartialMatch(s);
 }
 
 static void tr_subst(const std::string& r, std::string& s)
@@ -119,6 +136,7 @@ static void tr_subst(const std::string& r, std::string& s)
 
   pcrecpp::RE_Options o = _init_re_opts(flags);
   pcrecpp::RE subs(pat, o);
+  _check_re_error(subs);
 
   (strstr(flags.c_str(), "g"))
   ? subs.GlobalReplace(sub, &s)
@@ -144,20 +162,24 @@ static void tr_filter(const std::string& r, std::string& s)
 
   if (strstr(flags.c_str(), "g") != 0)
     {
-      pcrecpp::StringPiece sp(s);
+      std::string orig(s);
+      pcrecpp::StringPiece sp(orig);
       s.clear();
 
-      rx = pcrecpp::RE(pat, o);
+      pcrecpp::RE re(pat, o);
+      _check_re_error(re);
       std::string tmp;
 
-      while (rx.FindAndConsume(&sp, &tmp))
+      while (re.FindAndConsume(&sp, &tmp))
         s += tmp;
     }
   else
     {
       std::string tmp = s;
       s.clear();
-      pcrecpp::RE(pat, o).PartialMatch(tmp, &s);
+      pcrecpp::RE re(pat, o);
+      _check_re_error(re);
+      re.PartialMatch(tmp, &s);
     }
 }
 
