@@ -1,3 +1,12 @@
+v0.7.11  -- [2012-12-12, r:Toni Gundogdu]
+
+Adam Sampson:
+  - Check .error() for user-provided regexps [03d69e0]
+  - Copy strings passed to StringPiece [5325ecc]
+
+ 3 files changed, 31 insertions(+), 19 deletions(-)
+
+
 v0.7.10 (2012-08-28) / Toni Gundogdu
 
 Toni Gundogdu:
