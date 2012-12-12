@@ -22,10 +22,10 @@ IFS=$'
 a=`grep < ~/.gitconfig name | cut -f2 -d= | sed 's/^\s*//'`
 v=`./gen-ver.sh`
 d=`date +%F`
-b="$v ($d) / $a
+b="$v  -- [$d, r:$a]
 
 "
-t=`git tag | tail -n1`
+t=`git describe --abbrev=0`
 for a in `git log --format='%an' "$t"..HEAD | sort | uniq`; do
   c=`git log --format="  - %s [%h]" --author="$a" "$t"..HEAD | sort -h`
   b="$b$a:
