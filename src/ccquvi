@@ -1,1 +1,18 @@
-#include "quvi/ccquvi.h"
+#ifndef ccquvi
+#define ccquvi
+
+#include "config.h"
+
+#include <vector>
+#include <string>
+#include <map>
+
+#include <quvi/quvi.h>
+#include <compat/options.h>
+#include <compat/media.h>
+#include <compat/error.h>
+#include <compat/query.h>
+#include <compat/util.h>
+#endif // ccquvi
+
+// vim: set ts=2 sw=2 tw=72 expandtab:
