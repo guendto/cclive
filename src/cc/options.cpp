@@ -108,9 +108,6 @@ void options::exec(int argc, char **argv)
   ("no-download,n",
    po::value(&flags.no_download)->zero_tokens(),
    "Do not download media, print details")
-  ("no-resolve,r",
-   po::value(&flags.no_resolve)->zero_tokens(),
-   "Do not resolve URL redirections")
   ("no-proxy",
    po::value(&flags.no_proxy)->zero_tokens(),
    "Do not use HTTP proxy")
@@ -127,6 +124,9 @@ void options::exec(int argc, char **argv)
   po::options_description config("Configuration");
 
   config.add_options()
+  ("no-resolve,r",
+   po::value(&flags.no_resolve)->zero_tokens(),
+   "Do not resolve URL redirections")
   ("continue,c",
    po::value(&flags.cont)->zero_tokens(),
    "Resume partially downloaded media")
