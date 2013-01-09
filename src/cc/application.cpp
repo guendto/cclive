@@ -30,9 +30,9 @@
 #define foreach BOOST_FOREACH
 #endif
 
+#include <ccquvi>
 #include <ccapplication>
 #include <ccoptions>
-#include <ccquvi>
 #include <ccutil>
 #include <cclog>
 #include <ccre>
@@ -141,27 +141,6 @@ static void print_quvi_error(const quvi::error& e)
   cc::log << "libquvi: error: " << e.what() << std::endl;
 }
 
-static void check_quvi_error(const quvi::error& e)
-{
-  const long resp_code = e.response_code();
-
-  if (resp_code >= 400 && resp_code <= 500)
-    throw e;
-
-  else
-    {
-      switch (e.quvi_code())
-        {
-        case QUVI_CALLBACK:
-          print_quvi_error(e);
-          break; // Retry.
-
-        default:
-          throw e;
-        }
-    }
-}
-
 static const char depr_msg[] =
   "WARNING '--format list' is deprecated and will be removed in the later\n"
   "WARNING versions. Use --query-formats instead.";
@@ -245,7 +224,7 @@ query_formats(const quvi::query& query,
       {
         print_checking(i,n);
 
-        const std::string formats = query.formats(url, opts);
+        const std::string formats = query.streams(url, opts);
 
         print_done();
 
@@ -318,7 +297,7 @@ static void set_format_string(const std::string& url, quvi::options& qopts,
       if (map.count("prefer-format"))
         parse_prefer_format(url, fmt, map);
     }
-  qopts.format(fmt);
+  qopts.stream = fmt;
 }
 
 extern char LICENSE[]; // cc/license.cpp
@@ -372,6 +351,7 @@ application::exit_status application::exec(int argc, char **argv)
   // --support
 
   quvi::query query; // Throws quvi::error caught in main.cpp
+  query.setup_curl();
 
   if (opts.flags.support)
     {
@@ -439,8 +419,8 @@ application::exit_status application::exec(int argc, char **argv)
   cc::curl_setup(_curl);
 
   quvi::options qopts;
-  qopts.statusfunc(status_callback);
-  qopts.resolve(opts.flags.no_resolve);
+  qopts.resolve = ! opts.flags.no_resolve;
+  qopts.statusfunc = status_callback;
 
   // Seed random generator.
 
@@ -518,7 +498,10 @@ application::exit_status application::exec(int argc, char **argv)
               }
             catch(const quvi::error& e)
               {
-                check_quvi_error(e);
+                if (e.cannot_retry())
+                  throw e;
+                else
+                  print_quvi_error(e);
               }
 
             cc::get(m, _curl);

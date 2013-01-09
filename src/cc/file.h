@@ -24,7 +24,7 @@ namespace cc
 class file
 {
 public:
-  file(const quvi::media&, const quvi::url&, const int);
+  file(const quvi::media&);
 
   inline file(): _initial_length(0), _nothing_todo(false) { }
 
@@ -39,9 +39,9 @@ public:
       return *this;
     }
 public:
-  bool write(const quvi::url&, void*) const;
+  bool write(const quvi::media&, void*) const;
 public:
-  std::string to_s(const quvi::url&) const;
+  std::string to_s(const quvi::media&) const;
   inline const std::string& title() const { return _title; }
   inline const std::string& path() const  { return _path; }
   inline const std::string& name() const  { return _name; }
@@ -50,7 +50,7 @@ public:
 public:
   static double exists(const std::string&);
 private:
-  void _init(const quvi::media&, const quvi::url&, const int);
+  void _init(const quvi::media&);
 
   inline bool _should_continue() const { return _initial_length >0; }
 

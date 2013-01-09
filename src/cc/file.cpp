@@ -46,8 +46,8 @@
 #include <curl/curl.h>
 #include <pcrecpp.h>
 
-#include <ccoptions>
 #include <ccquvi>
+#include <ccoptions>
 #include <ccprogressbar>
 #include <ccre>
 #include <ccutil>
@@ -59,12 +59,12 @@ namespace cc
 
 namespace po = boost::program_options;
 
-file::file(const quvi::media& media, const quvi::url& url, const int n)
+file::file(const quvi::media& media)
   : _initial_length(0), _nothing_todo(false)
 {
   try
     {
-      _init(media, url, n);
+      _init(media);
     }
   catch (const cc::nothing_todo_error&)
     {
@@ -126,9 +126,12 @@ static int progress_cb(void *ptr, double, double now, double, double)
   return reinterpret_cast<progressbar*>(ptr)->update(now);
 }
 
-static void _set(CURL *c, std::ofstream *o, progressbar *pb,
-                 const double initial_length)
+static void _set(const quvi::media& m, CURL *c, std::ofstream *o,
+                 progressbar *pb, const double initial_length)
 {
+  curl_easy_setopt(c, CURLOPT_URL, m.stream_url().c_str());
+  curl_easy_setopt(c, CURLOPT_WRITEFUNCTION, write_cb);
+
   curl_easy_setopt(c, CURLOPT_PROGRESSFUNCTION, progress_cb);
   curl_easy_setopt(c, CURLOPT_PROGRESSDATA, pb);
   curl_easy_setopt(c, CURLOPT_NOPROGRESS, 0L);
@@ -156,11 +159,8 @@ static void _restore(CURL *c)
                    static_cast<curl_off_t>(0L));
 }
 
-bool file::write(const quvi::url& u, CURL *curl) const
+bool file::write(const quvi::media& m, CURL *curl) const
 {
-  curl_easy_setopt(curl, CURLOPT_URL, u.media_url().c_str());
-  curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_cb);
-
   std::ios_base::openmode mode = std::ofstream::binary;
 
   if (opts.flags.overwrite)
@@ -184,8 +184,8 @@ bool file::write(const quvi::url& u, CURL *curl) const
       throw std::runtime_error(s);
     }
 
-  progressbar pb(*this, u);
-  _set(curl, &out, &pb, _initial_length);
+  progressbar pb(*this, m);
+  _set(m, curl, &out, &pb, _initial_length);
 
 #ifdef WITH_SIGNAL
   recv_usr1 = 0;
@@ -262,12 +262,12 @@ static double to_mb(const double bytes)
   return bytes/(1024*1024);
 }
 
-std::string file::to_s(const quvi::url& url) const
+std::string file::to_s(const quvi::media& m) const
 {
-  const double length = to_mb(url.content_length());
+  const double length = to_mb(m.content_length());
 
   boost::format fmt = boost::format("%s  %.2fM  [%s]")
-                      % _name % length % url.content_type();
+                      % _name % length % m.content_type();
 
   return fmt.str();
 }
@@ -284,9 +284,7 @@ static fs::path output_dir(const po::variables_map& map)
 
 typedef std::vector<std::string> vst;
 
-void file::_init(const quvi::media& media,
-                 const quvi::url& url,
-                 const int n)
+void file::_init(const quvi::media& media)
 {
   _title = media.title();
 
@@ -308,7 +306,7 @@ void file::_init(const quvi::media& media,
       _path           = p.string();
       _initial_length = file::exists(_path);
 
-      if ( _initial_length >= url.content_length() && ! opts.flags.overwrite)
+      if ( _initial_length >= media.content_length() && ! opts.flags.overwrite)
         throw cc::nothing_todo_error();
     }
 
@@ -341,8 +339,8 @@ void file::_init(const quvi::media& media,
 
       pcrecpp::RE("%i").GlobalReplace(media.id(), &fname_format);
       pcrecpp::RE("%t").GlobalReplace(title, &fname_format);
-      pcrecpp::RE("%s").GlobalReplace(url.suffix(), &fname_format);
-      pcrecpp::RE("%h").GlobalReplace(media.host(), &fname_format);
+      pcrecpp::RE("%h").GlobalReplace("nohostseq", &fname_format);
+      pcrecpp::RE("%s").GlobalReplace(media.file_ext(), &fname_format);
 
       if (map.count("subst")) // Deprecated.
         {
@@ -364,10 +362,6 @@ void file::_init(const quvi::media& media,
       std::stringstream b;
 
       b << fname_format;
-
-      // A multi-segment media.
-
-      if (n > 1) b << "_" << n;
 
       // Output dir.
 
@@ -396,7 +390,7 @@ void file::_init(const quvi::media& media,
               if (_initial_length == 0)
                 break;
 
-              else if (_initial_length >= url.content_length())
+              else if (_initial_length >= media.content_length())
                 throw cc::nothing_todo_error();
 
               else
