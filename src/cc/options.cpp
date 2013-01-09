@@ -99,9 +99,6 @@ void options::exec(int argc, char **argv)
   ("format,f",
    po::value<std::string>(),
    "Download media format")
-  ("continue,c",
-   po::value(&flags.cont)->zero_tokens(),
-   "Resume partially downloaded media")
   ("overwrite,W",
    po::value(&flags.overwrite)->zero_tokens(),
    "Overwrite existing media")
@@ -130,6 +127,9 @@ void options::exec(int argc, char **argv)
   po::options_description config("Configuration");
 
   config.add_options()
+  ("continue,c",
+   po::value(&flags.cont)->zero_tokens(),
+   "Resume partially downloaded media")
   ("prefer-format,p",
    po::value<std::vector<std::string> >()->composing(),
    "Preferred format [domain:format[,...]]")
