@@ -16,6 +16,7 @@
  */
 
 #include <stdexcept>
+#include <clocale>
 #include <iostream>
 
 #include <ccapplication>
@@ -25,6 +26,7 @@ using namespace cc;
 
 int main(int argc, char *argv[])
 {
+  setlocale(LC_ALL, "");
   application::exit_status es = application::ok;
   application app;
   try
