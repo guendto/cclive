@@ -393,12 +393,12 @@ application::exit_status application::exec(int argc, char **argv)
           << quvi_version(QUVI_VERSION_SCRIPTS)
 #endif
           << std::endl;
-      return ok;
+      return application::ok;
     }
   else if (opts.flags.license)
     {
       std::cout << LICENSE << std::endl;
-      return ok;
+      return application::ok;
     }
 
   // --support
@@ -408,7 +408,7 @@ application::exit_status application::exec(int argc, char **argv)
   if (opts.flags.support)
     {
       std::cout << quvi::support_to_s(query.support()) << std::flush;
-      return ok;
+      return application::ok;
     }
 
   // --format [<id> | [<help> | <list> [<pattern]]]
