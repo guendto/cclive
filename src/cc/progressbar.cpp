@@ -159,7 +159,7 @@ static std::string to_unit(double& rate)
 
 namespace fs = boost::filesystem;
 
-void progressbar::update(double now)
+int progressbar::update(double now)
 {
   time_t tnow;
 
@@ -196,7 +196,7 @@ void progressbar::update(double now)
       if ((elapsed - _last_update) < _update_interval
           && !force_update)
         {
-          return;
+          return 0;
         }
     }
   else
@@ -305,6 +305,8 @@ void progressbar::update(double now)
 
   _last_update = elapsed;
   _count       = now;
+
+  return 0;
 }
 
 void progressbar::_normal(const std::stringstream& size_s,
