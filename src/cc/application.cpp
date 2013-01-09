@@ -1,5 +1,5 @@
 /* cclive
- * Copyright (C) 2010-2011  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2010-2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,6 +33,7 @@
 #endif
 
 #include <ccapplication>
+#include <ccoptions>
 #include <ccquvi>
 #include <ccutil>
 #include <cclog>
@@ -198,9 +199,8 @@ namespace po = boost::program_options;
 
 typedef std::vector<std::string> vst;
 
-static application::exit_status handle_format_list(
-  const po::variables_map& map,
-  const quvi::query& query)
+static application::exit_status
+handle_format_list(const po::variables_map& map, const quvi::query& query)
 {
   map_ss m = query.support();
 
@@ -288,13 +288,78 @@ static bool is_url(const std::string& s)
   return strstr(const_cast<char*>(s.c_str()), "://") != NULL;
 }
 
+static void tweak_curl_opts(const quvi::query& query,
+                            const po::variables_map& map)
+{
+  CURL *curl = query.curlHandle();
+
+  curl_easy_setopt(curl, CURLOPT_USERAGENT,
+                   map["agent"].as<std::string>().c_str());
+
+  if (opts.flags.verbose_libcurl)
+    curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
+
+  if (map.count("proxy"))
+    {
+      curl_easy_setopt(curl, CURLOPT_PROXY,
+                       map["proxy"].as<std::string>().c_str());
+    }
+
+  if (opts.flags.no_proxy)
+    curl_easy_setopt(curl, CURLOPT_PROXY, "");
+
+  if (map.count("throttle"))
+    {
+      curl_off_t limit = map["throttle"].as<int>()*1024;
+      curl_easy_setopt(curl, CURLOPT_MAX_RECV_SPEED_LARGE, limit);
+    }
+
+  curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT,
+                   map["connect-timeout"].as<int>());
+}
+
+static void parse_prefer_format(const std::string& url, std::string& fmt,
+                                const po::variables_map& map)
+{
+  vst vb, va = map["prefer-format"].as<vst>();
+  foreach (const std::string s, va)
+  {
+    boost::split(vb, s, boost::is_any_of(":"));
+    if (vb.size() == 2)
+      {
+        // vb[0] = pattern
+        // vb[1] = format
+        if (cc::re::grep(vb[0], url))
+          {
+            fmt = vb[1];
+            return;
+          }
+      }
+    vb.clear();
+  }
+}
+
+static void set_format_string(const std::string& url, quvi::options& qopts,
+                              const po::variables_map& map)
+{
+  std::string fmt = "default";
+  if (map.count("format")) // --format takes precedence
+    fmt = map["format"].as<std::string>();
+  else
+    {
+      if (map.count("prefer-format"))
+        parse_prefer_format(url, fmt, map);
+    }
+  qopts.format(fmt);
+}
+
 extern char LICENSE[]; // cclive/license.cpp
 
 application::exit_status application::exec(int argc, char **argv)
 {
   try
     {
-      _opts.exec(argc,argv);
+      opts.exec(argc,argv);
     }
   catch(const std::exception& e)
     {
@@ -302,17 +367,16 @@ application::exit_status application::exec(int argc, char **argv)
       return error;
     }
 
-  const po::variables_map map = _opts.map();
+  const po::variables_map map = cc::opts.map();
 
   // Dump and terminate options.
 
-  if (map.count("help"))
+  if (opts.flags.help)
     {
-      std::cout << _opts << std::flush;
+      std::cout << opts << std::flush;
       return error;
     }
-
-  if (map.count("version"))
+  else if (opts.flags.version)
     {
       std::cout
           << "cclive "
@@ -331,8 +395,7 @@ application::exit_status application::exec(int argc, char **argv)
           << std::endl;
       return ok;
     }
-
-  if (map.count("license"))
+  else if (opts.flags.license)
     {
       std::cout << LICENSE << std::endl;
       return ok;
@@ -342,7 +405,7 @@ application::exit_status application::exec(int argc, char **argv)
 
   quvi::query query; // Throws quvi::error caught in main.cpp
 
-  if (map.count("support"))
+  if (opts.flags.support)
     {
       std::cout << quvi::support_to_s(query.support()) << std::flush;
       return ok;
@@ -404,19 +467,16 @@ application::exit_status application::exec(int argc, char **argv)
 
   // Turn on libcurl verbose output.
 
-  if (map.count("verbose-libcurl"))
+  if (opts.flags.verbose_libcurl)
     curl_easy_setopt(query.curlHandle(), CURLOPT_VERBOSE, 1L);
 
   // Set up quvi.
 
-  _tweak_curl_opts(query, map);
+  tweak_curl_opts(query, map);
 
   quvi::options qopts;
   qopts.statusfunc(status_callback);
-#ifdef _0
-  qopts.verify(map.count("no-verify"));
-#endif
-  qopts.resolve(map.count("no-resolve"));
+  qopts.resolve(opts.flags.no_resolve);
 
   // Seed random generator.
 
@@ -424,12 +484,12 @@ application::exit_status application::exec(int argc, char **argv)
 
   // Omit flag.
 
-  bool omit = map.count("quiet");
+  bool omit = opts.flags.quiet;
 
   // Go to background.
 
 #ifdef HAVE_FORK
-  const bool background_given = map.count("background");
+  const bool background_given = opts.flags.background;
 
   if (background_given)
     {
@@ -447,7 +507,7 @@ application::exit_status application::exec(int argc, char **argv)
 
   // Query formats.
 
-  if (map.count("query-formats"))
+  if (opts.flags.query_formats)
     return query_formats(query, qopts, input);
 
 #if defined (HAVE_FORK) && defined (HAVE_GETPID)
@@ -489,7 +549,7 @@ application::exit_status application::exec(int argc, char **argv)
 
             try
               {
-                _set_format_string(url, qopts, map);
+                set_format_string(url, qopts, map);
                 m = query.parse(url, qopts);
               }
             catch(const quvi::error& e)
@@ -497,8 +557,7 @@ application::exit_status application::exec(int argc, char **argv)
                 check_quvi_error(e);
               }
 
-            cc::get(query, m, map);
-
+            cc::get(query, m);
             break; // Stop retrying.
           }
         es = ok;
@@ -517,73 +576,6 @@ application::exit_status application::exec(int argc, char **argv)
       }
   }
   return es;
-}
-
-void application::_tweak_curl_opts(const quvi::query& query,
-                                   const po::variables_map& map)
-{
-  CURL *curl = query.curlHandle();
-
-  curl_easy_setopt(curl, CURLOPT_USERAGENT,
-                   map["agent"].as<std::string>().c_str());
-
-  if (map.count("verbose-curl"))
-    curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
-
-  if (map.count("proxy"))
-    {
-      curl_easy_setopt(curl, CURLOPT_PROXY,
-                       map["proxy"].as<std::string>().c_str());
-    }
-
-  if (map.count("no-proxy"))
-    curl_easy_setopt(curl, CURLOPT_PROXY, "");
-
-  if (map.count("throttle"))
-    {
-      curl_off_t limit = map["throttle"].as<int>()*1024;
-      curl_easy_setopt(curl, CURLOPT_MAX_RECV_SPEED_LARGE, limit);
-    }
-
-  curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT,
-                   map["connect-timeout"].as<int>());
-}
-
-static void parse_prefer_format(const po::variables_map& map,
-                                const std::string& url,
-                                std::string& fmt)
-{
-  vst vb, va = map["prefer-format"].as<vst>();
-  foreach (const std::string s, va)
-  {
-    boost::split(vb, s, boost::is_any_of(":"));
-    if (vb.size() == 2)
-      {
-        // vb[0] = pattern
-        // vb[1] = format
-        if (cc::re::grep(vb[0], url))
-          {
-            fmt = vb[1];
-            return;
-          }
-      }
-    vb.clear();
-  }
-}
-
-void application::_set_format_string(const std::string& url,
-                                     quvi::options& qopts,
-                                     const po::variables_map& map)
-{
-  std::string fmt = "default";
-  if (map.count("format")) // --format takes precedence
-    fmt = map["format"].as<std::string>();
-  else
-    {
-      if (map.count("prefer-format"))
-        parse_prefer_format(map, url, fmt);
-    }
-  qopts.format(fmt);
 }
 
 } // namespace cc

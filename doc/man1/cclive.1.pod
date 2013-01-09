@@ -69,7 +69,7 @@ responsible for parsing the media details.
 
 See also L</EXAMPLES>, C<--format> and C<--prefer-format>.
 
-=head2 -f, --format I<arg> (=default)
+=head2 -f, --format I<arg> [=default]
 
 Download the format I<arg> of the media. The I<arg> may also be C<default>,
 C<best>, C<help> or C<list>. Note, however, that the C<list> and the C<help>
@@ -90,10 +90,6 @@ You can find more information about the YouTube specific "fmt" IDs at:
 
 See also L</EXAMPLES>, C<--query-formats> and C<--prefer-format>.
 
-=head2 -c, --continue
-
-Resume partially downloaded media.
-
 =head2 -W, --overwrite
 
 Overwrite existing media.
@@ -106,23 +102,18 @@ Write media to I<arg>. Overrides C<--filename-format>.
 
 Do not download the media, print details only.
 
-=head2 -r, --no-resolve
-
-Do not resolve URL redirections. If enabled, breaks the compatibility
-with most "shortened" URLs.
-
 =head2 --no-proxy
 
 Disable use of HTTP proxy. Overrides both C<--proxy> and http_proxy environment
 settings.
 
-=head2 --log-file I<arg> (=cclive_log)
+=head2 --log-file I<arg> [=cclive_log]
 
 Write log output to I<arg>. Ignored unless used with C<--background>.
 Overwrites the existing I<arg> file (if any). See also C<--background>
 and C<--update-interval>.
 
-=head2 --config-file I<arg> (=~/.ccliverc)
+=head2 --config-file I<arg> [=~/.ccliverc]
 
 Path to a file to read cclive arguments from.
 
@@ -133,7 +124,16 @@ from a configuration file. Any such option specified on the command
 line will override the value read from the configuration file.
 See also L</FILES> and C<--config-file>.
 
-=head2 -p, --prefer-format I<arg>
+=head2 -r, --no-resolve  (no-resolve={true|false})
+
+Do not resolve URL redirections. If enabled, breaks the compatibility
+with most "shortened" URLs.
+
+=head2 -c, --continue  (continue={true|false})
+
+Resume partially downloaded media.
+
+=head2 -p, --prefer-format I<arg>  (prefer-format=ARG)
 
 Download the I<specified> format of the media when the pattern matches
 to the media page URL.
@@ -147,7 +147,7 @@ occurrences of C<--prefer-format>.
 
 See also L</EXAMPLES>, C<--query-formats> and C<--format>.
 
-=head2 --progressbar I<arg> (=normal)
+=head2 --progressbar I<arg> [=normal]  (progressbar=ARG)
 
 Use the progressbar of type I<arg>. Ignored with C<--background> which
 will always use the C<dotline> type. Possible values:
@@ -156,12 +156,12 @@ will always use the C<dotline> type. Possible values:
  dotline (implied by --background)
  simple  (basic)
 
-=head2 --update-interval I<arg> (=1)
+=head2 --update-interval I<arg> [=1]  (update-interval=ARG)
 
 Specify I<arg> progressbar update interval in seconds. Use of decimal
 fractions, e.g. "0.2" or "1.99", is acceptable.
 
-=head2 --filename-format I<arg> (="%t.%s")
+=head2 --filename-format I<arg> [="%t.%s"]  (filename-format=ARG)
 
 How the downloaded media file should be named.  Each occurence of the
 following specifiers will be replaced in the I<arg>:
@@ -173,11 +173,11 @@ following specifiers will be replaced in the I<arg>:
 
 See also C<--tr>.
 
-=head2 --output-dir I<arg>
+=head2 --output-dir I<arg>  (output-dir=ARG)
 
 Write downloaded media to I<arg> directory.
 
-=head2 -t, --tr I<arg>
+=head2 -t, --tr I<arg>  (tr=ARG)
 
 Where I<arg> is a pattern (regular expression). C<--tr> can be used to
 translate the characters in the media titles before they are used in
@@ -185,7 +185,7 @@ the filenames of the downloaded media. Default is C</(\w|\s)/g>.
 
 cclive accepts multiple occurrences of C<--tr>. See also L</EXAMPLES>.
 
-=head2 --exec I<arg>
+=head2 --exec I<arg>  (exec=ARG)
 
 Invoke I<arg> after each successfully finished download. Each occurence
 of the following specifiers will be replaced in the I<arg>:
@@ -197,20 +197,20 @@ of the following specifiers will be replaced in the I<arg>:
 The I<arg> is also invoked if the media is fully retrieved already.
 cclive accepts multiple occurrences of C<--exec>. See also L</EXAMPLES>.
 
-=head2 --agent I<arg> (="Mozilla/5.0")
+=head2 --agent I<arg> [="Mozilla/5.0"]  (agent=ARG)
 
 Identify cclive as I<arg> to the HTTP servers.
 
-=head2 --proxy I<arg>
+=head2 --proxy I<arg>  (proxy=ARG)
 
 Use I<arg> for HTTP proxy, e.g. "http://foo:1234". Overrides
 http_proxy environment setting.
 
-=head2 --throttle I<arg> (=0, disabled)
+=head2 --throttle I<arg> [=0, disabled]  (throttle=ARG)
 
 Do not exceed the transfer rate I<arg> KB/s.
 
-=head2 --connect-timeout I<arg> (=30)
+=head2 --connect-timeout I<arg> [=30]  (connect-timeout=ARG)
 
 This option wraps the CURLOPT_CONNECTTIMEOUT (libcurl):
 
@@ -223,7 +223,7 @@ timeout (it will then only timeout on the system's internal
 timeouts). See also the CURLOPT_TIMEOUT option."
 -- curl_easy_setopt(3)
 
-=head2 --transfer-timeout I<arg> (=0, disabled)
+=head2 --transfer-timeout I<arg> [=0, disabled]  [transfer-timeout=ARG]
 
 This option wraps the CURLOPT_TIMEOUT (libcurl):
 
@@ -236,7 +236,7 @@ normal operations. This option will cause curl to use the
 SIGALRM to enable time-outing system calls."
 -- curl_easy_setopt(3)
 
-=head2 --dns-cache-timeout I<arg> (=60)
+=head2 --dns-cache-timeout I<arg> [=60]  (dns-cache-timeout=ARG)
 
 This option wraps the CURLOPT_DNS_CACHE_TIMEOUT (libcurl):
 
@@ -253,11 +253,11 @@ to keep using the older server even if DHCP has updated the
 server info, and this may look like a DNS cache issue to the
 casual libcurl-app user." -- curl_easy_setopt(3)
 
-=head2 --max-retries I<arg> (=5, 0=disabled)
+=head2 --max-retries I<arg> [=5, 0=disabled]  (max-retries=ARG)
 
 Retry downloading I<arg> times before giving up.
 
-=head2 --retry-wait I<arg> (=5)
+=head2 --retry-wait I<arg> [=5]  (retry-wait=ARG)
 
 Wait I<arg> seconds before retrying after a failed attempt.
 
@@ -352,13 +352,15 @@ a different location. See also L</OPTIONS - CONFIGURATION>.
 
 =head3 Example
 
+ prefer-format = ^.*youtube.*\.com:fmt43_360p
  filename-format = %h_%i_(%t).%s
+ prefer-format = dailym:best
  proxy = http://foo:1234
  exec = /usr/bin/vlc %f
  regexp = /(\w|\pL)/g
  progressbar = simple
- prefer-format = ^.*youtube.*\.com:fmt43_360p
- prefer-format = dailym:best
+ no-resolve = false
+ continue = true
 
 =head1 EXIT STATUS
 

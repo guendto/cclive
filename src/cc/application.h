@@ -1,5 +1,5 @@
 /* cclive
- * Copyright (C) 2010-2011  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2010-2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,13 +18,7 @@
 #ifndef cclive_application_h
 #define cclive_application_h
 
-#include <ccoptions>
-
-namespace quvi
-{
-class options;
-class query;
-}
+#include <cstdlib>
 
 namespace cc
 {
@@ -35,14 +29,6 @@ public:
   typedef enum {ok=EXIT_SUCCESS, error=EXIT_FAILURE} exit_status;
 public:
   exit_status exec(int,char **);
-private:
-  void _tweak_curl_opts(const quvi::query&,
-                        const boost::program_options::variables_map&);
-  void _set_format_string(const std::string&,
-                          quvi::options&,
-                          const boost::program_options::variables_map&);
-private:
-  cc::options _opts;
 };
 
 } // namespace cc

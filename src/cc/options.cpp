@@ -1,5 +1,5 @@
 /* cclive
- * Copyright (C) 2010-2011  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2010-2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,13 +34,17 @@
 namespace cc
 {
 
-namespace opts = boost::program_options;
-namespace fs   = boost::filesystem;
+options opts;
+
+namespace po = boost::program_options;
+namespace fs = boost::filesystem;
 
 typedef std::vector<std::string> vst;
 
 void options::exec(int argc, char **argv)
 {
+  memset(&flags, 0, sizeof(struct flags_s));
+
   // Path to ccliverc.
 
 #if BOOST_FILESYSTEM_VERSION > 2
@@ -62,107 +66,120 @@ void options::exec(int argc, char **argv)
 
   // Construct options.
 
-  opts::options_description generic;
+  po::options_description generic;
   std::string conf_file;
 
   generic.add_options()
   ("version",
+   po::value(&flags.version)->zero_tokens(),
    "Print version and exit")
   ("help",
+   po::value(&flags.help)->zero_tokens(),
    "Print help and exit")
   ("license",
+   po::value(&flags.license)->zero_tokens(),
    "Print license and exit")
   ("support",
+   po::value(&flags.support)->zero_tokens(),
    "Print supported websites and exit")
   ("verbose-libcurl",
+   po::value(&flags.verbose_libcurl)->zero_tokens(),
    "Turn on libcurl verbose output")
   ("quiet,q",
+   po::value(&flags.quiet)->zero_tokens(),
    "Turn off all output, excl. errors")
 #ifdef HAVE_FORK
   ("background,b",
+   po::value(&flags.background)->zero_tokens(),
    "Go to background")
 #endif
   ("query-formats,F",
+   po::value(&flags.query_formats)->zero_tokens(),
    "Query available formats to URL")
   ("format,f",
-   opts::value<std::string>(),
+   po::value<std::string>(),
    "Download media format")
-  ("continue,c",
-   "Resume partially downloaded media")
   ("overwrite,W",
+   po::value(&flags.overwrite)->zero_tokens(),
    "Overwrite existing media")
   ("output-file,O",
-   opts::value<std::string>(),
+   po::value<std::string>(),
    "Write media to arg")
   ("no-download,n",
+   po::value(&flags.no_download)->zero_tokens(),
    "Do not download media, print details")
-  ("no-resolve,r",
-   "Do not resolve URL redirections")
   ("no-proxy",
+   po::value(&flags.no_proxy)->zero_tokens(),
    "Do not use HTTP proxy")
   ("log-file",
-   opts::value<std::string>()->default_value("cclive_log"),
+   po::value<std::string>()->default_value("cclive_log"),
    "Write log output to arg")
   ("config-file",
-   opts::value<std::string>(&conf_file)->default_value(conf_path.string()),
+   po::value<std::string>(&conf_file)->default_value(conf_path.string()),
    "Read args from arg")
   ;
 
   // Config.
 
-  opts::options_description config("Configuration");
+  po::options_description config("Configuration");
 
   config.add_options()
+  ("no-resolve,r",
+   po::value(&flags.no_resolve)->zero_tokens(),
+   "Do not resolve URL redirections")
+  ("continue,c",
+   po::value(&flags.cont)->zero_tokens(),
+   "Resume partially downloaded media")
   ("prefer-format,p",
-   opts::value<std::vector<std::string> >()->composing(),
+   po::value<std::vector<std::string> >()->composing(),
    "Preferred format [domain:format[,...]]")
   ("progressbar",
-   opts::value<std::string>()->default_value("normal"),
+   po::value<std::string>()->default_value("normal"),
    "Use progressbar arg")
   ("update-interval",
-   opts::value<double>()->default_value(1.0),
+   po::value<double>()->default_value(1.0),
    "Update interval of progressbar")
   ("filename-format",
-   opts::value<std::string>()->default_value("%t.%s"),
+   po::value<std::string>()->default_value("%t.%s"),
    "Downloaded media filename format")
   ("output-dir",
-   opts::value<std::string>(),
+   po::value<std::string>(),
    "Write downloaded media to arg directory")
   ("tr,t",
-   opts::value<vst>()->composing(),
+   po::value<vst>()->composing(),
    "Translate characters in media title")
   ("regexp",
-   opts::value<std::string>(),
+   po::value<std::string>(),
    "Regexp to cleanup media title (depr.)")
-  ("subst", opts::value<std::string>(),
+  ("subst", po::value<std::string>(),
    "Replace matched occurences in filename (depr.)")
-  ("exec", opts::value<vst>()->composing(),
+  ("exec", po::value<vst>()->composing(),
    "Invoke arg after each finished download")
   ("agent",
-   opts::value<std::string>()->default_value("Mozilla/5.0"),
+   po::value<std::string>()->default_value("Mozilla/5.0"),
    "Identify as arg to HTTP servers")
-  ("proxy", opts::value<std::string>(),
+  ("proxy", po::value<std::string>(),
    "Use proxy for HTTP connections")
-  ("throttle", opts::value<int>()->default_value(0),
+  ("throttle", po::value<int>()->default_value(0),
    "Do not exceed transfer rate arg KB/s")
-  ("connect-timeout", opts::value<int>()->default_value(30),
+  ("connect-timeout", po::value<int>()->default_value(30),
    "Seconds connecting allowed to take")
-  ("transfer-timeout", opts::value<int>()->default_value(0),
+  ("transfer-timeout", po::value<int>()->default_value(0),
    "Seconds transfer allowed to take")
-  ("dns-cache-timeout", opts::value<int>()->default_value(60),
+  ("dns-cache-timeout", po::value<int>()->default_value(60),
    "Seconds DNS resolves kept in memory")
-  ("max-retries", opts::value<int>()->default_value(5),
+  ("max-retries", po::value<int>()->default_value(5),
    "Max download attempts before giving up")
-  ("retry-wait", opts::value<int>()->default_value(5),
+  ("retry-wait", po::value<int>()->default_value(5),
    "Time to wait before retrying")
   ;
 
   // Hidden.
 
-  opts::options_description hidden;
+  po::options_description hidden;
 
   hidden.add_options()
-  ("url", opts::value<vst>(), "url");
+  ("url", po::value<vst>(), "url");
 
   // Visible.
 
@@ -170,22 +187,22 @@ void options::exec(int argc, char **argv)
 
   // Command line options.
 
-  opts::options_description cmdline_options;
+  po::options_description cmdline_options;
   cmdline_options.add(generic).add(config).add(hidden);
 
   // Config file options.
 
-  opts::options_description config_file_options;
+  po::options_description config_file_options;
   config_file_options.add(config);
 
   // Positional.
 
-  opts::positional_options_description p;
+  po::positional_options_description p;
   p.add("url", -1);
 
   // Parse.
 
-  store(opts::command_line_parser(argc,argv)
+  store(po::command_line_parser(argc,argv)
         .options(cmdline_options).positional(p).run(), _map);
   notify(_map);
 
@@ -200,11 +217,6 @@ void options::exec(int argc, char **argv)
     }
 
   _validate();
-}
-
-const opts::variables_map& options::map() const
-{
-  return _map;
 }
 
 std::ostream& operator<<(std::ostream& os, const options& o)

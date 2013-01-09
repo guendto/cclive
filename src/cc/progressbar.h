@@ -1,5 +1,5 @@
 /* cclive
- * Copyright (C) 2010-2011  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2010-2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@
 
 namespace cc
 {
+class file;
 
 class progressbar
 {
@@ -29,9 +30,7 @@ class progressbar
 public:
   enum mode { normal = 0, dotline, simple };
 public:
-  progressbar(const file&,
-              const quvi::url&,
-              const boost::program_options::variables_map&);
+  progressbar(const file&, const quvi::url&);
   void update(double);
   void finish();
 private:

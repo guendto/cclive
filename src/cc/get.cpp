@@ -1,5 +1,5 @@
 /* cclive
- * Copyright (C) 2010-2011  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2010-2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 
 #include <boost/program_options/variables_map.hpp>
 
+#include <ccoptions>
 #include <ccquvi>
 #include <cclog>
 #include <ccfile>
@@ -29,34 +30,30 @@ namespace cc
 
 namespace po = boost::program_options;
 
-void get(const quvi::query& query,
-         quvi::media& media,
-         const po::variables_map& map)
+void get(const quvi::query& query, quvi::media& media)
 {
-  const bool no_download = map.count("no-download");
-  const bool exec        = map.count("exec");
+  const po::variables_map map = cc::opts.map();
 
+  const bool no_download = opts.flags.no_download;
   const int max_retries  = map["max-retries"].as<int>();
   const int retry_wait   = map["retry-wait"].as<int>();
-
-  int n = 0;
+  const bool exec        = map.count("exec");
 
   quvi::url url;
+  int n = 0;
 
   while ((url = media.next_url()).ok())
     {
-      ++n;
-
       int retry = 0;
-
+      ++n;
       while (retry <= max_retries)
         {
-          cc::file file(media, url, n, map);
+          cc::file file(media, url, n);
 
           if (file.nothing_todo())
             {
               if (exec)
-                cc::exec(file, map);
+                cc::exec(file);
 
 #define E_NOTHING_TODO "media retrieved completely already"
               throw std::runtime_error(E_NOTHING_TODO);
@@ -84,11 +81,11 @@ void get(const quvi::query& query,
 
           if (!no_download)
             {
-              if (!file.write(query, url, map))
+              if (!file.write(query, url));
                 continue; // Retry.
 
               if (exec)
-                cc::exec(file, map);
+                cc::exec(file);
             }
 
           break; // Stop retrying.

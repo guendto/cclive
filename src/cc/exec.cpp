@@ -1,5 +1,5 @@
 /* cclive
- * Copyright (C) 2010-2011  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2010-2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,6 +30,7 @@
 #define foreach BOOST_FOREACH
 #endif
 
+#include <ccoptions>
 #include <ccquvi>
 #include <ccfile>
 #include <ccre>
@@ -114,9 +115,9 @@ static void tokenize(const std::string& r,
 
 namespace po = boost::program_options;
 
-void exec(const file& file, const po::variables_map& map)
+void exec(const file& file)
 {
-  const vst m = map["exec"].as<vst>();
+  const vst m = cc::opts.map()["exec"].as<vst>();
   foreach (std::string e, m)
   {
     pcrecpp::RE("%f").GlobalReplace(file.path(), &e);
