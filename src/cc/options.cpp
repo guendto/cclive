@@ -219,11 +219,6 @@ void options::exec(int argc, char **argv)
   _validate();
 }
 
-std::ostream& operator<<(std::ostream& os, const options& o)
-{
-  return os << o._visible;
-}
-
 void options::_validate()
 {
   std::string empty;
