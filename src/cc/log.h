@@ -1,5 +1,5 @@
 /* cclive
- * Copyright (C) 2010-2011  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2010-2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,8 +36,12 @@ extern boost::iostreams::filtering_ostream log;
 
 struct omit_sink : public boost::iostreams::sink
 {
-  std::streamsize write(const char *s, std::streamsize n);
-  explicit omit_sink(bool b=false);
+  inline std::streamsize write(const char *s, std::streamsize n)
+    {
+      if (!_omit) std::clog.write(s,n);
+      return n;
+    }
+  inline explicit omit_sink(bool b=false): _omit(b) { }
 private:
   bool _omit;
 };
@@ -52,22 +56,62 @@ struct flushable_file_sink
     boost::iostreams::closable_tag,
     boost::iostreams::flushable_tag {};
 
-  flushable_file_sink(
-    const std::string&,
-    const std::ios_base::openmode mode = std::ios::trunc|std::ios::out);
+  inline flushable_file_sink(
+    const std::string& fpath,
+    const std::ios_base::openmode mode = std::ios::trunc|std::ios::out)
+      : _mode(mode), _fpath(fpath)
+  {
+    _open();
+  }
 
-  flushable_file_sink& operator=(const flushable_file_sink&);
-  flushable_file_sink(const flushable_file_sink&);
+  inline flushable_file_sink(const flushable_file_sink& f) { _swap(f); }
+  
+  inline flushable_file_sink& operator=(const flushable_file_sink& f)
+    {
+      if (this != &f) _swap(f);
+      return *this;
+    }
 
-  std::streampos seek(std::streamoff, std::ios_base::seekdir);
-  std::streamsize write(const char *, std::streamsize);
-  std::streamsize read(char_type *, std::streamsize);
+  inline std::streampos seek(std::streamoff o, std::ios_base::seekdir d)
+    {
+      _f.seekp(o,d);
+      _f.seekg(o,d);
+      return o;
+    }
 
-  bool is_open() const;
-  bool flush();
-  void close();
+  inline std::streamsize write(const char *s, std::streamsize n)
+    {
+      _f.write(s,n);
+      return n;
+    }
+
+  inline std::streamsize read(char_type *t, std::streamsize n)
+    {
+      _f.read(t,n);
+      return n;
+    }
+
+  inline bool is_open() const { return _f.is_open(); }
+
+  inline bool flush()
+    {
+      _f.flush();
+      return true;
+    }
+
+  inline void close()
+    {
+      flush();
+      _f.close();
+    }
 private:
-  void _swap(const flushable_file_sink&);
+  inline void _swap(const flushable_file_sink& f)
+    {
+      close();
+      _fpath = f._fpath;
+      _mode  = f._mode;
+      _open();
+    }
   void _open();
 private:
   std::ios_base::openmode _mode;
