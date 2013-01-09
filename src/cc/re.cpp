@@ -15,8 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <sstream>
+#include <ccinternal>
 
+#include <sstream>
 #include <boost/format.hpp>
 #include <pcrecpp.h>
 

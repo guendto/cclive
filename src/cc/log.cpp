@@ -15,12 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <ccinternal>
+
 #include <stdexcept>
 #include <cstdarg>
 #include <cerrno>
 
 #include <boost/filesystem.hpp>
 
+#include <ccquvi>
 #include <ccutil>
 #include <cclog>
 

@@ -15,9 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <ccinternal>
+
 #include <stdexcept>
-#include <clocale>
 #include <iostream>
+#include <clocale>
 
 #include <ccapplication>
 #include <ccquvi>
