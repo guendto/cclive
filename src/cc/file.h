@@ -1,5 +1,5 @@
 /* cclive
- * Copyright (C) 2010-2011  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2010-2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +18,6 @@
 #ifndef cclive_file_h
 #define cclive_file_h
 
-namespace boost
-{
-namespace program_options
-{
-class variables_map;
-}
-}
-
 namespace cc
 {
 
@@ -33,16 +25,11 @@ class file
 {
 public:
   file();
-  file(const quvi::media&,
-       const quvi::url&,
-       const int,
-       const boost::program_options::variables_map&);
+  file(const quvi::media&, const quvi::url&, const int);
   file(const file&);
   file& operator=(const file&);
 public:
-  bool write(const quvi::query&,
-             const quvi::url&,
-             const boost::program_options::variables_map&) const;
+  bool write(const quvi::query&, const quvi::url&) const;
 public:
   std::string to_s(const quvi::url&) const;
   const std::string& title() const;
@@ -55,8 +42,7 @@ public:
 private:
   void _init(const quvi::media&,
              const quvi::url&,
-             const int,
-             const boost::program_options::variables_map&);
+             const int);
   bool _should_continue() const;
   void _swap(const file&);
 private:

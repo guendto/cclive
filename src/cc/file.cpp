@@ -1,5 +1,5 @@
 /* cclive
- * Copyright (C) 2010-2011  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2010-2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,6 +46,7 @@
 #include <curl/curl.h>
 #include <pcrecpp.h>
 
+#include <ccoptions>
 #include <ccquvi>
 #include <ccprogressbar>
 #include <ccre>
@@ -65,13 +66,12 @@ namespace po = boost::program_options;
 
 file::file(const quvi::media& media,
            const quvi::url& url,
-           const int n,
-           const po::variables_map& map)
+           const int n)
   : _initial_length(0), _nothing_todo(false)
 {
   try
     {
-      _init(media, url, n, map);
+      _init(media, url, n);
     }
   catch (const cc::nothing_todo_error&)
     {
@@ -155,9 +155,9 @@ static int progress_cb(void *ptr, double, double now, double, double)
   return 0;
 }
 
-bool file::write(const quvi::query& q,
-                 const quvi::url& u,
-                 const po::variables_map& map) const
+namespace po = boost::program_options;
+
+bool file::write(const quvi::query& q, const quvi::url& u) const
 {
   CURL *curl = q.curlHandle();
 
@@ -166,7 +166,7 @@ bool file::write(const quvi::query& q,
 
   std::ios_base::openmode mode = std::ofstream::binary;
 
-  if (map.count("overwrite"))
+  if (opts.flags.overwrite)
     mode |= std::ofstream::trunc;
   else
     {
@@ -193,13 +193,15 @@ bool file::write(const quvi::query& q,
   curl_easy_setopt(curl, CURLOPT_ENCODING, "identity");
   curl_easy_setopt(curl, CURLOPT_HEADER, 0L);
 
-  progressbar pb(*this, u, map);
+  progressbar pb(*this, u);
   curl_easy_setopt(curl, CURLOPT_PROGRESSDATA, &pb);
   curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0L);
   curl_easy_setopt(curl, CURLOPT_PROGRESSFUNCTION, progress_cb);
 
   curl_off_t resume_from = static_cast<curl_off_t>(_initial_length);
   curl_easy_setopt(curl, CURLOPT_RESUME_FROM_LARGE, resume_from);
+
+  const po::variables_map map = cc::opts.map();
 
   curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT,
                    map["connect-timeout"].as<int>());
@@ -343,10 +345,11 @@ typedef std::vector<std::string> vst;
 
 void file::_init(const quvi::media& media,
                  const quvi::url& url,
-                 const int n,
-                 const po::variables_map& map)
+                 const int n)
 {
   _title = media.title();
+
+  const po::variables_map map = cc::opts.map();
 
   if (map.count("output-file"))
     {
@@ -364,11 +367,8 @@ void file::_init(const quvi::media& media,
       _path           = p.string();
       _initial_length = file::exists(_path);
 
-      if ( _initial_length >= url.content_length()
-           && !map.count("overwrite") )
-        {
-          throw cc::nothing_todo_error();
-        }
+      if ( _initial_length >= url.content_length() && ! opts.flags.overwrite)
+        throw cc::nothing_todo_error();
     }
 
   else
@@ -396,8 +396,7 @@ void file::_init(const quvi::media& media,
 
       // --filename-format
 
-      std::string fname_format =
-        map["filename-format"].as<std::string>();
+      std::string fname_format = map["filename-format"].as<std::string>();
 
       pcrecpp::RE("%i").GlobalReplace(media.id(), &fname_format);
       pcrecpp::RE("%t").GlobalReplace(title, &fname_format);
@@ -447,7 +446,7 @@ void file::_init(const quvi::media& media,
 #endif
       _path = p.string();
 
-      if (!map.count("overwrite"))
+      if (! opts.flags.overwrite)
         {
           for (int i=0; i<INT_MAX; ++i)
             {
@@ -461,7 +460,7 @@ void file::_init(const quvi::media& media,
 
               else
                 {
-                  if (map.count("continue"))
+                  if (opts.flags.cont)
                     break;
                 }
 
@@ -480,7 +479,7 @@ void file::_init(const quvi::media& media,
         }
     }
 
-  if ( map.count("overwrite") )
+  if (opts.flags.overwrite)
     _initial_length = 0;
 }
 
