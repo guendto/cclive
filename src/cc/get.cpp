@@ -75,9 +75,8 @@ void get(const quvi::query& query, quvi::media& media)
               cc::wait(retry_wait);
             }
 
-          ++retry;
-
           cc::log << file.to_s(url) << std::endl;
+          ++retry;
 
           if (!no_download)
             {
