@@ -1,5 +1,5 @@
 /* cclive
- * Copyright (C) 2010-2011  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2010-2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,18 +23,39 @@
 namespace cc
 {
 
+struct flags_s
+{
+  bool verbose_libcurl;
+  bool query_formats;
+  bool no_download;
+  bool no_resolve;
+  bool background;
+  bool overwrite;
+  bool no_proxy;
+  bool version;
+  bool license;
+  bool support;
+  bool quiet;
+  bool cont/*inue*/;
+  bool help;
+};
+
 class options
 {
   friend std::ostream& operator<<(std::ostream&, const options&);
 public:
-  const boost::program_options::variables_map& map() const;
+  inline const boost::program_options::variables_map& map()const {return _map;}
   void exec(int argc, char **argv);
 private:
   void _validate();
 private:
   boost::program_options::options_description _visible;
   boost::program_options::variables_map _map;
+public:
+  struct flags_s flags;
 };
+
+extern options opts;
 
 } // namespace cc
 
