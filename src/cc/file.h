@@ -24,27 +24,44 @@ namespace cc
 class file
 {
 public:
-  file();
   file(const quvi::media&, const quvi::url&, const int);
-  file(const file&);
-  file& operator=(const file&);
+
+  inline file(): _initial_length(0), _nothing_todo(false) { }
+
+  inline file(const file& f): _initial_length(0), _nothing_todo(false)
+    {
+      _swap(f);
+    }
+
+  inline file& operator=(const file& f)
+    {
+      if (this != &f) _swap(f);
+      return *this;
+    }
 public:
   bool write(const quvi::url&, void*) const;
 public:
   std::string to_s(const quvi::url&) const;
-  const std::string& title() const;
-  const std::string& path() const;
-  const std::string& name() const;
-  const bool nothing_todo() const;
-  double initial_length() const;
+  inline const std::string& title() const { return _title; }
+  inline const std::string& path() const  { return _path; }
+  inline const std::string& name() const  { return _name; }
+  inline const bool nothing_todo() const  { return _nothing_todo; }
+  inline double initial_length() const    { return _initial_length; }
 public:
   static double exists(const std::string&);
 private:
-  void _init(const quvi::media&,
-             const quvi::url&,
-             const int);
-  bool _should_continue() const;
-  void _swap(const file&);
+  void _init(const quvi::media&, const quvi::url&, const int);
+
+  inline bool _should_continue() const { return _initial_length >0; }
+
+  inline void _swap(const file& f)
+    {
+      _title          = f._title;
+      _name           = f._name;
+      _path           = f._path;
+      _initial_length = f._initial_length;
+      _nothing_todo   = f._nothing_todo;
+    }
 private:
   double _initial_length;
   bool _nothing_todo;

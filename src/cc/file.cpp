@@ -57,11 +57,6 @@
 namespace cc
 {
 
-file::file()
-  : _initial_length(0), _nothing_todo(false)
-{
-}
-
 namespace po = boost::program_options;
 
 file::file(const quvi::media& media, const quvi::url& url, const int n)
@@ -75,27 +70,6 @@ file::file(const quvi::media& media, const quvi::url& url, const int n)
     {
       _nothing_todo = true;
     }
-}
-
-file::file(const file& f)
-  : _initial_length(0), _nothing_todo(false)
-{
-  _swap(f);
-}
-
-file& file::operator=(const file& f)
-{
-  if (this != &f) _swap(f);
-  return *this;
-}
-
-void file::_swap(const file& f)
-{
-  _title          = f._title;
-  _name           = f._name;
-  _path           = f._path;
-  _initial_length = f._initial_length;
-  _nothing_todo   = f._nothing_todo;
 }
 
 #define E "server response code %ld, expected 200 or 206 (conn_code=%ld)"
@@ -181,8 +155,6 @@ static void _restore(CURL *c)
   curl_easy_setopt(c, CURLOPT_MAX_RECV_SPEED_LARGE,
                    static_cast<curl_off_t>(0L));
 }
-
-namespace po = boost::program_options;
 
 bool file::write(const quvi::url& u, CURL *curl) const
 {
@@ -283,36 +255,6 @@ bool file::write(const quvi::url& u, CURL *curl) const
   cc::log << std::endl;
 
   return true;
-}
-
-double file::initial_length() const
-{
-  return _initial_length;
-}
-
-const std::string& file::title() const
-{
-  return _title;
-}
-
-const std::string& file::path() const
-{
-  return _path;
-}
-
-const std::string& file::name() const
-{
-  return _name;
-}
-
-const bool file::nothing_todo() const
-{
-  return _nothing_todo;
-}
-
-bool file::_should_continue() const
-{
-  return _initial_length > 0;
 }
 
 static double to_mb(const double bytes)
