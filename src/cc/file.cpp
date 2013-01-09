@@ -64,9 +64,7 @@ file::file()
 
 namespace po = boost::program_options;
 
-file::file(const quvi::media& media,
-           const quvi::url& url,
-           const int n)
+file::file(const quvi::media& media, const quvi::url& url, const int n)
   : _initial_length(0), _nothing_todo(false)
 {
   try
@@ -195,10 +193,8 @@ static void _restore(CURL *c)
 
 namespace po = boost::program_options;
 
-bool file::write(const quvi::query& q, const quvi::url& u) const
+bool file::write(const quvi::url& u, CURL *curl) const
 {
-  CURL *curl = q.curlHandle();
-
   curl_easy_setopt(curl, CURLOPT_URL, u.media_url().c_str());
   curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_cb);
 

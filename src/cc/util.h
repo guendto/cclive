@@ -20,7 +20,6 @@
 
 namespace quvi
 {
-class query;
 class media;
 class url;
 } // namespace quvi
@@ -37,7 +36,7 @@ class file;
 
 void go_background(const std::string&, bool&);
 std::string perror(const std::string& p="");
-void get(const quvi::query&, quvi::media&);
+void get(quvi::media&, void*);
 void exec(const file&);
 void wait(const int);
 

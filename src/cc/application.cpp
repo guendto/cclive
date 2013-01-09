@@ -557,7 +557,7 @@ application::exit_status application::exec(int argc, char **argv)
                 check_quvi_error(e);
               }
 
-            cc::get(query, m);
+            cc::get(m, query.curlHandle());
             break; // Stop retrying.
           }
         es = ok;

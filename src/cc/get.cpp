@@ -30,7 +30,7 @@ namespace cc
 
 namespace po = boost::program_options;
 
-void get(const quvi::query& query, quvi::media& media)
+void get(quvi::media& media, void *curl)
 {
   const po::variables_map map = cc::opts.map();
 
@@ -80,7 +80,7 @@ void get(const quvi::query& query, quvi::media& media)
 
           if (!no_download)
             {
-              if (!file.write(query, url));
+              if (!file.write(url, curl));
                 continue; // Retry.
 
               if (exec)

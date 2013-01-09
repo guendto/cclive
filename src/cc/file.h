@@ -29,7 +29,7 @@ public:
   file(const file&);
   file& operator=(const file&);
 public:
-  bool write(const quvi::query&, const quvi::url&) const;
+  bool write(const quvi::url&, void*) const;
 public:
   std::string to_s(const quvi::url&) const;
   const std::string& title() const;
