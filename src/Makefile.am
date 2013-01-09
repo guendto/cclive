@@ -13,6 +13,7 @@ src= \
  cc/re.cpp \
  cc/get.cpp \
  cc/application.cpp \
+ cc/curl.cpp \
  quvi/err.cpp \
  quvi/query.cpp \
  quvi/misc.cpp \

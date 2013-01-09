@@ -40,6 +40,12 @@ void get(quvi::media&, void*);
 void exec(const file&);
 void wait(const int);
 
+/* curl */
+
+void curl_setup(void*);
+void curl_free(void*);
+void *curl_new();
+
 } // namespace cc
 
 #endif // cclive_util_h

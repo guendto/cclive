@@ -25,7 +25,7 @@ namespace quvi
 // Constructor.
 
 query::query()
-  : _quvi(NULL), _curl(NULL)
+  : _quvi(NULL)
 {
   _init();
 }
@@ -33,7 +33,7 @@ query::query()
 // Copy constructor.
 
 query::query(const query& q)
-  : _quvi(NULL), _curl(NULL)
+  : _quvi(NULL)
 {
   _init();
 }
@@ -61,16 +61,10 @@ query::~query()
 
 void query::_init()
 {
-
   const QUVIcode rc = quvi_init(&_quvi);
-
   if (rc != QUVI_OK)
     throw error(_quvi,rc);
-
   assert(_quvi != NULL);
-
-  quvi_getinfo(_quvi, QUVIINFO_CURL, &_curl);
-  assert(_curl != NULL);
 }
 
 // Close.
@@ -80,7 +74,6 @@ void query::_close()
   if (_quvi)
     quvi_close(&_quvi); // Resets to NULL.
   assert(_quvi == NULL);
-  _curl = NULL;
 }
 
 // Set common libquvi options.
@@ -143,13 +136,6 @@ media query::parse(const std::string& pageURL, const options& opts) const
   quvi_parse_close(&qm);
 
   return m;
-}
-
-// Get.
-
-void* query::curlHandle() const
-{
-  return _curl;
 }
 
 // Support.

@@ -28,7 +28,14 @@ class application
 public:
   typedef enum {ok=EXIT_SUCCESS, error=EXIT_FAILURE} exit_status;
 public:
+  inline application():_curl(NULL) { }
+  inline virtual ~application()    { _close(); }
+public:
   exit_status exec(int,char **);
+private:
+  void _close();
+private:
+  void *_curl;
 };
 
 } // namespace cc

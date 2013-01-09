@@ -170,15 +170,6 @@ static void _set(CURL *c, std::ofstream *o, progressbar *pb,
 
   curl_easy_setopt(c, CURLOPT_RESUME_FROM_LARGE,
                    static_cast<curl_off_t>(initial_length));
-
-  curl_easy_setopt(c, CURLOPT_CONNECTTIMEOUT,
-                   map["connect-timeout"].as<int>());
-
-  curl_easy_setopt(c, CURLOPT_TIMEOUT,
-                   map["transfer-timeout"].as<int>());
-
-  curl_easy_setopt(c, CURLOPT_DNS_CACHE_TIMEOUT,
-                   map["dns-cache-timeout"].as<int>());
 }
 
 static void _restore(CURL *c)
