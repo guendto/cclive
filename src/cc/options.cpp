@@ -73,7 +73,7 @@ void options::exec(int argc, char **argv)
   ("version",
    po::value(&flags.version)->zero_tokens(),
    "Print version and exit")
-  ("help",
+  ("help,h",
    po::value(&flags.help)->zero_tokens(),
    "Print help and exit")
   ("license",

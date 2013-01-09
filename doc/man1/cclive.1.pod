@@ -31,7 +31,7 @@ See also L</OPTIONS - CONFIGURATION>.
 
 Print version and exit.
 
-=head2 --help
+=head2 -h, --help
 
 Print help and exit.
 
