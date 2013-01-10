@@ -70,7 +70,7 @@ void options::exec(int argc, char **argv)
   std::string conf_file;
 
   generic.add_options()
-  ("version",
+  ("version,v",
    po::value(&flags.version)->zero_tokens(),
    "Print version and exit")
   ("help,h",

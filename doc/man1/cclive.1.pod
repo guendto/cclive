@@ -27,7 +27,7 @@ separated by a newline or a whitespace character.
 These options may be specified on the command line only.
 See also L</OPTIONS - CONFIGURATION>.
 
-=head2 --version
+=head2 -v, --version
 
 Print version and exit.
 
