@@ -209,8 +209,7 @@ handle_format_list(const po::variables_map& map, const quvi::query& query)
 }
 
 static application::exit_status
-query_formats(const quvi::query& query,
-              const quvi::options &opts,
+print_streams(const quvi::query& query, const quvi::options &qopts,
               const vst& input)
 {
   const size_t n = input.size();
@@ -218,22 +217,24 @@ query_formats(const quvi::query& query,
 
   foreach (std::string url, input)
   {
-    ++i;
-
     try
       {
-        print_checking(i,n);
+        print_checking(++i,n);
 
-        const std::string formats = query.streams(url, opts);
-
+        const std::string r = query.streams(url, qopts);
         print_done();
 
-        cc::log
-            << std::setw(10)
-            << formats
-            << " : "
-            << url
-            << std::endl;
+        if (cc::opts.flags.print_streams)
+          {
+            vst a;
+            boost::split(a, r, boost::is_any_of("|,"));
+            foreach (const std::string s, a)
+            {
+              cc::log << s << "\n";
+            }
+          }
+        else
+          cc::log << std::setw(10) << r << " : " << url << std::endl;
       }
     catch(const quvi::error& e)
       {
@@ -449,10 +450,10 @@ application::exit_status application::exec(int argc, char **argv)
   cc::log.push(cc::omit_sink(omit));
   cc::log.setf(std::ios::fixed);
 
-  // Query formats.
+  // Print streams.
 
-  if (opts.flags.query_formats)
-    return query_formats(query, qopts, input);
+  if (opts.flags.print_streams || opts.flags.query_formats)
+    return print_streams(query, qopts, input);
 
 #if defined (HAVE_FORK) && defined (HAVE_GETPID)
   if (background_given)

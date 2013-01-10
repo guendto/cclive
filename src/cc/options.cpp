@@ -93,9 +93,12 @@ void options::exec(int argc, char **argv)
    po::value(&flags.background)->zero_tokens(),
    "Go to background")
 #endif
+  ("print-streams,S",
+   po::value(&flags.print_streams)->zero_tokens(),
+   "Print available media streams")
   ("query-formats,F",
    po::value(&flags.query_formats)->zero_tokens(),
-   "Query available formats to URL")
+   "Query available formats to URL (depr.)")
   ("format,f",
    po::value<std::string>(),
    "Download media format")
@@ -229,6 +232,9 @@ static void warn_depr(const std::string& w, const std::string& n)
 void options::_validate()
 {
   std::string empty;
+
+  if (_map.count("query-formats"))
+    warn_depr("query-formats", "print-formats");
 
   if (_map.count("tr"))
     {

@@ -26,6 +26,7 @@ namespace cc
 struct flags_s
 {
   bool verbose_libcurl;
+  bool print_streams;
   bool query_formats;
   bool no_download;
   bool no_resolve;
