@@ -142,8 +142,8 @@ static void print_quvi_error(const quvi::error& e)
 }
 
 static const char depr_msg[] =
-  "WARNING '--format list' is deprecated and will be removed in the later\n"
-  "WARNING versions. Use --query-formats instead.";
+  "WARNING '--format {help,list}' are deprecated and will be removed "
+  "in the later\nWARNING versions. Use '--print-streams' instead.";
 
 static const char format_usage[] =
   "Usage:\n"
@@ -287,18 +287,20 @@ static void parse_prefer_format(const std::string& url, std::string& fmt,
   }
 }
 
-static void set_format_string(const std::string& url, quvi::options& qopts,
-                              const po::variables_map& map)
+static void set_stream(const std::string& url, quvi::options& qopts,
+                       const po::variables_map& map)
 {
-  std::string fmt = "default";
-  if (map.count("format")) // --format takes precedence
-    fmt = map["format"].as<std::string>();
+  std::string s = "default";
+  if (map.count("stream"))
+    s = map["stream"].as<std::string>();
+  else if (map.count("format")) // --format takes precedence
+    s = map["format"].as<std::string>();
   else
     {
       if (map.count("prefer-format"))
-        parse_prefer_format(url, fmt, map);
+        parse_prefer_format(url, s, map);
     }
-  qopts.stream = fmt;
+  qopts.stream = s;
 }
 
 extern char LICENSE[]; // cc/license.cpp
@@ -494,7 +496,7 @@ application::exit_status application::exec(int argc, char **argv)
 
             try
               {
-                set_format_string(url, qopts, map);
+                set_stream(url, qopts, map);
                 m = query.parse(url, qopts);
               }
             catch(const quvi::error& e)

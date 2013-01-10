@@ -96,12 +96,15 @@ void options::exec(int argc, char **argv)
   ("print-streams,S",
    po::value(&flags.print_streams)->zero_tokens(),
    "Print available media streams")
+  ("stream,s",
+   po::value<std::string>(),
+   "Select media stream")
   ("query-formats,F",
    po::value(&flags.query_formats)->zero_tokens(),
    "Query available formats to URL (depr.)")
   ("format,f",
    po::value<std::string>(),
-   "Download media format")
+   "Download media format (depr.)")
   ("overwrite,W",
    po::value(&flags.overwrite)->zero_tokens(),
    "Overwrite existing media")
@@ -232,6 +235,9 @@ static void warn_depr(const std::string& w, const std::string& n)
 void options::_validate()
 {
   std::string empty;
+
+  if (_map.count("format"))
+    warn_depr("format", "stream");
 
   if (_map.count("query-formats"))
     warn_depr("query-formats", "print-formats");
