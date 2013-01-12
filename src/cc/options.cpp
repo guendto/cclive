@@ -219,6 +219,13 @@ void options::exec(int argc, char **argv)
   _validate();
 }
 
+static void warn_depr(const std::string& w, const std::string& n)
+{
+  std::clog << "WARNING '--" << w << "' is deprecated and will be removed "
+            << "in later versions\nWARNING Use '--" << n << "' instead"
+            << std::endl;
+}
+
 void options::_validate()
 {
   std::string empty;
@@ -234,10 +241,7 @@ void options::_validate()
 
   if (_map.count("regexp")) // Deprecated.
     {
-      std::clog
-          << "WARNING --regexp is deprecated and will be removed "
-          << "in later versions.\nWARNING Use --tr instead."
-          << std::endl;
+      warn_depr("regexp", "tr");
 
       std::string s = _map["regexp"].as<std::string>();
       if (!cc::re::capture(s, empty))
@@ -251,10 +255,7 @@ void options::_validate()
 
   if (_map.count("subst")) // Deprecated.
     {
-      std::clog
-          << "WARNING --subst is deprecated and will be removed "
-          << "in later versions.\nWARNING Use --tr instead."
-          << std::endl;
+      warn_depr("subst", "tr");
 
       std::istringstream iss( _map["subst"].as<std::string>());
       vst v;
