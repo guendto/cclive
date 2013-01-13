@@ -70,10 +70,10 @@ void options::exec(int argc, char **argv)
   std::string conf_file;
 
   generic.add_options()
-  ("version",
+  ("version,v",
    po::value(&flags.version)->zero_tokens(),
    "Print version and exit")
-  ("help",
+  ("help,h",
    po::value(&flags.help)->zero_tokens(),
    "Print help and exit")
   ("license",
@@ -219,9 +219,11 @@ void options::exec(int argc, char **argv)
   _validate();
 }
 
-std::ostream& operator<<(std::ostream& os, const options& o)
+static void warn_depr(const std::string& w, const std::string& n)
 {
-  return os << o._visible;
+  std::clog << "WARNING '--" << w << "' is deprecated and will be removed "
+            << "in later versions\nWARNING Use '--" << n << "' instead"
+            << std::endl;
 }
 
 void options::_validate()
@@ -239,10 +241,7 @@ void options::_validate()
 
   if (_map.count("regexp")) // Deprecated.
     {
-      std::clog
-          << "WARNING --regexp is deprecated and will be removed "
-          << "in later versions.\nWARNING Use --tr instead."
-          << std::endl;
+      warn_depr("regexp", "tr");
 
       std::string s = _map["regexp"].as<std::string>();
       if (!cc::re::capture(s, empty))
@@ -256,10 +255,7 @@ void options::_validate()
 
   if (_map.count("subst")) // Deprecated.
     {
-      std::clog
-          << "WARNING --subst is deprecated and will be removed "
-          << "in later versions.\nWARNING Use --tr instead."
-          << std::endl;
+      warn_depr("subst", "tr");
 
       std::istringstream iss( _map["subst"].as<std::string>());
       vst v;

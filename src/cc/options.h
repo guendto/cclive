@@ -42,7 +42,10 @@ struct flags_s
 
 class options
 {
-  friend std::ostream& operator<<(std::ostream&, const options&);
+  inline friend std::ostream& operator<<(std::ostream& os, const options& o)
+    {
+      return os << o._visible;
+    }
 public:
   inline const boost::program_options::variables_map& map()const {return _map;}
   void exec(int argc, char **argv);

@@ -1,5 +1,5 @@
 /* cclive
- * Copyright (C) 2010-2011  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2010-2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,103 +15,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <ccinternal>
+
 #include <stdexcept>
+#include <cstdarg>
 #include <cerrno>
 
 #include <boost/filesystem.hpp>
 
+#include <ccquvi>
 #include <ccutil>
 #include <cclog>
 
 namespace cc
 {
 
+namespace fs = boost::filesystem;
 namespace io = boost::iostreams;
 
 io::filtering_ostream log;
-
-omit_sink::omit_sink(bool b/*=false*/) : _omit(b) { }
-
-std::streamsize omit_sink::write(const char *s, std::streamsize n)
-{
-  if (!_omit) std::clog.write(s,n);
-  return n;
-}
-
-// Constructor.
-
-flushable_file_sink::flushable_file_sink(
-  const std::string& fpath,
-  const std::ios_base::openmode mode/*=std::ios::trunc|std::ios::out*/)
-  : _mode(mode), _fpath(fpath)
-{
-  _open();
-}
-
-// Copy constructor.
-
-flushable_file_sink::flushable_file_sink(const flushable_file_sink& f)
-{
-  _swap(f);
-}
-
-// Copy assignment operator.
-
-flushable_file_sink&
-flushable_file_sink::operator=(const flushable_file_sink& f)
-{
-  if (this != &f) _swap(f);
-  return *this;
-}
-
-void flushable_file_sink::_swap(const flushable_file_sink& f)
-{
-  close();
-  _fpath = f._fpath;
-  _mode  = f._mode;
-  _open();
-}
-
-bool flushable_file_sink::is_open() const
-{
-  return _f.is_open();
-}
-
-std::streamsize
-flushable_file_sink::write(const char *s, std::streamsize n)
-{
-  _f.write(s,n);
-  return n;
-}
-
-std::streampos flushable_file_sink::seek(
-  std::streamoff o,
-  std::ios_base::seekdir d)
-{
-  _f.seekp(o,d);
-  _f.seekg(o,d);
-  return o;
-}
-
-std::streamsize flushable_file_sink::read(char_type *t, std::streamsize n)
-{
-  _f.read(t,n);
-  return n;
-}
-
-bool flushable_file_sink::flush()
-{
-  _f.flush();
-  return true;
-}
-
-void flushable_file_sink::close()
-{
-  flush();
-  _f.close();
-}
-
-namespace fs = boost::filesystem;
 
 void flushable_file_sink::_open()
 {
@@ -128,6 +50,17 @@ void flushable_file_sink::_open()
 
       throw std::runtime_error(s);
     }
+}
+
+void _debug(const std::string& fn, const std::string& func,
+            const int ln, const char *fmt, ...)
+{
+  va_list args;
+  va_start(args, fmt);
+  fprintf(stderr, "[%s:%d] ", fn.c_str(), ln);
+  vfprintf(stderr, fmt, args);
+  fprintf(stderr, "\n");
+  va_end(args);
 }
 
 } // namspace cclive

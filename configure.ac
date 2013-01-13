@@ -57,9 +57,10 @@ AC_CHECK_HEADERS([sys/ioctl.h unistd.h sys/types.h sys/stat.h signal.h])
 AC_HEADER_STDBOOL
 AC_TYPE_SIZE_T
 AC_TYPE_PID_T
+AC_C_INLINE
 
 # Checks for library functions.
-AC_CHECK_FUNCS([strerror strstr getpid signal])
+AC_CHECK_FUNCS([strerror strstr getpid signal memset setlocale])
 AC_FUNC_ERROR_AT_LINE
 AC_FUNC_STRERROR_R
 AC_FUNC_FORK

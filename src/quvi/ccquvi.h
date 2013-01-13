@@ -80,14 +80,12 @@ public:
   std::string formats(const std::string& url, const options&) const;
   media parse(const std::string& url, const options&) const;
   std::map<std::string,std::string> support() const;
-  void* curlHandle() const;
 private:
   void _set_opts(const options&) const;
   void _init();
   void _close();
 private:
   quvi_t _quvi;
-  void*_curl;
 };
 
 // Link.

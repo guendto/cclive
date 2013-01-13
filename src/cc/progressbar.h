@@ -31,7 +31,7 @@ public:
   enum mode { normal = 0, dotline, simple };
 public:
   progressbar(const file&, const quvi::url&);
-  void update(double);
+  int update(double);
   void finish();
 private:
   void _normal(const std::stringstream& size_s,

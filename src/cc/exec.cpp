@@ -15,6 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <ccinternal>
+
 #include <stdexcept>
 #include <sstream>
 #include <cstdio>
@@ -30,8 +32,8 @@
 #define foreach BOOST_FOREACH
 #endif
 
-#include <ccoptions>
 #include <ccquvi>
+#include <ccoptions>
 #include <ccfile>
 #include <ccre>
 #include <ccutil>

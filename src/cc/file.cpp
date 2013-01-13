@@ -57,16 +57,9 @@
 namespace cc
 {
 
-file::file()
-  : _initial_length(0), _nothing_todo(false)
-{
-}
-
 namespace po = boost::program_options;
 
-file::file(const quvi::media& media,
-           const quvi::url& url,
-           const int n)
+file::file(const quvi::media& media, const quvi::url& url, const int n)
   : _initial_length(0), _nothing_todo(false)
 {
   try
@@ -77,27 +70,6 @@ file::file(const quvi::media& media,
     {
       _nothing_todo = true;
     }
-}
-
-file::file(const file& f)
-  : _initial_length(0), _nothing_todo(false)
-{
-  _swap(f);
-}
-
-file& file::operator=(const file& f)
-{
-  if (this != &f) _swap(f);
-  return *this;
-}
-
-void file::_swap(const file& f)
-{
-  _title          = f._title;
-  _name           = f._name;
-  _path           = f._path;
-  _initial_length = f._initial_length;
-  _nothing_todo   = f._nothing_todo;
 }
 
 #define E "server response code %ld, expected 200 or 206 (conn_code=%ld)"
@@ -123,11 +95,11 @@ static std::string format_error(const CURLcode curl_code,
 
 #undef E
 
-static size_t write_cb(void *data, size_t size, size_t nmemb, void *ptr)
+static size_t write_cb(void *ptr, size_t size, size_t nmemb, void *userdata)
 {
-  std::ofstream *o   = reinterpret_cast<std::ofstream*>(ptr);
+  std::ofstream *o = reinterpret_cast<std::ofstream*>(userdata);
   const size_t rsize = size*nmemb;
-  o->write(static_cast<char*>(data), rsize);
+  o->write(static_cast<char*>(ptr), rsize);
   o->flush();
   return rsize;
 }
@@ -151,16 +123,41 @@ static int progress_cb(void *ptr, double, double now, double, double)
       return 1; // Return a non-zero value to abort this transfer.
     }
 #endif
-  reinterpret_cast<progressbar*>(ptr)->update(now);
-  return 0;
+  return reinterpret_cast<progressbar*>(ptr)->update(now);
 }
 
-namespace po = boost::program_options;
-
-bool file::write(const quvi::query& q, const quvi::url& u) const
+static void _set(CURL *c, std::ofstream *o, progressbar *pb,
+                 const double initial_length)
 {
-  CURL *curl = q.curlHandle();
+  curl_easy_setopt(c, CURLOPT_PROGRESSFUNCTION, progress_cb);
+  curl_easy_setopt(c, CURLOPT_PROGRESSDATA, pb);
+  curl_easy_setopt(c, CURLOPT_NOPROGRESS, 0L);
 
+  curl_easy_setopt(c, CURLOPT_ENCODING, "identity");
+  curl_easy_setopt(c, CURLOPT_WRITEDATA, o);
+  curl_easy_setopt(c, CURLOPT_HEADER, 0L);
+
+  const po::variables_map map = cc::opts.map();
+
+  curl_easy_setopt(c, CURLOPT_MAX_RECV_SPEED_LARGE,
+                   static_cast<curl_off_t>(map["throttle"].as<int>()*1024));
+
+  curl_easy_setopt(c, CURLOPT_RESUME_FROM_LARGE,
+                   static_cast<curl_off_t>(initial_length));
+}
+
+static void _restore(CURL *c)
+{
+  curl_easy_setopt(c, CURLOPT_RESUME_FROM_LARGE, 0L);
+  curl_easy_setopt(c, CURLOPT_NOPROGRESS, 1L);
+  curl_easy_setopt(c, CURLOPT_HEADER, 1L);
+
+  curl_easy_setopt(c, CURLOPT_MAX_RECV_SPEED_LARGE,
+                   static_cast<curl_off_t>(0L));
+}
+
+bool file::write(const quvi::url& u, CURL *curl) const
+{
   curl_easy_setopt(curl, CURLOPT_URL, u.media_url().c_str());
   curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_cb);
 
@@ -175,7 +172,6 @@ bool file::write(const quvi::query& q, const quvi::url& u) const
     }
 
   std::ofstream out(_path.c_str(), mode);
-
   if (out.fail())
     {
       std::string s = _path + ": ";
@@ -188,32 +184,8 @@ bool file::write(const quvi::query& q, const quvi::url& u) const
       throw std::runtime_error(s);
     }
 
-  curl_easy_setopt(curl, CURLOPT_WRITEDATA, &out);
-
-  curl_easy_setopt(curl, CURLOPT_ENCODING, "identity");
-  curl_easy_setopt(curl, CURLOPT_HEADER, 0L);
-
   progressbar pb(*this, u);
-  curl_easy_setopt(curl, CURLOPT_PROGRESSDATA, &pb);
-  curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0L);
-  curl_easy_setopt(curl, CURLOPT_PROGRESSFUNCTION, progress_cb);
-
-  curl_off_t resume_from = static_cast<curl_off_t>(_initial_length);
-  curl_easy_setopt(curl, CURLOPT_RESUME_FROM_LARGE, resume_from);
-
-  const po::variables_map map = cc::opts.map();
-
-  curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT,
-                   map["connect-timeout"].as<int>());
-
-  curl_easy_setopt(curl, CURLOPT_TIMEOUT,
-                   map["transfer-timeout"].as<int>());
-
-  curl_easy_setopt(curl, CURLOPT_DNS_CACHE_TIMEOUT,
-                   map["dns-cache-timeout"].as<int>());
-
-  curl_off_t throttle = map["throttle"].as<int>()*1024;
-  curl_easy_setopt(curl, CURLOPT_MAX_RECV_SPEED_LARGE, throttle);
+  _set(curl, &out, &pb, _initial_length);
 
 #ifdef WITH_SIGNAL
   recv_usr1 = 0;
@@ -229,6 +201,7 @@ bool file::write(const quvi::query& q, const quvi::url& u) const
 #endif
 
   const CURLcode rc = curl_easy_perform(curl);
+  _restore(curl);
 
   // Restore curl settings.
 
@@ -245,8 +218,8 @@ bool file::write(const quvi::query& q, const quvi::url& u) const
   long resp_code = 0;
   long conn_code = 0;
 
-  curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &resp_code);
   curl_easy_getinfo(curl, CURLINFO_HTTP_CONNECTCODE, &conn_code);
+  curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &resp_code);
 
   std::string error;
 
@@ -275,45 +248,13 @@ bool file::write(const quvi::query& q, const quvi::url& u) const
 #endif
           cc::log << "error: " << error << std::endl;
         }
-
       return false; // Retry.
     }
 
   pb.finish();
-
   cc::log << std::endl;
 
   return true;
-}
-
-double file::initial_length() const
-{
-  return _initial_length;
-}
-
-const std::string& file::title() const
-{
-  return _title;
-}
-
-const std::string& file::path() const
-{
-  return _path;
-}
-
-const std::string& file::name() const
-{
-  return _name;
-}
-
-const bool file::nothing_todo() const
-{
-  return _nothing_todo;
-}
-
-bool file::_should_continue() const
-{
-  return _initial_length > 0;
 }
 
 static double to_mb(const double bytes)

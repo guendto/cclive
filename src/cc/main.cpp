@@ -15,8 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <ccinternal>
+
 #include <stdexcept>
 #include <iostream>
+#include <clocale>
 
 #include <ccapplication>
 #include <ccquvi>
@@ -25,6 +28,7 @@ using namespace cc;
 
 int main(int argc, char *argv[])
 {
+  setlocale(LC_ALL, "");
   application::exit_status es = application::ok;
   application app;
   try
