@@ -142,8 +142,8 @@ static void print_quvi_error(const quvi::error& e)
 }
 
 static const char depr_msg[] =
-  "WARNING '--format list' is deprecated and will be removed in the later\n"
-  "WARNING versions. Use --query-formats instead.";
+  "WARNING '--format {help,list}' are deprecated and will be removed "
+  "in the later\nWARNING versions. Use '--print-streams' instead.";
 
 static const char format_usage[] =
   "Usage:\n"
@@ -209,8 +209,7 @@ handle_format_list(const po::variables_map& map, const quvi::query& query)
 }
 
 static application::exit_status
-query_formats(const quvi::query& query,
-              const quvi::options &opts,
+print_streams(const quvi::query& query, const quvi::options &qopts,
               const vst& input)
 {
   const size_t n = input.size();
@@ -218,22 +217,24 @@ query_formats(const quvi::query& query,
 
   foreach (std::string url, input)
   {
-    ++i;
-
     try
       {
-        print_checking(i,n);
+        print_checking(++i,n);
 
-        const std::string formats = query.streams(url, opts);
-
+        const std::string r = query.streams(url, qopts);
         print_done();
 
-        cc::log
-            << std::setw(10)
-            << formats
-            << " : "
-            << url
-            << std::endl;
+        if (cc::opts.flags.print_streams)
+          {
+            vst a;
+            boost::split(a, r, boost::is_any_of("|,"));
+            foreach (const std::string s, a)
+            {
+              cc::log << s << "\n";
+            }
+          }
+        else
+          cc::log << std::setw(10) << r << " : " << url << std::endl;
       }
     catch(const quvi::error& e)
       {
@@ -286,18 +287,20 @@ static void parse_prefer_format(const std::string& url, std::string& fmt,
   }
 }
 
-static void set_format_string(const std::string& url, quvi::options& qopts,
-                              const po::variables_map& map)
+static void set_stream(const std::string& url, quvi::options& qopts,
+                       const po::variables_map& map)
 {
-  std::string fmt = "default";
-  if (map.count("format")) // --format takes precedence
-    fmt = map["format"].as<std::string>();
+  std::string s = "default";
+  if (map.count("stream"))
+    s = map["stream"].as<std::string>();
+  else if (map.count("format")) // --format takes precedence
+    s = map["format"].as<std::string>();
   else
     {
       if (map.count("prefer-format"))
-        parse_prefer_format(url, fmt, map);
+        parse_prefer_format(url, s, map);
     }
-  qopts.stream = fmt;
+  qopts.stream = s;
 }
 
 extern char LICENSE[]; // cc/license.cpp
@@ -449,10 +452,10 @@ application::exit_status application::exec(int argc, char **argv)
   cc::log.push(cc::omit_sink(omit));
   cc::log.setf(std::ios::fixed);
 
-  // Query formats.
+  // Print streams.
 
-  if (opts.flags.query_formats)
-    return query_formats(query, qopts, input);
+  if (opts.flags.print_streams || opts.flags.query_formats)
+    return print_streams(query, qopts, input);
 
 #if defined (HAVE_FORK) && defined (HAVE_GETPID)
   if (background_given)
@@ -493,7 +496,7 @@ application::exit_status application::exec(int argc, char **argv)
 
             try
               {
-                set_format_string(url, qopts, map);
+                set_stream(url, qopts, map);
                 m = query.parse(url, qopts);
               }
             catch(const quvi::error& e)
