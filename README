@@ -45,6 +45,7 @@ repository. You will need:
   * Perl (with pod2man)
   * GNU autoconf
   * GNU automake
+  * asciidoc (a2x) for producing the manual pages
 
 Once the files have been generated, follow the instructions in "Installation
 from source" above.
