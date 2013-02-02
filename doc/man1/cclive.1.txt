@@ -1,0 +1,485 @@
+cclive(1)
+=========
+
+NAME
+----
+cclive - media stream extraction tool
+
+SYNOPSIS
+--------
+[verse]
+'cclive' [OPTIONS] [URL|FILE ...]
+
+DESCRIPTION
+-----------
+cclive is a command line tool for downloading media streams from YouTube
+and similar websites.
+
+INPUT
+-----
+The program reads input from the 'stdin' by default. The arguments may be
+either an 'URL' or a 'FILE'. When the input is read from either 'stdin'
+or a 'FILE', the data is expected to be a newline-separated list of URLs.
+
+OPTIONS
+-------
+
+Core
+~~~~
+
+--agent <arg>::
+  Identify cclive as 'arg' to the HTTP servers. The default value is
+  "Mozilla/5.0".
+----
+config:
+  agent = arg
+----
+
+-b, --background::
+  Go to background after startup. The output written to stdout
+  will be written to the file specified with --log-file.
+
+-c, --continue::
+  Resume partially downloaded media.
+----
+config:
+  continue = {true|false}
+----
+
+--config-file <arg>::
+  Read the program arguments from the specified file instead of the
+  default ~/.ccliverc file. See also <<FILES>>.
+
+--exec <arg>::
+  Invoke the specified command after each successfully finished
+  download. The command is also invoked if the media is fully
+  retrieved already. This option may be specified multiple times.
+  See also <<EXAMPLES>>.
+  +
+  All occurences of the following sequences will be replaced
+  in the 'arg':
+----
+  %f  .. Full path to the downloaded media file
+  %n  .. Name of the downloaded media file
+  %t  .. Unfiltered media title
+
+config:
+  exec = arg
+----
+
+-n, --no-download::
+  Do not download the media, print the details only.
+
+-p, --prefer-format <arg>::
+  Have the program choose the format (media stream) to download by
+  matching the regular expression pattern match to the media URL as
+  specified in the 'arg'.
+  +
+  This option may be specified multiple times. The use of --stream will
+  override the rules specified using this option. See also <<EXAMPLES>>.
+  +
+  The 'arg' is a 'string pair' separated by a colon.
+  The 'string pair' consists of:
+  * a regular expression pattern
+  * format (media stream) to download
+----
+config:
+  prefer-format = arg
+----
+
+-s,--stream <ID>::
+  Download the specified media stream. By default the program
+  will get the 'default' stream. The ID may also be 'best', in which
+  case 'libquvi-scripts(7)' will determine the best available quality
+  stream.
+////
+  When libquvi-scripts 0.9 or later is being used with cclive, the
+  ID may also be a comma-separated list of IDs (patterns) to match to
+  the existing media stream IDs. See --version output to confirm the
+  libquvi-scripts version.
+////
+
+Informative
+~~~~~~~~~~~
+
+-h, --help::
+  Print help and exit.
+
+--license::
+  Print the license and exit.
+
+-S, --print-streams::
+  Query the available media streams. The printed values (media stream IDs)
+  may be used with --stream and --prefer-format options. The available
+  streams are determined by 'libquvi(3)' and 'libquvi-scripts(7)'.
+
+--progressbar <arg>::
+  Use the progressbar of the specified type.  The program will ignore
+  the value of this option with --background. The arg may be one of the
+  following values:
+  * dotline (also implied by --background)
+  * normal (default)
+  * simple
+----
+config:
+  progressbar = arg
+----
+
+--support::
+  Print the supported website domains and exit.
+
+--update-interval <arg>::
+  Specify the progressbar update interval in seconds. Use of decimal
+  fractions (e.g. "0.2") is acceptable. The program will use the default
+  value 1.
+----
+config:
+  update-interval = arg
+----
+
+-v, --version::
+  Print the program version and exit.
+
+Output
+~~~~~~
+
+--filename-format <arg>::
+  Specify how the downloaded media file should be named. All occurences
+  of the following sequences will be replaced in the 'arg':
+----
+  %t  .. Media title (after applying --tr)
+  %s  .. Media file extension
+  %i  .. Media ID
+----
+  The default value is "%t.%s".
+----
+config:
+  filename-format = arg
+----
+
+--log-file <arg>::
+  Write log output to the specified file. The program will ignore this
+  option value unless it is being used together with --background. The
+  existing log file will be ovewritten. By default, the program will use
+  "cclive_log" as the log file name.
+
+--output-dir <arg>::
+  Write downloaded media to the specified directory. By default, the
+  program will write the media to the current working directory.
+----
+config:
+  output-dir = arg
+----
+  
+-O, --output-file <arg>::
+  Write media to the specified file. Overrides --filename-format.
+
+-q, --quiet::
+  Turn off all output to stdout and stderr with the exception of
+  --verbose-libcurl.
+
+-t, --tr <arg>::
+  Specify to translate the characters in the media titles before they
+  are used in the media file names. The 'arg' is a regular expression
+  pattern. The default value is "/(\w|\s)/g". This option may be
+  specified multiple times. See also <<EXAMPLES>>.
+----
+config:
+  tr = arg
+----
+
+--verbose-libcurl::
+  Enable libcURL verbose output.
+
+-W, --overwrite::
+  Overwrite existing media files.
+
+Network
+~~~~~~~
+
+--connect-timeout <arg>::
+  Maximum time in seconds that the program should allow the connection
+  to the server to take. This only limits the connection phase, once it
+  has connected, this option is no more of use. Set to 0 to disable
+  connection timeout (it will then only timeout on the system's internal
+  timeouts). The default is 30.
+----
+config:
+  connect-time = arg
+----
+
+--dns-cache-timeout <arg>::
+  The name resolves will be kept in the memory for this number of
+  seconds. Set to 0 to completely disable DNS caching, or to -1 to make
+  the cached entries to remain in the memory forever. The default is 60.
+----
+config:
+  dns-cache-timeout = arg
+----
+
+--no-proxy::
+  Disable use of HTTP proxy. Overrides --proxy and http_proxy environment
+  settings.
+
+--max-retries <arg>::
+  Specify the number of downloading retries before giving up. Set to 0
+  to disable. The default is 5.
+  +
+  Note that the program will skip retrying altogether if the server
+  returned HTTP 400 (and over), or if 'libquvi(3)' returned an
+  unrecoverable error (e.g. missing 'libquvi-scripts(7)').
+----
+config:
+  max-retries = arg
+----
+
+--retry-wait <arg>::
+  Wait the specified number of seconds before retrying after a failed
+  attempt. The default is 5.
+----
+config:
+  retry-wait = arg
+----
+
+--proxy I<arg>::
+  Use the specified proxy address (e.g. http://foo:1234) for HTTP
+  connections. By default, libcURL (which cclive and 'libquvi(3)' use)
+  will use the value of http_proxy. Using this option will override the
+  http_proxy environment value.
+  +
+  Refer to the 'curl(1)' for more information about the supported
+  environment variables.
+----
+config:
+  proxy = arg
+----
+
+-r, --no-resolve::
+  Do not resolve HTTP URL redirections. Using this option will result in
+  the program not being able to follow URL redirections which are often
+  used by different URL shortening services.
+////
+  When libquvi 0.9 or later is being used with cclive, this
+  option will be ignored. The library will always resolve any URL
+  redirections.
+////
+----
+config:
+  no-resolve = {true|false}
+----
+
+--transfer-timeout <arg>::
+  Maximum time in seconds that the program should allow the transfer
+  operation to take. Normally, name lookups can take a considerable
+  amount of time, and limiting operations to less than a few minutes
+  will risk aborting perfectly normal operations. This option will cause
+  libcURL to use the SIGALRM to enable the timeout system calls. The
+  default is 0 (disabled).
+----
+config:
+  transfer-timeout = arg
+----
+
+--throttle <arg>::
+  Do not exceed the specified transfer rate (Ki/s). If 'arg' is 0
+  (default), the throttling will be disabled.
+----
+config:
+  throttle = arg
+----
+
+Deprecated
+~~~~~~~~~~
+
+-f, --format <ID>::
+  Identical to --stream.  Deprecated as of 0.7.12.
+
+-F, --query-formats::
+  Identical to --print-streams.  Deprecated as of 0.7.12.
+
+--regexp <arg>::
+  Specify the regular expression pattern to cleanup the media title
+  before it is used to format the media file name. The specifiers 'g'
+  and 'i' are supported.  Use --tr, instead.
+
+--subst <arg>::
+  Replace the matched occurences in the media file name. This option may
+  not be specified multiple times: to specify multiple substitutions,
+  separate each regular expression pattern with a whitespace. The
+  specifiers 'g' and 'i' are supported. Use --tr, instead.
+  +
+  Supported delimiters: <> {} () /
+  +
+  Note that 's/old/new/' is invalid, whereas 's/old//new/' is accepted.
+
+[[EXAMPLES]]
+EXAMPLES
+--------
+
+As a general rule of thumb: always put the URLs inside quotes. You can
+find more examples at 'http://cclive.sourceforge.net/'.
+
+
+* Typical use:
++
+----
+$ cclive "URL"
+----
+
+* Query the available media streams:
++
+----
+$ cclive -S "URL"
+----
+
+* Download the best quality media stream:
++
+----
+$ cclive -s best "URL"
+----
+
+* Get the YouTube itag 43 format whenever possible:
++
+----
+# Save 'prefer-format' permanently to ~/.ccliverc file.
+$ echo "prefer-format = ^.*youtube.*\.com:fmt43_360p" \
+          >> ~/.ccliverc"
+
+# The above would cause the program to try to get fmt43_360p
+# with media  URLs of http://youtube.com/ if available.
+$ cclive "YOUTUBE_URL"
+
+# Using of --stream will override the --prefer-format
+# setting.  Get fmt22_720p (if available).
+$ cclive -s fmt22_720p "YOUTUBE_URL"
+----
+See also <<STREAMS>>.
+
+* Replace all occurences of 'foo' with 'bar' in the media title before
+  it is used in the media file name:
++
+----
+$ cclive -t 's/foo/bar/g' "URL"
+----
+
+* Go to background, redirect output to 'foo.log' file:
++
+----
+$ cclive -b --log-file foo.log "URL"
+----
+
+* Interrupt the current transfer of all of the matching processes,
+  this (USR1) will cause cclive to move onto the next URL in the batch:
++
+----
+$ pkill -USR1 cclive
+----
+
+* Print the path to the downloaded media file using 'echo(1)' and open
+  the media file in 'totem(1)':
++
+----
+$ cclive --exec 'echo "%f"' --exec 'totem "%f"' "URL"
+----
+
+* Process a batch of media URLs:
++
+----
+$ cat URLs
+http://foo
+http://bar
+http://baz
+http://qux
+$ cat URLs | cclive
+$ cclive < URLs
+$ cclive URLs
+----
+
+[[FILES]]
+FILES
+-----
+
+~/.ccliverc::
+  The program will read this location by default. A different location
+  may be defined with --config-file.
+
+Example
+~~~~~~~
+
+  prefer-format = ^.*youtube.*\.com:fmt43_360p
+  prefer-format = dailym:best
+
+  filename-format = %i_(%t).%s
+  tr = /(\w)/g
+
+  progressbar = simple
+  continue = true
+
+  proxy = http://foo:1234
+  no-resolve = false
+
+  exec = /usr/bin/totem %f
+
+[[STREAMS]]
+STREAMS
+-------
+
+The availability and the identification of the media streams is determined
+by 'libquvi(3)' and 'libquvi-scripts(7)'.
+
+YouTube
+~~~~~~~
+
+'libquvi-scripts(7)' returns the media stream IDs containing the 'itag'
+value so that they can be referred to as such using the --stream or
+--prefer-format options. The --print-streams may be used to get a list
+of the available media streams.
+
+libquvi-scripts 0.4::
+  The 'fmt' prefix is used to identify the streams. For example:
+
+    itag: 22
+    quvi: fmt22_720p
+
+////
+libquvi-scripts 0.9 and later::
+  The 'iXX' prefix is used within the stream ID. For example:
+
+    itag: 22
+    quvi: hd_webm_i22_720p
+////
+
+For more information about the YouTube video quality and codecs, visit
+`http://en.wikipedia.org/wiki/YouTube#Quality_and_codecs`.
+
+EXIT STATUS
+-----------
+The program will exit with EXIT_SUCCESS (on POSIX systems this is 0) on
+success, and with EXIT_FAILURE (on POSIX systems this is 1) if an error
+occurred.
+
+FURTHER RESOURCES
+-----------------
+
+The development code may be cloned from `git://repo.or.cz/cclive.git`.
+The gitweb is accessible at `http://repo.or.cz/w/cclive.git`.
+
+Authors
+-------
+Toni Gundogdu <legatvs@gmail.com>::
+  Author.
+
+Reporting bugs
+--------------
+Report bugs to the cclive-devel mailing list
+<cclive-devel@lists.sourceforge.net> where the development and the
+maintenance is primarily done.  You do not have to be subscribed
+to the list to send a message there.
+
+LICENSE
+-------
+cclive is Free Software licensed under the GNU GPLv3+
+
+SEE ALSO
+--------
+'libquvi-scripts(7)', 'libquvi(3)'
