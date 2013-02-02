@@ -38,7 +38,7 @@ repository, see "Installation from development code", instead.
 Installation from development code
 ----------------------------------
 
-If you are compiling cclive from the development code, run "autogen.sh",
+If you are compiling cclive from the development code, run "bootstrap.sh",
 first. This generates the configuration files that are not in the git
 repository. You will need:
 

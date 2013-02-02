@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# autogen.sh for cclive.
+# bootstrap.sh for cclive.
 # Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
