@@ -1,45 +1,53 @@
 
-src= \
- cc/error.cpp \
- cc/main.cpp \
- cc/log.cpp \
- cc/background.cpp \
- cc/exec.cpp \
- cc/file.cpp \
- cc/license.cpp \
- cc/wait.cpp \
- cc/progressbar.cpp \
- cc/options.cpp \
- cc/re.cpp \
- cc/get.cpp \
- cc/application.cpp \
- cc/curl.cpp \
- quvi/err.cpp \
- quvi/query.cpp \
- quvi/misc.cpp \
- quvi/url.cpp \
- quvi/opts.cpp \
- quvi/media.cpp
+src=\
+  cc/application.cpp\
+  cc/background.cpp\
+  cc/curl.cpp\
+  cc/error.cpp\
+  cc/exec.cpp\
+  cc/file.cpp\
+  cc/get.cpp\
+  cc/license.cpp\
+  cc/log.cpp\
+  cc/main.cpp\
+  cc/options.cpp\
+  cc/progressbar.cpp\
+  cc/re.cpp\
+  cc/wait.cpp
 
-hdr= \
- ccoptions \
- ccinternal \
- ccapplication \
- ccquvi \
- ccprogressbar \
- cclog \
- ccutil \
- ccfile \
- ccre \
- cc/progressbar.h \
- cc/options.h \
- cc/application.h \
- cc/file.h \
- cc/util.h \
- cc/internal.h \
- cc/log.h \
- cc/re.h \
- quvi/ccquvi.h
+src+=\
+  compat/error_pt4.cpp\
+  compat/media_pt4.cpp\
+  compat/query_pt4.cpp\
+  compat/util.cpp
+
+hdr=\
+  ccapplication\
+  ccfile\
+  ccinternal\
+  cclog\
+  ccoptions\
+  ccprogressbar\
+  ccquvi\
+  ccre\
+  ccutil
+
+hdr+=\
+  cc/application.h\
+  cc/file.h\
+  cc/internal.h\
+  cc/log.h\
+  cc/options.h\
+  cc/progressbar.h\
+  cc/re.h\
+  cc/util.h
+
+hdr+=\
+  compat/error.h\
+  compat/media.h\
+  compat/options.h\
+  compat/query.h\
+  compat/util.h
 
 bin_PROGRAMS=	cclive
 cclive_SOURCES=	$(src) $(hdr)

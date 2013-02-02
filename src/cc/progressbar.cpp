@@ -76,9 +76,9 @@ static size_t get_term_width()
 
 namespace po = boost::program_options;
 
-progressbar::progressbar(const file& f, const quvi::url& u)
+progressbar::progressbar(const file& f, const quvi::media& m)
   : _update_interval(1),
-    _expected_bytes(u.content_length()),
+    _expected_bytes(m.content_length()),
     _initial_bytes(f.initial_length()),
     _time_started(0),
     _last_update(0),

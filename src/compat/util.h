@@ -1,5 +1,5 @@
 /* cclive
- * Copyright (C) 2010-2013  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,41 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <ccinternal>
+#ifndef compat_util_h
+#define compat_util_h
 
-#include <iostream>
-
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif
-
-#ifdef _WIN32
-#include <windows.h>
-#define sleep(n) Sleep(n*1000)
-#endif
-
-#include <ccquvi>
-#include <ccutil>
-#include <cclog>
-
-namespace cc
+namespace quvi
 {
+std::string support_to_s(const std::map<std::string,std::string>&);
+std::string version();
+} // namespace quvi
 
-void wait(const int retry_wait)
-{
-  for (int i=1; i<=retry_wait; ++i)
-    {
-      if (i % 5 == 0)
-        cc::log << i;
-      else
-        cc::log << ".";
-
-      cc::log << std::flush;
-      sleep(1);
-    }
-  cc::log << std::endl;
-}
-
-} // namespace cc
+#endif // compat_util_h
 
 // vim: set ts=2 sw=2 tw=72 expandtab:

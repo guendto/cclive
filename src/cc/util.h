@@ -18,12 +18,6 @@
 #ifndef cclive_util_h
 #define cclive_util_h
 
-namespace quvi
-{
-class media;
-class url;
-} // namespace quvi
-
 namespace cc
 {
 

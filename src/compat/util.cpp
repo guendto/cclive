@@ -1,5 +1,5 @@
 /* cclive
- * Copyright (C) 2010-2011  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,18 +30,15 @@ std::string version()
   return quvi_version(QUVI_VERSION);
 }
 
-std::string version_long()
-{
-  return quvi_version(QUVI_VERSION_LONG);
-}
-
 typedef std::map<std::string,std::string>::const_iterator smci;
 
 static const std::string _domain_patt_to_s(smci i)
 {
   std::string d = (*i).first;
+#ifndef HAVE_LIBQUVI_0_9 /* Only libquvi 0.4 needs this. */
   pcrecpp::RE("%w\\+").GlobalReplace("com", &d);
   pcrecpp::RE("%").GlobalReplace("", &d);
+#endif
   return d;
 }
 

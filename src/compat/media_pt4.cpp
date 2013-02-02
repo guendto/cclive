@@ -1,5 +1,5 @@
 /* cclive
- * Copyright (C) 2010-2013  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,41 +15,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <ccinternal>
-
-#include <iostream>
-
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
-#endif
-
-#ifdef _WIN32
-#include <windows.h>
-#define sleep(n) Sleep(n*1000)
-#endif
-
+#include <cstring>
 #include <ccquvi>
-#include <ccutil>
-#include <cclog>
 
-namespace cc
+namespace quvi
 {
 
-void wait(const int retry_wait)
+static void _get_s(quvi_media_t qm, QUVIproperty qp, std::string& dst)
 {
-  for (int i=1; i<=retry_wait; ++i)
-    {
-      if (i % 5 == 0)
-        cc::log << i;
-      else
-        cc::log << ".";
+  char *s;
 
-      cc::log << std::flush;
-      sleep(1);
-    }
-  cc::log << std::endl;
+  dst.clear();
+  quvi_getprop(qm, qp, &s);
+
+  if (strlen(s) >0)
+    dst = s;
 }
 
-} // namespace cc
+void media_pt4::_init(quvi_t, quvi_media_t qm)
+{
+  quvi_getprop(qm, QUVIPROP_MEDIACONTENTLENGTH, &_content_length);
+  _get_s(qm, QUVIPROP_MEDIACONTENTTYPE, _content_type);
+  _get_s(qm, QUVIPROP_FILESUFFIX, _file_ext);
+  _get_s(qm, QUVIPROP_MEDIAURL, _stream_url);
+  _get_s(qm, QUVIPROP_PAGETITLE, _title);
+  _get_s(qm, QUVIPROP_MEDIAID, _id);
+}
+
+} // namespace quvi
 
 // vim: set ts=2 sw=2 tw=72 expandtab:

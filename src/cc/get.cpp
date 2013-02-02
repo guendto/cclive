@@ -15,8 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <iostream>
+#include <ccinternal>
 
+#include <iostream>
 #include <boost/program_options/variables_map.hpp>
 
 #include <ccoptions>
@@ -34,61 +35,55 @@ void get(quvi::media& media, void *curl)
 {
   const po::variables_map map = cc::opts.map();
 
-  const bool no_download = opts.flags.no_download;
   const int max_retries  = map["max-retries"].as<int>();
   const int retry_wait   = map["retry-wait"].as<int>();
+
+  const bool no_download = opts.flags.no_download;
   const bool exec        = map.count("exec");
 
-  quvi::url url;
-  int n = 0;
+  int retry = 0;
 
-  while ((url = media.next_url()).ok())
+  while (retry <= max_retries)
     {
-      int retry = 0;
-      ++n;
-      while (retry <= max_retries)
+      cc::file file(media);
+
+      if (file.nothing_todo())
         {
-          cc::file file(media, url, n);
-
-          if (file.nothing_todo())
-            {
-              if (exec)
-                cc::exec(file);
-
+          if (exec)
+            cc::exec(file);
 #define E_NOTHING_TODO "media retrieved completely already"
-              throw std::runtime_error(E_NOTHING_TODO);
+          throw std::runtime_error(E_NOTHING_TODO);
 #undef E_NOTHING_TODO
-            }
-
-          // Download media.
-
-          if (retry > 0)
-            {
-              cc::log
-                  << "Retrying "
-                  << retry
-                  << " of "
-                  << max_retries
-                  << " ... "
-                  << std::flush;
-
-              cc::wait(retry_wait);
-            }
-
-          cc::log << file.to_s(url) << std::endl;
-          ++retry;
-
-          if (!no_download)
-            {
-              if (!file.write(url, curl));
-                continue; // Retry.
-
-              if (exec)
-                cc::exec(file);
-            }
-
-          break; // Stop retrying.
         }
+
+      // Download media.
+
+      if (retry > 0)
+        {
+          cc::log
+              << "Retrying "
+              << retry
+              << " of "
+              << max_retries
+              << " ... "
+              << std::flush;
+
+          cc::wait(retry_wait);
+        }
+
+      cc::log << file.to_s(media) << std::endl;
+      ++retry;
+
+      if (!no_download)
+        {
+          if (!file.write(media, curl));
+          continue; // Retry.
+
+          if (exec)
+            cc::exec(file);
+        }
+
+      break; // Stop retrying.
     }
 }
 
