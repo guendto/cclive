@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 # bootstrap.sh for cclive.
-# Copyright (C) 2012  Toni Gundogdu <legatvs@gmail.com>
+# Copyright (C) 2012-2013  Toni Gundogdu <legatvs@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,15 +20,6 @@ set -e
 
 source=.gitignore
 cachedir=autom4te.cache
-
-gen_manual()
-{
-  echo "Generate manual..."
-  MAN=doc/man1/cclive.1 ; POD=$MAN.pod ; VN=`./gen-ver.sh`
-  podchecker "$POD" || exit $?
-  pod2man -c "cclive manual" -n cclive -s 1 -r "$VN" "$POD" "$MAN"
-  return $?
-}
 
 cleanup()
 {
@@ -66,4 +57,4 @@ do
 done
 
 echo "Generate configuration files..."
-autoreconf -if && gen_manual && echo "You can now run 'configure'"
+autoreconf -if && echo "You can now run 'configure'"
