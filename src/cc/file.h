@@ -47,12 +47,12 @@ public:
   inline const std::string& name() const  { return _name; }
   inline const bool nothing_todo() const  { return _nothing_todo; }
   inline double initial_length() const    { return _initial_length; }
+  inline bool should_continue() const     { return _initial_length >0; }
+  inline int set_errmsg(const std::string& e) { _errmsg = e; return 0; }
 public:
   static double exists(const std::string&);
 private:
   void _init(const quvi::media&);
-
-  inline bool _should_continue() const { return _initial_length >0; }
 
   inline void _swap(const file& f)
     {
@@ -64,6 +64,7 @@ private:
     }
 private:
   double _initial_length;
+  std::string _errmsg;
   bool _nothing_todo;
   std::string _title;
   std::string _name;

@@ -95,12 +95,70 @@ static std::string format_error(const CURLcode curl_code,
 
 #undef E
 
+static std::string io_error(const std::string& fpath)
+{
+  std::string s = fpath + ": ";
+  if (errno)
+    s += cc::perror();
+  else
+    s += "unknown i/o error";
+  return (s);
+}
+
+static std::string io_error(const cc::file& f)
+{
+  return io_error(f.path());
+}
+
+class write_data
+{
+public:
+  inline write_data(cc::file *f):f(f), o(NULL) { }
+  inline ~write_data()
+  {
+    if (o == NULL)
+      return;
+
+    o->flush();
+    o->close();
+
+    delete o;
+    o = NULL;
+  }
+  inline void open_file()
+  {
+    std::ios_base::openmode mode = std::ofstream::binary;
+
+    if (cc::opts.flags.overwrite)
+      mode |= std::ofstream::trunc;
+    else
+      {
+        if (f->should_continue())
+          mode |= std::ofstream::app;
+      }
+
+    o = new std::ofstream(f->path().c_str(), mode);
+    if (o->fail())
+      throw std::runtime_error(io_error(*f));
+  }
+public:
+  std::ofstream *o;
+  cc::file *f;
+};
+
 static size_t write_cb(void *ptr, size_t size, size_t nmemb, void *userdata)
 {
-  std::ofstream *o = reinterpret_cast<std::ofstream*>(userdata);
+  write_data *w = reinterpret_cast<write_data*>(userdata);
   const size_t rsize = size*nmemb;
-  o->write(static_cast<char*>(ptr), rsize);
-  o->flush();
+
+  w->o->write(static_cast<char*>(ptr), rsize);
+  if (w->o->fail())
+    return w->f->set_errmsg(io_error(*w->f));
+
+  w->o->flush();
+  if (w->o->fail())
+    return w->f->set_errmsg(io_error(*w->f));
+
   return rsize;
 }
 
@@ -126,18 +184,19 @@ static int progress_cb(void *ptr, double, double now, double, double)
   return reinterpret_cast<progressbar*>(ptr)->update(now);
 }
 
-static void _set(const quvi::media& m, CURL *c, std::ofstream *o,
+static void _set(write_data *w, const quvi::media& m, CURL *c,
                  progressbar *pb, const double initial_length)
 {
   curl_easy_setopt(c, CURLOPT_URL, m.stream_url().c_str());
+
   curl_easy_setopt(c, CURLOPT_WRITEFUNCTION, write_cb);
+  curl_easy_setopt(c, CURLOPT_WRITEDATA, w);
 
   curl_easy_setopt(c, CURLOPT_PROGRESSFUNCTION, progress_cb);
   curl_easy_setopt(c, CURLOPT_PROGRESSDATA, pb);
   curl_easy_setopt(c, CURLOPT_NOPROGRESS, 0L);
 
   curl_easy_setopt(c, CURLOPT_ENCODING, "identity");
-  curl_easy_setopt(c, CURLOPT_WRITEDATA, o);
   curl_easy_setopt(c, CURLOPT_HEADER, 0L);
 
   const po::variables_map map = cc::opts.map();
@@ -161,31 +220,11 @@ static void _restore(CURL *c)
 
 bool file::write(const quvi::media& m, CURL *curl) const
 {
-  std::ios_base::openmode mode = std::ofstream::binary;
-
-  if (opts.flags.overwrite)
-    mode |= std::ofstream::trunc;
-  else
-    {
-      if (_should_continue())
-        mode |= std::ofstream::app;
-    }
-
-  std::ofstream out(_path.c_str(), mode);
-  if (out.fail())
-    {
-      std::string s = _path + ": ";
-
-      if (errno)
-        s += cc::perror();
-      else
-        s += "unknown file open error";
-
-      throw std::runtime_error(s);
-    }
+  write_data w(const_cast<cc::file*>(this));
+  w.open_file();
 
   progressbar pb(*this, m);
-  _set(m, curl, &out, &pb, _initial_length);
+  _set(&w, m, curl, &pb, _initial_length);
 
 #ifdef WITH_SIGNAL
   recv_usr1 = 0;
@@ -212,9 +251,6 @@ bool file::write(const quvi::media& m, CURL *curl) const
                    CURLOPT_MAX_RECV_SPEED_LARGE,
                    static_cast<curl_off_t>(0L));
 
-  out.flush();
-  out.close();
-
   long resp_code = 0;
   long conn_code = 0;
 
@@ -229,7 +265,12 @@ bool file::write(const quvi::media& m, CURL *curl) const
         error = format_unexpected_http_error(resp_code, conn_code);
     }
   else
-    error = format_error(rc, resp_code, conn_code);
+    {
+      if (CURLE_WRITE_ERROR == rc) // write_cb returned != rsize
+        error = _errmsg;
+      else
+        error = format_error(rc, resp_code, conn_code);
+    }
 
   if (!error.empty())
     {
