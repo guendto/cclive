@@ -1,3 +1,22 @@
+v0.7.12 -- [2013-02-10, r:Toni Gundogdu]
+
+Toni Gundogdu:
+  - Add quvi compatibility layer [cda6cc4]
+  - Add short-option -h [8a279a6]
+  - Add short-option -v [ec969f1]
+  - Deprecate --format, add --stream [949d476]
+  - Deprecate --query-formats, add --print-streams [7188199]
+  - doc: Revise manual [777d82a]
+  - FIX: Do not ignore I/O errors during file transfer [6f2e711]
+  - options: Make 'continue' configurable [92bd61f]
+  - options: Make 'no-resolve' configurable [4afab3e]
+  - Upgrade boost.m4 to the latest [c436150]
+
+See ChangeLog for a more detailed list of changes.
+
+ 47 files changed, 1881 insertions(+), 1993 deletions(-)
+
+
 v0.7.11  -- [2012-12-12, r:Toni Gundogdu]
 
 Adam Sampson:
