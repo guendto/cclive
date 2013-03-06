@@ -70,6 +70,9 @@ void options::exec(int argc, char **argv)
   std::string conf_file;
 
   generic.add_options()
+  ("print-config,D",
+   po::value(&flags.print_config)->zero_tokens(),
+   "Print value of defined config options")
   ("version,v",
    po::value(&flags.version)->zero_tokens(),
    "Print version and exit")
@@ -287,6 +290,49 @@ void options::_validate()
             throw std::runtime_error(b.str());
           }
       }
+    }
+}
+
+void options::dump()
+{
+  for (po::variables_map::iterator i = _map.begin(); i != _map.end(); ++i)
+    {
+      const po::variable_value &v = i->second;
+
+      if (v.empty())
+        continue;
+
+      const std::type_info &t = v.value().type();
+      bool nl = true;
+
+      if (t == typeid(bool))
+        std::cout << i->first << " is " << (v.as<bool>() ? "set" : "unset");
+      else if (t == typeid(vst))
+        {
+          const vst r = v.as<vst>();
+          foreach (const std::string s, r)
+          {
+            std::cout << i->first << "=" << s << "\n";
+          }
+          nl = false;
+        }
+      else
+        {
+          std::cout << i->first << "=";
+          if (t == typeid(std::string))
+            std::cout << v.as<std::string>();
+          else if (t == typeid(double))
+            std::cout << v.as<double>();
+          else if (t == typeid(int))
+            std::cout << v.as<int>();
+          else
+            std::cout << "<unsupported type error>";
+        }
+
+      if (!nl)
+        std::cout << std::flush;
+      else
+        std::cout << std::endl;
     }
 }
 
