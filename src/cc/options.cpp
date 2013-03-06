@@ -70,6 +70,9 @@ void options::exec(int argc, char **argv)
   std::string conf_file;
 
   generic.add_options()
+  ("print-config,D",
+   po::value(&flags.print_config)->zero_tokens(),
+   "Print value of defined config options")
   ("version,v",
    po::value(&flags.version)->zero_tokens(),
    "Print version and exit")
@@ -83,14 +86,14 @@ void options::exec(int argc, char **argv)
    po::value(&flags.support)->zero_tokens(),
    "Print supported websites and exit")
   ("verbose-libcurl",
-   po::value(&flags.verbose_libcurl)->zero_tokens(),
+   po::value(&flags.verbose_libcurl)->zero_tokens()->default_value(false),
    "Turn on libcurl verbose output")
   ("quiet,q",
-   po::value(&flags.quiet)->zero_tokens(),
+   po::value(&flags.quiet)->zero_tokens()->default_value(false),
    "Turn off all output, excl. errors")
 #ifdef HAVE_FORK
   ("background,b",
-   po::value(&flags.background)->zero_tokens(),
+   po::value(&flags.background)->zero_tokens()->default_value(false),
    "Go to background")
 #endif
   ("print-streams,S",
@@ -106,16 +109,16 @@ void options::exec(int argc, char **argv)
    po::value<std::string>(),
    "Download media format (depr.)")
   ("overwrite,W",
-   po::value(&flags.overwrite)->zero_tokens(),
+   po::value(&flags.overwrite)->zero_tokens()->default_value(false),
    "Overwrite existing media")
   ("output-file,O",
    po::value<std::string>(),
    "Write media to arg")
   ("no-download,n",
-   po::value(&flags.no_download)->zero_tokens(),
+   po::value(&flags.no_download)->zero_tokens()->default_value(false),
    "Do not download media, print details")
   ("no-proxy",
-   po::value(&flags.no_proxy)->zero_tokens(),
+   po::value(&flags.no_proxy)->zero_tokens()->default_value(false),
    "Do not use HTTP proxy")
   ("log-file",
    po::value<std::string>()->default_value("cclive_log"),
@@ -131,10 +134,10 @@ void options::exec(int argc, char **argv)
 
   config.add_options()
   ("no-resolve,r",
-   po::value(&flags.no_resolve)->zero_tokens(),
+   po::value(&flags.no_resolve)->zero_tokens()->default_value(false),
    "Do not resolve URL redirections")
   ("continue,c",
-   po::value(&flags.cont)->zero_tokens(),
+   po::value(&flags.cont)->zero_tokens()->default_value(false),
    "Resume partially downloaded media")
   ("prefer-format,p",
    po::value<std::vector<std::string> >()->composing(),
@@ -287,6 +290,49 @@ void options::_validate()
             throw std::runtime_error(b.str());
           }
       }
+    }
+}
+
+void options::dump()
+{
+  for (po::variables_map::iterator i = _map.begin(); i != _map.end(); ++i)
+    {
+      const po::variable_value &v = i->second;
+
+      if (v.empty())
+        continue;
+
+      const std::type_info &t = v.value().type();
+      bool nl = true;
+
+      if (t == typeid(bool))
+        std::cout << i->first << " is " << (v.as<bool>() ? "set" : "unset");
+      else if (t == typeid(vst))
+        {
+          const vst r = v.as<vst>();
+          foreach (const std::string s, r)
+          {
+            std::cout << i->first << "=" << s << "\n";
+          }
+          nl = false;
+        }
+      else
+        {
+          std::cout << i->first << "=";
+          if (t == typeid(std::string))
+            std::cout << v.as<std::string>();
+          else if (t == typeid(double))
+            std::cout << v.as<double>();
+          else if (t == typeid(int))
+            std::cout << v.as<int>();
+          else
+            std::cout << "<unsupported type error>";
+        }
+
+      if (!nl)
+        std::cout << std::flush;
+      else
+        std::cout << std::endl;
     }
 }
 

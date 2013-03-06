@@ -326,6 +326,11 @@ application::exit_status application::exec(int argc, char **argv)
       std::cout << opts << std::flush;
       return application::ok;
     }
+  else if (opts.flags.print_config)
+    {
+      opts.dump();
+      return application::ok;
+    }
   else if (opts.flags.version)
     {
       std::cout

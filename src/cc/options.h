@@ -28,6 +28,7 @@ struct flags_s
   bool verbose_libcurl;
   bool print_streams;
   bool query_formats;
+  bool print_config;
   bool no_download;
   bool no_resolve;
   bool background;
@@ -50,6 +51,7 @@ class options
 public:
   inline const boost::program_options::variables_map& map()const {return _map;}
   void exec(int argc, char **argv);
+  void dump();
 private:
   void _validate();
 private:
