@@ -82,7 +82,7 @@ void options::exec(int argc, char **argv)
   ("support",
    po::value(&flags.support)->zero_tokens(),
    "Print supported websites and exit")
-  ("verbose-libcurl",
+  ("verbose-libcurl,B",
    po::value(&flags.verbose_libcurl)->zero_tokens()->default_value(false),
    "Turn on libcurl verbose output")
   ("quiet,q",

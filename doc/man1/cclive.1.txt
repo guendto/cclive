@@ -191,7 +191,7 @@ config:
   tr = arg
 ----
 
---verbose-libcurl::
+-B, --verbose-libcurl::
   Enable libcURL verbose output.
 
 -W, --overwrite::
