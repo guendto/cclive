@@ -69,7 +69,36 @@ public:
   void setup_curl() const;
 };
 
+class query_pt9 : public query_impl
+{
+  void _configure(const quvi::options&) const;
+  void _close();
+  void _init();
+public:
+  inline query_pt9(const query_pt9& a): query_impl(a) { _init(); }
+  inline query_pt9(): query_impl()                    { _init(); }
+  inline virtual ~query_pt9()                         { _close(); }
+  inline query_pt9& operator=(const query_pt9& a)
+  {
+    if (this != &a)
+      {
+        _close();
+        _init();
+      }
+    return *this;
+  }
+public:
+  std::string streams(const std::string&, const quvi::options&) const;
+  media parse(const std::string&, const quvi::options&) const;
+  std::map<std::string,std::string> support() const;
+  void setup_curl() const;
+};
+
+#ifdef HAVE_LIBQUVI_0_9
+typedef class query_pt9 query;
+#else
 typedef class query_pt4 query;
+#endif
 
 } // namespace quvi
 
