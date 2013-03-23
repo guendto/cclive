@@ -113,7 +113,7 @@ static std::string io_error(const cc::file& f)
 class write_data
 {
 public:
-  inline write_data(cc::file *f):f(f), o(NULL) { }
+  inline write_data(cc::file *f):o(NULL), f(f) { }
   inline ~write_data()
   {
     if (o == NULL)
