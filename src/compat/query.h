@@ -26,7 +26,7 @@ class query_base
   virtual media parse(const std::string&, const quvi::options&) const = 0;
   virtual std::map<std::string,std::string> support() const = 0;
   virtual void _configure(const quvi::options&) const = 0;
-  virtual void setup_curl() const = 0;
+  virtual void *setup_curl() const = 0;
   virtual void _close() = 0;
   virtual void _init() = 0;
 protected:
@@ -66,7 +66,7 @@ public:
   std::string streams(const std::string&, const quvi::options&) const;
   media parse(const std::string&, const quvi::options&) const;
   std::map<std::string,std::string> support() const;
-  void setup_curl() const;
+  void *setup_curl() const;
 };
 
 class query_pt9 : public query_impl
@@ -91,7 +91,7 @@ public:
   std::string streams(const std::string&, const quvi::options&) const;
   media parse(const std::string&, const quvi::options&) const;
   std::map<std::string,std::string> support() const;
-  void setup_curl() const;
+  void *setup_curl() const;
 };
 
 #ifdef HAVE_LIBQUVI_0_9
