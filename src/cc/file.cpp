@@ -210,12 +210,14 @@ static void _set(write_data *w, const quvi::media& m, CURL *c,
 
 static void _restore(CURL *c)
 {
-  curl_easy_setopt(c, CURLOPT_RESUME_FROM_LARGE, 0L);
-  curl_easy_setopt(c, CURLOPT_NOPROGRESS, 1L);
-  curl_easy_setopt(c, CURLOPT_HEADER, 1L);
+  curl_easy_setopt(c, CURLOPT_WRITEFUNCTION, NULL);
+  curl_easy_setopt(c, CURLOPT_ENCODING, "");
 
-  curl_easy_setopt(c, CURLOPT_MAX_RECV_SPEED_LARGE,
-                   static_cast<curl_off_t>(0L));
+  curl_easy_setopt(c, CURLOPT_PROGRESSFUNCTION, NULL);
+  curl_easy_setopt(c, CURLOPT_PROGRESSDATA, NULL);
+  curl_easy_setopt(c, CURLOPT_NOPROGRESS, 1L);
+
+  curl_easy_setopt(c, CURLOPT_RESUME_FROM_LARGE, 0L);
 }
 
 bool file::write(const quvi::media& m, CURL *curl) const
