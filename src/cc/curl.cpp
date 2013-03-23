@@ -57,8 +57,10 @@ void curl_setup(CURL *c)
   if (cc::opts.flags.verbose_libcurl)
     curl_easy_setopt(c, CURLOPT_VERBOSE, 1L);
 
+#ifndef HAVE_LIBQUVI_0_9
   curl_easy_setopt(c, CURLOPT_USERAGENT,
                    map["agent"].as<std::string>().c_str());
+#endif
 
   curl_easy_setopt(c, CURLOPT_DNS_CACHE_TIMEOUT,
                    map["dns-cache-timeout"].as<int>());
