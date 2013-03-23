@@ -220,6 +220,7 @@ print_streams(const quvi::query& query, const quvi::options &qopts,
     try
       {
         print_checking(++i,n);
+        query.setup_curl();
 
         const std::string r = query.streams(url, qopts);
         print_done();
@@ -359,7 +360,6 @@ application::exit_status application::exec(int argc, char **argv)
   // --support
 
   quvi::query query; // Throws quvi::error caught in main.cpp
-  query.setup_curl();
 
   if (opts.flags.support)
     {
@@ -422,9 +422,6 @@ application::exit_status application::exec(int argc, char **argv)
   input.erase(make_unique(input.begin(), input.end()), input.end());
 
   // Set up quvi.
-
-  _curl = cc::curl_new();
-  cc::curl_setup(_curl);
 
   quvi::options qopts;
   qopts.resolve = ! opts.flags.no_resolve;
@@ -502,6 +499,7 @@ application::exit_status application::exec(int argc, char **argv)
             try
               {
                 set_stream(url, qopts, map);
+                _curl = query.setup_curl();
                 m = query.parse(url, qopts);
               }
             catch(const quvi::error& e)
@@ -535,8 +533,6 @@ application::exit_status application::exec(int argc, char **argv)
 
 void application::_close()
 {
-  curl_free(_curl);
-  _curl = NULL;
 }
 
 } // namespace cc
