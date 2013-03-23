@@ -15,10 +15,18 @@ src=\
   cc/re.cpp\
   cc/wait.cpp
 
+if HAVE_LIBQUVI_0_9
+src+=\
+  compat/error_pt9.cpp\
+  compat/media_pt9.cpp\
+  compat/query_pt9.cpp
+else
 src+=\
   compat/error_pt4.cpp\
   compat/media_pt4.cpp\
-  compat/query_pt4.cpp\
+  compat/query_pt4.cpp
+endif
+src+=\
   compat/util.cpp
 
 hdr=\
