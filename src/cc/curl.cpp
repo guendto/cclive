@@ -28,21 +28,6 @@
 namespace cc
 {
 
-CURL *curl_new()
-{
-  curl_global_init(CURL_GLOBAL_ALL);
-  return curl_easy_init();
-}
-
-void curl_free(CURL *c)
-{
-  if (c == NULL)
-    return;
-
-  curl_easy_cleanup(c);
-  curl_global_cleanup();
-}
-
 namespace po = boost::program_options;
 
 static void _set_proxy(CURL *c, const po::variables_map& map)
