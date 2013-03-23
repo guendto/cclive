@@ -25,6 +25,7 @@ class options
   inline void _copy(const options& a)
   {
     statusfunc = a.statusfunc;
+    useragent  = a.useragent;
     resolve    = a.resolve;
     stream     = a.stream;
   }
@@ -40,6 +41,7 @@ public:
   inline virtual ~options() { statusfunc=NULL; }
 public:
   quvi_callback_status statusfunc;
+  std::string useragent;
   std::string stream;
   bool resolve;
 };
