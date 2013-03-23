@@ -54,7 +54,11 @@ static void rand_decor()
 static void handle_fetch(const quvi_word type, void*)
 {
   rand_decor();
+#ifdef HAVE_LIBQUVI_0_9
+  if (type == QUVI_CALLBACK_STATUS_DONE)
+#else
   if (type == QUVISTATUSTYPE_DONE)
+#endif
     cc::log << " ";
 }
 
@@ -66,26 +70,50 @@ static void print_done()
 static void handle_verify(const quvi_word type)
 {
   rand_decor();
+#ifdef HAVE_LIBQUVI_0_9
+  if (type == QUVI_CALLBACK_STATUS_DONE)
+#else
   if (type == QUVISTATUSTYPE_DONE)
+#endif
     print_done();
 }
 
 static void handle_resolve(const quvi_word type)
 {
   rand_decor();
+#ifdef HAVE_LIBQUVI_0_9
+  if (type == QUVI_CALLBACK_STATUS_DONE)
+#else
   if (type == QUVISTATUSTYPE_DONE)
+#endif
     cc::log << " ";
 }
 
-static int status_callback(long param, void *ptr)
+#ifdef HAVE_LIBQUVI_0_9
+static void status_callback_pt9(const quvi_word status, const quvi_word type,
+                                void *ptr)
 {
-  const quvi_word status = quvi_loword(param);
-  const quvi_word type   = quvi_hiword(param);
-
   switch (status)
     {
-    case QUVISTATUS_FETCH :
-      handle_fetch(type,ptr);
+    case QUVI_CALLBACK_STATUS_FETCH:
+      handle_fetch(type, ptr);
+      break;
+    case QUVI_CALLBACK_STATUS_HTTP_QUERY_METAINFO:
+      handle_verify(type);
+      break;
+    case QUVI_CALLBACK_STATUS_RESOLVE:
+      handle_resolve(type);
+      break;
+    }
+}
+#else
+static void status_callback_pt4(const quvi_word status, const quvi_word type,
+                                void *ptr)
+{
+  switch (status)
+    {
+    case QUVISTATUS_FETCH:
+      handle_fetch(type, ptr);
       break;
     case QUVISTATUS_VERIFY:
       handle_verify(type);
@@ -94,7 +122,19 @@ static int status_callback(long param, void *ptr)
       handle_resolve(type);
       break;
     }
+}
+#endif
 
+static int status_callback(long param, void *ptr)
+{
+  const quvi_word status = quvi_loword(param);
+  const quvi_word type   = quvi_hiword(param);
+
+#ifdef HAVE_LIBQUVI_0_9
+  status_callback_pt9(status, type, ptr);
+#else
+  status_callback_pt4(status, type, ptr);
+#endif
   cc::log << std::flush;
 
   return QUVI_OK;
@@ -343,11 +383,9 @@ application::exit_status application::exec(int argc, char **argv)
 #endif
           << " for " << CANONICAL_TARGET
           << "\n  libquvi "
-          << quvi_version(QUVI_VERSION_LONG)
-#ifdef HAVE_LIBQUVI_0_4_0
+          << quvi::version()
           << "\n  libquvi-scripts "
           << quvi_version(QUVI_VERSION_SCRIPTS)
-#endif
           << std::endl;
       return application::ok;
     }
@@ -424,6 +462,7 @@ application::exit_status application::exec(int argc, char **argv)
   // Set up quvi.
 
   quvi::options qopts;
+  qopts.useragent = map["agent"].as<std::string>(); /* libquvi 0.9+ */
   qopts.resolve = ! opts.flags.no_resolve;
   qopts.statusfunc = status_callback;
 
