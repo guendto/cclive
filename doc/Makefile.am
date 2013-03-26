@@ -1,1 +1,2 @@
-SUBDIRS=	man1
+EXTRA_DIST=asciidoc.conf
+SUBDIRS=man1
