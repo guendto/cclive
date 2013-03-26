@@ -88,9 +88,9 @@ config:
 ----
 
 -s,--stream <ID>::
-  Download the specified media stream. By default the program
-  will get the 'default' stream. The ID may also be 'best', in which
-  case 'libquvi-scripts(7)' will determine the best available quality
+  Download the specified media stream. By default the program will get
+  the 'default' stream. The ID may also be 'best', in which case
+  linkman:libquvi-scripts[7] will determine the best available quality
   stream.
 ////
   When libquvi-scripts 0.9 or later is being used with cclive, the
@@ -109,9 +109,10 @@ Informative
   Print the license and exit.
 
 -S, --print-streams::
-  Query the available media streams. The printed values (media stream IDs)
-  may be used with --stream and --prefer-format options. The available
-  streams are determined by 'libquvi(3)' and 'libquvi-scripts(7)'.
+  Query the available media streams. The printed values (media stream
+  IDs) may be used with --stream and --prefer-format options. The
+  available streams are determined by linkman:libquvi[3] and
+  linkman:libquvi-scripts[7].
 
 --progressbar <arg>::
   Use the progressbar of the specified type.  The program will ignore
@@ -229,8 +230,8 @@ config:
   to disable. The default is 5.
   +
   Note that the program will skip retrying altogether if the server
-  returned HTTP 400 (and over), or if 'libquvi(3)' returned an
-  unrecoverable error (e.g. missing 'libquvi-scripts(7)').
+  returned HTTP 400 (and over), or if linkman:libquvi[3] returned an
+  unrecoverable error (e.g. missing linkman:libquvi-scripts[7]).
 ----
 config:
   max-retries = arg
@@ -246,11 +247,11 @@ config:
 
 --proxy I<arg>::
   Use the specified proxy address (e.g. http://foo:1234) for HTTP
-  connections. By default, libcURL (which cclive and 'libquvi(3)' use)
-  will use the value of http_proxy. Using this option will override the
-  http_proxy environment value.
+  connections. By default, libcURL (which cclive and linkman:libquvi[3]
+  use) will use the value of http_proxy. Using this option will override
+  the http_proxy environment value.
   +
-  Refer to the 'curl(1)' for more information about the supported
+  See linkman:curl[1] for more information about the supported
   environment variables.
 ----
 config:
@@ -378,8 +379,8 @@ $ cclive -b --log-file foo.log "URL"
 $ pkill -USR1 cclive
 ----
 
-* Print the path to the downloaded media file using 'echo(1)' and open
-  the media file in 'totem(1)':
+* Print the path to the downloaded media file using linkman:echo[1] and
+  open the media file in linkman:totem[1]:
 +
 ----
 $ cclive --exec 'echo "%f"' --exec 'totem "%f"' "URL"
@@ -426,17 +427,16 @@ Example
 [[STREAMS]]
 STREAMS
 -------
-
-The availability and the identification of the media streams is determined
-by 'libquvi(3)' and 'libquvi-scripts(7)'.
+The availability and the identification of the media streams is
+determined by linkman:libquvi[3] and linkman:libquvi-scripts[7].
 
 YouTube
 ~~~~~~~
 
-'libquvi-scripts(7)' returns the media stream IDs containing the 'itag'
-value so that they can be referred to as such using the --stream or
---prefer-format options. The --print-streams may be used to get a list
-of the available media streams.
+linkman:libquvi-scripts[7] returns the media stream IDs containing the
+'itag' value so that they can be referred to as such using the --stream
+or --prefer-format options. The --print-streams may be used to get a
+list of the available media streams.
 
 libquvi-scripts 0.4::
   The 'fmt' prefix is used to identify the streams. For example:
@@ -463,7 +463,6 @@ occurred.
 
 FURTHER RESOURCES
 -----------------
-
 The development code may be cloned from `git://repo.or.cz/cclive.git`.
 The gitweb is accessible at `http://repo.or.cz/w/cclive.git`.
 
@@ -476,8 +475,8 @@ Reporting bugs
 --------------
 Report bugs to the cclive-devel mailing list
 <cclive-devel@lists.sourceforge.net> where the development and the
-maintenance is primarily done.  You do not have to be subscribed
-to the list to send a message there.
+maintenance is primarily done.  You do not have to be subscribed to the
+list to send a message there.
 
 LICENSE
 -------
@@ -485,4 +484,4 @@ cclive is Free Software licensed under the GNU GPLv3+
 
 SEE ALSO
 --------
-'libquvi-scripts(7)', 'libquvi(3)'
+linkman:libquvi-scripts[7], linkman:libquvi[3]
