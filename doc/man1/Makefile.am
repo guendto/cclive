@@ -3,9 +3,14 @@ DOC_MAN1=cclive.1
 
 MAN_TXT=$(MAN1_TXT)
 
+ASCIIDOC_OPTS=\
+  -f $(top_srcdir)/doc/asciidoc.conf\
+  -a cclive_version="$(VERSION)"
+
 if HAVE_A2X
 $(DOC_MAN1):
-	$(AM_V_GEN)$(A2X) -f manpage -D $(builddir) $(srcdir)/$@.txt
+	$(AM_V_GEN)$(A2X) -f manpage --asciidoc-opts="$(ASCIIDOC_OPTS)" \
+		-D $(builddir) $(srcdir)/$@.txt
 doc: $(DOC_MAN1)
 else
 doc:
