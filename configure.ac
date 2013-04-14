@@ -36,9 +36,15 @@ AC_SUBST([A2X])
 
 # Checks for libraries.
 
-PKG_CHECK_MODULES([libquvi], [libquvi >= 0.4.0],
-  [AC_DEFINE([HAVE_LIBQUVI_0_4_0], [1], [We have libquvi 0.4.0+])],
-  [PKG_CHECK_MODULES([libquvi], [libquvi >= 0.2.16.1])])
+have_libquvi_0_9=
+PKG_CHECK_MODULES([libquvi], [libquvi-0.9 >= 0.9],
+  [
+    AC_DEFINE([HAVE_LIBQUVI_0_9], [1], [We have libquvi 0.9])
+    have_libquvi_0_9=yes
+  ],
+  [PKG_CHECK_MODULES([libquvi], [libquvi >= 0.4])])
+AM_CONDITIONAL([HAVE_LIBQUVI_0_9], [test x"$have_libquvi_0_9" = "xyes"])
+
 PKG_CHECK_MODULES([libcurl], [libcurl >= 7.18.0])
 PKG_CHECK_MODULES([libpcre], [libpcre >= 8.02])
 PKG_CHECK_MODULES([libpcrecpp], [libpcrecpp >= 8.02])

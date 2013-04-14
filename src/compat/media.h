@@ -81,7 +81,27 @@ public:
   }
 };
 
+class media_pt9 : public media_impl
+{
+  void _init(quvi_t, quvi_media_t);
+public:
+  inline media_pt9(const media_pt9& a): media_impl(a)       { }
+  inline media_pt9(quvi_t q, quvi_media_t qm): media_impl() { _init(q, qm); }
+  inline media_pt9(): media_impl()                          { }
+  inline virtual ~media_pt9() { }
+  inline media_pt9& operator=(const media_pt9& a)
+  {
+    if (this != &a)
+      _copy(a);
+    return *this;
+  }
+};
+
+#ifdef HAVE_LIBQUVI_0_9
+typedef class media_pt9 media;
+#else
 typedef class media_pt4 media;
+#endif
 
 } // namespace quvi
 

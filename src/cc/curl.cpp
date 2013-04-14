@@ -28,21 +28,6 @@
 namespace cc
 {
 
-CURL *curl_new()
-{
-  curl_global_init(CURL_GLOBAL_ALL);
-  return curl_easy_init();
-}
-
-void curl_free(CURL *c)
-{
-  if (c == NULL)
-    return;
-
-  curl_easy_cleanup(c);
-  curl_global_cleanup();
-}
-
 namespace po = boost::program_options;
 
 static void _set_proxy(CURL *c, const po::variables_map& map)
@@ -72,8 +57,10 @@ void curl_setup(CURL *c)
   if (cc::opts.flags.verbose_libcurl)
     curl_easy_setopt(c, CURLOPT_VERBOSE, 1L);
 
+#ifndef HAVE_LIBQUVI_0_9
   curl_easy_setopt(c, CURLOPT_USERAGENT,
                    map["agent"].as<std::string>().c_str());
+#endif
 
   curl_easy_setopt(c, CURLOPT_DNS_CACHE_TIMEOUT,
                    map["dns-cache-timeout"].as<int>());

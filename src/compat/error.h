@@ -78,7 +78,7 @@ public:
   inline error_pt4(): error_impl()                    { }
   inline error_pt4(const error_pt4& a): error_impl(a) { }
   inline ~error_pt4()                                 { }
-  inline error_pt4(quvi_t q, long qc): error_impl()
+  inline error_pt4(quvi_t q, const long qc): error_impl()
   {
     _quvi_code = qc;
     _init(q);
@@ -96,7 +96,35 @@ public:
   std::string to_s() const;
 };
 
+class error_pt9 : public error_impl
+{
+  void _init(quvi_t);
+public:
+  inline error_pt9(): error_impl()                    { }
+  inline error_pt9(const error_pt9& a): error_impl(a) { }
+  inline ~error_pt9()                                 { }
+  inline error_pt9(quvi_t q, const long qc=-1): error_impl()
+  {
+    _init(q); // Sets _quvi_code
+  }
+  inline error_pt9& operator=(const error_pt9& a)
+  {
+    if (this != &a)
+      _copy(a);
+    return *this;
+  }
+  inline bool cannot_retry() const
+  {
+    return (_resp_code >= 400 || _quvi_code != QUVI_OK);
+  }
+  std::string to_s() const;
+};
+
+#ifdef HAVE_LIBQUVI_0_9
+typedef class error_pt9 error;
+#else
 typedef class error_pt4 error;
+#endif
 
 } // namespace quvi
 
