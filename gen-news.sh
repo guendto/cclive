@@ -19,10 +19,8 @@
 set -e
 IFS=$'
 '
-a=`grep < ~/.gitconfig name | cut -f2 -d= | sed 's/^\s*//'`
 v=`./gen-ver.sh`
-d=`date +%F`
-b="$v  -- [$d, r:$a]
+b="$v  [`date +%F`]
 
 "
 t=`git describe --abbrev=0`
