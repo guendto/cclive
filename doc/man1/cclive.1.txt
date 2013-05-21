@@ -92,12 +92,11 @@ config:
   the 'default' stream. The ID may also be 'best', in which case
   linkman:libquvi-scripts[7] will determine the best available quality
   stream.
-////
-  When libquvi-scripts 0.9 or later is being used with cclive, the
-  ID may also be a comma-separated list of IDs (patterns) to match to
-  the existing media stream IDs. See --version output to confirm the
+  +
+  When libquvi(-scripts) 0.9 or later is being used with cclive, the ID
+  may also be a comma-separated list of IDs (patterns) to match to the
+  existing media stream IDs. See --version output to confirm the
   libquvi-scripts version.
-////
 
 Informative
 ~~~~~~~~~~~
@@ -262,11 +261,10 @@ config:
   Do not resolve HTTP URL redirections. Using this option will result in
   the program not being able to follow URL redirections which are often
   used by different URL shortening services.
-////
-  When libquvi 0.9 or later is being used with cclive, this
-  option will be ignored. The library will always resolve any URL
-  redirections.
-////
+  +
+  When libquvi 0.9 or later is being used with cclive, this option will
+  be ignored. The library will always resolve any URL redirections.  See
+  --version output to see if cclive was compiled with libquvi 0.9+.
 ----
 config:
   no-resolve = {true|false}
@@ -444,13 +442,11 @@ libquvi-scripts 0.4::
     itag: 22
     quvi: fmt22_720p
 
-////
 libquvi-scripts 0.9 and later::
-  The 'iXX' prefix is used within the stream ID. For example:
+  The 'iXX' prefix is used in the media stream IDs. For example:
 
     itag: 22
-    quvi: hd_webm_i22_720p
-////
+    quvi: hd720_mp4_i22_720p
 
 For more information about the YouTube video quality and codecs, visit
 `http://en.wikipedia.org/wiki/YouTube#Quality_and_codecs`.
