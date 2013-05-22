@@ -76,8 +76,8 @@ void get(quvi::media& media, void *curl)
 
       if (!no_download)
         {
-          if (!file.write(media, curl));
-          continue; // Retry.
+          if (!file.write(media, curl))
+            continue; // Retry.
 
           if (exec)
             cc::exec(file);
