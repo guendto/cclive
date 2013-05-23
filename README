@@ -1,3 +1,5 @@
+General
+=======
 
 cclive is a tool for downloading media from YouTube and similar
 websites. It has a low memory footprint compared to other existing
@@ -6,46 +8,95 @@ tools.
 Home  : http://cclive.sourceforge.net/
 gitweb: http://repo.or.cz/w/cclive.git
 
+Installation
+============
 
-Prerequisites
--------------
+Notes
+-----
 
-* libquvi       (0.4.0+)
-* libboost      (1.42.0+)
-* libpcre(cpp)  (8.02+)
-* libcurl       (7.20.0+)
+* This document does not cover how to use GNU Autotools for building
+  and installing software, instead, refer to the GNU Autotools
+  documentation, the INSTALL file and the "configure --help" output for
+  more information.
 
-Note that cclive may or may not compile with earlier versions.
-The above versions are the ones that I've tested.
+* If you're not familiar with GNU Autotools and/or installing software
+  from the source code, you may prefer to install cclive using a binary
+  package, instead. You can find cclive packaged for many distros
+  already.
+
+* If you have previously installed cclive from the source code to your
+  system, the recommended practice is to uninstall the previous
+  installation first, before you continue with the new one. You would,
+  typically, run "make uninstall" (as root if necessary) from the same
+  directory you ran "make install" from.
+
+* If you are building cclive from the git repository code, run the
+  `bootstrap.sh' first. This generates the configuration files. See also
+  the -h output for any additional info.
 
 
-Installation from source
+Simple install procedure
 ------------------------
 
-"./configure && make install", typically. See also "./configure --help".
-If you are compiling cclive from the development code from the git
-repository, see "Installation from development code", instead.
+  % ./configure && make
 
-  --with(out)-manual  (default:yes)
+  [ Become root if necessary ]
+  % make install
 
-    Do not install manual page(s)
+The configure script supports also the following options which are
+relevant to the installation:
+
+  --with(out)-manual
+    Install the manual page for cclive
 
   --(enable|disable)-ccl (default:yes)
-
     Make a symbolic link from 'cclive' (executable) to 'ccl'.
 
 
-Installation from development code
-----------------------------------
+Requirements
+------------
 
-If you are compiling cclive from the development code, run "bootstrap.sh",
-first. This generates the configuration files that are not in the git
-repository. You will need:
+* libquvi 0.4
+  http://quvi.sourceforge.net/
+    $ sudo aptitude install libquvi-dev
 
-  * Perl (with pod2man)
-  * GNU autoconf
-  * GNU automake
-  * asciidoc (a2x) for producing the manual pages
+* libpcre 8.02
+  http://pcre.org
+    $ sudo aptitude install libpcre3-dev
 
-Once the files have been generated, follow the instructions in "Installation
-from source" above.
+* libboost 1.42.0
+  http://www.boost.org/
+    $ sudo aptitude install libboost-program-options-dev libboost-system-dev \
+                            libboost-filesystem-dev libboost-iostreams-dev \
+                            libboost-date-time-dev
+
+* libcurl 7.20.0
+  http://curl.haxx.se/
+    $ sudo aptitude install libcurl4-gnutls-dev
+       (or libcurl4-openssl-dev)
+
+* pkg-config for tracking the compilation flags needed for libraries
+  http://www.freedesktop.org/software/pkgconfig/
+    $ sudo aptitude install build-essential
+
+* GNU make is recommended
+  http://www.gnu.org/software/make/
+    $ sudo aptitude install build-essential
+
+
+How to report bugs
+==================
+
+Please see: http://cclive.sourceforge.net/#bugs
+
+
+Patches
+=======
+
+Please see: http://cclive.sourceforge.net/contrib/
+
+
+License
+=======
+
+cclive is Free Software, licensed under the GNU GPLv3+.
