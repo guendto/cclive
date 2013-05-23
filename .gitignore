@@ -11,6 +11,7 @@ usr/
 *~
 Makefile.in
 aclocal.m4
+config.aux/ar-lib
 config.aux/config.guess
 config.aux/config.sub
 config.aux/depcomp
