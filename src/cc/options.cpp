@@ -148,9 +148,6 @@ void options::exec(int argc, char **argv)
   ("tr,t",
    po::value<vst>()->composing(),
    "Translate characters in media title")
-  ("regexp",
-   po::value<std::string>(),
-   "Regexp to cleanup media title (depr.)")
   ("subst", po::value<std::string>(),
    "Replace matched occurences in filename (depr.)")
   ("exec", po::value<vst>()->composing(),
@@ -237,20 +234,6 @@ void options::_validate()
       {
         re::tr(s, empty);
       }
-    }
-
-  if (_map.count("regexp")) // Deprecated.
-    {
-      warn_depr("regexp", "tr");
-
-      std::string s = _map["regexp"].as<std::string>();
-      if (!cc::re::capture(s, empty))
-        {
-          std::stringstream b;
-          b << "--regexp: expects "
-            << "`/pattern/flags', for example: \"/(\\w|\\s)/g\"";
-          throw std::runtime_error(b.str());
-        }
     }
 
   if (_map.count("subst")) // Deprecated.

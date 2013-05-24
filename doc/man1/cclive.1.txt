@@ -290,11 +290,6 @@ config:
 Deprecated
 ~~~~~~~~~~
 
---regexp <arg>::
-  Specify the regular expression pattern to cleanup the media title
-  before it is used to format the media file name. The specifiers 'g'
-  and 'i' are supported.  Use --tr, instead.
-
 --subst <arg>::
   Replace the matched occurences in the media file name. This option may
   not be specified multiple times: to specify multiple substitutions,

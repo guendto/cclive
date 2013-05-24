@@ -368,12 +368,7 @@ void file::_init(const quvi::media& media)
       if (map.count("tr"))
         tr = map["tr"].as<vst>();
       else // Use built-in default value.
-        {
-          if (map.count("regexp")) // Deprecated.
-            cc::re::capture(map["regexp"].as<std::string>(), title);
-          else
-            tr.push_back("/(\\w|\\pL|\\s)/g");
-        }
+        tr.push_back("/(\\w|\\pL|\\s)/g");
 
       foreach (const std::string r, tr)
       {
