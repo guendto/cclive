@@ -487,10 +487,6 @@ application::exit_status application::exec(int argc, char **argv)
   return es;
 }
 
-void application::_close()
-{
-}
-
 } // namespace cc
 
 // vim: set ts=2 sw=2 tw=72 expandtab:
