@@ -290,9 +290,6 @@ config:
 Deprecated
 ~~~~~~~~~~
 
--f, --format <ID>::
-  Identical to --stream.  Deprecated as of 0.7.12.
-
 -F, --query-formats::
   Identical to --print-streams.  Deprecated as of 0.7.12.
 

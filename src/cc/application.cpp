@@ -185,68 +185,9 @@ static const char depr_msg[] =
   "WARNING '--format {help,list}' are deprecated and will be removed "
   "in the later\nWARNING versions. Use '--print-streams' instead.";
 
-static const char format_usage[] =
-  "Usage:\n"
-  "   --format arg                get format arg of media\n"
-  "   --format list               print domains with formats\n"
-  "   --format list arg           match arg to supported domain names\n"
-  "Examples:\n"
-  "   --format list youtube       print youtube formats\n"
-  "   --format fmt34_360p         get format fmt34_360p of media";
-
-static application::exit_status print_format_help()
-{
-  std::cout << format_usage << "\n" << depr_msg << std::endl;
-  return application::ok;
-}
-
-typedef std::map<std::string,std::string> map_ss;
-
-static void print_host(const map_ss::value_type& t)
-{
-  std::cout
-      << t.first
-      << ":\n  "
-      << t.second
-      << "\n"
-      << std::endl;
-}
-
 namespace po = boost::program_options;
 
 typedef std::vector<std::string> vst;
-
-static application::exit_status
-handle_format_list(const po::variables_map& map, const quvi::query& query)
-{
-  map_ss m = query.support();
-
-  // -f list <pattern>
-
-  if (map.count("url"))
-    {
-      const std::string arg0 = map["url"].as<vst>()[0];
-      foreach (map_ss::value_type& t, m)
-      {
-        if (t.first.find(arg0) != std::string::npos)
-          print_host(t);
-      }
-    }
-
-  // -f list
-
-  else
-    {
-      foreach (map_ss::value_type& t, m)
-      {
-        print_host(t);
-      }
-    }
-
-  std::cout << depr_msg << std::endl;
-
-  return application::ok;
-}
 
 static application::exit_status
 print_streams(const quvi::query& query, const quvi::options &qopts,
@@ -334,8 +275,6 @@ static void set_stream(const std::string& url, quvi::options& qopts,
   std::string s = "default";
   if (map.count("stream"))
     s = map["stream"].as<std::string>();
-  else if (map.count("format")) // --format takes precedence
-    s = map["format"].as<std::string>();
   else
     {
       if (map.count("prefer-format"))
@@ -411,19 +350,6 @@ application::exit_status application::exec(int argc, char **argv)
     {
       std::cout << quvi::support_to_s(query.support()) << std::flush;
       return application::ok;
-    }
-
-  // --format [<id> | [<help> | <list> [<pattern]]]
-
-  if (map.count("format"))
-    {
-      const std::string format = map["format"].as<std::string>();
-
-      if (format == "help")
-        return print_format_help();
-
-      else if (format == "list")
-        return handle_format_list(map, query);
     }
 
   // Parse input.
