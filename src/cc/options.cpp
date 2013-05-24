@@ -99,12 +99,6 @@ void options::exec(int argc, char **argv)
   ("stream,s",
    po::value<std::string>(),
    "Select media stream")
-  ("query-formats,F",
-   po::value(&flags.query_formats)->zero_tokens(),
-   "Query available formats to URL (depr.)")
-  ("format,f",
-   po::value<std::string>(),
-   "Download media format (depr.)")
   ("overwrite,W",
    po::value(&flags.overwrite)->zero_tokens()->default_value(false),
    "Overwrite existing media")
@@ -154,11 +148,6 @@ void options::exec(int argc, char **argv)
   ("tr,t",
    po::value<vst>()->composing(),
    "Translate characters in media title")
-  ("regexp",
-   po::value<std::string>(),
-   "Regexp to cleanup media title (depr.)")
-  ("subst", po::value<std::string>(),
-   "Replace matched occurences in filename (depr.)")
   ("exec", po::value<vst>()->composing(),
    "Invoke arg after each finished download")
   ("agent",
@@ -225,22 +214,9 @@ void options::exec(int argc, char **argv)
   _validate();
 }
 
-static void warn_depr(const std::string& w, const std::string& n)
-{
-  std::clog << "WARNING '--" << w << "' is deprecated and will be removed "
-            << "in later versions\nWARNING Use '--" << n << "' instead"
-            << std::endl;
-}
-
 void options::_validate()
 {
   std::string empty;
-
-  if (_map.count("format"))
-    warn_depr("format", "stream");
-
-  if (_map.count("query-formats"))
-    warn_depr("query-formats", "print-formats");
 
   if (_map.count("tr"))
     {
@@ -248,44 +224,6 @@ void options::_validate()
       foreach (const std::string s, v)
       {
         re::tr(s, empty);
-      }
-    }
-
-  if (_map.count("regexp")) // Deprecated.
-    {
-      warn_depr("regexp", "tr");
-
-      std::string s = _map["regexp"].as<std::string>();
-      if (!cc::re::capture(s, empty))
-        {
-          std::stringstream b;
-          b << "--regexp: expects "
-            << "`/pattern/flags', for example: \"/(\\w|\\s)/g\"";
-          throw std::runtime_error(b.str());
-        }
-    }
-
-  if (_map.count("subst")) // Deprecated.
-    {
-      warn_depr("subst", "tr");
-
-      std::istringstream iss( _map["subst"].as<std::string>());
-      vst v;
-
-      std::copy(
-        std::istream_iterator<std::string >(iss),
-        std::istream_iterator<std::string >(),
-        std::back_inserter<vst>(v)
-      );
-
-      foreach (const std::string s, v)
-      {
-        if (!cc::re::subst(s,empty))
-          {
-            std::stringstream b;
-            b << "--subst: expects " << "`s{old}{new}flags'";
-            throw std::runtime_error(b.str());
-          }
       }
     }
 }

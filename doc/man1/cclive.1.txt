@@ -287,30 +287,6 @@ config:
   throttle = arg
 ----
 
-Deprecated
-~~~~~~~~~~
-
--f, --format <ID>::
-  Identical to --stream.  Deprecated as of 0.7.12.
-
--F, --query-formats::
-  Identical to --print-streams.  Deprecated as of 0.7.12.
-
---regexp <arg>::
-  Specify the regular expression pattern to cleanup the media title
-  before it is used to format the media file name. The specifiers 'g'
-  and 'i' are supported.  Use --tr, instead.
-
---subst <arg>::
-  Replace the matched occurences in the media file name. This option may
-  not be specified multiple times: to specify multiple substitutions,
-  separate each regular expression pattern with a whitespace. The
-  specifiers 'g' and 'i' are supported. Use --tr, instead.
-  +
-  Supported delimiters: <> {} () /
-  +
-  Note that 's/old/new/' is invalid, whereas 's/old//new/' is accepted.
-
 [[EXAMPLES]]
 EXAMPLES
 --------
