@@ -214,13 +214,6 @@ void options::exec(int argc, char **argv)
   _validate();
 }
 
-static void warn_depr(const std::string& w, const std::string& n)
-{
-  std::clog << "WARNING '--" << w << "' is deprecated and will be removed "
-            << "in later versions\nWARNING Use '--" << n << "' instead"
-            << std::endl;
-}
-
 void options::_validate()
 {
   std::string empty;
