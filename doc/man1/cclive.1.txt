@@ -290,9 +290,6 @@ config:
 Deprecated
 ~~~~~~~~~~
 
--F, --query-formats::
-  Identical to --print-streams.  Deprecated as of 0.7.12.
-
 --regexp <arg>::
   Specify the regular expression pattern to cleanup the media title
   before it is used to format the media file name. The specifiers 'g'

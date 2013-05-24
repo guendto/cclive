@@ -27,7 +27,6 @@ struct flags_s
 {
   bool verbose_libcurl;
   bool print_streams;
-  bool query_formats;
   bool print_config;
   bool no_download;
   bool no_resolve;

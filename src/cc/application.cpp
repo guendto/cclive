@@ -429,7 +429,7 @@ application::exit_status application::exec(int argc, char **argv)
 
   // Print streams.
 
-  if (opts.flags.print_streams || opts.flags.query_formats)
+  if (opts.flags.print_streams)
     return print_streams(query, qopts, input);
 
 #if defined (HAVE_FORK) && defined (HAVE_GETPID)
