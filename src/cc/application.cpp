@@ -24,7 +24,6 @@
 #include <boost/algorithm/string/classification.hpp> // is_any_of
 #include <boost/algorithm/string/split.hpp>
 #include <boost/foreach.hpp>
-#include <boost/random.hpp>
 
 #ifndef foreach
 #define foreach BOOST_FOREACH
@@ -40,20 +39,8 @@
 namespace cc
 {
 
-static boost::mt19937 _rng;
-
-static void rand_decor()
-{
-  boost::uniform_int<> r(2,5);
-  boost::variate_generator<boost::mt19937&, boost::uniform_int<> > v(_rng,r);
-
-  const int n = v();
-  for (int i=0; i<n; ++i) cc::log << ".";
-}
-
 static void handle_fetch(const quvi_word type, void*)
 {
-  rand_decor();
 #ifdef HAVE_LIBQUVI_0_9
   if (type == QUVI_CALLBACK_STATUS_DONE)
 #else
@@ -69,7 +56,6 @@ static void print_done()
 
 static void handle_verify(const quvi_word type)
 {
-  rand_decor();
 #ifdef HAVE_LIBQUVI_0_9
   if (type == QUVI_CALLBACK_STATUS_DONE)
 #else
@@ -80,7 +66,6 @@ static void handle_verify(const quvi_word type)
 
 static void handle_resolve(const quvi_word type)
 {
-  rand_decor();
 #ifdef HAVE_LIBQUVI_0_9
   if (type == QUVI_CALLBACK_STATUS_DONE)
 #else
@@ -93,6 +78,7 @@ static void handle_resolve(const quvi_word type)
 static void status_callback_pt9(const quvi_word status, const quvi_word type,
                                 void *ptr)
 {
+  cc::log << ".";
   switch (status)
     {
     case QUVI_CALLBACK_STATUS_FETCH:
@@ -110,6 +96,7 @@ static void status_callback_pt9(const quvi_word status, const quvi_word type,
 static void status_callback_pt4(const quvi_word status, const quvi_word type,
                                 void *ptr)
 {
+  cc::log << ".";
   switch (status)
     {
     case QUVISTATUS_FETCH:
@@ -399,10 +386,6 @@ application::exit_status application::exec(int argc, char **argv)
   qopts.useragent = map["agent"].as<std::string>(); /* libquvi 0.9+ */
   qopts.resolve = ! opts.flags.no_resolve;
   qopts.statusfunc = status_callback;
-
-  // Seed random generator.
-
-  _rng.seed(static_cast<unsigned int>(std::time(0)));
 
   // Omit flag.
 
