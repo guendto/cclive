@@ -362,6 +362,8 @@ static const application::exit_status print_version()
 #else
       << PACKAGE_VERSION
 #endif
+      << "\n  built on "
+      << BUILD_TIME
       << " for " << CANONICAL_TARGET
       << "\n  libquvi "
       << quvi::version()
