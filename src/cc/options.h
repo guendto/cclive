@@ -35,7 +35,6 @@ struct flags_s
   bool overwrite;
   bool no_proxy;
   bool version;
-  bool license;
   bool support;
   bool quiet;
   bool cont/*inue*/;

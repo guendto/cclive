@@ -104,9 +104,6 @@ Informative
 -h, --help::
   Print help and exit.
 
---license::
-  Print the license and exit.
-
 -S, --print-streams::
   Query the available media streams. The printed values (media stream
   IDs) may be used with --stream and --prefer-format options. The

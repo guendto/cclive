@@ -79,9 +79,6 @@ void options::exec(int argc, char **argv)
   ("help,h",
    po::value(&flags.help)->zero_tokens(),
    "Print help and exit")
-  ("license",
-   po::value(&flags.license)->zero_tokens(),
-   "Print license and exit")
   ("support",
    po::value(&flags.support)->zero_tokens(),
    "Print supported websites and exit")

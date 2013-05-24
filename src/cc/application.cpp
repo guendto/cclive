@@ -344,7 +344,33 @@ static void set_stream(const std::string& url, quvi::options& qopts,
   qopts.stream = s;
 }
 
-extern char LICENSE[]; // cc/license.cpp
+static const char copyr[] =
+  "\n\nCopyright (C) 2010-2013  Toni Gundogdu <legatvs@gmail.com>\n"
+  "cclive comes with ABSOLUTELY NO WARRANTY. You may redistribute copies of\n"
+  "cclive under the terms of the GNU General Public License version 3 or\n"
+  "later. For more information, see "
+  "<http://www.gnu.org/licenses/gpl.html>.\n\n"
+  "To contact the developers, please mail to "
+  "<cclive-devel@lists.sourceforge.net>";
+
+static const application::exit_status print_version()
+{
+  std::cout
+      << "cclive "
+#ifdef VN
+      << VN
+#else
+      << PACKAGE_VERSION
+#endif
+      << " for " << CANONICAL_TARGET
+      << "\n  libquvi "
+      << quvi::version()
+      << "\n  libquvi-scripts "
+      << quvi_version(QUVI_VERSION_SCRIPTS)
+      << copyr
+      << std::endl;
+  return application::ok;
+}
 
 application::exit_status application::exec(int argc, char **argv)
 {
@@ -373,27 +399,7 @@ application::exit_status application::exec(int argc, char **argv)
       return application::ok;
     }
   else if (opts.flags.version)
-    {
-      std::cout
-          << "cclive "
-#ifdef VN
-          << VN
-#else
-          << PACKAGE_VERSION
-#endif
-          << " for " << CANONICAL_TARGET
-          << "\n  libquvi "
-          << quvi::version()
-          << "\n  libquvi-scripts "
-          << quvi_version(QUVI_VERSION_SCRIPTS)
-          << std::endl;
-      return application::ok;
-    }
-  else if (opts.flags.license)
-    {
-      std::cout << LICENSE << std::endl;
-      return application::ok;
-    }
+    return print_version();
 
   // --support
 
