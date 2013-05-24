@@ -148,8 +148,6 @@ void options::exec(int argc, char **argv)
   ("tr,t",
    po::value<vst>()->composing(),
    "Translate characters in media title")
-  ("subst", po::value<std::string>(),
-   "Replace matched occurences in filename (depr.)")
   ("exec", po::value<vst>()->composing(),
    "Invoke arg after each finished download")
   ("agent",
@@ -233,30 +231,6 @@ void options::_validate()
       foreach (const std::string s, v)
       {
         re::tr(s, empty);
-      }
-    }
-
-  if (_map.count("subst")) // Deprecated.
-    {
-      warn_depr("subst", "tr");
-
-      std::istringstream iss( _map["subst"].as<std::string>());
-      vst v;
-
-      std::copy(
-        std::istream_iterator<std::string >(iss),
-        std::istream_iterator<std::string >(),
-        std::back_inserter<vst>(v)
-      );
-
-      foreach (const std::string s, v)
-      {
-        if (!cc::re::subst(s,empty))
-          {
-            std::stringstream b;
-            b << "--subst: expects " << "`s{old}{new}flags'";
-            throw std::runtime_error(b.str());
-          }
       }
     }
 }

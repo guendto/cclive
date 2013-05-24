@@ -385,25 +385,7 @@ void file::_init(const quvi::media& media)
       pcrecpp::RE("%h").GlobalReplace("nohostseq", &fname_format);
       pcrecpp::RE("%s").GlobalReplace(media.file_ext(), &fname_format);
 
-      if (map.count("subst")) // Deprecated.
-        {
-          std::istringstream iss(map["subst"].as<std::string>());
-          vst v;
-
-          std::copy(
-            std::istream_iterator<std::string >(iss),
-            std::istream_iterator<std::string >(),
-            std::back_inserter<vst>(v)
-          );
-
-          foreach (const std::string s, v)
-          {
-            cc::re::subst(s, fname_format);
-          }
-        }
-
       std::stringstream b;
-
       b << fname_format;
 
       // Output dir.
