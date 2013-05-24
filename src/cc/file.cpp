@@ -220,6 +220,28 @@ static void _restore(CURL *c)
   curl_easy_setopt(c, CURLOPT_RESUME_FROM_LARGE, 0L);
 }
 
+static bool _handle_error(const long resp_code, const CURLcode rc,
+                          std::string& errmsg)
+{
+  cc::log << std::endl;
+
+  // If an unrecoverable error then do not attempt to retry.
+  if (resp_code >= 400 && resp_code <= 500)
+    throw std::runtime_error(errmsg);
+
+  // Otherwise.
+  bool r = false; // Attempt to retry by default.
+#ifdef WITH_SIGNAL
+  if (rc == 42) // 42=Operation aborted by callback (libcurl).
+    {
+      errmsg = "sigusr1 received: interrupt current download";
+      r = true; // Skip - do not attempt to retry.
+    }
+#endif
+  cc::log << "error: " << errmsg << std::endl;
+  return r;
+}
+
 bool file::write(const quvi::media& m, CURL *curl) const
 {
   write_data w(const_cast<cc::file*>(this));
@@ -275,24 +297,7 @@ bool file::write(const quvi::media& m, CURL *curl) const
     }
 
   if (!error.empty())
-    {
-      cc::log << std::endl;
-
-      if (resp_code >= 400 && resp_code <= 500)
-        throw std::runtime_error(error);
-      else
-        {
-#ifdef WITH_SIGNAL
-          if (rc == 42)
-            {
-              // 42 = Operation aborted by callback.
-              error = "sigusr1 received: interrupt current download";
-            }
-#endif
-          cc::log << "error: " << error << std::endl;
-        }
-      return false; // Retry.
-    }
+    return _handle_error(resp_code, rc, error);
 
   pb.finish();
   cc::log << std::endl;
