@@ -243,7 +243,7 @@ void options::_validate()
     warn_depr("format", "stream");
 
   if (_map.count("query-formats"))
-    warn_depr("query-formats", "print-formats");
+    warn_depr("query-formats", "print-streams");
 
   if (_map.count("tr"))
     {
