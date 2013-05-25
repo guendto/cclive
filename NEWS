@@ -1,3 +1,15 @@
+v0.7.13  [2013-05-25]
+
+Toni Gundogdu:
+  - Add --print-config [2b47862]
+  - Add short-option for --verbose-libcurl [0ed7d49]
+  - FIX: Regression in retrying introduced by 4b118378 [0b56b37]
+  - FIX: Skip transfer with USR1, do not retry transfer [17b28b8]
+  - Update m4/boost.m4 to the latest [3a29b7b]
+
+ 14 files changed, 328 insertions(+), 92 deletions(-)
+
+
 v0.7.12 -- [2013-02-10, r:Toni Gundogdu]
 
 Toni Gundogdu:
