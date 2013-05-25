@@ -1,3 +1,25 @@
+v0.9.0  [2013-05-25]
+
+Toni Gundogdu:
+  - Add libquvi 0.9+ compatibility layer
+  - Add --print-config [bf22b60]
+  - Add short-option for --verbose-libcurl [239ea61]
+  - Drop libquvi 0.2.16.x support
+    - README: Bump libquvi prereq. to 0.4.0+ [99b47eb]
+  - FIX: Regression in retrying introduced by 4b118378 [b57e47b]
+  - FIX: Skip transfer with USR1, do not retry transfer [293dbc9]
+  - Merge --version and --license options [474c143]
+    - Add build time to --version output [ca5e80f]
+  - Remove all deprecated options/features
+    - Remove depr. --format [e32fc26]
+    - Remove depr. --query-formats [e8114a0]
+    - Remove depr. --regexp [0392fb0]
+    - Remove depr. --subst [8d2ac37]
+  - Update m4/boost.m4 to the latest [982bbc7]
+
+ 28 files changed, 782 insertions(+), 422 deletions(-)
+
+
 v0.7.12 -- [2013-02-10, r:Toni Gundogdu]
 
 Toni Gundogdu:
