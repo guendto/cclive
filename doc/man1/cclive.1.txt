@@ -89,14 +89,37 @@ config:
 
 -s,--stream <ID>::
   Download the specified media stream. By default the program will get
-  the 'default' stream. The ID may also be 'best', in which case
-  linkman:libquvi-scripts[7] will determine the best available quality
-  stream.
+  the 'default' stream. The stream selection with linkman:libquvi[3] 0.4
+  is basic at most, whereas linkman:libquvi[3] 0.9+ provides a more
+  advanced facility for this.
   +
-  When libquvi(-scripts) 0.9 or later is being used with cclive, the ID
-  may also be a comma-separated list of IDs (patterns) to match to the
-  existing media stream IDs. See --version output to confirm the
-  libquvi-scripts version.
+  linkman:libquvi[3] 0.9+ treats the ID value as a regex PATTERN and
+  matches it against the linkman:libquvi-scripts[7] returned media
+  stream IDs. Additionally, the value of ID may be a 'comma-separated
+  list' of regex PATTERNs.
+  +
+  In comparison, linkman:libquvi[3] 0.4 only checks whether the strings
+  (the value of ID and the returned media stream ID) are equal.
+  +
+  The ID value may also contain the following reserved keywords:
++
+- 'croak' - tell linkman:libquvi[3] (0.9+) to exit with an error
+  when reached
+- 'best'  - tell linkman:libquvi[3] to choose the best quality stream
+
++
+The 'best' quality is determined by linkman:libquvi-scripts[7]. The
+method varies, depending on the linkman:libquvi[3] version and the
+website.
++
+For example, linkman:libquvi-scripts[7] 0.9+ would typically compare the
+media quality properties (e.g. the video height property). In reality,
+the method will vary depending on the data provided by the media hosting
+service and the implementation of the support script written for the
+website.
++
+See the --version output to confirm whether cclive was built with
+linkman:libquvi[3] 0.9 or later.  See also <<EXAMPLES>>.
 
 Informative
 ~~~~~~~~~~~
@@ -105,7 +128,7 @@ Informative
   Print help and exit.
 
 -S, --print-streams::
-  Query the available media streams. The printed values (media stream
+  Print the available media streams. The printed values (media stream
   IDs) may be used with --stream and --prefer-format options. The
   available streams are determined by linkman:libquvi[3] and
   linkman:libquvi-scripts[7].
@@ -291,10 +314,6 @@ config:
 EXAMPLES
 --------
 
-As a general rule of thumb: always put the URLs inside quotes. You can
-find more examples at 'http://cclive.sourceforge.net/'.
-
-
 * Typical use:
 +
 ----
@@ -312,6 +331,15 @@ $ cclive -S "URL"
 ----
 $ cclive -s best "URL"
 ----
+
+* With linkman:libquvi[3] 0.9+, you can pass a list of stream ID
+  patterns to match:
++
+----
+$ cclive -s foo,baz,best "URL"
+----
++
+See the --stream description for more details.
 
 * Get the YouTube itag 43 format whenever possible:
 +
