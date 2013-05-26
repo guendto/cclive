@@ -332,6 +332,15 @@ $ cclive -S "URL"
 $ cclive -s best "URL"
 ----
 
+* With linkman:libquvi[3] 0.9+, you can pass a list of stream ID
+  patterns to match:
++
+----
+$ cclive -s foo,baz,best "URL"
+----
++
+See the --stream description for more details.
+
 * Get the YouTube itag 43 format whenever possible:
 +
 ----
