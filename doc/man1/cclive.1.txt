@@ -314,10 +314,6 @@ config:
 EXAMPLES
 --------
 
-As a general rule of thumb: always put the URLs inside quotes. You can
-find more examples at 'http://cclive.sourceforge.net/'.
-
-
 * Typical use:
 +
 ----
