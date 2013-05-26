@@ -128,7 +128,7 @@ Informative
   Print help and exit.
 
 -S, --print-streams::
-  Query the available media streams. The printed values (media stream
+  Print the available media streams. The printed values (media stream
   IDs) may be used with --stream and --prefer-format options. The
   available streams are determined by linkman:libquvi[3] and
   linkman:libquvi-scripts[7].
