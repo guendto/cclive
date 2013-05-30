@@ -477,7 +477,7 @@ list to send a message there.
 
 LICENSE
 -------
-cclive is Free Software licensed under the GNU GPLv3+
+cclive is Free Software, licensed under the GNU Affero GPLv3+.
 
 SEE ALSO
 --------

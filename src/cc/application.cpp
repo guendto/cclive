@@ -1,18 +1,21 @@
 /* cclive
  * Copyright (C) 2010-2013  Toni Gundogdu <legatvs@gmail.com>
  *
+ * This file is part of cclive <http://cclive.sourceforge.net/>.
+ *
  * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Affero General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU Affero General Public
+ * License along with this program.  If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 
 #include <ccinternal>
@@ -269,9 +272,9 @@ static void set_stream(const std::string& url, quvi::options& qopts,
 static const char copyr[] =
   "\n\nCopyright (C) 2010-2013  Toni Gundogdu <legatvs@gmail.com>\n"
   "cclive comes with ABSOLUTELY NO WARRANTY. You may redistribute copies of\n"
-  "cclive under the terms of the GNU General Public License version 3 or\n"
-  "later. For more information, see "
-  "<http://www.gnu.org/licenses/gpl.html>.\n\n"
+  "cclive under the terms of the GNU Affero General Public License version\n"
+  "3 or later. For more information, see "
+  "<http://www.gnu.org/licenses/agpl.html>.\n\n"
   "To contact the developers, please mail to "
   "<cclive-devel@lists.sourceforge.net>";
 
