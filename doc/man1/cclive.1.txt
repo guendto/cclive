@@ -17,9 +17,10 @@ and similar websites.
 
 INPUT
 -----
-The program reads input from the 'stdin' by default. The arguments may be
-either an 'URL' or a 'FILE'. When the input is read from either 'stdin'
-or a 'FILE', the data is expected to be a newline-separated list of URLs.
+The command will read stdin by default. The input is expected to contain
+URLs. The command arguments are expected to be either URLs or file
+paths. If the input is read from either stdin or a file, the contents
+are read as RFC2483.
 
 OPTIONS
 -------

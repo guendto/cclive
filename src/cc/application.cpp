@@ -35,6 +35,7 @@
 #include <ccquvi>
 #include <ccapplication>
 #include <ccoptions>
+#include <ccinput>
 #include <ccutil>
 #include <cclog>
 #include <ccre>
@@ -130,18 +131,6 @@ static int status_callback(long param, void *ptr)
   return QUVI_OK;
 }
 
-template<class Iterator>
-static Iterator make_unique(Iterator first, Iterator last)
-{
-  while (first != last)
-    {
-      Iterator next(first);
-      last  = std::remove(++next, last, *first);
-      first = next;
-    }
-  return last;
-}
-
 static void print_retrying(const int retry,
                            const int max_retries,
                            const int retry_wait)
@@ -177,12 +166,12 @@ typedef std::vector<std::string> vst;
 
 static application::exit_status
 print_streams(const quvi::query& query, const quvi::options &qopts,
-              const vst& input)
+              const vst& input_urls)
 {
-  const size_t n = input.size();
+  const size_t n = input_urls.size();
   size_t i = 0;
 
-  foreach (std::string url, input)
+  foreach (const std::string& url, input_urls)
   {
     try
       {
@@ -211,27 +200,6 @@ print_streams(const quvi::query& query, const quvi::options &qopts,
       }
   }
   return application::ok;
-}
-
-static void read_from(std::istream& is, vst& dst)
-{
-  std::string s;
-  char ch = 0;
-
-  while (is.get(ch))
-    s += ch;
-
-  std::istringstream iss(s);
-  std::copy(
-    std::istream_iterator<std::string >(iss),
-    std::istream_iterator<std::string >(),
-    std::back_inserter<vst>(dst)
-  );
-}
-
-static bool is_url(const std::string& s)
-{
-  return strstr(const_cast<char*>(s.c_str()), "://") != NULL;
 }
 
 static void parse_prefer_format(const std::string& url, std::string& fmt,
@@ -340,44 +308,14 @@ application::exit_status application::exec(int argc, char **argv)
 
   // Parse input.
 
-  vst input;
+  cc::input ci;
+  const vst input_urls = cc::input().urls();
 
-  if (map.count("url") == 0)
-    read_from(std::cin, input);
-  else
+  if (input_urls.size() ==0)
     {
-      vst args = map["url"].as< vst >();
-      foreach(std::string arg, args)
-      {
-        if (!is_url(arg))
-          {
-            std::ifstream f(arg.c_str());
-            if (f.is_open())
-              read_from(f, input);
-            else
-              {
-                std::clog
-                    << "error: "
-                    << arg
-                    << ": "
-                    << cc::perror("unable to open")
-                    << std::endl;
-              }
-          }
-        else
-          input.push_back(arg);
-      }
-    }
-
-  if (input.size() == 0)
-    {
-      std::clog << "error: no input urls" << std::endl;
+      std::clog << "error: no input URL" << std::endl;
       return application::error;
     }
-
-  // Remove duplicates.
-
-  input.erase(make_unique(input.begin(), input.end()), input.end());
 
   // Set up quvi.
 
@@ -412,7 +350,7 @@ application::exit_status application::exec(int argc, char **argv)
   // Print streams.
 
   if (opts.flags.print_streams)
-    return print_streams(query, qopts, input);
+    return print_streams(query, qopts, input_urls);
 
 #if defined (HAVE_FORK) && defined (HAVE_GETPID)
   if (background_given)
@@ -427,7 +365,7 @@ application::exit_status application::exec(int argc, char **argv)
 
   // For each input URL.
 
-  const size_t n = input.size();
+  const size_t n = input_urls.size();
   size_t i = 0;
 
   const int max_retries  = map["max-retries"].as<int>();
@@ -435,7 +373,7 @@ application::exit_status application::exec(int argc, char **argv)
 
   exit_status es = ok;
 
-  foreach(std::string url, input)
+  foreach(const std::string& url, input_urls)
   {
     ++i;
 
