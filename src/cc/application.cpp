@@ -168,10 +168,6 @@ static void print_quvi_error(const quvi::error& e)
   cc::log << "libquvi: error: " << e.what() << std::endl;
 }
 
-static const char depr_msg[] =
-  "WARNING '--format {help,list}' are deprecated and will be removed "
-  "in the later\nWARNING versions. Use '--print-streams' instead.";
-
 namespace po = boost::program_options;
 
 typedef std::vector<std::string> vst;
