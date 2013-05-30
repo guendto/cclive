@@ -75,6 +75,10 @@ Requirements
     $ sudo aptitude install libcurl4-gnutls-dev
        (or libcurl4-openssl-dev)
 
+* GLib 2.24.2
+  http://library.gnome.org/devel/glib/
+    $ sudo aptitude install libglib2.0-dev
+
 * pkg-config for tracking the compilation flags needed for libraries
   http://www.freedesktop.org/software/pkgconfig/
     $ sudo aptitude install build-essential
