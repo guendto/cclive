@@ -7,6 +7,7 @@ src=\
   cc/exec.cpp\
   cc/file.cpp\
   cc/get.cpp\
+  cc/input.cpp\
   cc/log.cpp\
   cc/main.cpp\
   cc/options.cpp\
@@ -31,6 +32,7 @@ src+=\
 hdr=\
   ccapplication\
   ccfile\
+  ccinput\
   ccinternal\
   cclog\
   ccoptions\
@@ -42,6 +44,7 @@ hdr=\
 hdr+=\
   cc/application.h\
   cc/file.h\
+  cc/input.h\
   cc/internal.h\
   cc/log.h\
   cc/options.h\
