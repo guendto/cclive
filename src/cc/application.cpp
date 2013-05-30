@@ -202,27 +202,6 @@ print_streams(const quvi::query& query, const quvi::options &qopts,
   return application::ok;
 }
 
-static void read_from(std::istream& is, vst& dst)
-{
-  std::string s;
-  char ch = 0;
-
-  while (is.get(ch))
-    s += ch;
-
-  std::istringstream iss(s);
-  std::copy(
-    std::istream_iterator<std::string >(iss),
-    std::istream_iterator<std::string >(),
-    std::back_inserter<vst>(dst)
-  );
-}
-
-static bool is_url(const std::string& s)
-{
-  return strstr(const_cast<char*>(s.c_str()), "://") != NULL;
-}
-
 static void parse_prefer_format(const std::string& url, std::string& fmt,
                                 const po::variables_map& map)
 {
