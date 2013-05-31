@@ -267,6 +267,13 @@ static const application::exit_status print_version()
   return application::ok;
 }
 
+static application::exit_status print_support()
+{
+  quvi::query q; // Throws quvi::error caught in main.cpp
+  std::cout << quvi::support_to_s(q.support()) << std::flush;
+  return application::ok;
+}
+
 application::exit_status application::exec(int argc, char **argv)
 {
   // Parse options.
@@ -289,16 +296,8 @@ application::exit_status application::exec(int argc, char **argv)
     }
   else if (opts.flags.version)
     return print_version();
-
-  // --support
-
-  quvi::query query; // Throws quvi::error caught in main.cpp
-
-  if (opts.flags.support)
-    {
-      std::cout << quvi::support_to_s(query.support()) << std::flush;
-      return application::ok;
-    }
+  else if (opts.flags.support)
+    return print_support();
 
   // Parse input.
 
@@ -312,6 +311,8 @@ application::exit_status application::exec(int argc, char **argv)
     }
 
   // Set up quvi.
+
+  quvi::query query; // Throws quvi::error caught in main.cpp
 
   quvi::options qopts;
   qopts.useragent = map["agent"].as<std::string>(); /* libquvi 0.9+ */
