@@ -271,7 +271,7 @@ application::exit_status application::exec(int argc, char **argv)
 {
   try
     {
-      opts.exec(argc,argv);
+      opts.parse(argc,argv);
     }
   catch(const std::exception& e)
     {

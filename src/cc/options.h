@@ -51,7 +51,7 @@ class options
     }
 public:
   inline const boost::program_options::variables_map& map()const {return _map;}
-  void exec(int argc, char **argv);
+  void parse(int argc, char **argv);
   void dump();
 private:
   void _validate();
