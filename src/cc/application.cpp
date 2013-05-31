@@ -308,10 +308,10 @@ application::exit_status application::exec(int argc, char **argv)
 
   // Parse input.
 
-  cc::input ci;
   const vst input_urls = cc::input().urls();
+  const size_t n = input_urls.size();
 
-  if (input_urls.size() ==0)
+  if (n == 0)
     {
       std::clog << "error: no input URL" << std::endl;
       return application::error;
@@ -365,7 +365,6 @@ application::exit_status application::exec(int argc, char **argv)
 
   // For each input URL.
 
-  const size_t n = input_urls.size();
   size_t i = 0;
 
   const int max_retries  = map["max-retries"].as<int>();
