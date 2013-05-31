@@ -145,6 +145,9 @@ void input::_parse()
     _have_rargs(_urls, m);
 
   _urls.erase(_duplicates(_urls.begin(), _urls.end()), _urls.end());
+
+  if (_urls.size() ==0)
+    throw std::runtime_error("no input URL");
 }
 
 } // namespace cc

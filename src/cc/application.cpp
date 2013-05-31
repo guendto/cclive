@@ -304,12 +304,6 @@ application::exit_status application::exec(int argc, char **argv)
   const vst input_urls = cc::input().urls();
   const size_t n = input_urls.size();
 
-  if (n == 0)
-    {
-      std::clog << "error: no input URL" << std::endl;
-      return application::error;
-    }
-
   // Set up quvi.
 
   quvi::query query; // Throws quvi::error caught in main.cpp
