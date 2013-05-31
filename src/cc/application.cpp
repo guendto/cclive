@@ -269,15 +269,9 @@ static const application::exit_status print_version()
 
 application::exit_status application::exec(int argc, char **argv)
 {
-  try
-    {
-      opts.parse(argc,argv);
-    }
-  catch(const std::exception& e)
-    {
-      std::clog << "error: " << e.what() << std::endl;
-      return application::error;
-    }
+  // Parse options.
+
+  opts.parse(argc, argv);
 
   const po::variables_map map = cc::opts.map();
 
