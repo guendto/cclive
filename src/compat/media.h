@@ -30,7 +30,7 @@ protected:
   inline virtual ~media_base() { }
 };
 
-class media_impl
+class media_impl : media_base
 {
 protected:
   std::string _content_type;
