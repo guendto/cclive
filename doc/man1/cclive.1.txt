@@ -71,23 +71,6 @@ config:
 -n, --no-download::
   Do not download the media, print the details only.
 
--p, --prefer-format <arg>::
-  Have the program choose the format (media stream) to download by
-  matching the regular expression pattern match to the media URL as
-  specified in the 'arg'.
-  +
-  This option may be specified multiple times. The use of --stream will
-  override the rules specified using this option. See also <<EXAMPLES>>.
-  +
-  The 'arg' is a 'string pair' separated by a colon.
-  The 'string pair' consists of:
-  * a regular expression pattern
-  * format (media stream) to download
-----
-config:
-  prefer-format = arg
-----
-
 -s,--stream <ID>::
   Download the specified media stream. By default the program will get
   the 'default' stream. The stream selection with linkman:libquvi[3] 0.4
@@ -311,6 +294,33 @@ config:
   throttle = arg
 ----
 
+Deprecated
+~~~~~~~~~~
+
+These options will be removed eventually in the later versions of
+cclive.
+
+-p, --prefer-format <arg>::
+  The '--stream' is intended to replace this option, eventually.  The
+  stream selection will be provided by libquvi 0.9+. This was done
+  previously by cclive. See also <<EXAMPLES>>.
+  +
+  Have the program choose the format (media stream) to download by
+  matching the regular expression pattern match to the media URL as
+  specified in the 'arg'.
+  +
+  This option may be specified multiple times. The use of --stream will
+  override the rules specified using this option.
+  +
+  The 'arg' is a 'string pair' separated by a colon.  The 'string pair'
+  consists of:
+  * a regular expression pattern
+  * format (media stream) to download
+----
+config:
+  prefer-format = arg
+----
+
 [[EXAMPLES]]
 EXAMPLES
 --------
@@ -341,23 +351,6 @@ $ cclive -s foo,baz,best "URL"
 ----
 +
 See the --stream description for more details.
-
-* Get the YouTube itag 43 format whenever possible:
-+
-----
-# Save 'prefer-format' permanently to ~/.ccliverc file.
-$ echo "prefer-format = ^.*youtube.*\.com:fmt43_360p" \
-          >> ~/.ccliverc"
-
-# The above would cause the program to try to get fmt43_360p
-# with media  URLs of http://youtube.com/ if available.
-$ cclive "YOUTUBE_URL"
-
-# Using of --stream will override the --prefer-format
-# setting.  Get fmt22_720p (if available).
-$ cclive -s fmt22_720p "YOUTUBE_URL"
-----
-See also <<STREAMS>>.
 
 * Replace all occurences of 'foo' with 'bar' in the media title before
   it is used in the media file name:
