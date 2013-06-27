@@ -28,7 +28,7 @@ void error_pt9::_init(quvi_t q)
 {
   _what = quvi_errmsg(q);
   quvi_get(q, QUVI_INFO_RESPONSE_CODE, &_resp_code);
-  quvi_get(q, QUVI_INFO_ERROR_CODE, &_quvi_code);
+  _quvi_code = quvi_errcode(q);
 }
 
 std::string error_pt9::to_s() const
