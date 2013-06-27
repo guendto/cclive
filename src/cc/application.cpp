@@ -304,6 +304,26 @@ static void set_stream(const std::string& url, quvi::options& qopts,
   qopts.stream = s;
 }
 
+static const application::exit_status print_version()
+{
+  std::cout
+      << "cclive "
+#ifdef VN
+      << VN
+#else
+      << PACKAGE_VERSION
+#endif
+      << " for " << CANONICAL_TARGET
+      << "\n  libquvi "
+      << quvi_version(QUVI_VERSION_LONG)
+#ifdef HAVE_LIBQUVI_0_4_0
+      << "\n  libquvi-scripts "
+      << quvi_version(QUVI_VERSION_SCRIPTS)
+#endif
+      << std::endl;
+  return application::ok;
+}
+
 extern char LICENSE[]; // cc/license.cpp
 
 application::exit_status application::exec(int argc, char **argv)
@@ -333,24 +353,7 @@ application::exit_status application::exec(int argc, char **argv)
       return application::ok;
     }
   else if (opts.flags.version)
-    {
-      std::cout
-          << "cclive "
-#ifdef VN
-          << VN
-#else
-          << PACKAGE_VERSION
-#endif
-          << " for " << CANONICAL_TARGET
-          << "\n  libquvi "
-          << quvi_version(QUVI_VERSION_LONG)
-#ifdef HAVE_LIBQUVI_0_4_0
-          << "\n  libquvi-scripts "
-          << quvi_version(QUVI_VERSION_SCRIPTS)
-#endif
-          << std::endl;
-      return application::ok;
-    }
+    return print_version();
   else if (opts.flags.license)
     {
       std::cout << LICENSE << std::endl;
