@@ -242,7 +242,7 @@ static void set_stream(const std::string& url, quvi::options& qopts,
 }
 
 static const char copyr[] =
-  "\n\nCopyright (C) 2010-2013  Toni Gundogdu <legatvs@gmail.com>\n"
+  "\nCopyright (C) 2010-2013  Toni Gundogdu <legatvs@gmail.com>\n"
   "cclive comes with ABSOLUTELY NO WARRANTY. You may redistribute copies of\n"
   "cclive under the terms of the GNU Affero General Public License version\n"
   "3 or later. For more information, see "
@@ -259,15 +259,13 @@ static const application::exit_status print_version()
 #else
       << PACKAGE_VERSION
 #endif
-      << "\n  built on "
-      << BUILD_TIME
-      << " for " << CANONICAL_TARGET
-      << "\n  libquvi "
-      << quvi::version()
+      << "\n  built on " << BUILD_TIME
+      << " for "         << CANONICAL_TARGET
+      << "\n  libquvi "  << quvi::version()
       << "\n  libquvi-scripts "
       << quvi_version(QUVI_VERSION_SCRIPTS)
-      << copyr
       << std::endl;
+  std::cerr << copyr << std::endl;
   return application::ok;
 }
 
