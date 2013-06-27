@@ -142,8 +142,8 @@ static void print_quvi_error(const quvi::error& e)
 }
 
 static const char depr_msg[] =
-  "WARNING '--format {help,list}' are deprecated and will be removed "
-  "in the later\nWARNING versions. Use '--print-streams' instead.";
+  "[WARNING] '--format {help,list}' are deprecated and will be removed "
+  "in the later\n[WARNING] versions. Use '--print-streams' instead.";
 
 static const char format_usage[] =
   "Usage:\n"
@@ -331,6 +331,15 @@ static application::exit_status print_support()
   return application::ok;
 }
 
+static void warn_depr_val(const std::string& o, const std::string& t,
+                          const std::string& v)
+{
+  std::clog
+      << "[WARNING] --" << o << ": " << t << " `" << v
+      << "' is deprecated and will\n[WARNING] be removed in the later "
+      << "versions" << std::endl;
+}
+
 extern char LICENSE[]; // cc/license.cpp
 
 application::exit_status application::exec(int argc, char **argv)
@@ -373,6 +382,11 @@ application::exit_status application::exec(int argc, char **argv)
       else if (format == "list")
         return handle_format_list(map);
     }
+
+  // Deprecated.
+
+  if (strstr(map["filename-format"].as<std::string>().c_str(), "%h"))
+    warn_depr_val("filename-format", "sequence", "%h");
 
   // Parse input.
 
