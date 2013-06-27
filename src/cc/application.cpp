@@ -80,13 +80,13 @@ static void handle_resolve(const quvi_word type)
 
 #ifdef HAVE_LIBQUVI_0_9
 static void status_callback_pt9(const quvi_word status, const quvi_word type,
-                                void *ptr)
+                                void *data, void *userdata)
 {
   cc::log << ".";
   switch (status)
     {
     case QUVI_CALLBACK_STATUS_FETCH:
-      handle_fetch(type, ptr);
+      handle_fetch(type, data);
       break;
     case QUVI_CALLBACK_STATUS_HTTP_QUERY_METAINFO:
       handle_verify(type);
@@ -98,13 +98,13 @@ static void status_callback_pt9(const quvi_word status, const quvi_word type,
 }
 #else
 static void status_callback_pt4(const quvi_word status, const quvi_word type,
-                                void *ptr)
+                                void *data)
 {
   cc::log << ".";
   switch (status)
     {
     case QUVISTATUS_FETCH:
-      handle_fetch(type, ptr);
+      handle_fetch(type, data);
       break;
     case QUVISTATUS_VERIFY:
       handle_verify(type);
@@ -116,15 +116,19 @@ static void status_callback_pt4(const quvi_word status, const quvi_word type,
 }
 #endif
 
-static int status_callback(long param, void *ptr)
+#ifdef HAVE_LIBQUVI_0_9
+static int status_callback(long status_type, void *data, void *userdata)
+#else
+static int status_callback(long status_type, void *data)
+#endif
 {
-  const quvi_word status = quvi_loword(param);
-  const quvi_word type   = quvi_hiword(param);
+  const quvi_word status = quvi_loword(status_type);
+  const quvi_word type   = quvi_hiword(status_type);
 
 #ifdef HAVE_LIBQUVI_0_9
-  status_callback_pt9(status, type, ptr);
+  status_callback_pt9(status, type, data, userdata);
 #else
-  status_callback_pt4(status, type, ptr);
+  status_callback_pt4(status, type, data);
 #endif
   cc::log << std::flush;
 
