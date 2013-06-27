@@ -385,7 +385,6 @@ void file::_init(const quvi::media& media)
 
       pcrecpp::RE("%i").GlobalReplace(media.id(), &fname_format);
       pcrecpp::RE("%t").GlobalReplace(title, &fname_format);
-      pcrecpp::RE("%h").GlobalReplace("nohostseq", &fname_format);
       pcrecpp::RE("%s").GlobalReplace(media.file_ext(), &fname_format);
 
       std::stringstream b;
