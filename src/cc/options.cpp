@@ -230,8 +230,8 @@ void options::parse(int argc, char **argv)
 
 static void warn_depr(const std::string& w, const std::string& n)
 {
-  std::clog << "WARNING '--" << w << "' is deprecated and will be removed "
-            << "in later versions\nWARNING Use '--" << n << "' instead"
+  std::clog << "[WARNING] '--" << w << "' is deprecated and will be removed "
+            << "in later versions\n[WARNING] Use '--" << n << "' instead"
             << std::endl;
 }
 
