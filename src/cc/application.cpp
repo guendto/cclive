@@ -335,15 +335,7 @@ extern char LICENSE[]; // cc/license.cpp
 
 application::exit_status application::exec(int argc, char **argv)
 {
-  try
-    {
-      opts.exec(argc,argv);
-    }
-  catch(const std::exception& e)
-    {
-      std::clog << "error: " << e.what() << std::endl;
-      return application::error;
-    }
+  opts.parse(argc, argv);
 
   const po::variables_map map = cc::opts.map();
 

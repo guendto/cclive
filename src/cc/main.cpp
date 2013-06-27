@@ -47,6 +47,12 @@ int main(int argc, char *argv[])
       std::clog << "error: " << e.what() << std::endl;
       es = application::error;
     }
+  // Thrown by boost::program_options (cc::options).
+  catch(const std::exception& e)
+    {
+      std::clog << "error: " << e.what() << std::endl;
+      es = application::error;
+    }
   return es;
 }
 

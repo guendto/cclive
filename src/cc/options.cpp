@@ -41,7 +41,7 @@ namespace fs = boost::filesystem;
 
 typedef std::vector<std::string> vst;
 
-void options::exec(int argc, char **argv)
+void options::parse(int argc, char **argv)
 {
   memset(&flags, 0, sizeof(struct flags_s));
 
