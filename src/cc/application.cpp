@@ -276,6 +276,18 @@ static application::exit_status print_support()
   return application::ok;
 }
 
+#ifdef HAVE_LIBQUVI_0_9
+static void warn_depr(const std::string& o, const std::string& n)
+{
+  const std::string v = quvi::version();
+  std::clog
+      << "[!] " PACKAGE " was built with libquvi " << v << ". Consider"
+      << "\n[!] using `--" << n << "' instead of `--" << o << "' which is"
+      << "\n[!] deprecated and will be removed in the later versions"
+      << std::endl;
+}
+#endif
+
 application::exit_status application::exec(int argc, char **argv)
 {
   // Parse options.
@@ -300,6 +312,11 @@ application::exit_status application::exec(int argc, char **argv)
     return print_version();
   else if (opts.flags.support)
     return print_support();
+
+#ifdef HAVE_LIBQUVI_0_9
+  if (map.count("prefer-format"))
+    warn_depr("prefer-format", "stream");
+#endif
 
   // Parse input.
 

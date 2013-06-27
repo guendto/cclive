@@ -135,7 +135,7 @@ void options::parse(int argc, char **argv)
    "Resume partially downloaded media")
   ("prefer-format,p",
    po::value<std::vector<std::string> >()->composing(),
-   "Preferred format [domain:format[,...]]")
+   "Preferred format [domain:format[,...]] (depr.)")
   ("progressbar",
    po::value<std::string>()->default_value("normal"),
    "Use progressbar arg")
