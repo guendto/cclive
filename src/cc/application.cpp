@@ -324,6 +324,13 @@ static const application::exit_status print_version()
   return application::ok;
 }
 
+static application::exit_status print_support()
+{
+  quvi::query q; // Throws quvi::error caught in main.cpp
+  std::cout << quvi::support_to_s(q.support()) << std::flush;
+  return application::ok;
+}
+
 extern char LICENSE[]; // cc/license.cpp
 
 application::exit_status application::exec(int argc, char **argv)
@@ -354,20 +361,11 @@ application::exit_status application::exec(int argc, char **argv)
     }
   else if (opts.flags.version)
     return print_version();
+  else if (opts.flags.support)
+    return print_support();
   else if (opts.flags.license)
     {
       std::cout << LICENSE << std::endl;
-      return application::ok;
-    }
-
-  // --support
-
-  quvi::query query; // Throws quvi::error caught in main.cpp
-  query.setup_curl();
-
-  if (opts.flags.support)
-    {
-      std::cout << quvi::support_to_s(query.support()) << std::flush;
       return application::ok;
     }
 
@@ -426,6 +424,8 @@ application::exit_status application::exec(int argc, char **argv)
   input.erase(make_unique(input.begin(), input.end()), input.end());
 
   // Set up quvi.
+
+  quvi::query query; // Throws quvi::error caught in main.cpp
 
   _curl = cc::curl_new();
   cc::curl_setup(_curl);
