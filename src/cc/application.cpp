@@ -230,15 +230,13 @@ static void parse_prefer_format(const std::string& url, std::string& fmt,
 static void set_stream(const std::string& url, quvi::options& qopts,
                        const po::variables_map& map)
 {
-  std::string s = "default";
-  if (map.count("stream"))
-    s = map["stream"].as<std::string>();
-  else
+  std::string r = map["stream"].as<std::string>();
+  if (r == "default")
     {
       if (map.count("prefer-format"))
-        parse_prefer_format(url, s, map);
+        parse_prefer_format(url, r, map);
     }
-  qopts.stream = s;
+  qopts.stream = r;
 }
 
 static const char copyr[] =

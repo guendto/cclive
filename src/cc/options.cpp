@@ -99,9 +99,6 @@ void options::parse(int argc, char **argv)
   ("print-streams,S",
    po::value(&flags.print_streams)->zero_tokens(),
    "Print available media streams")
-  ("stream,s",
-   po::value<std::string>(),
-   "Select media stream")
   ("overwrite,W",
    po::value(&flags.overwrite)->zero_tokens()->default_value(false),
    "Overwrite existing media")
@@ -127,6 +124,13 @@ void options::parse(int argc, char **argv)
   po::options_description config("Configuration");
 
   config.add_options()
+  ("stream,s",
+   po::value<std::string>()->default_value("default"),
+#ifdef HAVE_LIBQUVI_0_9
+   "Match a stream using a regex pattern")
+#else
+   "Select media stream")
+#endif
   ("no-resolve,r",
    po::value(&flags.no_resolve)->zero_tokens()->default_value(false),
    "Do not resolve URL redirections")
