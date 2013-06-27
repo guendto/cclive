@@ -177,9 +177,10 @@ namespace po = boost::program_options;
 typedef std::vector<std::string> vst;
 
 static application::exit_status
-handle_format_list(const po::variables_map& map, const quvi::query& query)
+handle_format_list(const po::variables_map& map)
 {
-  map_ss m = query.support();
+  quvi::query q; // Throws quvi::error caught in main.cpp
+  map_ss m = q.support();
 
   // -f list <pattern>
 
@@ -377,7 +378,7 @@ application::exit_status application::exec(int argc, char **argv)
         return print_format_help();
 
       else if (format == "list")
-        return handle_format_list(map, query);
+        return handle_format_list(map);
     }
 
   // Parse input.
