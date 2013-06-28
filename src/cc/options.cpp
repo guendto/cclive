@@ -24,6 +24,8 @@
 #include <fstream>
 #include <cstring>
 
+#include <boost/exception/errinfo_file_name.hpp>
+#include <boost/exception/info.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/foreach.hpp>
 
@@ -214,8 +216,16 @@ void options::parse(int argc, char **argv)
 
   if (ifs)
     {
-      store(parse_config_file(ifs, config_file_options), _map);
-      notify(_map);
+      try
+        {
+          store(parse_config_file(ifs, config_file_options), _map);
+          notify(_map);
+        }
+      catch (const boost::exception& x)
+        {
+          x << boost::errinfo_file_name(conf_file);
+          throw;
+        }
     }
 
   _validate();
