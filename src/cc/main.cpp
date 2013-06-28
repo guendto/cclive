@@ -20,14 +20,56 @@
 
 #include <ccinternal>
 
+#include <boost/exception/diagnostic_information.hpp>
+#include <boost/exception/errinfo_file_name.hpp>
+#include <boost/exception/get_error_info.hpp>
+#include <boost/exception/errinfo_errno.hpp>
+
 #include <stdexcept>
 #include <iostream>
 #include <clocale>
 
 #include <ccapplication>
 #include <ccquvi>
+#include <ccutil>
 
 using namespace cc;
+
+static application::exit_status print(const boost::exception& x)
+{
+  std::clog << "error: ";
+
+  if (std::string const *s =
+        boost::get_error_info<boost::errinfo_file_name>(x))
+    {
+      std::clog << *s << ": ";
+    }
+
+  bool have_strerror = false;
+  if (int const *n =
+        boost::get_error_info<boost::errinfo_errno>(x))
+    {
+      std::clog << cc::perror() << " (" << *n << ")";
+      have_strerror = true;
+    }
+
+  try
+    {
+      throw;
+    }
+  catch (const std::exception& x)
+    {
+      if (!have_strerror)
+        std::clog << x.what();
+    }
+  catch (...)
+    {
+      std::clog << boost::diagnostic_information(x);
+    }
+  std::clog << std::endl;
+
+  return application::error;
+}
 
 int main(int argc, char *argv[])
 {
@@ -38,7 +80,7 @@ int main(int argc, char *argv[])
     {
       es = app.exec(argc, argv);
     }
-  // Thrown by quvi::query constructor (e.g. quvi_init failure).
+  // Thrown by quvi::query constructor (e.g. quvi_init, quvi_new).
   catch (const quvi::error& e)
     {
       std::clog << "libquvi: error: " << e.what() << std::endl;
@@ -51,10 +93,9 @@ int main(int argc, char *argv[])
       es = application::error;
     }
   // Thrown by boost::program_options (cc::options).
-  catch(const std::exception& e)
+  catch (const boost::exception& x)
     {
-      std::clog << "error: " << e.what() << std::endl;
-      es = application::error;
+      es = print(x);
     }
   return es;
 }
