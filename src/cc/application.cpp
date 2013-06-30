@@ -27,6 +27,7 @@
 #include <boost/algorithm/string/classification.hpp> // is_any_of
 #include <boost/algorithm/string/split.hpp>
 #include <boost/foreach.hpp>
+#include <boost/format.hpp>
 
 #ifndef foreach
 #define foreach BOOST_FOREACH
@@ -165,8 +166,34 @@ static void print_quvi_error(const quvi::error& e)
 }
 
 namespace po = boost::program_options;
-
 typedef std::vector<std::string> vst;
+
+static std::string format_streams(const std::string& s)
+{
+  vst v;
+  boost::split(v, s, boost::is_any_of("|,"));
+  const size_t m = v.size();
+
+  if (m ==0)
+    v.push_back("default");
+
+  std::stringstream r;
+  r << "\n";
+
+  size_t i = 0, c = 0;
+  foreach(const std::string& a, v)
+  {
+    r << boost::format("%|22s|") % a;
+    ++c;
+    if (++i ==3)
+      {
+        if (c <m)
+          r << "\n";
+        i = 0;
+      }
+  }
+  return r.str();
+}
 
 static application::exit_status
 print_streams(const quvi::query& query, const quvi::options &qopts,
@@ -185,17 +212,7 @@ print_streams(const quvi::query& query, const quvi::options &qopts,
         const std::string r = query.streams(url, qopts);
         print_done();
 
-        if (cc::opts.flags.print_streams)
-          {
-            vst a;
-            boost::split(a, r, boost::is_any_of("|,"));
-            foreach (const std::string s, a)
-            {
-              cc::log << s << "\n";
-            }
-          }
-        else
-          cc::log << std::setw(10) << r << " : " << url << std::endl;
+        cc::log << "streams (found):" << format_streams(r) << std::endl;
       }
     catch(const quvi::error& e)
       {
