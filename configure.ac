@@ -37,6 +37,9 @@ AC_PATH_PROG([A2X], [a2x], [no])
 AM_CONDITIONAL([HAVE_A2X], [test x"$A2X" != "xno"])
 AC_SUBST([A2X])
 
+AS_IF([test x"$A2X" = "xno" && test -d "$srcdir/.git"],
+  AC_MSG_ERROR([a2x is required to create man pages when building from git])])
+
 # Checks for libraries.
 
 PKG_CHECK_MODULES([libquvi], [libquvi >= 0.4.0],
