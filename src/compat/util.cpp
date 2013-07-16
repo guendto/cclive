@@ -30,7 +30,17 @@ namespace quvi
 
 std::string version()
 {
-  return quvi_version(QUVI_VERSION);
+#ifdef HAVE_LIBQUVI_0_9
+  std::stringstream s;
+  s << quvi_version(QUVI_VERSION)                               << "\n  "
+    << "  built on " << quvi_version(QUVI_VERSION_BUILD_TIME)   << " "
+    << "for "        << quvi_version(QUVI_VERSION_BUILD_TARGET) << "\n    "
+    << "  with " << quvi_version(QUVI_VERSION_BUILD_CC_CFLAGS)  << "\n    "
+    << "configuration: " << quvi_version(QUVI_VERSION_CONFIGURATION);
+  return s.str();
+#else
+  return quvi_version(QUVI_VERSION_LONG);
+#endif
 }
 
 typedef std::map<std::string,std::string>::const_iterator smci;
