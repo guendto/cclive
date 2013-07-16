@@ -276,6 +276,7 @@ static const application::exit_status print_version()
 #endif
       << "\n  built on " << BUILD_TIME
       << " for "         << CANONICAL_TARGET
+      << "\n    with "   << CXX", "CXXFLAGS
       << "\n  libquvi "  << quvi::version()
       << "\n  libquvi-scripts "
       << quvi_version(QUVI_VERSION_SCRIPTS)
