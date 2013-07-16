@@ -1,3 +1,25 @@
+v0.9.1  [2013-07-16]
+
+Toni Gundogdu:
+  [!] GLib 2.24+ is now a prerequisite
+  [!] Relicense under AGPLv3+
+  - Add cc::input -- improve input parsing [ad1f2e6]
+  - DOC: cclive(1): Revise INPUT section [75d1b5c]
+  - DOC: Revise --stream description [401e8c0]
+  - FIX: configure.ac: AS_IF for date(1) [0019e62]
+  - Deprecate --prefer-format in favor of --stream with libquvi 0.9+ [f55f70d]
+  - Rewrite status_callback for libquvi v0.9.2 [7d94207]
+  - Make --stream configurable [993a0be]
+  - Move --support implementation to print_support [3d35e5e]
+  - --filename-format: Remove depr. support for %h sequence [ad214c7]
+  - --print-streams: Make output similar to quvi(1) 0.9+ [2294e93]
+  - --version: Add CXX and CXXFLAGS to the output [65f8373]
+  - --version: Print copyr notice to stderr instead of stdout [6c1f678]
+  - --version: Provide additional info about libquvi [9e6e50e]
+
+ 45 files changed, 976 insertions(+), 616 deletions(-)
+
+
 v0.9.0  [2013-05-25]
 
 Toni Gundogdu:
