@@ -20,6 +20,7 @@
 
 #include <ccinternal>
 
+#include <iostream>
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
 #include <glib.h>
