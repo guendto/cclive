@@ -14,8 +14,8 @@ AC_CONFIG_MACRO_DIR([m4])
 AC_CANONICAL_TARGET
 AC_USE_SYSTEM_EXTENSIONS
 
-AC_DEFINE_UNQUOTED([CANONICAL_TARGET], "$target", [...])
-AC_DEFINE_UNQUOTED([CANONICAL_HOST], "$host", [...])
+AC_DEFINE_UNQUOTED([CANONICAL_TARGET], "$target",
+  [Define to canonical target])
 
 AM_INIT_AUTOMAKE([1.11.1 -Wall -Werror dist-xz no-dist-gzip tar-ustar])
 AM_SILENT_RULES([yes])
@@ -32,6 +32,9 @@ AC_PROG_CXX
 AC_PROG_CC
 AC_PROG_CPP
 AC_PROG_LN_S
+
+AC_DEFINE_UNQUOTED([CXXFLAGS], "$CXXFLAGS", [Define to compiler flags])
+AC_DEFINE_UNQUOTED([CXX], "$CXX", [Define to compiler])
 
 AC_PATH_PROG([DATE], [date], [no])
 AS_IF([test x"$DATE" != "xno"], [build_time=`$DATE +"%F %T %z"`])
