@@ -33,6 +33,7 @@ struct flags_s
   bool no_resolve;
   bool background;
   bool overwrite;
+  bool timestamp;
   bool no_proxy;
   bool version;
   bool license;
