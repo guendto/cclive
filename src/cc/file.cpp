@@ -202,6 +202,9 @@ static void _set(write_data *w, const quvi::media& m, CURL *c,
   curl_easy_setopt(c, CURLOPT_ENCODING, "identity");
   curl_easy_setopt(c, CURLOPT_HEADER, 0L);
 
+  if (cc::opts.flags.timestamp)
+    curl_easy_setopt(c, CURLOPT_FILETIME, 1L);
+
   const po::variables_map map = cc::opts.map();
 
   curl_easy_setopt(c, CURLOPT_MAX_RECV_SPEED_LARGE,
@@ -245,6 +248,8 @@ static bool _handle_error(const long resp_code, const CURLcode rc,
   return r;
 }
 
+namespace fs = boost::filesystem;
+
 bool file::write(const quvi::media& m, CURL *curl) const
 {
   write_data w(const_cast<cc::file*>(this));
@@ -272,6 +277,7 @@ bool file::write(const quvi::media& m, CURL *curl) const
   // Restore curl settings.
 
   curl_easy_setopt(curl, CURLOPT_HEADER, 1L);
+  curl_easy_setopt(curl, CURLOPT_FILETIME, 0L);
   curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1L);
   curl_easy_setopt(curl, CURLOPT_RESUME_FROM_LARGE, 0L);
   curl_easy_setopt(curl,
@@ -305,6 +311,14 @@ bool file::write(const quvi::media& m, CURL *curl) const
   pb.finish();
   cc::log << std::endl;
 
+  if (cc::opts.flags.timestamp)
+    {
+      long ft = -1;
+      curl_easy_getinfo(curl, CURLINFO_FILETIME, &ft);
+      if (ft >=0)
+        fs::last_write_time(_path, ft);
+    }
+
   return true;
 }
 
@@ -322,8 +336,6 @@ std::string file::to_s(const quvi::media& m) const
 
   return fmt.str();
 }
-
-namespace fs = boost::filesystem;
 
 static fs::path output_dir(const po::variables_map& map)
 {

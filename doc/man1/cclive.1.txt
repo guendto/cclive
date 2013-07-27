@@ -47,6 +47,19 @@ config:
   continue = {true|false}
 ----
 
+-N, --timestamp::
+  Try to preserve the file modification time (as returned by the server,
+  if any). Using this option will cause the program to change the
+  modification time of the file to that of returned by the server.
++
+NOTE: libcurl will parse this value from the returned "Last-Modified"
+      HTTP header. This header may not always be present in which case
+      the program will quietly ignore this option.
+----
+config:
+  timestamp = {true|false}
+----
+
 --config-file <arg>::
   Read the program arguments from the specified file instead of the
   default ~/.ccliverc file. See also <<FILES>>.

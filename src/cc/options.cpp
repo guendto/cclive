@@ -139,6 +139,9 @@ void options::parse(int argc, char **argv)
   ("continue,c",
    po::value(&flags.cont)->zero_tokens()->default_value(false),
    "Resume partially downloaded media")
+  ("timestamp,N",
+   po::value(&flags.timestamp)->zero_tokens()->default_value(false),
+   "Try to preserve modification time")
   ("prefer-format,p",
    po::value<std::vector<std::string> >()->composing(),
    "Preferred format [domain:format[,...]] (depr.)")
