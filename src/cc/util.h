@@ -21,6 +21,14 @@
 #ifndef cclive_util_h
 #define cclive_util_h
 
+namespace boost
+{
+  namespace program_options
+  {
+    class variables_map;
+  }
+}
+
 namespace cc
 {
 
@@ -29,17 +37,16 @@ public:
   nothing_todo_error() { }
 };
 
+namespace po = boost::program_options;
 class file;
+
+void get(quvi::media&, void*, const po::variables_map&);
+void exec(const file&, const po::variables_map&);
+void curl_setup(void*, const po::variables_map&);
 
 void go_background(const std::string&, bool&);
 std::string perror(const std::string& p="");
-void get(quvi::media&, void*);
-void exec(const file&);
 void wait(const int);
-
-/* curl */
-
-void curl_setup(void*);
 
 } // namespace cc
 
