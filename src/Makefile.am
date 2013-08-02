@@ -30,6 +30,7 @@ src+=\
 
 hdr=\
   ccapplication\
+  ccerror\
   ccfile\
   ccinput\
   ccinternal\
@@ -42,6 +43,7 @@ hdr=\
 
 hdr+=\
   cc/application.h\
+  cc/error.h\
   cc/file.h\
   cc/input.h\
   cc/internal.h\
