@@ -23,8 +23,8 @@
 #include <iostream>
 #include <boost/program_options/variables_map.hpp>
 
-#include <ccoptions>
 #include <ccquvi>
+#include <ccoptions>
 #include <cclog>
 #include <ccfile>
 #include <ccutil>
@@ -34,26 +34,24 @@ namespace cc
 
 namespace po = boost::program_options;
 
-void get(quvi::media& media, void *curl)
+void get(quvi::media& media, void *curl, const po::variables_map& vm)
 {
-  const po::variables_map map = cc::opts.map();
+  const int max_retries  = vm[OPT__MAX_RETRIES].as<cc::max_retries>().value();
+  const int retry_wait   = vm[OPT__RETRY_WAIT].as<cc::retry_wait>().value();
 
-  const int max_retries  = map["max-retries"].as<int>();
-  const int retry_wait   = map["retry-wait"].as<int>();
-
-  const bool no_download = opts.flags.no_download;
-  const bool exec        = map.count("exec");
+  const bool no_download = vm[OPT__NO_DOWNLOAD].as<bool>();
+  const bool exec        = vm.count(OPT__EXEC);
 
   int retry = 0;
 
   while (retry <= max_retries)
     {
-      cc::file file(media);
+      cc::file file(media, vm);
 
       if (file.nothing_todo())
         {
           if (exec)
-            cc::exec(file);
+            cc::exec(file, vm);
 #define E_NOTHING_TODO "media retrieved completely already"
           throw std::runtime_error(E_NOTHING_TODO);
 #undef E_NOTHING_TODO
@@ -79,11 +77,11 @@ void get(quvi::media& media, void *curl)
 
       if (!no_download)
         {
-          if (!file.write(media, curl))
+          if (!file.write(media, curl, vm))
             continue; // Retry.
 
           if (exec)
-            cc::exec(file);
+            cc::exec(file, vm);
         }
 
       break; // Stop retrying.
