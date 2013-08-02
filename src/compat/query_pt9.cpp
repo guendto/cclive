@@ -48,11 +48,11 @@ void query_pt9::_configure(const quvi::options& qopts) const
   quvi_set(_quvi, QUVI_OPTION_CALLBACK_STATUS, qopts.statusfunc);
 }
 
-void *query_pt9::setup_curl() const
+void *query_pt9::setup_curl(const po::variables_map& vm) const
 {
   CURL *c;
   quvi_get(_quvi, QUVI_INFO_CURL_HANDLE, &c);
-  cc::curl_setup(c);
+  cc::curl_setup(c, vm);
   return c;
 }
 
