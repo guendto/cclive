@@ -44,11 +44,10 @@
 #include <boost/program_options/variables_map.hpp>
 #include <boost/filesystem.hpp>
 
-#include <ccoptions>
 #include <ccquvi>
+#include <ccoptions>
 #include <ccfile>
 #include <cclog>
-#include <ccprogressbar>
 
 #if defined(SIGWINCH) && defined(TIOCGWINSZ)
 #define WITH_RESIZE
@@ -79,7 +78,8 @@ static size_t get_term_width()
 
 namespace po = boost::program_options;
 
-progressbar::progressbar(const file& f, const quvi::media& m)
+progressbar::progressbar(const file& f, const quvi::media& m,
+                         const po::variables_map& vm)
   : _update_interval(1),
     _expected_bytes(m.content_length()),
     _initial_bytes(f.initial_length()),
@@ -109,24 +109,17 @@ progressbar::progressbar(const file& f, const quvi::media& m)
 #else
   _term_width = default_term_width;
 #endif
-
   _width = _term_width;
 
-  const po::variables_map map = cc::opts.map();
   time(&_time_started);
 
-  if (opts.flags.background)
-    _mode = dotline;
+  ifn_optsw_given(vm, OPT__BACKGROUND)
+   _mode = vm[OPT__PROGRESSBAR].as<cc::progressbar_mode>().value();
   else
-    {
-      const std::string s = map["progressbar"].as<std::string>();
-      if (s == "simple")
-        _mode = simple;
-      else if (s == "dotline")
-        _mode = dotline;
-    }
+    _mode = dotline;
 
-  _update_interval = fabs(map["update-interval"].as<double>());
+  const int n = vm[OPT__UPDATE_INTERVAL].as<update_interval>().value();
+  _update_interval = fabs(static_cast<double>(n));
 }
 
 static double to_mb(const double bytes)

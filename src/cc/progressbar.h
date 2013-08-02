@@ -31,9 +31,9 @@ class progressbar
 {
   enum { default_term_width=80 };
 public:
-  enum mode { normal = 0, dotline, simple };
+  typedef enum {normal, simple, dotline} mode;
 public:
-  progressbar(const file&, const quvi::media&);
+  progressbar(const file&, const quvi::media&, const po::variables_map&);
   int update(double);
   void finish();
 private:
