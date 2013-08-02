@@ -10,7 +10,6 @@ src=\
   cc/input.cpp\
   cc/log.cpp\
   cc/main.cpp\
-  cc/options.cpp\
   cc/progressbar.cpp\
   cc/re.cpp\
   cc/wait.cpp
