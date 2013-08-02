@@ -31,10 +31,6 @@
 #include <boost/foreach.hpp>
 #include <pcrecpp.h>
 
-#ifndef foreach
-#define foreach BOOST_FOREACH
-#endif
-
 #include <ccquvi>
 #include <ccoptions>
 #include <ccfile>
@@ -45,9 +41,9 @@
 namespace cc
 {
 
-typedef std::vector<std::string> vst;
+typedef std::vector<std::string> vs;
 
-static int invoke_exec(const vst& args)
+static int invoke_exec(const vs& args)
 {
   const size_t sz = args.size();
   const char **argv = new const char* [sz+2];
@@ -105,7 +101,7 @@ static int invoke_exec(const vst& args)
 
 static void tokenize(const std::string& r,
                      const std::string& s,
-                     vst& dst)
+                     vs& dst)
 {
   pcrecpp::StringPiece sp(s);
   pcrecpp::RE rx(r);
@@ -120,16 +116,16 @@ static void tokenize(const std::string& r,
 
 namespace po = boost::program_options;
 
-void exec(const file& file)
+void exec(const file& file, const po::variables_map& vm)
 {
-  const vst m = cc::opts.map()["exec"].as<vst>();
-  foreach (std::string e, m)
+  const vs m = vm[OPT__EXEC].as<vs>();
+  BOOST_FOREACH(std::string e, m)
   {
     pcrecpp::RE("%f").GlobalReplace(file.path(), &e);
     pcrecpp::RE("%n").GlobalReplace(file.name(), &e);
     pcrecpp::RE("%t").GlobalReplace(file.title(), &e);
 
-    vst args;
+    vs args;
     tokenize("([\"'](.*?)[\"']|\\S+)", e, args);
     invoke_exec(args);
   }
