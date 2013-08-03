@@ -223,14 +223,13 @@ print_streams(const quvi::query& query, const quvi::options &qopts,
 static void parse_prefer_format(const std::string& url, std::string& fmt,
                                 const po::variables_map& vm)
 {
-  vs vb, va = vm[OPT__PREFER_FORMAT].as<vs>();
+  const vs& va = vm[OPT__PREFER_FORMAT].as<vs>();
   BOOST_FOREACH(const std::string& s, va)
   {
+    static vs vb;
     boost::split(vb, s, boost::is_any_of(":"));
-    if (vb.size() == 2)
+    if (vb.size() == 2) // vb[0]=pattern, vb[1]=format
       {
-        // vb[0] = pattern
-        // vb[1] = format
         if (cc::re::grep(vb[0], url))
           {
             fmt = vb[1];
