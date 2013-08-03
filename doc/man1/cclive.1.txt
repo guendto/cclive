@@ -169,6 +169,9 @@ config:
 -O, --output-file <arg>::
   Write media to the specified file. Overrides --filename-format.
 
+-W, --overwrite::
+  Overwrite existing media files.
+
 -R, --progressbar <arg>::
   Use the progressbar of the specified type.  The program will ignore
   the value of this option with --background. The arg may be one of the
@@ -205,9 +208,6 @@ config:
 
 -B, --verbose-libcurl::
   Enable libcURL verbose output.
-
--W, --overwrite::
-  Overwrite existing media files.
 
 Network
 ~~~~~~~
