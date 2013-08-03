@@ -240,10 +240,6 @@ config:
   dns-cache-timeout = arg
 ----
 
--X, --no-proxy::
-  Disable use of HTTP proxy. Overrides --proxy and http_proxy environment
-  settings.
-
 -m, --max-retries <arg>::
   Specify the number of downloading retries before giving up. Set to 0
   to disable. The default is 5.
@@ -256,13 +252,21 @@ config:
   max-retries = arg
 ----
 
--w, --retry-wait <arg>::
-  Wait the specified number of seconds before retrying after a failed
-  attempt. The default is 5. If the value is 0, the program will skip
-  this step.
+-X, --no-proxy::
+  Disable use of HTTP proxy. Overrides --proxy and http_proxy environment
+  settings.
+
+-r, --no-resolve::
+  Do not resolve HTTP URL redirections. Using this option will result in
+  the program not being able to follow URL redirections which are often
+  used by different URL shortening services.
+  +
+  When libquvi 0.9 or later is being used with cclive, this option will
+  be ignored. The library will always resolve any URL redirections.  See
+  --version output to see if cclive was compiled with libquvi 0.9+.
 ----
 config:
-  retry-wait = arg
+  no-resolve = {true|false}
 ----
 
 -x, --proxy I<arg>::
@@ -278,17 +282,21 @@ config:
   proxy = arg
 ----
 
--r, --no-resolve::
-  Do not resolve HTTP URL redirections. Using this option will result in
-  the program not being able to follow URL redirections which are often
-  used by different URL shortening services.
-  +
-  When libquvi 0.9 or later is being used with cclive, this option will
-  be ignored. The library will always resolve any URL redirections.  See
-  --version output to see if cclive was compiled with libquvi 0.9+.
+-w, --retry-wait <arg>::
+  Wait the specified number of seconds before retrying after a failed
+  attempt. The default is 5. If the value is 0, the program will skip
+  this step.
 ----
 config:
-  no-resolve = {true|false}
+  retry-wait = arg
+----
+
+-H, --throttle <arg>::
+  Do not exceed the specified transfer rate (Ki/s). If 'arg' is 0
+  (default), the throttling will be disabled.
+----
+config:
+  throttle = arg
 ----
 
 -T, --transfer-timeout <arg>::
@@ -301,14 +309,6 @@ config:
 ----
 config:
   transfer-timeout = arg
-----
-
--H, --throttle <arg>::
-  Do not exceed the specified transfer rate (Ki/s). If 'arg' is 0
-  (default), the throttling will be disabled.
-----
-config:
-  throttle = arg
 ----
 
 Deprecated
