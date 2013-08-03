@@ -112,11 +112,15 @@ website.
 For example, linkman:libquvi-scripts[7] 0.9+ would typically compare the
 media quality properties (e.g. the video height property). In reality,
 the method will vary depending on the data provided by the media hosting
-service and the implementation of the support script written for the
-website.
+service, and the implementation of the support script that was written
+for the website.
 +
 See the --version output to confirm whether cclive was built with
 linkman:libquvi[3] 0.9 or later.  See also <<EXAMPLES>>.
+----
+config:
+  stream = arg
+----
 
 Informative
 ~~~~~~~~~~~
