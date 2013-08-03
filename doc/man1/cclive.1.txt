@@ -134,29 +134,8 @@ Informative
   available streams are determined by linkman:libquvi[3] and
   linkman:libquvi-scripts[7].
 
---progressbar <arg>::
-  Use the progressbar of the specified type.  The program will ignore
-  the value of this option with --background. The arg may be one of the
-  following values:
-  * dotline (also implied by --background)
-  * normal (default)
-  * simple
-----
-config:
-  progressbar = arg
-----
-
 --support::
   Print the supported website domains and exit.
-
---update-interval <arg>::
-  Specify the progressbar update interval in seconds. Use of decimal
-  fractions (e.g. "0.2") is acceptable. The program will use the default
-  value 1.
-----
-config:
-  update-interval = arg
-----
 
 -D, --print-config::
   Print the value of all defined configuration options to stdout.
@@ -198,6 +177,18 @@ config:
 -O, --output-file <arg>::
   Write media to the specified file. Overrides --filename-format.
 
+--progressbar <arg>::
+  Use the progressbar of the specified type.  The program will ignore
+  the value of this option with --background. The arg may be one of the
+  following values:
+  * dotline (also implied by --background)
+  * normal (default)
+  * simple
+----
+config:
+  progressbar = arg
+----
+
 -q, --quiet::
   Turn off all output to stdout and stderr with the exception of
   --verbose-libcurl.
@@ -210,6 +201,15 @@ config:
 ----
 config:
   tr = arg
+----
+
+--update-interval <arg>::
+  Specify the progressbar update interval in seconds. Use of decimal
+  fractions (e.g. "0.2") is acceptable. The program will use the default
+  value 1.
+----
+config:
+  update-interval = arg
 ----
 
 -B, --verbose-libcurl::
