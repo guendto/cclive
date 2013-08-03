@@ -126,11 +126,11 @@ Informative
   available streams are determined by linkman:libquvi[3] and
   linkman:libquvi-scripts[7].
 
--u, --support::
-  Print the supported website domains and exit.
-
 -D, --print-config::
   Print the value of all defined configuration options to stdout.
+
+-u, --support::
+  Print the supported website domains and exit.
 
 -v, --version::
   Print the program version and exit.
