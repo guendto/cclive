@@ -258,7 +258,8 @@ config:
 
 --retry-wait <arg>::
   Wait the specified number of seconds before retrying after a failed
-  attempt. The default is 5.
+  attempt. The default is 5. If the value is 0, the program will skip
+  this step.
 ----
 config:
   retry-wait = arg
