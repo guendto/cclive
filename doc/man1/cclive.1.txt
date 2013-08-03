@@ -28,14 +28,6 @@ OPTIONS
 Core
 ~~~~
 
---agent <arg>::
-  Identify cclive as 'arg' to the HTTP servers. The default value is
-  "Mozilla/5.0".
-----
-config:
-  agent = arg
-----
-
 -b, --background::
   Go to background after startup. The output written to stdout
   will be written to the file specified with --log-file.
@@ -220,6 +212,14 @@ config:
 
 Network
 ~~~~~~~
+
+--agent <arg>::
+  Identify cclive as 'arg' to the HTTP servers. The default value is
+  "Mozilla/5.0".
+----
+config:
+  agent = arg
+----
 
 --connect-timeout <arg>::
   Maximum time in seconds that the program should allow the connection
