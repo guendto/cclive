@@ -196,9 +196,8 @@ config:
 ----
 
 --update-interval <arg>::
-  Specify the progressbar update interval in seconds. Use of decimal
-  fractions (e.g. "0.2") is acceptable. The program will use the default
-  value 1.
+  Specify the progressbar update interval in seconds. The default value
+  is 1.
 ----
 config:
   update-interval = arg
