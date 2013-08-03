@@ -52,11 +52,11 @@ config:
   timestamp = {true|false}
 ----
 
---config-file <arg>::
+-F, --config-file <arg>::
   Read the program arguments from the specified file instead of the
   default ~/.ccliverc file. See also <<FILES>>.
 
---exec <arg>::
+-e, --exec <arg>::
   Invoke the specified command after each successfully finished
   download. The command is also invoked if the media is fully
   retrieved already. This option may be specified multiple times.
@@ -126,7 +126,7 @@ Informative
   available streams are determined by linkman:libquvi[3] and
   linkman:libquvi-scripts[7].
 
---support::
+-u, --support::
   Print the supported website domains and exit.
 
 -D, --print-config::
@@ -138,7 +138,7 @@ Informative
 Output
 ~~~~~~
 
---filename-format <arg>::
+-f, --filename-format <arg>::
   Specify how the downloaded media file should be named. All occurences
   of the following sequences will be replaced in the 'arg':
 ----
@@ -152,13 +152,13 @@ config:
   filename-format = arg
 ----
 
---log-file <arg>::
+-l, --log-file <arg>::
   Write log output to the specified file. The program will ignore this
   option value unless it is being used together with --background. The
   existing log file will be ovewritten. By default, the program will use
   "cclive_log" as the log file name.
 
---output-dir <arg>::
+-d, --output-dir <arg>::
   Write downloaded media to the specified directory. By default, the
   program will write the media to the current working directory.
 ----
@@ -169,7 +169,7 @@ config:
 -O, --output-file <arg>::
   Write media to the specified file. Overrides --filename-format.
 
---progressbar <arg>::
+-R, --progressbar <arg>::
   Use the progressbar of the specified type.  The program will ignore
   the value of this option with --background. The arg may be one of the
   following values:
@@ -195,7 +195,7 @@ config:
   tr = arg
 ----
 
---update-interval <arg>::
+-i, --update-interval <arg>::
   Specify the progressbar update interval in seconds. The default value
   is 1.
 ----
@@ -212,7 +212,7 @@ config:
 Network
 ~~~~~~~
 
---agent <arg>::
+-a, --agent <arg>::
   Identify cclive as 'arg' to the HTTP servers. The default value is
   "Mozilla/5.0".
 ----
@@ -220,7 +220,7 @@ config:
   agent = arg
 ----
 
---connect-timeout <arg>::
+-C, --connect-timeout <arg>::
   Maximum time in seconds that the program should allow the connection
   to the server to take. This only limits the connection phase, once it
   has connected, this option is no more of use. Set to 0 to disable
@@ -231,7 +231,7 @@ config:
   connect-time = arg
 ----
 
---dns-cache-timeout <arg>::
+-A, --dns-cache-timeout <arg>::
   The name resolves will be kept in the memory for this number of
   seconds. Set to 0 to completely disable DNS caching, or to -1 to make
   the cached entries to remain in the memory forever. The default is 60.
@@ -240,11 +240,11 @@ config:
   dns-cache-timeout = arg
 ----
 
---no-proxy::
+-X, --no-proxy::
   Disable use of HTTP proxy. Overrides --proxy and http_proxy environment
   settings.
 
---max-retries <arg>::
+-m, --max-retries <arg>::
   Specify the number of downloading retries before giving up. Set to 0
   to disable. The default is 5.
   +
@@ -256,7 +256,7 @@ config:
   max-retries = arg
 ----
 
---retry-wait <arg>::
+-w, --retry-wait <arg>::
   Wait the specified number of seconds before retrying after a failed
   attempt. The default is 5. If the value is 0, the program will skip
   this step.
@@ -265,7 +265,7 @@ config:
   retry-wait = arg
 ----
 
---proxy I<arg>::
+-x, --proxy I<arg>::
   Use the specified proxy address (e.g. http://foo:1234) for HTTP
   connections. By default, libcURL (which cclive and linkman:libquvi[3]
   use) will use the value of http_proxy. Using this option will override
@@ -291,7 +291,7 @@ config:
   no-resolve = {true|false}
 ----
 
---transfer-timeout <arg>::
+-T, --transfer-timeout <arg>::
   Maximum time in seconds that the program should allow the transfer
   operation to take. Normally, name lookups can take a considerable
   amount of time, and limiting operations to less than a few minutes
@@ -303,7 +303,7 @@ config:
   transfer-timeout = arg
 ----
 
---throttle <arg>::
+-H, --throttle <arg>::
   Do not exceed the specified transfer rate (Ki/s). If 'arg' is 0
   (default), the throttling will be disabled.
 ----
