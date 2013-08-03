@@ -32,29 +32,16 @@ Core
   Go to background after startup. The output written to stdout
   will be written to the file specified with --log-file.
 
+-F, --config-file <arg>::
+  Read the program arguments from the specified file instead of the
+  default ~/.ccliverc file. See also <<FILES>>.
+
 -c, --continue::
   Resume partially downloaded media.
 ----
 config:
   continue = {true|false}
 ----
-
--N, --timestamp::
-  Try to preserve the file modification time (as returned by the server,
-  if any). Using this option will cause the program to change the
-  modification time of the file to that of returned by the server.
-+
-NOTE: libcurl will parse this value from the returned "Last-Modified"
-      HTTP header. This header may not always be present in which case
-      the program will quietly ignore this option.
-----
-config:
-  timestamp = {true|false}
-----
-
--F, --config-file <arg>::
-  Read the program arguments from the specified file instead of the
-  default ~/.ccliverc file. See also <<FILES>>.
 
 -e, --exec <arg>::
   Invoke the specified command after each successfully finished
@@ -76,7 +63,7 @@ config:
 -n, --no-download::
   Do not download the media, print the details only.
 
--s,--stream <ID>::
+-s, --stream <ID>::
   Download the specified media stream. By default the program will get
   the 'default' stream. The stream selection with linkman:libquvi[3] 0.4
   is basic at most, whereas linkman:libquvi[3] 0.9+ provides a more
@@ -112,6 +99,19 @@ linkman:libquvi[3] 0.9 or later.  See also <<EXAMPLES>>.
 ----
 config:
   stream = arg
+----
+
+-N, --timestamp::
+  Try to preserve the file modification time (as returned by the server,
+  if any). Using this option will cause the program to change the
+  modification time of the file to that of returned by the server.
++
+NOTE: libcurl will parse this value from the returned "Last-Modified"
+      HTTP header. This header may not always be present in which case
+      the program will quietly ignore this option.
+----
+config:
+  timestamp = {true|false}
 ----
 
 Informative
