@@ -163,11 +163,11 @@ static void print_quvi_error(const quvi::error& e)
 }
 
 namespace po = boost::program_options;
-typedef std::vector<std::string> vst;
+typedef std::vector<std::string> vs;
 
 static std::string format_streams(const std::string& s)
 {
-  vst v;
+  vs v;
   boost::split(v, s, boost::is_any_of("|,"));
   const size_t m = v.size();
 
@@ -194,7 +194,7 @@ static std::string format_streams(const std::string& s)
 
 static application::exit_status
 print_streams(const quvi::query& query, const quvi::options &qopts,
-              const vst& input_urls, const po::variables_map& vm)
+              const vs& input_urls, const po::variables_map& vm)
 {
   const size_t n = input_urls.size();
   size_t i = 0;
@@ -223,7 +223,7 @@ print_streams(const quvi::query& query, const quvi::options &qopts,
 static void parse_prefer_format(const std::string& url, std::string& fmt,
                                 const po::variables_map& vm)
 {
-  vst vb, va = vm[OPT__PREFER_FORMAT].as<vst>();
+  vs vb, va = vm[OPT__PREFER_FORMAT].as<vs>();
   BOOST_FOREACH(const std::string& s, va)
   {
     boost::split(vb, s, boost::is_any_of(":"));
@@ -257,7 +257,7 @@ application::exit_status application::exec(int const argc, char const **argv)
 
   // Parse input.
 
-  const vst& input_urls = cc::input::parse(vm);
+  const vs& input_urls = cc::input::parse(vm);
   const size_t n = input_urls.size();
 
   // Set up quvi.
