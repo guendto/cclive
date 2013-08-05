@@ -1,3 +1,13 @@
+v0.7.15  [2013-08-05]
+
+Toni Gundogdu:
+  - Add --timestamp: Try to preserve modification time [357e4ac]
+      (many thanks to Alexey Dokuchaev for the patch!)
+  - configure.ac: Require a2x when building from git [da1f467]
+
+ 5 files changed, 34 insertions(+), 2 deletions(-)
+
+
 v0.7.14  [2013-06-30]
 
 Toni Gundogdu:
