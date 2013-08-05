@@ -31,48 +31,43 @@ namespace cc
 
 namespace po = boost::program_options;
 
-static void _set_proxy(CURL *c, const po::variables_map& map)
+static void _set_proxy(CURL *c, const po::variables_map& vm)
 {
-  if (map.count("proxy"))
+  if (vm.count(OPT__PROXY))
     {
       curl_easy_setopt(c, CURLOPT_PROXY,
-                       map["proxy"].as<std::string>().c_str());
+                       vm[OPT__PROXY].as<std::string>().c_str());
     }
-
-  if (opts.flags.no_proxy)
+  if_optsw_given(vm, OPT__NO_PROXY)
     curl_easy_setopt(c, CURLOPT_PROXY, "");
 }
 
-void curl_setup(CURL *c)
+void curl_setup(CURL *c, const po::variables_map& vm)
 {
-  const po::variables_map map = cc::opts.map();
+  const int n = vm[OPT__THROTTLE].as<throttle>().value() * 1024;
+  const curl_off_t t = static_cast<curl_off_t>(n);
 
-  if (map.count("throttle"))
-    {
-      curl_off_t limit = map["throttle"].as<int>()*1024;
-      curl_easy_setopt(c, CURLOPT_MAX_RECV_SPEED_LARGE, limit);
-    }
-
+  curl_easy_setopt(c, CURLOPT_MAX_RECV_SPEED_LARGE, t);
   curl_easy_setopt(c, CURLOPT_FOLLOWLOCATION, 1L);
 
-  if (cc::opts.flags.verbose_libcurl)
+  if_optsw_given(vm, OPT__VERBOSE_LIBCURL)
     curl_easy_setopt(c, CURLOPT_VERBOSE, 1L);
 
 #ifndef HAVE_LIBQUVI_0_9
   curl_easy_setopt(c, CURLOPT_USERAGENT,
-                   map["agent"].as<std::string>().c_str());
+                   vm[OPT__AGENT].as<std::string>().c_str());
 #endif
 
   curl_easy_setopt(c, CURLOPT_DNS_CACHE_TIMEOUT,
-                   map["dns-cache-timeout"].as<int>());
+                  vm[OPT__DNS_CACHE_TIMEOUT].as<dns_cache_timeout>().value());
 
   curl_easy_setopt(c, CURLOPT_CONNECTTIMEOUT,
-                   map["connect-timeout"].as<int>());
+                   vm[OPT__CONNECT_TIMEOUT].as<connect_timeout>().value());
 
   curl_easy_setopt(c, CURLOPT_TIMEOUT,
-                   map["transfer-timeout"].as<int>());
+                   vm[OPT__TRANSFER_TIMEOUT].as<transfer_timeout>().value());
 
-  _set_proxy(c, map);
+  _set_proxy(c, vm);
 }
 
 } // namespace cc

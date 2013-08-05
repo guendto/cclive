@@ -52,11 +52,11 @@ void query_pt4::_configure(const quvi::options& opts) const
   quvi_setopt(_quvi, QUVIOPT_CATEGORY, QUVIPROTO_HTTP);
 }
 
-void *query_pt4::setup_curl() const
+void *query_pt4::setup_curl(const po::variables_map& vm) const
 {
   CURL *c;
   quvi_getinfo(_quvi, QUVIINFO_CURL, &c);
-  cc::curl_setup(c);
+  cc::curl_setup(c, vm);
   return c;
 }
 

@@ -34,7 +34,7 @@ public:
   inline application():_curl(NULL) { }
   inline virtual ~application()    { }
 public:
-  exit_status exec(int,char **);
+  exit_status exec(int const, char const**);
 private:
   void *_curl;
 };

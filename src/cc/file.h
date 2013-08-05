@@ -27,7 +27,7 @@ namespace cc
 class file
 {
 public:
-  file(const quvi::media&);
+  file(const quvi::media&, const po::variables_map&);
 
   inline file(): _initial_length(0), _nothing_todo(false) { }
 
@@ -42,7 +42,7 @@ public:
       return *this;
     }
 public:
-  bool write(const quvi::media&, void*) const;
+  bool write(const quvi::media&, void*, const po::variables_map&) const;
 public:
   std::string to_s(const quvi::media&) const;
   inline const std::string& title() const { return _title; }
@@ -55,7 +55,7 @@ public:
 public:
   static double exists(const std::string&);
 private:
-  void _init(const quvi::media&);
+  void _init(const quvi::media&, const po::variables_map&);
 
   inline void _swap(const file& f)
     {

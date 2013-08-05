@@ -1,5 +1,5 @@
 /* cclive
- * Copyright (C) 2011  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2011,2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of cclive <http://cclive.sourceforge.net/>.
  *
@@ -18,24 +18,46 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-// Include this header instead of 'config.h'.
+// NOTE: Include this header instead of 'config.h'
 
-#ifndef cclive_internal_h
-#define cclive_internal_h
+#ifndef cc__internal_h
+#define cc__internal_h
 
 #include <boost/version.hpp>
-
 #include "config.h"
+
+// Boost.Program_Options
+
+#if (BOOST_VERSION <= 104900)
+  // There is a bug in Boost.Program_Options (1.49 at least, possibly
+  // earlier) that causes the library to provide an incomplete error
+  // message when an option is given multiple times (and this isn't
+  // acceptable). 1.53+ appears to work OK, 1.50-1.52 unconfirmed.
+  #ifndef HAVE_BUG__BOOST_PO__MULTIPLE_OCCURRENCES
+    #define HAVE_BUG__BOOST_PO__MULTIPLE_OCCURRENCES
+  #endif
+#endif
+
+// Boost.Filesystem
 
 #define BOOST_FILESYSTEM_NO_DEPRECATED
 
-// Boost 1.44+
-#if (BOOST_VERSION >= 104400)
-#ifndef BOOST_FILESYSTEM_VERSION
-#define BOOST_FILESYSTEM_VERSION 3 // Default in 1.46.0
-#endif
+#if (BOOST_VERSION >= 104400)           // Boost 1.44+
+  #ifndef BOOST_FILESYSTEM_VERSION
+    #define BOOST_FILESYSTEM_VERSION 3  // Default in 1.46.0
+  #endif
 #endif
 
-#endif // cclive_internal_h
+#ifndef if_optsw_given
+  #define if_optsw_given(__varmap,__varname)\
+    if (__varmap[__varname].as<bool>())
+#endif
+
+#ifndef ifn_optsw_given
+  #define ifn_optsw_given(__varmap,__varname)\
+    if (! __varmap[__varname].as<bool>())
+#endif
+
+#endif // cc__internal_h
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

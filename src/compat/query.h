@@ -21,6 +21,16 @@
 #ifndef compat_query_h
 #define compat_query_h
 
+namespace boost
+{
+  namespace program_options
+  {
+    class variables_map;
+  }
+}
+
+namespace po = boost::program_options;
+
 namespace quvi {
 
 class query_base
@@ -29,7 +39,7 @@ class query_base
   virtual media parse(const std::string&, const quvi::options&) const = 0;
   virtual std::map<std::string,std::string> support() const = 0;
   virtual void _configure(const quvi::options&) const = 0;
-  virtual void *setup_curl() const = 0;
+  virtual void *setup_curl(const po::variables_map&) const = 0;
   virtual void _close() = 0;
   virtual void _init() = 0;
 protected:
@@ -69,7 +79,7 @@ public:
   std::string streams(const std::string&, const quvi::options&) const;
   media parse(const std::string&, const quvi::options&) const;
   std::map<std::string,std::string> support() const;
-  void *setup_curl() const;
+  void *setup_curl(const po::variables_map&) const;
 };
 
 class query_pt9 : public query_impl
@@ -94,7 +104,7 @@ public:
   std::string streams(const std::string&, const quvi::options&) const;
   media parse(const std::string&, const quvi::options&) const;
   std::map<std::string,std::string> support() const;
-  void *setup_curl() const;
+  void *setup_curl(const po::variables_map&) const;
 };
 
 #ifdef HAVE_LIBQUVI_0_9

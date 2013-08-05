@@ -26,12 +26,9 @@
 
 #include <boost/algorithm/string/classification.hpp> // is_any_of
 #include <boost/algorithm/string/split.hpp>
+#include <boost/scoped_ptr.hpp>
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
-
-#ifndef foreach
-#define foreach BOOST_FOREACH
-#endif
 
 #include <ccquvi>
 #include <ccapplication>
@@ -181,7 +178,7 @@ static std::string format_streams(const std::string& s)
   r << "\n";
 
   size_t i = 0, c = 0;
-  foreach(const std::string& a, v)
+  BOOST_FOREACH(const std::string& a, v)
   {
     r << boost::format("%|22s|") % a;
     ++c;
@@ -197,17 +194,17 @@ static std::string format_streams(const std::string& s)
 
 static application::exit_status
 print_streams(const quvi::query& query, const quvi::options &qopts,
-              const vst& input_urls)
+              const vst& input_urls, const po::variables_map& vm)
 {
   const size_t n = input_urls.size();
   size_t i = 0;
 
-  foreach (const std::string& url, input_urls)
+  BOOST_FOREACH(const std::string& url, input_urls)
   {
     try
       {
         print_checking(++i,n);
-        query.setup_curl();
+        query.setup_curl(vm);
 
         const std::string r = query.streams(url, qopts);
         print_done();
@@ -224,10 +221,10 @@ print_streams(const quvi::query& query, const quvi::options &qopts,
 }
 
 static void parse_prefer_format(const std::string& url, std::string& fmt,
-                                const po::variables_map& map)
+                                const po::variables_map& vm)
 {
-  vst vb, va = map["prefer-format"].as<vst>();
-  foreach (const std::string s, va)
+  vst vb, va = vm[OPT__PREFER_FORMAT].as<vst>();
+  BOOST_FOREACH(const std::string& s, va)
   {
     boost::split(vb, s, boost::is_any_of(":"));
     if (vb.size() == 2)
@@ -245,98 +242,22 @@ static void parse_prefer_format(const std::string& url, std::string& fmt,
 }
 
 static void set_stream(const std::string& url, quvi::options& qopts,
-                       const po::variables_map& map)
+                       const po::variables_map& vm)
 {
-  std::string r = map["stream"].as<std::string>();
-  if (r == "default")
-    {
-      if (map.count("prefer-format"))
-        parse_prefer_format(url, r, map);
-    }
+  std::string r = vm[OPT__STREAM].as<std::string>();
+  if (r == "default" && vm.count(OPT__PREFER_FORMAT))
+    parse_prefer_format(url, r, vm);
   qopts.stream = r;
 }
 
-static const char copyr[] =
-  "\nCopyright (C) 2010-2013  Toni Gundogdu <legatvs@gmail.com>\n"
-  "cclive comes with ABSOLUTELY NO WARRANTY. You may redistribute copies of\n"
-  "cclive under the terms of the GNU Affero General Public License version\n"
-  "3 or later. For more information, see "
-  "<http://www.gnu.org/licenses/agpl.html>.\n\n"
-  "To contact the developers, please mail to "
-  "<cclive-devel@lists.sourceforge.net>";
-
-static const application::exit_status print_version()
+application::exit_status application::exec(int const argc, char const **argv)
 {
-  std::cout
-      << "cclive "
-#ifdef VN
-      << VN
-#else
-      << PACKAGE_VERSION
-#endif
-      << "\n  built on " << BUILD_TIME
-      << " for "         << CANONICAL_TARGET
-      << "\n    with "   << CXX", "CXXFLAGS
-      << "\n  libquvi "  << quvi::version()
-      << "\n  libquvi-scripts "
-      << quvi_version(QUVI_VERSION_SCRIPTS)
-      << std::endl;
-  std::cerr << copyr << std::endl;
-  return application::ok;
-}
-
-static application::exit_status print_support()
-{
-  quvi::query q; // Throws quvi::error caught in main.cpp
-  std::cout << quvi::support_to_s(q.support()) << std::flush;
-  return application::ok;
-}
-
-#ifdef HAVE_LIBQUVI_0_9
-static void warn_depr(const std::string& o, const std::string& n)
-{
-  const std::string v = quvi::version();
-  std::clog
-      << "[!] " PACKAGE " was built with libquvi " << v << ". Consider"
-      << "\n[!] using `--" << n << "' instead of `--" << o << "' which is"
-      << "\n[!] deprecated and will be removed in the later versions"
-      << std::endl;
-}
-#endif
-
-application::exit_status application::exec(int argc, char **argv)
-{
-  // Parse options.
-
-  opts.parse(argc, argv);
-
-  const po::variables_map map = cc::opts.map();
-
-  // Dump and terminate options.
-
-  if (opts.flags.help)
-    {
-      std::cout << opts << std::flush;
-      return application::ok;
-    }
-  else if (opts.flags.print_config)
-    {
-      opts.dump();
-      return application::ok;
-    }
-  else if (opts.flags.version)
-    return print_version();
-  else if (opts.flags.support)
-    return print_support();
-
-#ifdef HAVE_LIBQUVI_0_9
-  if (map.count("prefer-format"))
-    warn_depr("prefer-format", "stream");
-#endif
+  const boost::scoped_ptr<cc::options> o(new cc::options(argc, argv));
+  const po::variables_map vm = o->values();
 
   // Parse input.
 
-  const vst input_urls = cc::input().urls();
+  const vst input_urls = cc::input(vm).urls();
   const size_t n = input_urls.size();
 
   // Set up quvi.
@@ -344,26 +265,20 @@ application::exit_status application::exec(int argc, char **argv)
   quvi::query query; // Throws quvi::error caught in main.cpp
 
   quvi::options qopts;
-  qopts.useragent = map["agent"].as<std::string>(); /* libquvi 0.9+ */
-  qopts.resolve = ! opts.flags.no_resolve;
+  qopts.useragent = vm[OPT__AGENT].as<std::string>(); /* libquvi 0.9+ */
+  qopts.resolve = ! vm[OPT__NO_RESOLVE].as<bool>();
   qopts.statusfunc = status_callback;
 
   // Omit flag.
 
-  bool omit = opts.flags.quiet;
+  bool omit = vm[OPT__QUIET].as<bool>();
 
   // Go to background.
 
 #ifdef HAVE_FORK
-  const bool background_given = opts.flags.background;
-
+  const bool background_given = vm[OPT__BACKGROUND].as<bool>();
   if (background_given)
-    {
-
-      // (Boost) Throws std::runtime_error if fails.
-
-      cc::go_background(map["log-file"].as<std::string>(), omit);
-    }
+    cc::go_background(vm[OPT__LOG_FILE].as<std::string>(), omit);
 #endif
 
   // Omit std output. Note that --background flips this above.
@@ -373,8 +288,8 @@ application::exit_status application::exec(int argc, char **argv)
 
   // Print streams.
 
-  if (opts.flags.print_streams)
-    return print_streams(query, qopts, input_urls);
+  if_optsw_given(vm, OPT__PRINT_STREAMS)
+    return print_streams(query, qopts, input_urls, vm);
 
 #if defined (HAVE_FORK) && defined (HAVE_GETPID)
   if (background_given)
@@ -391,12 +306,12 @@ application::exit_status application::exec(int argc, char **argv)
 
   size_t i = 0;
 
-  const int max_retries  = map["max-retries"].as<int>();
-  const int retry_wait   = map["retry-wait"].as<int>();
+  const int max_retries  = vm[OPT__MAX_RETRIES].as<cc::max_retries>().value();
+  const int retry_wait   = vm[OPT__RETRY_WAIT].as<cc::retry_wait>().value();
 
   exit_status es = ok;
 
-  foreach(const std::string& url, input_urls)
+  BOOST_FOREACH(const std::string& url, input_urls)
   {
     ++i;
 
@@ -414,8 +329,8 @@ application::exit_status application::exec(int argc, char **argv)
 
             try
               {
-                set_stream(url, qopts, map);
-                _curl = query.setup_curl();
+                set_stream(url, qopts, vm);
+                _curl = query.setup_curl(vm);
                 m = query.parse(url, qopts);
               }
             catch(const quvi::error& e)
@@ -426,7 +341,7 @@ application::exit_status application::exec(int argc, char **argv)
                   print_quvi_error(e);
               }
 
-            cc::get(m, _curl);
+            cc::get(m, _curl, vm);
             break; // Stop retrying.
           }
         es = ok;

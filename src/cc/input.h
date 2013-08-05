@@ -27,12 +27,12 @@ namespace cc
 class input
 {
 public:
-  inline input() { _parse(); }
+  inline input(const po::variables_map& vm) { _parse(vm); }
   inline virtual ~input() { }
 public:
   inline const std::vector<std::string>& urls() { return _urls; }
 private:
-  void _parse();
+  void _parse(const po::variables_map& vm);
 private:
   std::vector<std::string> _urls;
 };

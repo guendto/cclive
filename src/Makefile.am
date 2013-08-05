@@ -10,7 +10,6 @@ src=\
   cc/input.cpp\
   cc/log.cpp\
   cc/main.cpp\
-  cc/options.cpp\
   cc/progressbar.cpp\
   cc/re.cpp\
   cc/wait.cpp
@@ -31,6 +30,7 @@ src+=\
 
 hdr=\
   ccapplication\
+  ccerror\
   ccfile\
   ccinput\
   ccinternal\
@@ -43,6 +43,7 @@ hdr=\
 
 hdr+=\
   cc/application.h\
+  cc/error.h\
   cc/file.h\
   cc/input.h\
   cc/internal.h\

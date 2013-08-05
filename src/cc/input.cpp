@@ -25,10 +25,7 @@
 #include <boost/format.hpp>
 #include <glib.h>
 
-#ifndef foreach
-#define foreach BOOST_FOREACH
-#endif
-
+#include <ccquvi>
 #include <ccoptions>
 #include <ccinput>
 
@@ -96,10 +93,10 @@ static void _unable_determine(const std::string& s)
   std::clog << (boost::format(E) % s).str() << std::endl;
 }
 
-static void _have_rargs(vst& dst, const pvm& m)
+static void _have_rargs(vst& dst, const pvm& vm)
 {
-  const vst &args = m["url"].as<vst>();
-  foreach (const std::string &a, args)
+  const vst &args = vm[OPT__URL].as<vst>();
+  BOOST_FOREACH(const std::string &a, args)
   {
     if (g_file_test(a.c_str(), G_FILE_TEST_IS_REGULAR) ==TRUE)
       _extract_uris(dst, _read_file(a));
@@ -120,7 +117,7 @@ static std::string _read_from(std::istream& is)
   return s;
 }
 
-static void _no_rargs(vst& dst, const pvm& m)
+static void _no_rargs(vst& dst, const pvm& vm)
 {
   _extract_uris(dst, _read_from(std::cin));
 }
@@ -136,14 +133,12 @@ template<class T> static T _duplicates(T first, T last)
   return last;
 }
 
-void input::_parse()
+void input::_parse(const po::variables_map& vm)
 {
-  const po::variables_map m = cc::opts.map();
-
-  if (m.count("url") ==0)
-    _no_rargs(_urls, m);
+  if (vm.count(OPT__URL) ==0)
+    _no_rargs(_urls, vm);
   else
-    _have_rargs(_urls, m);
+    _have_rargs(_urls, vm);
 
   _urls.erase(_duplicates(_urls.begin(), _urls.end()), _urls.end());
 

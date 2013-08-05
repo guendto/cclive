@@ -28,17 +28,13 @@ OPTIONS
 Core
 ~~~~
 
---agent <arg>::
-  Identify cclive as 'arg' to the HTTP servers. The default value is
-  "Mozilla/5.0".
-----
-config:
-  agent = arg
-----
-
 -b, --background::
   Go to background after startup. The output written to stdout
   will be written to the file specified with --log-file.
+
+-F, --config-file <arg>::
+  Read the program arguments from the specified file instead of the
+  default ~/.ccliverc file. See also <<FILES>>.
 
 -c, --continue::
   Resume partially downloaded media.
@@ -47,24 +43,7 @@ config:
   continue = {true|false}
 ----
 
--N, --timestamp::
-  Try to preserve the file modification time (as returned by the server,
-  if any). Using this option will cause the program to change the
-  modification time of the file to that of returned by the server.
-+
-NOTE: libcurl will parse this value from the returned "Last-Modified"
-      HTTP header. This header may not always be present in which case
-      the program will quietly ignore this option.
-----
-config:
-  timestamp = {true|false}
-----
-
---config-file <arg>::
-  Read the program arguments from the specified file instead of the
-  default ~/.ccliverc file. See also <<FILES>>.
-
---exec <arg>::
+-e, --exec <arg>::
   Invoke the specified command after each successfully finished
   download. The command is also invoked if the media is fully
   retrieved already. This option may be specified multiple times.
@@ -84,7 +63,7 @@ config:
 -n, --no-download::
   Do not download the media, print the details only.
 
--s,--stream <ID>::
+-s, --stream <ID>::
   Download the specified media stream. By default the program will get
   the 'default' stream. The stream selection with linkman:libquvi[3] 0.4
   is basic at most, whereas linkman:libquvi[3] 0.9+ provides a more
@@ -112,11 +91,28 @@ website.
 For example, linkman:libquvi-scripts[7] 0.9+ would typically compare the
 media quality properties (e.g. the video height property). In reality,
 the method will vary depending on the data provided by the media hosting
-service and the implementation of the support script written for the
-website.
+service, and the implementation of the support script that was written
+for the website.
 +
 See the --version output to confirm whether cclive was built with
 linkman:libquvi[3] 0.9 or later.  See also <<EXAMPLES>>.
+----
+config:
+  stream = arg
+----
+
+-N, --timestamp::
+  Try to preserve the file modification time (as returned by the server,
+  if any). Using this option will cause the program to change the
+  modification time of the file to that of returned by the server.
++
+NOTE: libcurl will parse this value from the returned "Last-Modified"
+      HTTP header. This header may not always be present in which case
+      the program will quietly ignore this option.
+----
+config:
+  timestamp = {true|false}
+----
 
 Informative
 ~~~~~~~~~~~
@@ -130,32 +126,11 @@ Informative
   available streams are determined by linkman:libquvi[3] and
   linkman:libquvi-scripts[7].
 
---progressbar <arg>::
-  Use the progressbar of the specified type.  The program will ignore
-  the value of this option with --background. The arg may be one of the
-  following values:
-  * dotline (also implied by --background)
-  * normal (default)
-  * simple
-----
-config:
-  progressbar = arg
-----
-
---support::
-  Print the supported website domains and exit.
-
---update-interval <arg>::
-  Specify the progressbar update interval in seconds. Use of decimal
-  fractions (e.g. "0.2") is acceptable. The program will use the default
-  value 1.
-----
-config:
-  update-interval = arg
-----
-
 -D, --print-config::
   Print the value of all defined configuration options to stdout.
+
+-u, --support::
+  Print the supported website domains and exit.
 
 -v, --version::
   Print the program version and exit.
@@ -163,7 +138,7 @@ config:
 Output
 ~~~~~~
 
---filename-format <arg>::
+-f, --filename-format <arg>::
   Specify how the downloaded media file should be named. All occurences
   of the following sequences will be replaced in the 'arg':
 ----
@@ -177,13 +152,13 @@ config:
   filename-format = arg
 ----
 
---log-file <arg>::
+-l, --log-file <arg>::
   Write log output to the specified file. The program will ignore this
   option value unless it is being used together with --background. The
   existing log file will be ovewritten. By default, the program will use
   "cclive_log" as the log file name.
 
---output-dir <arg>::
+-d, --output-dir <arg>::
   Write downloaded media to the specified directory. By default, the
   program will write the media to the current working directory.
 ----
@@ -193,6 +168,21 @@ config:
   
 -O, --output-file <arg>::
   Write media to the specified file. Overrides --filename-format.
+
+-W, --overwrite::
+  Overwrite existing media files.
+
+-R, --progressbar <arg>::
+  Use the progressbar of the specified type.  The program will ignore
+  the value of this option with --background. The arg may be one of the
+  following values:
+  * dotline (also implied by --background)
+  * normal (default)
+  * simple
+----
+config:
+  progressbar = arg
+----
 
 -q, --quiet::
   Turn off all output to stdout and stderr with the exception of
@@ -208,16 +198,29 @@ config:
   tr = arg
 ----
 
+-i, --update-interval <arg>::
+  Specify the progressbar update interval in seconds. The default value
+  is 1.
+----
+config:
+  update-interval = arg
+----
+
 -B, --verbose-libcurl::
   Enable libcURL verbose output.
-
--W, --overwrite::
-  Overwrite existing media files.
 
 Network
 ~~~~~~~
 
---connect-timeout <arg>::
+-a, --agent <arg>::
+  Identify cclive as 'arg' to the HTTP servers. The default value is
+  "Mozilla/5.0".
+----
+config:
+  agent = arg
+----
+
+-C, --connect-timeout <arg>::
   Maximum time in seconds that the program should allow the connection
   to the server to take. This only limits the connection phase, once it
   has connected, this option is no more of use. Set to 0 to disable
@@ -228,7 +231,7 @@ config:
   connect-time = arg
 ----
 
---dns-cache-timeout <arg>::
+-A, --dns-cache-timeout <arg>::
   The name resolves will be kept in the memory for this number of
   seconds. Set to 0 to completely disable DNS caching, or to -1 to make
   the cached entries to remain in the memory forever. The default is 60.
@@ -237,11 +240,7 @@ config:
   dns-cache-timeout = arg
 ----
 
---no-proxy::
-  Disable use of HTTP proxy. Overrides --proxy and http_proxy environment
-  settings.
-
---max-retries <arg>::
+-m, --max-retries <arg>::
   Specify the number of downloading retries before giving up. Set to 0
   to disable. The default is 5.
   +
@@ -253,26 +252,9 @@ config:
   max-retries = arg
 ----
 
---retry-wait <arg>::
-  Wait the specified number of seconds before retrying after a failed
-  attempt. The default is 5.
-----
-config:
-  retry-wait = arg
-----
-
---proxy I<arg>::
-  Use the specified proxy address (e.g. http://foo:1234) for HTTP
-  connections. By default, libcURL (which cclive and linkman:libquvi[3]
-  use) will use the value of http_proxy. Using this option will override
-  the http_proxy environment value.
-  +
-  See linkman:curl[1] for more information about the supported
-  environment variables.
-----
-config:
-  proxy = arg
-----
+-X, --no-proxy::
+  Disable use of HTTP proxy. Overrides --proxy and http_proxy environment
+  settings.
 
 -r, --no-resolve::
   Do not resolve HTTP URL redirections. Using this option will result in
@@ -287,7 +269,37 @@ config:
   no-resolve = {true|false}
 ----
 
---transfer-timeout <arg>::
+-x, --proxy I<arg>::
+  Use the specified proxy address (e.g. http://foo:1234) for HTTP
+  connections. By default, libcURL (which cclive and linkman:libquvi[3]
+  use) will use the value of http_proxy. Using this option will override
+  the http_proxy environment value.
+  +
+  See linkman:curl[1] for more information about the supported
+  environment variables.
+----
+config:
+  proxy = arg
+----
+
+-w, --retry-wait <arg>::
+  Wait the specified number of seconds before retrying after a failed
+  attempt. The default is 5. If the value is 0, the program will skip
+  this step.
+----
+config:
+  retry-wait = arg
+----
+
+-H, --throttle <arg>::
+  Do not exceed the specified transfer rate (Ki/s). If 'arg' is 0
+  (default), the throttling will be disabled.
+----
+config:
+  throttle = arg
+----
+
+-T, --transfer-timeout <arg>::
   Maximum time in seconds that the program should allow the transfer
   operation to take. Normally, name lookups can take a considerable
   amount of time, and limiting operations to less than a few minutes
@@ -297,14 +309,6 @@ config:
 ----
 config:
   transfer-timeout = arg
-----
-
---throttle <arg>::
-  Do not exceed the specified transfer rate (Ki/s). If 'arg' is 0
-  (default), the throttling will be disabled.
-----
-config:
-  throttle = arg
 ----
 
 Deprecated
