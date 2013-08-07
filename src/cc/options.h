@@ -585,7 +585,7 @@ struct options : boost::noncopyable
         std::cout
           << boost::format("Usage: %1% [options] [args]") % PACKAGE_NAME
           << "\n" << podv << std::endl;
-        BOOST_THROW_EXCEPTION(exit_program());
+        BOOST_THROW_EXCEPTION(cc::error::exit_program());
       }
 
     fpath = fs::system_complete(config);
@@ -618,7 +618,7 @@ struct options : boost::noncopyable
         // Unless this is the default config, raise an error if open failed.
         if (default_config != fpath)
           {
-            BOOST_THROW_EXCEPTION(error()
+            BOOST_THROW_EXCEPTION(cc::error::config()
                                   << boost::errinfo_file_name(fpath.string())
                                   << boost::errinfo_errno(errno));
           }
@@ -631,9 +631,6 @@ struct options : boost::noncopyable
   }
 
   inline const po::variables_map& values() const { return _vm; }
-
-  struct exit_program : virtual std::exception, virtual boost::exception { };
-  struct error : virtual std::exception, virtual boost::exception { };
 
 private:
   inline void dump()
@@ -704,7 +701,7 @@ private:
       else
         std::cout << std::endl;
     }
-    BOOST_THROW_EXCEPTION(exit_program());
+    BOOST_THROW_EXCEPTION(cc::error::exit_program());
   }
 
   inline static void depr_msg(const std::string& depr_optname,
@@ -761,14 +758,14 @@ private:
       "<cclive-devel@lists.sourceforge.net>";
 
     std::cerr << copyr << std::endl;
-    BOOST_THROW_EXCEPTION(exit_program());
+    BOOST_THROW_EXCEPTION(cc::error::exit_program());
   }
 
   inline static void print_support(const int&)
   {
     quvi::query q;
     std::cout << quvi::support_to_s(q.support()) << std::flush;
-    BOOST_THROW_EXCEPTION(exit_program());
+    BOOST_THROW_EXCEPTION(cc::error::exit_program());
   }
 
   static vtr default_tr()
