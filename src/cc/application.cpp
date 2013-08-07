@@ -257,7 +257,7 @@ application::exit_status application::exec(int const argc, char const **argv)
 
   // Parse input.
 
-  const vst input_urls = cc::input(vm).urls();
+  const vst& input_urls = cc::input::parse(vm);
   const size_t n = input_urls.size();
 
   // Set up quvi.
