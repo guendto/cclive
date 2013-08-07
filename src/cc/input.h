@@ -18,27 +18,137 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-#ifndef cclive_input_h
-#define cclive_input_h
+#ifndef cc__input_h
+#define cc__input_h
+
+#include <ccinternal>
+
+#include <istream>
+#include <sstream>
+
+#include <boost/noncopyable.hpp>
+#include <glibmm.h>
+
+#include <ccoptions>
+#include <ccfstream>
+#include <ccerror>
 
 namespace cc
 {
 
-class input
+namespace po = boost::program_options;
+
+struct input : boost::noncopyable
 {
-public:
-  inline input(const po::variables_map& vm) { _parse(vm); }
-  inline virtual ~input() { }
-public:
-  inline const std::vector<std::string>& urls() { return _urls; }
+  typedef std::vector<std::string> vs;
+
+  static inline vs parse(const po::variables_map& vm)
+  {
+    vs r;
+    (vm.count("url") ==0)
+      ? parse_without_rargs(vm,r)
+      : parse_with_rargs(vm,r);
+    return remove_duplicates(r);
+  }
+
 private:
-  void _parse(const po::variables_map& vm);
-private:
-  std::vector<std::string> _urls;
+  template<class T> static T duplicates(T first, T last)
+  {
+    while (first != last)
+      {
+        T next(first);
+        last = std::remove(++next, last, *first);
+        first = next;
+      }
+    return last;
+  }
+
+  static inline const vs& remove_duplicates(vs& r)
+  {
+    r.erase(duplicates(r.begin(), r.end()), r.end());
+    if (r.size() ==0)
+      BOOST_THROW_EXCEPTION(cc::error::no_input());
+    return r;
+  }
+
+  static inline const vs& parse_without_rargs(const po::variables_map& vm,
+                                              vs& dst)
+  {
+    return extract_uris(dst, read_stdin());
+  }
+
+  static inline const vs& parse_with_rargs(const po::variables_map& vm,
+                                           vs& dst)
+  {
+    BOOST_FOREACH(const std::string& s, vm["url"].as<vs>())
+    {
+      const std::string u = Glib::uri_unescape_string(s);
+      const std::string c = Glib::uri_parse_scheme(u);
+      if (c.length() ==0)
+        extract_uris(dst, cc::fstream::read(u));
+      else if(c =="http" || c =="https")
+        dst.push_back(u);
+      else if (c =="file")
+        read_from_escaped_uri(dst, u);
+      else
+        {
+          BOOST_THROW_EXCEPTION(cc::error::tuple()
+            << cc::error::errinfo_tuple(
+                boost::make_tuple(s, "neither a valid URL or a local file")));
+        }
+    }
+    return dst;
+  }
+
+  static inline const vs& extract_uris(vs& dst, const std::string& s)
+  {
+    gchar **r = g_uri_list_extract_uris(s.c_str());
+    for (int i=0; r[i] != NULL; ++i)
+      {
+        const std::string u = Glib::uri_unescape_string(r[i]);
+        const std::string c = Glib::uri_parse_scheme(u);
+        if (c == "http" || c == "https")
+          dst.push_back(u);
+        else if (c =="file")
+          read_from_escaped_uri(dst, u);
+        else
+          {
+            BOOST_THROW_EXCEPTION(cc::error::tuple()
+              << cc::error::errinfo_tuple(
+                  boost::make_tuple(u, "an invalid URL")));
+          }
+      }
+    g_strfreev(r);
+    return dst;
+  }
+
+  static inline const vs& read_from_escaped_uri(vs& dst, const std::string& s)
+  {
+    try
+      {
+        const std::string r = Glib::filename_from_uri(s);
+        extract_uris(dst, cc::fstream::read(r));
+      }
+    catch (const Glib::ConvertError& x)
+      {
+        BOOST_THROW_EXCEPTION(cc::error::tuple()
+          << cc::error::errinfo_tuple(boost::make_tuple(s, x.what())));
+      }
+    return dst;
+  }
+
+  static inline std::string read_stdin()
+  {
+    std::stringstream s;
+    char c;
+    while (std::cin.get(c))
+      s << c;
+    return s.str();
+  }
 };
 
 } // namespace cc
 
-#endif // cclive_input_h
+#endif // cc__input_h
 
 // vim: set ts=2 sw=2 tw=72 expandtab:
