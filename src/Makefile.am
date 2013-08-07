@@ -7,7 +7,6 @@ src=\
   cc/exec.cpp\
   cc/file.cpp\
   cc/get.cpp\
-  cc/input.cpp\
   cc/log.cpp\
   cc/main.cpp\
   cc/progressbar.cpp\
