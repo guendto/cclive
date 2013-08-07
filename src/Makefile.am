@@ -32,6 +32,7 @@ hdr=\
   ccapplication\
   ccerror\
   ccfile\
+  ccfstream\
   ccinput\
   ccinternal\
   cclog\
@@ -45,6 +46,7 @@ hdr+=\
   cc/application.h\
   cc/error.h\
   cc/file.h\
+  cc/fstream.h\
   cc/input.h\
   cc/internal.h\
   cc/log.h\
