@@ -123,10 +123,15 @@ struct tr
         std::string empty;
         re::tr(s, empty);
       }
-    catch (const std::runtime_error&)
+    catch (const cc::error::tuple& x)
       {
+        cc::error::type_tuple const *t =
+          boost::get_error_info<cc::error::errinfo_tuple>(x);
+
+        const std::string& w = boost::get<1>(*t);
+
         const std::string& m =
-          (boost::format("invalid option value (`%1%')") % s).str();
+          (boost::format("invalid option value: %1%: %2%") % s % w).str();
 
         BOOST_THROW_EXCEPTION(cc::error::tuple()
           << cc::error::errinfo_tuple(boost::make_tuple(OPT__TR, m)));

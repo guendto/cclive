@@ -1,5 +1,5 @@
 /* cclive
- * Copyright (C) 2010-2011  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2010,2011,2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of cclive <http://cclive.sourceforge.net/>.
  *
@@ -20,24 +20,25 @@
 
 #include <ccinternal>
 
-#include <sstream>
 #include <boost/format.hpp>
 #include <pcrecpp.h>
 
+#include <ccerror>
 #include <ccre>
 
 namespace cc
 {
+
 namespace re
 {
 
-static void _check_re_error(const pcrecpp::RE& re)
+static void chk_err(const pcrecpp::RE& re)
 {
   if (re.error().length() >0)
     {
-      std::stringstream b;
-      b << "bad regexp `" << re.pattern() << "': " << re.error();
-      throw std::runtime_error(b.str());
+      BOOST_THROW_EXCEPTION(cc::error::tuple()
+        << cc::error::errinfo_tuple(
+            boost::make_tuple(re.pattern(), re.error())));
     }
 }
 
@@ -69,7 +70,7 @@ bool subst(const std::string& re, std::string& src)
 
       pcrecpp::RE_Options opts = _init_re_opts(flags);
       pcrecpp::RE subs(pat, opts);
-      _check_re_error(subs);
+      chk_err(subs);
 
       (strstr(flags.c_str(), "g"))
       ? subs.GlobalReplace(sub, &src)
@@ -96,7 +97,7 @@ bool capture(const std::string& re, std::string& src)
           std::string orig(src);
           pcrecpp::StringPiece sp(orig);
           pcrecpp::RE re(pat, opts);
-          _check_re_error(re);
+          chk_err(re);
           src.clear();
 
           std::string s;
@@ -108,7 +109,7 @@ bool capture(const std::string& re, std::string& src)
           std::string tmp = src;
           src.clear();
           pcrecpp::RE re(pat, opts);
-          _check_re_error(re);
+          chk_err(re);
           re.PartialMatch(tmp, &src);
         }
       return true;
@@ -119,20 +120,24 @@ bool capture(const std::string& re, std::string& src)
 bool grep(const std::string& r, const std::string& s)
 {
   pcrecpp::RE re(r, pcrecpp::UTF8());
-  _check_re_error(re);
+  chk_err(re);
   return re.PartialMatch(s);
 }
 
 static void tr_subst(const std::string& r, std::string& s)
 {
-  pcrecpp::RE rx("^s\\/(.*)\\/(.*)\\/(.*)$", pcrecpp::UTF8());
+  static const char pattern[] = "^s\\/(.*)\\/(.*)\\/(.*)$";
+
+  pcrecpp::RE rx(pattern, pcrecpp::UTF8());
   std::string pat, sub, flags;
 
-  if (!rx.PartialMatch(r, &pat, &sub, &flags))
+  if (! rx.PartialMatch(r, &pat, &sub, &flags))
     {
-      std::stringstream b;
-      b << "--tr: " << "no idea what to do with `" << r << "'";
-      throw std::runtime_error(b.str());
+      const std::string& m =
+        (boost::format("nothing matched `%1%'") % pattern).str();
+
+      BOOST_THROW_EXCEPTION(cc::error::tuple()
+        << cc::error::errinfo_tuple(boost::make_tuple(r, m)));
     }
 
   if (s.empty()) // Validate regexp only.
@@ -140,7 +145,7 @@ static void tr_subst(const std::string& r, std::string& s)
 
   pcrecpp::RE_Options o = _init_re_opts(flags);
   pcrecpp::RE subs(pat, o);
-  _check_re_error(subs);
+  chk_err(subs);
 
   (strstr(flags.c_str(), "g"))
   ? subs.GlobalReplace(sub, &s)
@@ -149,14 +154,18 @@ static void tr_subst(const std::string& r, std::string& s)
 
 static void tr_filter(const std::string& r, std::string& s)
 {
-  pcrecpp::RE rx("^\\/(.*)\\/(.*)$", pcrecpp::UTF8());
+  static const char pattern[] = "^\\/(.*)\\/(.*)$";
+
+  pcrecpp::RE rx(pattern, pcrecpp::UTF8());
   std::string pat, flags;
 
-  if (!rx.PartialMatch(r, &pat, &flags))
+  if (! rx.PartialMatch(r, &pat, &flags))
     {
-      std::stringstream b;
-      b << "--tr: " << "no idea what to do with `" << r << "'";
-      throw std::runtime_error(b.str());
+      const std::string& m =
+        (boost::format("nothing matched `%1%'") % pattern).str();
+
+      BOOST_THROW_EXCEPTION(cc::error::tuple()
+        << cc::error::errinfo_tuple(boost::make_tuple(r, m)));
     }
 
   if (s.empty())  // Validate regexp only.
@@ -171,7 +180,7 @@ static void tr_filter(const std::string& r, std::string& s)
       s.clear();
 
       pcrecpp::RE re(pat, o);
-      _check_re_error(re);
+      chk_err(re);
       std::string tmp;
 
       while (re.FindAndConsume(&sp, &tmp))
@@ -182,7 +191,7 @@ static void tr_filter(const std::string& r, std::string& s)
       std::string tmp = s;
       s.clear();
       pcrecpp::RE re(pat, o);
-      _check_re_error(re);
+      chk_err(re);
       re.PartialMatch(tmp, &s);
     }
 }
