@@ -20,7 +20,8 @@ INPUT
 The command will read stdin by default. The input is expected to contain
 URLs. The command arguments are expected to be either URLs or file
 paths. If the input is read from either stdin or a file, the contents
-are read as RFC2483.
+are read as RFC2483. The input may also contain URIs (file://) to local
+files.
 
 OPTIONS
 -------

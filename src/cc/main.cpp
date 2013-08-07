@@ -50,6 +50,11 @@ int main(int const argc, char const **argv)
     {
       // Fall through.
     }
+  catch (const cc::error::no_input&)
+    {
+      std::clog << "error: no input URL" << std::endl;
+      es = application::error;
+    }
   // Thrown by quvi::query constructor (e.g. quvi_init, quvi_new).
   catch (const quvi::error& e)
     {
