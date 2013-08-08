@@ -43,8 +43,9 @@ struct fstream : boost::noncopyable
     _o = boost::shared_ptr<std::ofstream>(new std::ofstream(fpath.c_str(),m));
     if (_o->fail())
       {
-        BOOST_THROW_EXCEPTION(error() << boost::errinfo_file_name(fpath)
-                                      << boost::errinfo_errno(errno));
+        BOOST_THROW_EXCEPTION(cc::error::fstream()
+          << boost::errinfo_file_name(fpath)
+          << boost::errinfo_errno(errno));
       }
     _fpath = fpath;
   }
@@ -82,19 +83,19 @@ struct fstream : boost::noncopyable
     _o->write(data, size);
     if (_o->fail())
       {
-        BOOST_THROW_EXCEPTION(error() << boost::errinfo_file_name(_fpath)
-                                      << boost::errinfo_errno(errno));
+        BOOST_THROW_EXCEPTION(cc::error::fstream()
+          << boost::errinfo_file_name(_fpath)
+          << boost::errinfo_errno(errno));
       }
     _o->flush();
     if (_o->fail())
       {
-        BOOST_THROW_EXCEPTION(error() << boost::errinfo_file_name(_fpath)
-                                      << boost::errinfo_errno(errno));
+        BOOST_THROW_EXCEPTION(cc::error::fstream()
+          << boost::errinfo_file_name(_fpath)
+          << boost::errinfo_errno(errno));
       }
     return size;
   }
-
-  struct error : virtual std::exception, virtual boost::exception { };
 
 private:
   static inline std::string read_contents(const std::string& fpath,
@@ -116,8 +117,9 @@ private:
       {
         if (throws_if_fails)
         {
-          BOOST_THROW_EXCEPTION(error() << boost::errinfo_file_name(fpath)
-                                        << boost::errinfo_errno(errno));
+          BOOST_THROW_EXCEPTION(cc::error::fstream()
+            << boost::errinfo_file_name(fpath)
+            << boost::errinfo_errno(errno));
         }
         return r;
       }
