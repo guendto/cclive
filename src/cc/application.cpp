@@ -275,7 +275,7 @@ application::exit_status application::exec(int const argc, char const **argv)
 
   // Go to background.
 
-#ifdef HAVE_FORK
+#if defined(HAVE_WORKING_FORK) || defined(HAVE_WORKING_VFORK)
   const bool background_given = vm[OPT__BACKGROUND].as<bool>();
   if (background_given)
     cc::go_background(vm[OPT__LOG_FILE].as<std::string>(), omit);
@@ -291,7 +291,8 @@ application::exit_status application::exec(int const argc, char const **argv)
   if_optsw_given(vm, OPT__PRINT_STREAMS)
     return print_streams(query, qopts, input_urls, vm);
 
-#if defined (HAVE_FORK) && defined (HAVE_GETPID)
+#if defined(HAVE_WORKING_FORK) || defined(HAVE_WORKING_VFORK)
+  #ifdef HAVE_GETPID
   if (background_given)
     {
       cc::log
@@ -300,6 +301,7 @@ application::exit_status application::exec(int const argc, char const **argv)
           << ")."
           << std::endl;
     }
+  #endif
 #endif
 
   // For each input URL.

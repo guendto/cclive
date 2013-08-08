@@ -58,6 +58,12 @@
     if (! __varmap[__varname].as<bool>())
 #endif
 
+#if defined(HAVE_WORKING_FORK) || defined(HAVE_WORKING_VFORK)
+  #ifdef HAVE_VFORK
+    #define vfork fork
+  #endif
+#endif
+
 #endif // cc__internal_h
 
 /* vim: set ts=2 sw=2 tw=72 expandtab: */

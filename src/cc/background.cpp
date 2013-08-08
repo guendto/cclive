@@ -40,9 +40,9 @@ namespace cc
 
 namespace io = boost::iostreams;
 
+#if defined(HAVE_WORKING_FORK) || defined(HAVE_WORKING_VFORK)
 void go_background(const std::string& log_file, bool& omit)
 {
-#ifdef HAVE_FORK
   const pid_t pid = fork();
 
   if (pid < 0)
@@ -77,8 +77,8 @@ void go_background(const std::string& log_file, bool& omit)
   cc::log.push(io::tee(cc::flushable_file_sink(log_file)));
 
   omit = true;
-#endif // HAVE_FORK
 }
+#endif // HAVE_WORKING_(V)FORK
 
 } // namespace cc
 

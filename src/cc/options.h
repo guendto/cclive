@@ -398,7 +398,7 @@ struct options : boost::noncopyable
     (OPT__NO_DOWNLOAD",n",
       po::bool_switch(),
       "Skip download, print media details only")
-#ifdef HAVE_FORK
+#if defined(HAVE_WORKING_FORK) || defined(HAVE_WORKING_VFORK)
     (OPT__BACKGROUND",b",
       po::bool_switch(),
       "Go to background after startup")
