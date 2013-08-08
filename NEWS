@@ -1,3 +1,16 @@
+v0.9.2  [2013-08-08]
+
+Toni Gundogdu:
+  [!] glibmm 2.24+ is now a prerequisite
+  - Add --timestamp: Try to preserve modification time (PORT) [50213d7]
+  - Bump the required Boost version to v1.49 [86978ab]
+  - [DOC] --update-interval: Accepts now integers only [6426f8f]
+  - Improve cc::input (complete rewrite) [81303f9]
+  - Improve cc:options (complete rewrite) [314e722]
+
+ 28 files changed, 1434 insertions(+), 873 deletions(-)
+
+
 v0.9.1  [2013-07-16]
 
 Toni Gundogdu:
