@@ -64,7 +64,7 @@ Requirements
   http://pcre.org
     $ sudo aptitude install libpcre3-dev
 
-* libboost 1.42.0
+* libboost 1.49.0
   http://www.boost.org/
     $ sudo aptitude install libboost-program-options-dev libboost-system-dev \
                             libboost-filesystem-dev libboost-iostreams-dev \
