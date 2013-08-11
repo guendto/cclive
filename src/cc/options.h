@@ -659,7 +659,7 @@ private:
       else if (t == typeid(vs))
         {
           const vs& values = v.as<vs>();
-          BOOST_FOREACH(const std::string s, values)
+          BOOST_FOREACH(const std::string& s, values)
             std::cout << i->first << "=" << s << "\n";
           nl = false;
         }
