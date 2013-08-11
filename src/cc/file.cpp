@@ -41,10 +41,6 @@
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
 
-#ifndef foreach
-#define foreach BOOST_FOREACH
-#endif
-
 #include <curl/curl.h>
 #include <pcrecpp.h>
 
