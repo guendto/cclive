@@ -590,7 +590,7 @@ struct options : boost::noncopyable
         std::cout
           << boost::format("Usage: %1% [options] [args]") % PACKAGE_NAME
           << "\n" << podv << std::endl;
-        BOOST_THROW_EXCEPTION(cc::error::exit_program());
+        BOOST_THROW_EXCEPTION(cc::exit_program());
       }
 
     fpath = fs::system_complete(config);
@@ -706,7 +706,7 @@ private:
       else
         std::cout << std::endl;
     }
-    BOOST_THROW_EXCEPTION(cc::error::exit_program());
+    BOOST_THROW_EXCEPTION(cc::exit_program());
   }
 
   inline static void depr_msg(const std::string& depr_optname,
@@ -763,14 +763,14 @@ private:
       "<cclive-devel@lists.sourceforge.net>";
 
     std::cerr << copyr << std::endl;
-    BOOST_THROW_EXCEPTION(cc::error::exit_program());
+    BOOST_THROW_EXCEPTION(cc::exit_program());
   }
 
   inline static void print_support(const int&)
   {
     quvi::query q;
     std::cout << quvi::support_to_s(q.support()) << std::flush;
-    BOOST_THROW_EXCEPTION(cc::error::exit_program());
+    BOOST_THROW_EXCEPTION(cc::exit_program());
   }
 
   static vtr default_tr()

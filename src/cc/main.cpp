@@ -46,7 +46,7 @@ int main(int const argc, char const **argv)
       es = app.exec(argc, argv);
     }
   // --version, --help, etc.
-  catch (const cc::error::exit_program&)
+  catch (const cc::exit_program&)
     {
       // Fall through.
     }

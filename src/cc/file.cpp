@@ -67,7 +67,7 @@ file::file(const quvi::media& media, const po::variables_map& vm)
     {
       _init(media, vm);
     }
-  catch (const cc::error::nothing_todo&)
+  catch (const cc::nothing_todo&)
     {
       _nothing_todo = true;
     }
@@ -362,7 +362,7 @@ void file::_init(const quvi::media& media, const po::variables_map& vm)
       if ( _initial_length >= media.content_length()
            && ! vm[OPT__OVERWRITE].as<bool>())
         {
-          BOOST_THROW_EXCEPTION(cc::error::nothing_todo());
+          BOOST_THROW_EXCEPTION(cc::nothing_todo());
         }
     }
   else
@@ -412,7 +412,7 @@ void file::_init(const quvi::media& media, const po::variables_map& vm)
               if (_initial_length == 0)
                 break;
               else if (_initial_length >= media.content_length())
-                BOOST_THROW_EXCEPTION(cc::error::nothing_todo());
+                BOOST_THROW_EXCEPTION(cc::nothing_todo());
               else
                 {
                   if_optsw_given(vm, OPT__CONTINUE)
