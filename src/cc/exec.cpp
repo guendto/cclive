@@ -118,7 +118,7 @@ namespace po = boost::program_options;
 
 void exec(const file& file, const po::variables_map& vm)
 {
-  const vs m = vm[OPT__EXEC].as<vs>();
+  const vs& m = vm[OPT__EXEC].as<vs>();
   BOOST_FOREACH(std::string e, m)
   {
     pcrecpp::RE("%f").GlobalReplace(file.path(), &e);
