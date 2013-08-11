@@ -32,11 +32,6 @@ namespace boost
 namespace cc
 {
 
-class nothing_todo_error {
-public:
-  nothing_todo_error() { }
-};
-
 namespace po = boost::program_options;
 class file;
 
