@@ -330,29 +330,25 @@ std::string file::to_s(const quvi::media& m) const
   return fmt.str();
 }
 
-static fs::path output_dir(const po::variables_map& vm)
+static fs::path output_fpath(const po::variables_map& vm,
+                             const std::string& fname)
 {
-  return fs::system_complete(vm[OPT__OUTPUT_DIR].as<std::string>());
+  const fs::path& r =
+    fs::system_complete(vm[OPT__OUTPUT_DIR].as<std::string>());
+  return r / fname;
 }
 
 void file::_init(const quvi::media& media, const po::variables_map& vm)
 {
   _title = media.title();
 
+  // NOTE: output-file overrides the filename-format.
+
   if (vm.count(OPT__OUTPUT_FILE))
     {
-      // Overrides --filename-format.
+      const std::string& ofname = vm[OPT__OUTPUT_FILE].as<std::string>();
+      store_path(output_fpath(vm, ofname));
 
-      fs::path p = output_dir(vm);
-
-      p /= vm[OPT__OUTPUT_FILE].as<std::string>();
-
-#if BOOST_FILESYSTEM_VERSION > 2
-      _name = p.filename().string();
-#else
-      _name = p.filename();
-#endif
-      _path           = p.string();
       _initial_length = file::exists(_path);
 
       if ( _initial_length >= media.content_length()
@@ -361,43 +357,27 @@ void file::_init(const quvi::media& media, const po::variables_map& vm)
           BOOST_THROW_EXCEPTION(cc::nothing_todo());
         }
     }
-  else
+  else // Use filename-format.
     {
-      // Cleanup media title.
+      std::string fname_fmt = vm[OPT__FILENAME_FORMAT].as<std::string>();
+      pcrecpp::RE("%s").GlobalReplace(media.file_ext(), &fname_fmt);
+      pcrecpp::RE("%i").GlobalReplace(media.id(), &fname_fmt);
+
+      // Cleanup media title before applying it to the filename-format.
 
       const cc::vtr& tr = vm[OPT__TR].as<cc::vtr>();
-      std::string title = media.title();
+      std::string s = media.title();
 
       BOOST_FOREACH(const cc::tr& t, tr)
-        cc::re::tr(t.str(), title);
+        cc::re::tr(t.str(), s);
+      cc::re::trim(s);
 
-      cc::re::trim(title);
+      pcrecpp::RE("%t").GlobalReplace(s, &fname_fmt);
 
-      // --filename-format
+      // output-dir
 
-      std::string fname_fmt = vm[OPT__FILENAME_FORMAT].as<std::string>();
-
-      pcrecpp::RE("%i").GlobalReplace(media.id(), &fname_fmt);
-      pcrecpp::RE("%t").GlobalReplace(title, &fname_fmt);
-      pcrecpp::RE("%s").GlobalReplace(media.file_ext(), &fname_fmt);
-
-      // Output dir.
-
-      const fs::path out_dir = output_dir(vm);
-      fs::path templ_path    = out_dir;
-
-      templ_path /= fname_fmt;
-
-      // Path, name.
-
-      fs::path p = fs::system_complete(templ_path);
-
-#if BOOST_FILESYSTEM_VERSION > 2
-      _name = p.filename().string();
-#else
-      _name = p.filename();
-#endif
-      _path = p.string();
+      const fs::path& base_fpath = output_fpath(vm, fname_fmt);
+      store_path(base_fpath);
 
       ifn_optsw_given(vm, OPT__OVERWRITE)
         {
@@ -405,27 +385,22 @@ void file::_init(const quvi::media& media, const po::variables_map& vm)
             {
               _initial_length = file::exists(_path);
 
-              if (_initial_length == 0)
-                break;
-              else if (_initial_length >= media.content_length())
+              if (_initial_length ==0)
+                break;      // Start from offset 0.
+              else if (_initial_length >=media.content_length())
                 BOOST_THROW_EXCEPTION(cc::nothing_todo());
               else
                 {
                   if_optsw_given(vm, OPT__CONTINUE)
-                    break;
+                    break;  // Try to resume the transfer.
                 }
 
-              boost::format fmt =
-                boost::format("%1%.%2%") % templ_path.string() % i;
+              // Append a digit to the (base) file name.
 
-              p = fs::system_complete(fmt.str());
+              const std::string& s =
+                (boost::format("%1%.%2%") % base_fpath.string() % i).str();
 
-#if BOOST_FILESYSTEM_VERSION > 2
-              _name = p.filename().string();
-#else
-              _name = p.filename();
-#endif
-              _path = p.string();
+              store_path(fs::system_complete(s));
             }
         }
     }

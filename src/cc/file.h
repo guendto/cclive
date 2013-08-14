@@ -21,6 +21,8 @@
 #ifndef cclive_file_h
 #define cclive_file_h
 
+namespace fs = boost::filesystem;
+
 namespace cc
 {
 
@@ -65,6 +67,11 @@ private:
       _initial_length = f._initial_length;
       _nothing_todo   = f._nothing_todo;
     }
+  inline void store_path(const fs::path& p)
+  {
+    _name = p.filename().string();
+    _path = p.string();
+  }
 private:
   double _initial_length;
   std::string _errmsg;
