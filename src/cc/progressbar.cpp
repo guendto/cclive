@@ -42,7 +42,6 @@
 
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/program_options/variables_map.hpp>
-#include <boost/filesystem.hpp>
 
 #include <ccquvi>
 #include <ccoptions>
@@ -274,16 +273,6 @@ int progressbar::update(double now)
       else
         percent_s << "100%";
     }
-
-  // Filename.
-
-  fs::path p = fs::system_complete(_file.path());
-
-#if BOOST_FILESYSTEM_VERSION > 2
-  std::string fname = p.filename().string();
-#else
-  std::string fname = p.filename();
-#endif
 
   switch (_mode)
     {
