@@ -54,8 +54,6 @@ public:
   inline double initial_length() const    { return _initial_length; }
   inline bool should_continue() const     { return _initial_length >0; }
   inline int set_errmsg(const std::string& e) { _errmsg = e; return 0; }
-public:
-  static double exists(const std::string&);
 private:
   void _init(const quvi::media&, const po::variables_map&);
 
@@ -71,6 +69,12 @@ private:
   {
     _name = p.filename().string();
     _path = p.string();
+  }
+  static inline double exists(const std::string& fpath)
+  {
+    if (fs::exists(fpath))
+      return static_cast<double>(fs::file_size(fpath));
+    return 0;
   }
 private:
   double _initial_length;

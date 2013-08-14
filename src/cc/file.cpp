@@ -349,7 +349,7 @@ void file::_init(const quvi::media& media, const po::variables_map& vm)
       const std::string& ofname = vm[OPT__OUTPUT_FILE].as<std::string>();
       store_path(output_fpath(vm, ofname));
 
-      _initial_length = file::exists(_path);
+      _initial_length = cc::file::exists(_path);
 
       if ( _initial_length >= media.content_length()
            && ! vm[OPT__OVERWRITE].as<bool>())
@@ -383,7 +383,7 @@ void file::_init(const quvi::media& media, const po::variables_map& vm)
         {
           for (int i=0; i<INT_MAX; ++i)
             {
-              _initial_length = file::exists(_path);
+              _initial_length = cc::file::exists(_path);
 
               if (_initial_length ==0)
                 break;      // Start from offset 0.
@@ -407,18 +407,6 @@ void file::_init(const quvi::media& media, const po::variables_map& vm)
 
   if_optsw_given(vm, OPT__OVERWRITE)
     _initial_length = 0;
-}
-
-double file::exists(const std::string& path)
-{
-  fs::path p( fs::system_complete(path) );
-
-  double size = 0;
-
-  if (fs::exists(p))
-    size = static_cast<double>(fs::file_size(p));
-
-  return size;
 }
 
 } // namespace cc
