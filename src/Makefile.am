@@ -39,6 +39,7 @@ hdr=\
   ccprogressbar\
   ccquvi\
   ccre\
+  ccsig\
   ccutil
 
 hdr+=\
@@ -52,6 +53,7 @@ hdr+=\
   cc/options.h\
   cc/progressbar.h\
   cc/re.h\
+  cc/sig.h\
   cc/util.h
 
 hdr+=\

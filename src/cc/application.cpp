@@ -36,6 +36,7 @@
 #include <ccinput>
 #include <ccutil>
 #include <cclog>
+#include <ccsig>
 #include <ccre>
 
 namespace cc
@@ -302,6 +303,11 @@ application::exit_status application::exec(int const argc, char const **argv)
     }
   #endif
 #endif
+
+  // Setup signal handlers.
+
+  cc::sigwinch_handler_scptr sw(new cc::type_sigwinch);
+  cc::sigusr1_handler_scptr su(new cc::type_sigusr1);
 
   // For each input URL.
 
