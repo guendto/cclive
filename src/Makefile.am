@@ -9,7 +9,6 @@ src=\
   cc/get.cpp\
   cc/log.cpp\
   cc/main.cpp\
-  cc/progressbar.cpp\
   cc/re.cpp\
   cc/wait.cpp
 
