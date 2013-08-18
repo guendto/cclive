@@ -33,7 +33,7 @@ namespace cc
 {
 
 struct fstream;
-typedef boost::shared_ptr<fstream> fstream_ptr;
+typedef boost::shared_ptr<fstream> fstream_shptr;
 
 struct fstream : boost::noncopyable
 {
@@ -50,18 +50,18 @@ struct fstream : boost::noncopyable
     _fpath = fpath;
   }
 
-  static inline fstream_ptr create(const std::string& fpath)
+  static inline fstream_shptr create(const std::string& fpath)
   {
-    return fstream_ptr(new fstream(fpath, std::ofstream::trunc));
+    return fstream_shptr(new fstream(fpath, std::ofstream::trunc));
   }
 
-  static inline fstream_ptr append(const std::string& fpath)
+  static inline fstream_shptr append(const std::string& fpath)
   {
-    return fstream_ptr(new fstream(fpath, std::ofstream::app));
+    return fstream_shptr(new fstream(fpath, std::ofstream::app));
   }
 
-  static inline fstream_ptr determine_mode(const std::string& fpath,
-                                           uintmax_t& n)
+  static inline fstream_shptr determine_mode(const std::string& fpath,
+                                             uintmax_t& n)
   {
     boost::system::error_code ec; // Throw nothing.
     n = boost::filesystem::file_size(fpath, ec);
