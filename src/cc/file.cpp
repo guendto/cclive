@@ -46,6 +46,7 @@
 
 #include <ccquvi>
 #include <ccoptions>
+#include <ccprogressbar>
 #include <ccre>
 #include <ccutil>
 #include <cclog>
@@ -180,11 +181,11 @@ static int progress_cb(void *ptr, double, double now, double, double)
       return 1; // Return a non-zero value to abort this transfer.
     }
 #endif
-  return reinterpret_cast<progressbar*>(ptr)->update(now);
+  return reinterpret_cast<cc::progressbar*>(ptr)->update(now);
 }
 
 static void _set(write_data *w, const quvi::media& m, CURL *c,
-                 progressbar *pb, const double initial_length,
+                 cc::progressbar *pb, const double initial_length,
                  const po::variables_map& vm)
 {
   curl_easy_setopt(c, CURLOPT_URL, m.stream_url().c_str());
@@ -218,28 +219,6 @@ static void _restore(CURL *c)
   curl_easy_setopt(c, CURLOPT_RESUME_FROM_LARGE, 0L);
 }
 
-static bool _handle_error(const long resp_code, const CURLcode rc,
-                          std::string& errmsg)
-{
-  cc::log << std::endl;
-
-  // If an unrecoverable error then do not attempt to retry.
-  if (resp_code >= 400 && resp_code <= 500)
-    throw std::runtime_error(errmsg);
-
-  // Otherwise.
-  bool r = false; // Attempt to retry by default.
-#ifdef WITH_SIGNAL
-  if (rc == 42) // 42=Operation aborted by callback (libcurl).
-    {
-      errmsg = "sigusr1 received: interrupt current download";
-      r = true; // Skip - do not attempt to retry.
-    }
-#endif
-  cc::log << "error: " << errmsg << std::endl;
-  return r;
-}
-
 namespace fs = boost::filesystem;
 
 bool file::write(const quvi::media& m, CURL *curl,
@@ -248,8 +227,10 @@ bool file::write(const quvi::media& m, CURL *curl,
   write_data w(const_cast<cc::file*>(this), vm);
   w.open_file();
 
-  progressbar pb(*this, m, vm);
-  _set(&w, m, curl, &pb, _initial_length, vm);
+  cc::progressbar *pb = new cc::progressbar(vm, m, _initial_length);
+  _set(&w, m, curl, pb, _initial_length, vm);
+
+  boost::scoped_ptr<cc::progressbar> sc_pb(pb);
 
 #ifdef WITH_SIGNAL
   recv_usr1 = 0;
@@ -299,10 +280,7 @@ bool file::write(const quvi::media& m, CURL *curl,
     }
 
   if (!error.empty())
-    return _handle_error(resp_code, rc, error);
-
-  pb.finish();
-  cc::log << std::endl;
+    return pb->print_error(resp_code, rc, error);
 
   if_optsw_given(vm, OPT__TIMESTAMP)
     {
