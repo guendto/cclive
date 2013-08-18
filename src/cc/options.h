@@ -39,7 +39,6 @@
 #include <boost/format.hpp>
 #include <fstream>
 
-#include <ccprogressbar>
 #include <ccerror>
 #include <ccre>
 
@@ -156,17 +155,19 @@ inline static void validate(boost::any& v,
 
 struct progressbar_mode
 {
+  typedef enum {normal, simple, dotline} mode_type;
+
   inline friend ostr& operator<<(ostr& o, const progressbar_mode& r)
     { return o << r.str(); }
   explicit inline progressbar_mode(const std::string& s)
-    : _mode(cc::progressbar::normal)
+    : _mode(normal)
   {
     if (s == "normal")
-      _mode = cc::progressbar::normal;
+      _mode = normal;
     else if (s == "dotline")
-      _mode = cc::progressbar::dotline;
+      _mode = dotline;
     else if (s == "simple")
-     _mode = cc::progressbar::simple;
+     _mode = simple;
     else
       {
         const std::string& m =
@@ -177,11 +178,11 @@ struct progressbar_mode
       }
     _str = s;
   }
-  inline cc::progressbar::mode value() const { return _mode; }
   inline const std::string& str() const { return _str; }
+  inline mode_type value() const { return _mode; }
 private:
-  cc::progressbar::mode _mode;
   std::string _str;
+  mode_type _mode;
 };
 
 inline static void validate(boost::any& v,
