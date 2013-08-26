@@ -1,7 +1,7 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_PREREQ([2.67])
+AC_PREREQ([2.69])
 
 AC_INIT([cclive], m4_esyscmd([./gen-ver.sh -c | tr -d '\n']),
         [http://cclive.sf.net/bugs/],[],[http://cclive.sf.net/])
