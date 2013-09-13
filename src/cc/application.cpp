@@ -433,9 +433,6 @@ application::exit_status application::exec(int argc, char **argv)
 
   quvi::query query; // Throws quvi::error caught in main.cpp
 
-  _curl = cc::curl_new();
-  cc::curl_setup(_curl);
-
   quvi::options qopts;
   qopts.resolve = ! opts.flags.no_resolve;
   qopts.statusfunc = status_callback;
@@ -512,6 +509,7 @@ application::exit_status application::exec(int argc, char **argv)
             try
               {
                 set_stream(url, qopts, map);
+                _curl = query.setup_curl();
                 m = query.parse(url, qopts);
               }
             catch(const quvi::error& e)
@@ -541,12 +539,6 @@ application::exit_status application::exec(int argc, char **argv)
       }
   }
   return es;
-}
-
-void application::_close()
-{
-  curl_free(_curl);
-  _curl = NULL;
 }
 
 } // namespace cc

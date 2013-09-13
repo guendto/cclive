@@ -37,8 +37,6 @@ void wait(const int);
 /* curl */
 
 void curl_setup(void*);
-void curl_free(void*);
-void *curl_new();
 
 } // namespace cc
 
