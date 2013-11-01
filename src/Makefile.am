@@ -40,7 +40,8 @@ hdr=\
   ccquvi\
   ccre\
   ccsig\
-  ccutil
+  ccutil\
+  ccvar
 
 hdr+=\
   cc/application.h\
@@ -54,7 +55,8 @@ hdr+=\
   cc/progressbar.h\
   cc/re.h\
   cc/sig.h\
-  cc/util.h
+  cc/util.h\
+  cc/var.h
 
 hdr+=\
   compat/error.h\

@@ -33,6 +33,7 @@
 #include <ccquvi>
 #include <ccoptions>
 #include <ccutil>
+#include <ccvar>
 
 using namespace cc;
 
