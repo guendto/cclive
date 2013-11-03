@@ -469,7 +469,7 @@ struct options : boost::noncopyable
 
     podoc.add_options()
     (OPT__FILENAME_FORMAT",f",
-      po::value<std::string>()->default_value("%t.%e"),
+      po::value<std::string>()->default_value("%t.%s"),
       "Format of media file name")
     (OPT__UPDATE_INTERVAL",i",
       po::value<update_interval>()->default_value(update_interval(1)),
