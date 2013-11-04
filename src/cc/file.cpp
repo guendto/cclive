@@ -28,14 +28,6 @@
 #include <unistd.h>
 #endif
 
-#ifdef HAVE_SIGNAL_H
-#include <signal.h>
-#endif
-
-#if defined (HAVE_SIGNAL_H) && defined (HAVE_SIGNAL)
-#define WITH_SIGNAL
-#endif
-
 #include <boost/program_options/variables_map.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/foreach.hpp>
@@ -162,25 +154,13 @@ static size_t write_cb(void *ptr, size_t size, size_t nmemb, void *userdata)
   return rsize;
 }
 
-#ifdef WITH_SIGNAL
-static volatile sig_atomic_t recv_usr1;
-
-static void handle_usr1(int s)
-{
-  if (s == SIGUSR1)
-    recv_usr1 = 1;
-}
-#endif
-
 static int progress_cb(void *ptr, double, double now, double, double)
 {
-#ifdef WITH_SIGNAL
-  if (recv_usr1)
+  if (cc::var::recv_sigusr1)
     {
-      recv_usr1 = 0;
+      cc::var::recv_sigusr1 = 0;
       return 1; // Return a non-zero value to abort this transfer.
     }
-#endif
   return reinterpret_cast<cc::progressbar*>(ptr)->update(now);
 }
 
@@ -231,19 +211,6 @@ bool file::write(const quvi::media& m, CURL *curl,
   _set(&w, m, curl, pb, _initial_length, vm);
 
   boost::scoped_ptr<cc::progressbar> sc_pb(pb);
-
-#ifdef WITH_SIGNAL
-  recv_usr1 = 0;
-  if (signal(SIGUSR1, handle_usr1) == SIG_ERR)
-    {
-      cc::log << "warning: ";
-      if (errno)
-        cc::log << cc::perror();
-      else
-        cc::log << "unable to catch SIGUSR1";
-      cc::log << std::endl;
-    }
-#endif
 
   const CURLcode rc = curl_easy_perform(curl);
   _restore(curl);
