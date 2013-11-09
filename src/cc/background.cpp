@@ -74,8 +74,9 @@ void go_background(const std::string& log_file, bool& omit)
   freopen("/dev/null", "r", stdin);
 
   // Redirect output to log file.
-  cc::log.push(io::tee(cc::flushable_file_sink(log_file)));
+  cc::log.push(io::tee(cc::sink::flushable_file(log_file)));
 
+  // Omit output to stderr (using cc::log).
   omit = true;
 }
 #endif // HAVE_WORKING_(V)FORK

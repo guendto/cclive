@@ -283,7 +283,7 @@ application::exit_status application::exec(int const argc, char const **argv)
 
   // Omit std output. Note that --background flips this above.
 
-  cc::log.push(cc::omit_sink(omit));
+  cc::log.push(cc::sink::omit(omit));
   cc::log.setf(std::ios::fixed);
 
   // Print streams.

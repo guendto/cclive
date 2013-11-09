@@ -21,10 +21,12 @@
 #ifndef cc__var_h
 #define cc__var_h
 
+#include <boost/iostreams/filtering_stream.hpp>
 #include <csignal>
 
 namespace cc
 {
+  boost::iostreams::filtering_ostream log;
   namespace var
   {
     volatile sig_atomic_t recv_sigwinch = 0;
