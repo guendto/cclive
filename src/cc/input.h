@@ -82,14 +82,13 @@ private:
   {
     BOOST_FOREACH(const std::string& s, vm["url"].as<vs>())
     {
-      const std::string u = Glib::uri_unescape_string(s);
-      const std::string c = Glib::uri_parse_scheme(u);
+      const std::string& c = Glib::uri_parse_scheme(s);
       if (c.length() ==0)
-        extract_uris(dst, cc::fstream::read(u));
+        extract_uris(dst, cc::fstream::read(s));
       else if(c =="http" || c =="https")
-        dst.push_back(u);
+        dst.push_back(s);
       else if (c =="file")
-        read_from_escaped_uri(dst, u);
+        read_from_escaped_uri(dst, s);
       else
         {
           BOOST_THROW_EXCEPTION(cc::error::tuple()
@@ -105,17 +104,16 @@ private:
     gchar **r = g_uri_list_extract_uris(s.c_str());
     for (int i=0; r[i] != NULL; ++i)
       {
-        const std::string u = Glib::uri_unescape_string(r[i]);
-        const std::string c = Glib::uri_parse_scheme(u);
+        const std::string& c = Glib::uri_parse_scheme(r[i]);
         if (c == "http" || c == "https")
-          dst.push_back(u);
+          dst.push_back(r[i]);
         else if (c =="file")
-          read_from_escaped_uri(dst, u);
+          read_from_escaped_uri(dst, r[i]);
         else
           {
             BOOST_THROW_EXCEPTION(cc::error::tuple()
               << cc::error::errinfo_tuple(
-                  boost::make_tuple(u, "an invalid URL")));
+                  boost::make_tuple(r[i], "an invalid URL")));
           }
       }
     g_strfreev(r);
