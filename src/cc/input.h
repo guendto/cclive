@@ -81,21 +81,7 @@ private:
                                            vs& dst)
   {
     BOOST_FOREACH(const std::string& s, vm["url"].as<vs>())
-    {
-      const std::string& c = Glib::uri_parse_scheme(s);
-      if (c.length() ==0)
-        extract_uris(dst, cc::fstream::read(s));
-      else if(c =="http" || c =="https")
-        dst.push_back(s);
-      else if (c =="file")
-        read_from_escaped_uri(dst, s);
-      else
-        {
-          BOOST_THROW_EXCEPTION(cc::error::tuple()
-            << cc::error::errinfo_tuple(
-                boost::make_tuple(s, "neither a valid URL or a local file")));
-        }
-    }
+      determine_input(dst, s, true, "neither a valid URI or a local file");
     return dst;
   }
 
@@ -104,23 +90,19 @@ private:
     gchar **r = g_uri_list_extract_uris(s.c_str());
     for (int i=0; r[i] != NULL; ++i)
       {
-        const std::string& c = Glib::uri_parse_scheme(r[i]);
-        if (c == "http" || c == "https")
-          dst.push_back(r[i]);
-        else if (c =="file")
-          read_from_escaped_uri(dst, r[i]);
-        else
+        try
+          { determine_input(dst, r[i], false, "an invalid URI"); }
+        catch (...)
           {
-            BOOST_THROW_EXCEPTION(cc::error::tuple()
-              << cc::error::errinfo_tuple(
-                  boost::make_tuple(r[i], "an invalid URL")));
+            g_strfreev(r);
+            throw;
           }
       }
     g_strfreev(r);
     return dst;
   }
 
-  static inline const vs& read_from_escaped_uri(vs& dst, const std::string& s)
+  static inline const vs& read_from_uri(vs& dst, const std::string& s)
   {
     try
       {
@@ -133,6 +115,24 @@ private:
           << cc::error::errinfo_tuple(boost::make_tuple(s, x.what())));
       }
     return dst;
+  }
+
+  static inline void determine_input(vs& dst, const std::string& s,
+                                     const bool try_read_as_file,
+                                     const std::string& emsg)
+  {
+    const std::string& c = Glib::uri_parse_scheme(s);
+    if (c.length() ==0 && try_read_as_file)
+      extract_uris(dst, cc::fstream::read(s));
+    else if (c == "http" || c == "https")
+      dst.push_back(s);
+    else if (c == "file")
+      read_from_uri(dst, s);
+    else
+      {
+        BOOST_THROW_EXCEPTION(cc::error::tuple()
+          << cc::error::errinfo_tuple(boost::make_tuple(s, emsg)));
+      }
   }
 
   static inline std::string read_stdin()
