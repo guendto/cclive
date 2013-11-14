@@ -36,6 +36,7 @@
 #include <ccinput>
 #include <ccutil>
 #include <cclog>
+#include <ccsig>
 #include <ccre>
 
 namespace cc
@@ -163,11 +164,11 @@ static void print_quvi_error(const quvi::error& e)
 }
 
 namespace po = boost::program_options;
-typedef std::vector<std::string> vst;
+typedef std::vector<std::string> vs;
 
 static std::string format_streams(const std::string& s)
 {
-  vst v;
+  vs v;
   boost::split(v, s, boost::is_any_of("|,"));
   const size_t m = v.size();
 
@@ -194,7 +195,7 @@ static std::string format_streams(const std::string& s)
 
 static application::exit_status
 print_streams(const quvi::query& query, const quvi::options &qopts,
-              const vst& input_urls, const po::variables_map& vm)
+              const vs& input_urls, const po::variables_map& vm)
 {
   const size_t n = input_urls.size();
   size_t i = 0;
@@ -223,14 +224,13 @@ print_streams(const quvi::query& query, const quvi::options &qopts,
 static void parse_prefer_format(const std::string& url, std::string& fmt,
                                 const po::variables_map& vm)
 {
-  vst vb, va = vm[OPT__PREFER_FORMAT].as<vst>();
+  const vs& va = vm[OPT__PREFER_FORMAT].as<vs>();
   BOOST_FOREACH(const std::string& s, va)
   {
+    static vs vb;
     boost::split(vb, s, boost::is_any_of(":"));
-    if (vb.size() == 2)
+    if (vb.size() == 2) // vb[0]=pattern, vb[1]=format
       {
-        // vb[0] = pattern
-        // vb[1] = format
         if (cc::re::grep(vb[0], url))
           {
             fmt = vb[1];
@@ -257,7 +257,7 @@ application::exit_status application::exec(int const argc, char const **argv)
 
   // Parse input.
 
-  const vst& input_urls = cc::input::parse(vm);
+  const vs& input_urls = cc::input::parse(vm);
   const size_t n = input_urls.size();
 
   // Set up quvi.
@@ -283,7 +283,7 @@ application::exit_status application::exec(int const argc, char const **argv)
 
   // Omit std output. Note that --background flips this above.
 
-  cc::log.push(cc::omit_sink(omit));
+  cc::log.push(cc::sink::omit(omit));
   cc::log.setf(std::ios::fixed);
 
   // Print streams.
@@ -303,6 +303,11 @@ application::exit_status application::exec(int const argc, char const **argv)
     }
   #endif
 #endif
+
+  // Setup signal handlers.
+
+  cc::sigwinch_handler_scptr sw(new cc::type_sigwinch);
+  cc::sigusr1_handler_scptr su(new cc::type_sigusr1);
 
   // For each input URL.
 

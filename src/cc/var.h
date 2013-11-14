@@ -1,5 +1,5 @@
 /* cclive
- * Copyright (C) 2011-2013  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of cclive <http://cclive.sourceforge.net/>.
  *
@@ -18,33 +18,23 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-#ifndef cclive_util_h
-#define cclive_util_h
+#ifndef cc__var_h
+#define cc__var_h
 
-namespace boost
-{
-  namespace program_options
-  {
-    class variables_map;
-  }
-}
+#include <boost/iostreams/filtering_stream.hpp>
+#include <csignal>
 
 namespace cc
 {
-
-namespace po = boost::program_options;
-class file;
-
-void get(quvi::media&, void*, const po::variables_map&);
-void exec(const file&, const po::variables_map&);
-void curl_setup(void*, const po::variables_map&);
-
-void go_background(const std::string&, bool&);
-std::string perror(const std::string& p="");
-void wait(const int);
-
+  boost::iostreams::filtering_ostream log;
+  namespace var
+  {
+    volatile sig_atomic_t recv_sigwinch = 0;
+    volatile sig_atomic_t recv_sigusr1 = 0;
+    size_t max_width = 0;
+  } // namespace sig
 } // namespace cc
 
-#endif // cclive_util_h
+#endif // cc__var_h
 
-/* vim: set ts=2 sw=2 tw=72 expandtab: */
+// vim: set ts=2 sw=2 tw=72 expandtab:

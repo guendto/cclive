@@ -1,5 +1,5 @@
 /* cclive
- * Copyright (C) 2010-2013  Toni Gundogdu <legatvs@gmail.com>
+ * Copyright (C) 2013  Toni Gundogdu <legatvs@gmail.com>
  *
  * This file is part of cclive <http://cclive.sourceforge.net/>.
  *
@@ -18,112 +18,132 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-#ifndef cclive_log_h
-#define cclive_log_h
+#ifndef cc__log_h
+#define cc__log_h
 
-#include <iostream>
-#include <fstream>
+#include <ccinternal>
 
 #include <boost/iostreams/filtering_stream.hpp>
+#include <boost/filesystem.hpp>
+#include <fstream>
 
-#define cc_debug(...)\
-  do { cc::_debug(__BASE_FILE__, __func__, __LINE__, __VA_ARGS__); } while (0)
+#include <ccerror>
 
 namespace cc
 {
 
-void _debug(const std::string&, const std::string&,
-            const int, const char*, ...);
-
 extern boost::iostreams::filtering_ostream log;
 
-struct omit_sink : public boost::iostreams::sink
+namespace sink
+{
+
+struct omit : boost::iostreams::sink
 {
   inline std::streamsize write(const char *s, std::streamsize n)
-    {
-      if (!_omit) std::clog.write(s,n);
-      return n;
-    }
-  inline explicit omit_sink(bool b=false): _omit(b) { }
+  {
+    if (!_omit) std::clog.write(s, n);
+    return n;
+  }
+
+  inline explicit omit(bool omit=false): _omit(omit) { }
+
 private:
   bool _omit;
 };
 
-struct flushable_file_sink
+namespace fs = boost::filesystem;
+
+struct flushable_file : boost::noncopyable
 {
   typedef char char_type;
 
-  struct category :
+  struct category : boost::noncopyable,
     boost::iostreams::output_seekable,
-    boost::iostreams::device_tag,
+    boost::iostreams::flushable_tag,
     boost::iostreams::closable_tag,
-    boost::iostreams::flushable_tag {};
+    boost::iostreams::device_tag { };
 
-  inline flushable_file_sink(
-    const std::string& fpath,
-    const std::ios_base::openmode mode = std::ios::trunc|std::ios::out)
-      : _mode(mode), _fpath(fpath)
+#define DEFAULT_MODE  std::ios::trunc|std::ios::out
+  inline flushable_file(const std::string& fpath,
+                        const std::ios_base::openmode m = DEFAULT_MODE)
+    : _mode(m), _fpath(fpath)
   {
     _open();
   }
+#undef DEFAULT_MODE
 
-  inline flushable_file_sink(const flushable_file_sink& f) { _swap(f); }
-  
-  inline flushable_file_sink& operator=(const flushable_file_sink& f)
-    {
-      if (this != &f) _swap(f);
-      return *this;
-    }
+  inline flushable_file(const flushable_file& o) { _copy(o); }
 
-  inline std::streampos seek(std::streamoff o, std::ios_base::seekdir d)
-    {
-      _f.seekp(o,d);
-      _f.seekg(o,d);
-      return o;
-    }
+  inline flushable_file& operator=(const flushable_file& o)
+  {
+    if (this != &o) _copy(o);
+    return *this;
+  }
+
+  inline std::streampos seek(std::streamoff n, std::ios_base::seekdir s)
+  {
+    _s.seekp(n, s);
+    _s.seekg(n, s);
+    return n;
+  }
 
   inline std::streamsize write(const char *s, std::streamsize n)
-    {
-      _f.write(s,n);
-      return n;
-    }
+  {
+    _s.write(s, n);
+    return n;
+  }
 
   inline std::streamsize read(char_type *t, std::streamsize n)
-    {
-      _f.read(t,n);
-      return n;
-    }
+  {
+    _s.read(t, n);
+    return n;
+  }
 
-  inline bool is_open() const { return _f.is_open(); }
+  inline bool is_open() const { return _s.is_open(); }
 
   inline bool flush()
-    {
-      _f.flush();
-      return true;
-    }
+  {
+    _s.flush();
+    return true;
+  }
 
   inline void close()
-    {
-      flush();
-      _f.close();
-    }
+  {
+    flush();
+    _s.close();
+  }
+
 private:
-  inline void _swap(const flushable_file_sink& f)
-    {
-      close();
-      _fpath = f._fpath;
-      _mode  = f._mode;
-      _open();
-    }
-  void _open();
+  inline void _copy(const flushable_file& o)
+  {
+    close();
+    _fpath = o._fpath;
+    _mode = o._mode;
+    _open();
+  }
+
+  inline void _open()
+  {
+    _fpath = fs::system_complete(fs::path(_fpath)).string();
+    _s.open(_fpath.c_str(), _mode);
+    if (_s.fail())
+      {
+        BOOST_THROW_EXCEPTION(cc::error::fstream()
+          << boost::errinfo_file_name(_fpath)
+          << boost::errinfo_errno(errno));
+      }
+  }
+
 private:
   std::ios_base::openmode _mode;
-  mutable std::fstream _f;
   std::string _fpath;
+  std::fstream _s;
 };
+
+} // namespace log
 
 } // namespace cc
 
-#endif // cclive_log_h
+#endif
 
 // vim: set ts=2 sw=2 tw=72 expandtab:

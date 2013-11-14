@@ -7,9 +7,7 @@ src=\
   cc/exec.cpp\
   cc/file.cpp\
   cc/get.cpp\
-  cc/log.cpp\
   cc/main.cpp\
-  cc/progressbar.cpp\
   cc/re.cpp\
   cc/wait.cpp
 
@@ -39,7 +37,9 @@ hdr=\
   ccprogressbar\
   ccquvi\
   ccre\
-  ccutil
+  ccsig\
+  ccutil\
+  ccvar
 
 hdr+=\
   cc/application.h\
@@ -52,7 +52,9 @@ hdr+=\
   cc/options.h\
   cc/progressbar.h\
   cc/re.h\
-  cc/util.h
+  cc/sig.h\
+  cc/util.h\
+  cc/var.h
 
 hdr+=\
   compat/error.h\

@@ -88,11 +88,15 @@ static inline int print(const boost::exception& x)
   return EXIT_FAILURE;
 }
 
-struct no_facet : virtual std::exception, virtual boost::exception { };
 struct no_input : virtual std::exception, virtual boost::exception { };
+struct fstream : virtual std::exception, virtual boost::exception { };
+struct config : virtual std::exception, virtual boost::exception { };
 struct tuple : virtual std::exception, virtual boost::exception { };
 
 } // namespace error
+
+struct exit_program : virtual std::exception, virtual boost::exception { };
+struct nothing_todo : virtual std::exception, virtual boost::exception { };
 
 } // namespace cc
 #endif // cc__error_h

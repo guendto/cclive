@@ -33,6 +33,7 @@
 #include <ccquvi>
 #include <ccoptions>
 #include <ccutil>
+#include <ccvar>
 
 using namespace cc;
 
@@ -40,13 +41,13 @@ int main(int const argc, char const **argv)
 {
   setlocale(LC_ALL, "");
   application::exit_status es = application::ok;
-  application app;
   try
     {
+      application app;
       es = app.exec(argc, argv);
     }
   // --version, --help, etc.
-  catch (const cc::options::exit_program&)
+  catch (const cc::exit_program&)
     {
       // Fall through.
     }

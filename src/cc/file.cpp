@@ -28,28 +28,17 @@
 #include <unistd.h>
 #endif
 
-#ifdef HAVE_SIGNAL_H
-#include <signal.h>
-#endif
-
-#if defined (HAVE_SIGNAL_H) && defined (HAVE_SIGNAL)
-#define WITH_SIGNAL
-#endif
-
 #include <boost/program_options/variables_map.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
-
-#ifndef foreach
-#define foreach BOOST_FOREACH
-#endif
 
 #include <curl/curl.h>
 #include <pcrecpp.h>
 
 #include <ccquvi>
 #include <ccoptions>
+#include <ccprogressbar>
 #include <ccre>
 #include <ccutil>
 #include <cclog>
@@ -67,7 +56,7 @@ file::file(const quvi::media& media, const po::variables_map& vm)
     {
       _init(media, vm);
     }
-  catch (const cc::nothing_todo_error&)
+  catch (const cc::nothing_todo&)
     {
       _nothing_todo = true;
     }
@@ -165,30 +154,18 @@ static size_t write_cb(void *ptr, size_t size, size_t nmemb, void *userdata)
   return rsize;
 }
 
-#ifdef WITH_SIGNAL
-static volatile sig_atomic_t recv_usr1;
-
-static void handle_usr1(int s)
-{
-  if (s == SIGUSR1)
-    recv_usr1 = 1;
-}
-#endif
-
 static int progress_cb(void *ptr, double, double now, double, double)
 {
-#ifdef WITH_SIGNAL
-  if (recv_usr1)
+  if (cc::var::recv_sigusr1)
     {
-      recv_usr1 = 0;
+      cc::var::recv_sigusr1 = 0;
       return 1; // Return a non-zero value to abort this transfer.
     }
-#endif
-  return reinterpret_cast<progressbar*>(ptr)->update(now);
+  return reinterpret_cast<cc::progressbar*>(ptr)->update(now);
 }
 
 static void _set(write_data *w, const quvi::media& m, CURL *c,
-                 progressbar *pb, const double initial_length,
+                 cc::progressbar *pb, const double initial_length,
                  const po::variables_map& vm)
 {
   curl_easy_setopt(c, CURLOPT_URL, m.stream_url().c_str());
@@ -222,28 +199,6 @@ static void _restore(CURL *c)
   curl_easy_setopt(c, CURLOPT_RESUME_FROM_LARGE, 0L);
 }
 
-static bool _handle_error(const long resp_code, const CURLcode rc,
-                          std::string& errmsg)
-{
-  cc::log << std::endl;
-
-  // If an unrecoverable error then do not attempt to retry.
-  if (resp_code >= 400 && resp_code <= 500)
-    throw std::runtime_error(errmsg);
-
-  // Otherwise.
-  bool r = false; // Attempt to retry by default.
-#ifdef WITH_SIGNAL
-  if (rc == 42) // 42=Operation aborted by callback (libcurl).
-    {
-      errmsg = "sigusr1 received: interrupt current download";
-      r = true; // Skip - do not attempt to retry.
-    }
-#endif
-  cc::log << "error: " << errmsg << std::endl;
-  return r;
-}
-
 namespace fs = boost::filesystem;
 
 bool file::write(const quvi::media& m, CURL *curl,
@@ -252,21 +207,10 @@ bool file::write(const quvi::media& m, CURL *curl,
   write_data w(const_cast<cc::file*>(this), vm);
   w.open_file();
 
-  progressbar pb(*this, m, vm);
-  _set(&w, m, curl, &pb, _initial_length, vm);
+  cc::progressbar *pb = new cc::progressbar(vm, m, _initial_length);
+  _set(&w, m, curl, pb, _initial_length, vm);
 
-#ifdef WITH_SIGNAL
-  recv_usr1 = 0;
-  if (signal(SIGUSR1, handle_usr1) == SIG_ERR)
-    {
-      cc::log << "warning: ";
-      if (errno)
-        cc::log << cc::perror();
-      else
-        cc::log << "unable to catch SIGUSR1";
-      cc::log << std::endl;
-    }
-#endif
+  boost::scoped_ptr<cc::progressbar> sc_pb(pb);
 
   const CURLcode rc = curl_easy_perform(curl);
   _restore(curl);
@@ -303,10 +247,7 @@ bool file::write(const quvi::media& m, CURL *curl,
     }
 
   if (!error.empty())
-    return _handle_error(resp_code, rc, error);
-
-  pb.finish();
-  cc::log << std::endl;
+    return pb->print_error(resp_code, rc, error);
 
   if_optsw_given(vm, OPT__TIMESTAMP)
     {
@@ -334,122 +275,83 @@ std::string file::to_s(const quvi::media& m) const
   return fmt.str();
 }
 
-static fs::path output_dir(const po::variables_map& vm)
+static fs::path output_fpath(const po::variables_map& vm,
+                             const std::string& fname)
 {
-  return fs::system_complete(vm[OPT__OUTPUT_DIR].as<std::string>());
+  const fs::path& r =
+    fs::system_complete(vm[OPT__OUTPUT_DIR].as<std::string>());
+  return r / fname;
 }
 
 void file::_init(const quvi::media& media, const po::variables_map& vm)
 {
   _title = media.title();
 
+  // NOTE: output-file overrides the filename-format.
+
   if (vm.count(OPT__OUTPUT_FILE))
     {
-      // Overrides --filename-format.
+      const std::string& ofname = vm[OPT__OUTPUT_FILE].as<std::string>();
+      store_path(output_fpath(vm, ofname));
 
-      fs::path p = output_dir(vm);
-
-      p /= vm[OPT__OUTPUT_FILE].as<std::string>();
-
-#if BOOST_FILESYSTEM_VERSION > 2
-      _name = p.filename().string();
-#else
-      _name = p.filename();
-#endif
-      _path           = p.string();
-      _initial_length = file::exists(_path);
+      _initial_length = cc::file::exists(_path);
 
       if ( _initial_length >= media.content_length()
            && ! vm[OPT__OVERWRITE].as<bool>())
         {
-          throw cc::nothing_todo_error();
+          BOOST_THROW_EXCEPTION(cc::nothing_todo());
         }
     }
-  else
+  else // Use filename-format.
     {
-      // Cleanup media title.
+      std::string fname_fmt = vm[OPT__FILENAME_FORMAT].as<std::string>();
+      pcrecpp::RE("%s").GlobalReplace(media.file_ext(), &fname_fmt);
+      pcrecpp::RE("%i").GlobalReplace(media.id(), &fname_fmt);
+
+      // Cleanup media title before applying it to the filename-format.
 
       const cc::vtr& tr = vm[OPT__TR].as<cc::vtr>();
-      std::string title = media.title();
+      std::string s = media.title();
 
       BOOST_FOREACH(const cc::tr& t, tr)
-        cc::re::tr(t.str(), title);
+        cc::re::tr(t.str(), s);
+      cc::re::trim(s);
 
-      cc::re::trim(title);
+      pcrecpp::RE("%t").GlobalReplace(s, &fname_fmt);
 
-      // --filename-format
+      // output-dir
 
-      std::string fname_fmt = vm[OPT__FILENAME_FORMAT].as<std::string>();
-
-      pcrecpp::RE("%i").GlobalReplace(media.id(), &fname_fmt);
-      pcrecpp::RE("%t").GlobalReplace(title, &fname_fmt);
-      pcrecpp::RE("%s").GlobalReplace(media.file_ext(), &fname_fmt);
-
-      // Output dir.
-
-      const fs::path out_dir = output_dir(vm);
-      fs::path templ_path    = out_dir;
-
-      templ_path /= fname_fmt;
-
-      // Path, name.
-
-      fs::path p = fs::system_complete(templ_path);
-
-#if BOOST_FILESYSTEM_VERSION > 2
-      _name = p.filename().string();
-#else
-      _name = p.filename();
-#endif
-      _path = p.string();
+      const fs::path& base_fpath = output_fpath(vm, fname_fmt);
+      store_path(base_fpath);
 
       ifn_optsw_given(vm, OPT__OVERWRITE)
         {
           for (int i=0; i<INT_MAX; ++i)
             {
-              _initial_length = file::exists(_path);
+              _initial_length = cc::file::exists(_path);
 
-              if (_initial_length == 0)
-                break;
-
-              else if (_initial_length >= media.content_length())
-                throw cc::nothing_todo_error();
-
+              if (_initial_length ==0)
+                break;      // Start from offset 0.
+              else if (_initial_length >=media.content_length())
+                BOOST_THROW_EXCEPTION(cc::nothing_todo());
               else
                 {
                   if_optsw_given(vm, OPT__CONTINUE)
-                    break;
+                    break;  // Try to resume the transfer.
                 }
 
-              boost::format fmt =
-                boost::format("%1%.%2%") % templ_path.string() % i;
+              // Append a digit to the (base) file name.
 
-              p = fs::system_complete(fmt.str());
+              const std::string& s =
+                (boost::format("%1%.%2%") % base_fpath.string() % i).str();
 
-#if BOOST_FILESYSTEM_VERSION > 2
-              _name = p.filename().string();
-#else
-              _name = p.filename();
-#endif
-              _path = p.string();
+              store_path(fs::system_complete(s));
             }
         }
     }
 
   if_optsw_given(vm, OPT__OVERWRITE)
     _initial_length = 0;
-}
-
-double file::exists(const std::string& path)
-{
-  fs::path p( fs::system_complete(path) );
-
-  double size = 0;
-
-  if (fs::exists(p))
-    size = static_cast<double>(fs::file_size(p));
-
-  return size;
 }
 
 } // namespace cc

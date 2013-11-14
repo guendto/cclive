@@ -39,7 +39,6 @@
 #include <boost/format.hpp>
 #include <fstream>
 
-#include <ccprogressbar>
 #include <ccerror>
 #include <ccre>
 
@@ -123,10 +122,15 @@ struct tr
         std::string empty;
         re::tr(s, empty);
       }
-    catch (const std::runtime_error&)
+    catch (const cc::error::tuple& x)
       {
+        cc::error::type_tuple const *t =
+          boost::get_error_info<cc::error::errinfo_tuple>(x);
+
+        const std::string& w = boost::get<1>(*t);
+
         const std::string& m =
-          (boost::format("invalid option value (`%1%')") % s).str();
+          (boost::format("invalid option value: %1%: %2%") % s % w).str();
 
         BOOST_THROW_EXCEPTION(cc::error::tuple()
           << cc::error::errinfo_tuple(boost::make_tuple(OPT__TR, m)));
@@ -151,17 +155,19 @@ inline static void validate(boost::any& v,
 
 struct progressbar_mode
 {
+  typedef enum {normal, simple, dotline} mode_type;
+
   inline friend ostr& operator<<(ostr& o, const progressbar_mode& r)
     { return o << r.str(); }
   explicit inline progressbar_mode(const std::string& s)
-    : _mode(cc::progressbar::normal)
+    : _mode(normal)
   {
     if (s == "normal")
-      _mode = cc::progressbar::normal;
+      _mode = normal;
     else if (s == "dotline")
-      _mode = cc::progressbar::dotline;
+      _mode = dotline;
     else if (s == "simple")
-     _mode = cc::progressbar::simple;
+     _mode = simple;
     else
       {
         const std::string& m =
@@ -172,11 +178,11 @@ struct progressbar_mode
       }
     _str = s;
   }
-  inline cc::progressbar::mode value() const { return _mode; }
   inline const std::string& str() const { return _str; }
+  inline mode_type value() const { return _mode; }
 private:
-  cc::progressbar::mode _mode;
   std::string _str;
+  mode_type _mode;
 };
 
 inline static void validate(boost::any& v,
@@ -585,7 +591,7 @@ struct options : boost::noncopyable
         std::cout
           << boost::format("Usage: %1% [options] [args]") % PACKAGE_NAME
           << "\n" << podv << std::endl;
-        BOOST_THROW_EXCEPTION(exit_program());
+        BOOST_THROW_EXCEPTION(cc::exit_program());
       }
 
     fpath = fs::system_complete(config);
@@ -618,7 +624,7 @@ struct options : boost::noncopyable
         // Unless this is the default config, raise an error if open failed.
         if (default_config != fpath)
           {
-            BOOST_THROW_EXCEPTION(error()
+            BOOST_THROW_EXCEPTION(cc::error::config()
                                   << boost::errinfo_file_name(fpath.string())
                                   << boost::errinfo_errno(errno));
           }
@@ -631,9 +637,6 @@ struct options : boost::noncopyable
   }
 
   inline const po::variables_map& values() const { return _vm; }
-
-  struct exit_program : virtual std::exception, virtual boost::exception { };
-  struct error : virtual std::exception, virtual boost::exception { };
 
 private:
   inline void dump()
@@ -657,7 +660,7 @@ private:
       else if (t == typeid(vs))
         {
           const vs& values = v.as<vs>();
-          BOOST_FOREACH(const std::string s, values)
+          BOOST_FOREACH(const std::string& s, values)
             std::cout << i->first << "=" << s << "\n";
           nl = false;
         }
@@ -704,7 +707,7 @@ private:
       else
         std::cout << std::endl;
     }
-    BOOST_THROW_EXCEPTION(exit_program());
+    BOOST_THROW_EXCEPTION(cc::exit_program());
   }
 
   inline static void depr_msg(const std::string& depr_optname,
@@ -761,14 +764,14 @@ private:
       "<cclive-devel@lists.sourceforge.net>";
 
     std::cerr << copyr << std::endl;
-    BOOST_THROW_EXCEPTION(exit_program());
+    BOOST_THROW_EXCEPTION(cc::exit_program());
   }
 
   inline static void print_support(const int&)
   {
     quvi::query q;
     std::cout << quvi::support_to_s(q.support()) << std::flush;
-    BOOST_THROW_EXCEPTION(exit_program());
+    BOOST_THROW_EXCEPTION(cc::exit_program());
   }
 
   static vtr default_tr()

@@ -21,6 +21,8 @@
 #ifndef cclive_file_h
 #define cclive_file_h
 
+namespace fs = boost::filesystem;
+
 namespace cc
 {
 
@@ -52,8 +54,6 @@ public:
   inline double initial_length() const    { return _initial_length; }
   inline bool should_continue() const     { return _initial_length >0; }
   inline int set_errmsg(const std::string& e) { _errmsg = e; return 0; }
-public:
-  static double exists(const std::string&);
 private:
   void _init(const quvi::media&, const po::variables_map&);
 
@@ -65,6 +65,17 @@ private:
       _initial_length = f._initial_length;
       _nothing_todo   = f._nothing_todo;
     }
+  inline void store_path(const fs::path& p)
+  {
+    _name = p.filename().string();
+    _path = p.string();
+  }
+  static inline double exists(const std::string& fpath)
+  {
+    if (fs::exists(fpath))
+      return static_cast<double>(fs::file_size(fpath));
+    return 0;
+  }
 private:
   double _initial_length;
   std::string _errmsg;
