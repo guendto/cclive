@@ -1,3 +1,28 @@
+v0.9.3  [2013-11-23]
+
+Limao Luo:
+  - %e has been renamed to %s (--help) [fef8987]
+Toni Gundogdu:
+  - AC_PREREQ: Bump to 2.69 [c6591e6]
+  - Cleanup and devise more C++ eloquence
+    - Add cc::sig [b3dfaf2]
+      - Setup sig{winch,usr1} handlers only once
+      - Use sigaction(2) instead of signal(2)
+    - cc::file
+      - Rewrite for cc::sig (sigusr1) [711dc10]
+      - Use updated cc::progressbar [8236649]
+      - _init: Rewrite/cleanup [fdf4565]
+    - cc::input: Do not unescape input URIs [34026cb]
+      - Reduce duplicate code [17a0e27]
+    - cc::log: Rewrite, make header-only [8a60f4e]
+    - cc::progressbar: Rewrite, make header-only [5431098]
+      - Rewrite for cc::sig (sigwinch)
+      - Use IEEE-1541 symbols
+    - cc::re: Throw Boost.Exception based exception [dc132f7]
+
+ 22 files changed, 773 insertions(+), 859 deletions(-)
+
+
 v0.9.2  [2013-08-08]
 
 Toni Gundogdu:
