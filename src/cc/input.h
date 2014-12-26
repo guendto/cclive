@@ -23,6 +23,7 @@
 
 #include <ccinternal>
 
+#include <iostream>
 #include <istream>
 #include <sstream>
 
