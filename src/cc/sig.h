@@ -26,6 +26,7 @@
 #include <sys/ioctl.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <iostream>
 #include <csignal>
 #include <cstdio>
 

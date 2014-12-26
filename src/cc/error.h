@@ -28,6 +28,7 @@
 #include <boost/exception/get_error_info.hpp>
 #include <boost/exception/errinfo_errno.hpp>
 #include <boost/tuple/tuple.hpp>
+#include <iostream>
 #include <cerrno>
 
 namespace cc

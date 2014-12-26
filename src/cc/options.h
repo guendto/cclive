@@ -37,6 +37,7 @@
 #include <boost/filesystem.hpp>
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
+#include <iostream>
 #include <fstream>
 
 #include <ccerror>
